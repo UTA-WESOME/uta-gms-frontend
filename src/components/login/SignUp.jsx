@@ -7,18 +7,33 @@ const SignUp = () => {
 
     const navigate = useNavigate();
     const formik = useFormik({
-        initialValues: {username: "", password: "", passwordConfirmation: ""},
+        initialValues: {email: "", username: "", password: "", passwordConfirmation: ""},
         validationSchema: Yup.object({
-            username: Yup.string().required("Username required!")
-                .min(6, "Username too short!").max(28, "Username too long!"),
+            email: Yup.string().required("Email required!").email("Email should be valid!"),
+            username: Yup.string().required("Username is required!")
+                .min(2, "Username too short!").max(28, "Username too long!"),
             password: Yup.string().required("Password required!")
                 .min(6, "Password too short!").max(28, "Password too long!"),
             passwordConfirmation: Yup.string().required("Password confirmation required!")
                 .oneOf([Yup.ref('password')], "Passwords must match!")
         }),
         onSubmit: (values, actions) => {
-            alert(JSON.stringify(values, null, 2));
-            actions.resetForm();
+            fetch(`http://localhost:8080/api/register`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    "name": values.username,
+                    "email": values.email,
+                    "password": values.password,
+                })})
+                .then((response) => response.json())
+                .then((data) => {
+                    navigate("/signin");
+                })
+                .catch(err => {
+                    // TODO
+                    console.log(err);
+                })
         }
     });
 
@@ -37,15 +52,27 @@ const SignUp = () => {
                     Sign Up
                 </Heading>
 
+                <FormControl isInvalid={formik.errors.email && formik.touched.email}>
+                    <FormLabel fontSize={"lg"}>Email</FormLabel>
+                    <Input
+                        name={"email"}
+                        placeholder={"Enter email"}
+                        autoComplete={"off"}
+                        size={"lg"}
+                        {...formik.getFieldProps("email")}
+                    />
+                    <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                </FormControl>
+
                 <FormControl isInvalid={formik.errors.username && formik.touched.username}>
                     <FormLabel fontSize={"lg"}>Username</FormLabel>
                     <Input
                         name={"username"}
                         placeholder={"Enter username"}
-                        autocomplete={"off"}
+                        autoComplete={"off"}
                         size={"lg"}
                         {...formik.getFieldProps("username")}
-                    />
+                        />
                     <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
                 </FormControl>
 
@@ -55,7 +82,7 @@ const SignUp = () => {
                         name={"password"}
                         type={"password"}
                         placeholder={"Enter password"}
-                        autocomplete={"off"}
+                        autoComplete={"off"}
                         size={"lg"}
                         {...formik.getFieldProps("password")}
                     />
@@ -68,7 +95,7 @@ const SignUp = () => {
                         name={"passwordConfirmation"}
                         type={"password"}
                         placeholder={"Confirm password"}
-                        autocomplete={"off"}
+                        autoComplete={"off"}
                         size={"lg"}
                         {...formik.getFieldProps("passwordConfirmation")}
                     />
