@@ -4,6 +4,7 @@ import {
     Stack,
     Text,
     Button,
+    useColorModeValue
 } from '@chakra-ui/react';
 import {useNavigate} from "react-router-dom";
 
@@ -23,7 +24,7 @@ export default function Hero() {
                     fontSize={{base: '3xl', sm: '4xl', md: '6xl'}}
                     lineHeight={'110%'}>
                     Decision making {' '}
-                    <Text as={'span'} color={'teal.200'}>
+                    <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
                         made easy
                     </Text>
                 </Heading>
@@ -48,5 +49,6 @@ export default function Hero() {
                 </Stack>
             </Stack>
         </Container>
-    );
+    )
+        ;
 }
