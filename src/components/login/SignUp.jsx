@@ -25,7 +25,8 @@ const SignUp = () => {
                     "name": values.username,
                     "email": values.email,
                     "password": values.password,
-                })})
+                })
+            })
                 .then((response) => response.json())
                 .then((data) => {
                     navigate("/signin");

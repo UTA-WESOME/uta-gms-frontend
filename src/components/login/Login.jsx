@@ -7,15 +7,27 @@ const Login = () => {
 
     const navigate = useNavigate();
     const formik = useFormik({
-        initialValues: {username: "", password: ""},
+        initialValues: {email: "", password: ""},
         validationSchema: Yup.object({
-            username: Yup.string().required("Username required!")
-                .min(6, "Username too short!").max(28, "Username too long!"),
+            email: Yup.string().required("Email required!").email("Email should be valid!"),
             password: Yup.string().required("Password required!")
                 .min(6, "Password too short!").max(28, "Password too long!"),
         }),
         onSubmit: (values, actions) => {
-            alert(JSON.stringify(values, null, 2));
+            fetch(`http://localhost:8080/api/login`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
+                body: JSON.stringify(values)
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                })
+                .catch(err => {
+                    // TODO
+                    console.log(err);
+                })
             actions.resetForm();
         }
     });
@@ -32,19 +44,19 @@ const Login = () => {
                 onSubmit={formik.handleSubmit}
             >
                 <Heading>
-                    Log In
+                    Sign In
                 </Heading>
 
-                <FormControl isInvalid={formik.errors.username && formik.touched.username}>
-                    <FormLabel fontSize={"lg"}>Username</FormLabel>
+                <FormControl isInvalid={formik.errors.email && formik.touched.email}>
+                    <FormLabel fontSize={"lg"}>Email</FormLabel>
                     <Input
-                        name={"username"}
-                        placeholder={"Enter username"}
+                        name={"email"}
+                        placeholder={"Enter email"}
                         autocomplete={"off"}
                         size={"lg"}
-                        {...formik.getFieldProps("username")}
+                        {...formik.getFieldProps("email")}
                     />
-                    <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+                    <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
                 </FormControl>
 
                 <FormControl isInvalid={formik.errors.password && formik.touched.password}>
