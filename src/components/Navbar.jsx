@@ -248,7 +248,7 @@ const NAV_ITEMS = [
     },
     {
         label: 'My projects',
-        href: '#',
+        href: '/projects',
     },
     {
         label: 'About',

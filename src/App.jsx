@@ -1,14 +1,15 @@
 import {Outlet} from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
-// import Footer from "./components/Footer.jsx";
+import {useState} from "react";
 
-function App() {
+const App = () => {
+
+    const [isLoggedIn, setLoggedIn] = useState('');
 
     return (
         <>
             <Navbar/>
-            <Outlet/>
-            {/*<Footer/>*/}
+            <Outlet context={[isLoggedIn, setLoggedIn]}/>
         </>
     )
 }

@@ -22,13 +22,12 @@ const Login = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
+                    navigate("/projects")
                 })
                 .catch(err => {
                     // TODO
                     console.log(err);
                 })
-            actions.resetForm();
         }
     });
 
