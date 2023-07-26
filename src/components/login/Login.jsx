@@ -1,11 +1,13 @@
 import {Button, ButtonGroup, FormControl, FormErrorMessage, FormLabel, Heading, Input, VStack} from "@chakra-ui/react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 
 const Login = () => {
 
     const navigate = useNavigate();
+    const [name, setName] = useOutletContext();
+
     const formik = useFormik({
         initialValues: {email: "", password: ""},
         validationSchema: Yup.object({
@@ -22,7 +24,8 @@ const Login = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    navigate("/projects")
+                    setName(data.name);
+                    navigate("/projects");
                 })
                 .catch(err => {
                     // TODO

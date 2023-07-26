@@ -19,10 +19,59 @@ import {ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon,} from '@cha
 import ToggleColorMode from "./ToggleColorMode.jsx";
 import {useNavigate} from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar(props) {
+
 
     const {isOpen, onToggle} = useDisclosure();
     const navigate = useNavigate();
+
+    const logout = () => {
+        fetch(`http://localhost:8080/api/logout`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+        });
+
+        props.setName('');
+    }
+
+    let buttons;
+    if (props.name === undefined || props.name === '') {
+        buttons = (
+            <>
+                <Button
+                    fontSize={'sm'}
+                    fontWeight={400}
+                    onClick={() => navigate("/signin")}
+                >
+                    Sign In
+                </Button>
+                <Button
+                    display={{base: 'none', md: 'inline-flex'}}
+                    fontSize={'sm'}
+                    fontWeight={600}
+                    colorScheme={"teal"}
+                    onClick={() => navigate("/signup")}
+                >
+                    Sign Up
+                </Button>
+            </>
+        )
+    } else {
+        buttons = (
+            <Button
+                fontSize={'sm'}
+                fontWeight={400}
+                onClick={() => {
+                    logout();
+                    navigate("/");
+                }}
+            >
+                Logout
+            </Button>
+        )
+    }
+
 
     return (
         <Box>
@@ -71,22 +120,7 @@ export default function Navbar() {
                     direction={'row'}
                     spacing={6}>
                     <ToggleColorMode/>
-                    <Button
-                        fontSize={'sm'}
-                        fontWeight={400}
-                        onClick={() => navigate("/signin")}
-                    >
-                        Sign In
-                    </Button>
-                    <Button
-                        display={{base: 'none', md: 'inline-flex'}}
-                        fontSize={'sm'}
-                        fontWeight={600}
-                        colorScheme={"teal"}
-                        onClick={() => navigate("/signup")}
-                    >
-                        Sign Up
-                    </Button>
+                    {buttons}
                 </Stack>
             </Flex>
 
