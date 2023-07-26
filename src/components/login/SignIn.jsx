@@ -3,7 +3,7 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import {useNavigate, useOutletContext} from "react-router-dom";
 
-const Login = () => {
+const SignIn = () => {
 
     const navigate = useNavigate();
     const [name, setName] = useOutletContext();
@@ -84,4 +84,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default SignIn;

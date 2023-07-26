@@ -17,7 +17,7 @@ const App = () => {
                 setIsResponse(true);
                 setName(data.name);
             })
-    })
+    }, [name])
 
     return (
         <>
