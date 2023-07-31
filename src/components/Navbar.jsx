@@ -21,7 +21,6 @@ import {useNavigate} from "react-router-dom";
 
 export default function Navbar(props) {
 
-
     const {isOpen, onToggle} = useDisclosure();
     const navigate = useNavigate();
 
@@ -31,12 +30,11 @@ export default function Navbar(props) {
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',
         });
-
-        props.setName('');
+        props.setJwtToken("");
     }
 
     let buttons;
-    if (props.name === undefined || props.name === '') {
+    if (props.jwtToken === undefined || props.jwtToken === '') {
         buttons = (
             <>
                 <Button
@@ -135,6 +133,7 @@ const DesktopNav = () => {
     const linkColor = useColorModeValue('gray.600', 'gray.200');
     const linkHoverColor = useColorModeValue('gray.800', 'white');
     const popoverContentBgColor = useColorModeValue('white', 'gray.800');
+    const navigate = useNavigate();
 
     return (
         <Stack direction={'row'} spacing={4}>
@@ -144,10 +143,10 @@ const DesktopNav = () => {
                         <PopoverTrigger>
                             <Link
                                 p={2}
-                                href={navItem.href ?? '#'}
                                 fontSize={'sm'}
                                 fontWeight={500}
                                 color={linkColor}
+                                onClick={() => navigate(navItem.href ?? '#')}
                                 _hover={{
                                     textDecoration: 'none',
                                     color: linkHoverColor,

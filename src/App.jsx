@@ -4,30 +4,34 @@ import {useEffect, useState} from "react";
 
 const App = () => {
 
-    const [isResponse, setIsResponse] = useState(false)
-    const [name, setName] = useState('')
+    const [jwtToken, setJwtToken] = useState("");
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/user`, {
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-        })
-            .then(response => response.json())
-            .then(data => {
-                setIsResponse(true);
-                setName(data.name);
-            })
-    }, [name])
+        if (jwtToken === "") {
+            const requestOptions = {
+                method: "GET",
+                credentials: "include",
+            }
+
+            fetch(`http://localhost:8080/api/refresh`, requestOptions)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.access_token) {
+                        setJwtToken(data.access_token);
+                    }
+                })
+                .catch(error => {
+                    console.log("user is not logged in", error);
+                })
+        }
+    }, [jwtToken])
 
     return (
         <>
-            {
-                isResponse &&
-                <>
-                    <Navbar name={name} setName={setName}/>
-                    <Outlet context={[name, setName]}/>
-                </>
-            }
+            <Navbar jwtToken={jwtToken} setJwtToken={setJwtToken}/>
+            <Outlet context={{
+                jwtToken, setJwtToken
+            }}/>
         </>
     )
 }

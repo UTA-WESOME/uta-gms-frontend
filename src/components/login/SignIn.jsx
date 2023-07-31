@@ -6,7 +6,7 @@ import {useNavigate, useOutletContext} from "react-router-dom";
 const SignIn = () => {
 
     const navigate = useNavigate();
-    const [name, setName] = useOutletContext();
+    const { setJwtToken } = useOutletContext();
 
     const formik = useFormik({
         initialValues: {email: "", password: ""},
@@ -24,7 +24,7 @@ const SignIn = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    setName(data.name);
+                    setJwtToken(data.access_token);
                     navigate("/projects");
                 })
                 .catch(err => {
@@ -54,7 +54,7 @@ const SignIn = () => {
                     <Input
                         name={"email"}
                         placeholder={"Enter email"}
-                        autocomplete={"off"}
+                        autoComplete={"off"}
                         size={"lg"}
                         {...formik.getFieldProps("email")}
                     />
@@ -67,7 +67,7 @@ const SignIn = () => {
                         name={"password"}
                         type={"password"}
                         placeholder={"Enter password"}
-                        autocomplete={"off"}
+                        autoComplete={"off"}
                         size={"lg"}
                         {...formik.getFieldProps("password")}
                     />
