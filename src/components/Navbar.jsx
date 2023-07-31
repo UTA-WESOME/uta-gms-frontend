@@ -226,13 +226,14 @@ const MobileNav = () => {
 
 const MobileNavItem = ({label, children, href}) => {
     const {isOpen, onToggle} = useDisclosure();
+    const navigate = useNavigate();
 
     return (
         <Stack spacing={4} onClick={children && onToggle}>
             <Flex
                 py={2}
                 as={Link}
-                href={href ?? '#'}
+                onClick={() => navigate(href ?? '#')}
                 justify={'space-between'}
                 align={'center'}
                 _hover={{
