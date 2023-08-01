@@ -8,7 +8,6 @@ const Projects = () => {
     const {jwtToken} = useOutletContext();
 
     useEffect(() => {
-        console.log(jwtToken);
         if (jwtToken === "") {
             navigate("/");
         }

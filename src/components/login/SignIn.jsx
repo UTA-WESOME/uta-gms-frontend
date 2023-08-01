@@ -7,6 +7,7 @@ const SignIn = () => {
 
     const navigate = useNavigate();
     const { setJwtToken } = useOutletContext();
+    const { toggleRefresh } = useOutletContext();
 
     const formik = useFormik({
         initialValues: {email: "", password: ""},
@@ -25,6 +26,7 @@ const SignIn = () => {
                 .then((response) => response.json())
                 .then((data) => {
                     setJwtToken(data.access_token);
+                    toggleRefresh(true);
                     navigate("/projects");
                 })
                 .catch(err => {

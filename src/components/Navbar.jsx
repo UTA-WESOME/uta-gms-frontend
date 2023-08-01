@@ -31,6 +31,7 @@ export default function Navbar(props) {
             credentials: 'include',
         });
         props.setJwtToken("");
+        props.toggleRefresh(false);
     }
 
     let buttons;
