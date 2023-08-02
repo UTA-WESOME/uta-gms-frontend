@@ -30,12 +30,21 @@ const SignUp = () => {
                     "password": values.password,
                 })
             })
-                .then((response) => response.json())
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.json().then((data) => {
+                            if (data[0].includes('User')) {
+                                actions.setFieldError("email", data[0]);
+                            }
+                            throw new Error("wrong credentials");
+                        })
+                    }
+                    return response.json()
+                })
                 .then((data) => {
                     navigate("/signin");
                 })
                 .catch(err => {
-                    // TODO
                     console.log(err);
                 })
         }
