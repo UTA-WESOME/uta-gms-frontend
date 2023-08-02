@@ -6,8 +6,8 @@ import {useNavigate, useOutletContext} from "react-router-dom";
 const SignIn = () => {
 
     const navigate = useNavigate();
-    const { setJwtToken } = useOutletContext();
-    const { toggleRefresh } = useOutletContext();
+    const {setJwtToken} = useOutletContext();
+    const {toggleRefresh} = useOutletContext();
 
     const formik = useFormik({
         initialValues: {email: "", password: ""},
@@ -23,14 +23,26 @@ const SignIn = () => {
                 credentials: 'include',
                 body: JSON.stringify(values)
             })
-                .then((response) => response.json())
+                .then((response) => {
+                    if(!response.ok) {
+                        return response.json().then((data) => {
+                            if(data.detail.includes('User')){
+                                actions.setFieldError("email", data.detail);
+                            }
+                            if(data.detail.includes('password')) {
+                                actions.setFieldError("password", data.detail);
+                            }
+                            throw new Error("wrong credentials");
+                        })
+                    }
+                    return response.json()
+                })
                 .then((data) => {
                     setJwtToken(data.access_token);
                     toggleRefresh(true);
                     navigate("/projects");
                 })
                 .catch(err => {
-                    // TODO
                     console.log(err);
                 })
         }
