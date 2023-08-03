@@ -6,7 +6,8 @@ import {ChakraProvider, ColorModeScript} from "@chakra-ui/react";
 import theme from "./theme.js";
 import Home from "./components/Home.jsx";
 import SignUp from "./components/login/SignUp.jsx";
-import Login from "./components/login/Login.jsx";
+import SignIn from "./components/login/SignIn.jsx";
+import Projects from "./components/Projects.jsx";
 
 const router = createBrowserRouter([
     {
@@ -16,12 +17,16 @@ const router = createBrowserRouter([
             {index: true, element: <Home/>},
             {
                 path: "/signin",
-                element: <Login/>
+                element: <SignIn/>
             },
             {
                 path: "/signup",
                 element: <SignUp/>
             },
+            {
+                path: "/projects",
+                element: <Projects/>
+            }
         ]
     }
 ])
