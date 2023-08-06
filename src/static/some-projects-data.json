@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Projekt na zaliczenie WD",
+        "description": "Projekt, który pozwoli zaliczyć mi mój ulubiony przedmiot Wspomaganie Decyzji",
+        "shareable": true,
+        "user": 1
+    },
+    {
+        "id": 2,
+        "name": "Projekt sobotni",
+        "description": "Projekt, który był bardzo męczący, żeby go zrobić",
+        "shareable": false,
+        "user": 2
+    },
+    {
+        "id": 3,
+        "name": "Projekt - nazwa tego projektu ma dokładnie 64 znaki. Fajnie, co?",
+        "description": "Projekt dopisany, żeby ich było więcej",
+        "shareable": false,
+        "user": 2
+    },
+    {
+        "id": 4,
+        "name": "Projekt projektu",
+        "description": "Projekt, który polega na stworzeniu apki w jsx",
+        "shareable": false,
+        "user": 1
+    }
+]
