@@ -1,5 +1,10 @@
-import { Box, Button, Container, Flex, Heading, Icon, Stack, Text, useColorModeValue, IconButton, chakra, Tooltip, } from '@chakra-ui/react';
-import { BsFillPlusCircleFill } from "react-icons/bs";
+import { 
+    Icon, 
+    IconButton, 
+    Tooltip, 
+    useColorModeValue, 
+} from '@chakra-ui/react';
+import { BiSolidPlusCircle } from "react-icons/bi";
 
 
 const AddProjectCard = () => {
@@ -23,7 +28,7 @@ const AddProjectCard = () => {
                 colorScheme='black'
                 aria-label='Add'
                 icon={<Icon
-                    as={BsFillPlusCircleFill}
+                    as={BiSolidPlusCircle}
                     w={'50%'}
                     h={'50%'}
                     color={useColorModeValue('teal.500', 'teal.200')}

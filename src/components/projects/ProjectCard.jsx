@@ -8,7 +8,6 @@ import {
     Spacer,
     Text,
     Tooltip,
-    background,
     useColorModeValue,
 } from '@chakra-ui/react';
 import {
@@ -27,6 +26,7 @@ const ProjectCard = ({ name, description }) => {
             minH={{ base: 'full', md: '200px' }}
             maxH={{ base: 'full', md: '275px', }}
             w={'full'}
+            h={'full'}
             borderWidth='1px'
             borderRadius='lg'
             overflow='hidden'
@@ -61,8 +61,7 @@ const ProjectCard = ({ name, description }) => {
                             <IconButton
                                 aria-label='Info'
                                 padding={'2'}
-                                icon={<Icon as={BiInfoCircle} minH={'10'} minW={'10'} color={useColorModeValue('blue.500', 'blue.200')} />}
-                            />
+                                icon={<Icon as={BiInfoCircle} minH={'10'} minW={'10'} color={useColorModeValue('blue.500', 'blue.200')} />} />
                         </Tooltip>
                         <Tooltip label='Share'
                             bg={useColorModeValue('gray.100', 'gray.700')}
@@ -73,8 +72,7 @@ const ProjectCard = ({ name, description }) => {
                             <IconButton
                                 aria-label='Share'
                                 padding={'2'}
-                                icon={<Icon as={BiShareAlt} minH={'10'} minW={'10'} color={useColorModeValue('green.500', 'green.200')} />}
-                            />
+                                icon={<Icon as={BiShareAlt} minH={'10'} minW={'10'} color={useColorModeValue('green.500', 'green.200')} />} />
                         </Tooltip>
                         <Tooltip label='Edit'
                             bg={useColorModeValue('gray.100', 'gray.700')}
@@ -85,8 +83,7 @@ const ProjectCard = ({ name, description }) => {
                             <IconButton
                                 aria-label='Edit'
                                 padding={'2'}
-                                icon={<Icon as={BiEditAlt} minH={'10'} minW={'10'} color={useColorModeValue('yellow.500', 'yellow.200')} />}
-                            />
+                                icon={<Icon as={BiEditAlt} minH={'10'} minW={'10'} color={useColorModeValue('yellow.500', 'yellow.200')} />} />
                         </Tooltip>
                         <Tooltip label='Delete'
                             bg={useColorModeValue('gray.100', 'gray.700')}
@@ -97,8 +94,7 @@ const ProjectCard = ({ name, description }) => {
                             <IconButton
                                 aria-label='Delete'
                                 padding={'2'}
-                                icon={<Icon as={BiTrash} minH={'10'} minW={'10'} color={useColorModeValue('red.500', 'red.200')} />}
-                            />
+                                icon={<Icon as={BiTrash} minH={'10'} minW={'10'} color={useColorModeValue('red.500', 'red.200')} />} />
                         </Tooltip>
                     </ButtonGroup>
                 </Flex>

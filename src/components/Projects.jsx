@@ -1,5 +1,9 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { Box, Button, Container, Flex, Heading, Icon, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { 
+    Center,
+    Heading, 
+    VStack, 
+ } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 import ProjectsContainer from "./projects/ProjectsContainer";
@@ -18,26 +22,26 @@ const Projects = () => {
 
 
     return (
-        <Container maxW={'5xl'}>
-            <Container maxW={'5xl'}>
-                <Stack
+        <Center>
+            <VStack
+                w={{ base: '80%' }}
+                mx={'20'}
+                marginBottom={'10'}
+                justify={'center'}
+                spacing={'1rem'} >
+                <Heading
+                    fontWeight={600}
+                    fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
+                    lineHeight={'110%'}
                     textAlign={'center'}
-                    align={'center'}
-                    spacing={{ base: 8, md: 10 }}
-                    py={{ base: 10, md: 10 }}
-                >
-                    <Heading
-                        fontWeight={600}
-                        fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
-                        lineHeight={'110%'}>
-                        Your projects
-                    </Heading>
-                </Stack>
-            </Container>
+                    py={{ base: 10, md: 10 }} >
+                    Your projects
+                </Heading>
 
-            <ProjectsContainer data={jsonProjects} />
-            
-        </Container>
+                <ProjectsContainer data={jsonProjects} />
+            </VStack>
+
+        </Center>
     );
 }
 

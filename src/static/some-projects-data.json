@@ -26,5 +26,47 @@
         "description": "Projekt, który polega na stworzeniu apki w jsx",
         "shareable": false,
         "user": 1
+    },
+    {
+        "id": 5,
+        "name": "Amazing React App",
+        "description": "A fantastic project to build an interactive React application.",
+        "shareable": true,
+        "user": 3
+    },
+    {
+        "id": 6,
+        "name": "E-commerce Website",
+        "description": "Create a fully functional e-commerce website with shopping cart and payment integration.",
+        "shareable": true,
+        "user": 4
+    },
+    {
+        "id": 7,
+        "name": "Mobile App Prototype",
+        "description": "Design a prototype for a mobile app that solves a specific problem.",
+        "shareable": true,
+        "user": 5
+    },
+    {
+        "id": 8,
+        "name": "Data Visualization Dashboard",
+        "description": "Develop a dashboard that visualizes complex data sets in an intuitive way.",
+        "shareable": true,
+        "user": 6
+    },
+    {
+        "id": 9,
+        "name": "Portfolio Website",
+        "description": "Build a portfolio website to showcase your skills and projects.",
+        "shareable": true,
+        "user": 7
+    },
+    {
+        "id": 10,
+        "name": "Game Development Project",
+        "description": "Embark on a game development journey to create a captivating game.",
+        "shareable": true,
+        "user": 8
     }
 ]
