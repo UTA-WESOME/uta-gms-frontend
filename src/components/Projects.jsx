@@ -4,20 +4,39 @@ import {
     Heading, 
     VStack, 
  } from "@chakra-ui/react";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 
 import ProjectsContainer from "./projects/ProjectsContainer";
-import jsonProjects from "../static/some-projects-data.json";
 
 const Projects = () => {
 
     const navigate = useNavigate();
     const { jwtToken } = useOutletContext();
+    const [projects, setProjects] = useState([]);
+
 
     useEffect(() => {
         if (jwtToken === "") {
             navigate("/");
         }
+
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", "Bearer " + jwtToken);
+
+        fetch(`http://localhost:8080/api/projects/`, {
+            method: "GET",
+            headers: headers
+        }).then(response=> {
+            if (!response.ok) {
+                console.log(response.status);
+            }
+            return response.json();
+        }).then(data => {
+            setProjects(data);
+        }).catch(err => {
+            console.log(err);
+        })
     }, [jwtToken]);
 
 
@@ -37,7 +56,7 @@ const Projects = () => {
                     Your projects
                 </Heading>
 
-                <ProjectsContainer data={jsonProjects} />
+                <ProjectsContainer data={projects} />
             </VStack>
 
         </Center>
