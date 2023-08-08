@@ -104,7 +104,7 @@ const ProjectsContainer = ({projects, jwtToken}) => {
                     ))}
                 </>
                 <>
-                    {(currentPage === totalPages - 1) &&
+                    {projects && (currentPage === totalPages - 1) &&
                         <GridItem
                             w={'100%'}
                             h={'100%'}

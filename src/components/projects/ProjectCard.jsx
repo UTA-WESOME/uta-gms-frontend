@@ -54,7 +54,7 @@ const ProjectCard = ({id, name, description, jwtToken}) => {
                     isClosable: true,
                 });
                 onClose();
-                navigate(0);
+                navigate("/projects");
             }
         }).catch(err => {
             console.log(err);
@@ -150,7 +150,11 @@ const ProjectCard = ({id, name, description, jwtToken}) => {
                     </Flex>
                 </Flex>
             </Box>
-            <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+            <AlertDialog
+                leastDestructiveRef={cancelRef}
+                isOpen={isOpen}
+                onClose={onClose}
+            >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
