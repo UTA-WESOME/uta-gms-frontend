@@ -6,7 +6,6 @@ import {
     Icon,
     IconButton,
     Text,
-    Tooltip,
     useColorModeValue,
 } from "@chakra-ui/react";
 import { useState, } from "react";

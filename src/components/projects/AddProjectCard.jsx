@@ -1,7 +1,6 @@
 import {
     Icon,
     IconButton,
-    Tooltip,
     useColorModeValue,
 } from '@chakra-ui/react';
 import { BiSolidPlusCircle } from "react-icons/bi";

@@ -14,9 +14,13 @@ import {
     Heading,
     Icon,
     IconButton,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverBody,
+    PopoverCloseButton,
     Spacer,
     Text,
-    Tooltip,
     useColorModeValue,
     useDisclosure,
     useToast,
@@ -97,13 +101,24 @@ const ProjectCard = ({ id, name, description, jwtToken }) => {
                     <Spacer />
                     <Flex direction={'row'} spacing={'4px'} width='100%' justify={'center'}>
                         <ButtonGroup size='base' isAttached variant='outline'>
-                            <CustomTooltip label={description}>
-                                <IconButton
-                                    aria-label='Info'
-                                    padding={'2'}
-                                    icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
-                                        color={useColorModeValue('blue.500', 'blue.200')} />} />
-                            </CustomTooltip>
+                            <Popover
+                                variant={'rounded'}
+                                colorScheme={useColorModeValue('green.500', 'green.200')}>
+                                <PopoverTrigger>
+                                    <IconButton
+                                        aria-label='Description'
+                                        padding={'2'}
+                                        icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
+                                            color={useColorModeValue('blue.500', 'blue.200')} />} />
+                                </PopoverTrigger>
+                                <PopoverContent background={useColorModeValue('gray.100', 'gray.700')} >
+                                    <PopoverCloseButton />
+                                    <PopoverBody textAlign={'left'} p={'6'} >
+                                        {description}
+                                    </PopoverBody>
+                                </PopoverContent>
+                            </Popover>
+
                             <CustomTooltip label='Share'>
                                 <IconButton
                                     aria-label='Share'
