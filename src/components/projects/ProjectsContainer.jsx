@@ -9,15 +9,16 @@ import {
     Tooltip,
     useColorModeValue,
 } from "@chakra-ui/react";
-import {useState,} from "react";
-import {BiRightArrow, BiLeftArrow,} from "react-icons/bi";
+import { useState, } from "react";
+import { useNavigate } from "react-router-dom";
+import { BiRightArrow, BiLeftArrow, } from "react-icons/bi";
 
 import ProjectCard from "./ProjectCard";
 import AddProjectCard from "./AddProjectCard";
-import {useNavigate} from "react-router-dom";
+import CustomTooltip from "../CustomTooltip";
 
 
-const ProjectsContainer = ({projects, jwtToken}) => {
+const ProjectsContainer = ({ projects, jwtToken }) => {
 
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(0);
@@ -38,20 +39,15 @@ const ProjectsContainer = ({projects, jwtToken}) => {
     return (
         <>
             <ButtonGroup size='base' isAttached variant='outline'>
-                <Tooltip label="Previous page"
-                         bg={useColorModeValue('gray.100', 'gray.700')}
-                         color={useColorModeValue('black.800', 'white.500')}
-                         borderRadius='lg'
-                         padding={'3'}
-                         openDelay={1000}>
+                <CustomTooltip label="Previous page">
                     <IconButton
                         aria-label='Previous'
                         padding={'2'}
                         onClick={handlePrevPage}
                         icon={<Icon as={BiLeftArrow} minH={'6'} minW={'6'}
-                                    color={useColorModeValue('gray.700', 'gray.100')}/>}
+                            color={useColorModeValue('gray.700', 'gray.100')} />}
                     />
-                </Tooltip>
+                </CustomTooltip>
                 <Box
                     borderWidth='1px'>
                     <Text
@@ -62,25 +58,20 @@ const ProjectsContainer = ({projects, jwtToken}) => {
                         {currentPage + 1}
                     </Text>
                 </Box>
-                <Tooltip label="Next page"
-                         bg={useColorModeValue('gray.100', 'gray.700')}
-                         color={useColorModeValue('black.800', 'white.500')}
-                         borderRadius='lg'
-                         padding={'3'}
-                         openDelay={1000}>
+                <CustomTooltip label='Next page'>
                     <IconButton
                         aria-label='Next'
                         padding={'2'}
                         onClick={handleNextPage}
                         icon={<Icon as={BiRightArrow} minH={'6'} minW={'6'}
-                                    color={useColorModeValue('gray.700', 'gray.100')}/>}
+                            color={useColorModeValue('gray.700', 'gray.100')} />}
                     />
-                </Tooltip>
+                </CustomTooltip>
             </ButtonGroup>
             <Grid
                 h='full'
                 w='full'
-                templateRows={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)'}}
+                templateRows={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
                 templateColumns={{
                     base: 'repeat(1, 1fr)', sm: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)',
                     lg: 'repeat(3, 1fr)', xl: 'repeat(3, 1fr)', '2xl': 'repeat(4, 1fr)'
@@ -93,7 +84,7 @@ const ProjectsContainer = ({projects, jwtToken}) => {
                             w={'100%'}
                             h={'100%'}
                             align={'center'}
-                            maxW={{base: '100%', sm: '4xl', md: '6xl'}}>
+                            maxW={{ base: '100%', sm: '4xl', md: '6xl' }}>
                             <ProjectCard
                                 id={project.id}
                                 name={project.name}
@@ -109,10 +100,10 @@ const ProjectsContainer = ({projects, jwtToken}) => {
                             w={'100%'}
                             h={'100%'}
                             align={'center'}
-                            maxW={{base: '100%', sm: '4xl', md: '6xl'}}
+                            maxW={{ base: '100%', sm: '4xl', md: '6xl' }}
                             onClick={() => navigate("/newproject")}
                         >
-                            <AddProjectCard/>
+                            <AddProjectCard />
                         </GridItem>
                     }
                 </>

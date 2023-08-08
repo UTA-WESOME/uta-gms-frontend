@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -19,22 +21,21 @@ import {
     useDisclosure,
     useToast,
 } from '@chakra-ui/react';
-import {BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash,} from "react-icons/bi";
-import {useRef} from "react";
-import {useNavigate} from "react-router-dom";
+import { BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash, } from "react-icons/bi";
+import CustomTooltip from "../CustomTooltip";
 
 
-const ProjectCard = ({id, name, description, jwtToken}) => {
+const ProjectCard = ({ id, name, description, jwtToken }) => {
 
     const navigate = useNavigate();
-    const {isOpen, onOpen, onClose} = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
     const toast = useToast();
 
     const deleteProject = () => {
         fetch(`http://localhost:8080/api/projects/${id}`, {
             method: 'DELETE',
-            headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + jwtToken},
+            headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + jwtToken },
             credentials: 'include',
         }).then(response => {
             if (!response.ok) {
@@ -66,19 +67,19 @@ const ProjectCard = ({id, name, description, jwtToken}) => {
         <>
             <Box
                 as={'div'}
-                maxW={{base: 'full', md: '275px',}}
-                minH={{base: 'full', md: '200px'}}
-                maxH={{base: 'full', md: '275px',}}
+                maxW={{ base: 'full', md: '275px', }}
+                minH={{ base: 'full', md: '200px' }}
+                maxH={{ base: 'full', md: '275px', }}
                 w={'full'}
                 h={'full'}
                 borderWidth='1px'
                 borderRadius='lg'
                 overflow='hidden'
                 p={5}>
-                <Flex direction={'column'} spacing={'4px'} height='100%' align={{base: 'center', md: 'start'}}>
+                <Flex direction={'column'} spacing={'4px'} height='100%' align={{ base: 'center', md: 'start' }}>
                     <Heading
                         fontWeight={'400'}
-                        fontSize={{base: '1xl', sm: '2xl', md: '2xl'}}
+                        fontSize={{ base: '1xl', sm: '2xl', md: '2xl' }}
                         lineHeight={'100%'}
                         textAlign={'start'}
                         paddingBottom={2}>
@@ -87,65 +88,45 @@ const ProjectCard = ({id, name, description, jwtToken}) => {
                         </Text>
                     </Heading>
                     <Text fontSize={'md'}
-                          lineHeight={'110%'}
-                          color={useColorModeValue('gray.700', 'gray.100')}
-                          paddingTop={'2'}
-                          paddingBottom={'10'}>
+                        lineHeight={'110%'}
+                        color={useColorModeValue('gray.700', 'gray.100')}
+                        paddingTop={'2'}
+                        paddingBottom={'10'}>
                         6.08.2023
                     </Text>
-                    <Spacer/>
+                    <Spacer />
                     <Flex direction={'row'} spacing={'4px'} width='100%' justify={'center'}>
                         <ButtonGroup size='base' isAttached variant='outline'>
-                            <Tooltip label={description}
-                                     bg={useColorModeValue('gray.100', 'gray.700')}
-                                     color={useColorModeValue('black.800', 'white.500')}
-                                     borderRadius='lg'
-                                     padding={'3'}
-                                     openDelay={500}>
+                            <CustomTooltip label={description}>
                                 <IconButton
                                     aria-label='Info'
                                     padding={'2'}
                                     icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
-                                                color={useColorModeValue('blue.500', 'blue.200')}/>}/>
-                            </Tooltip>
-                            <Tooltip label='Share'
-                                     bg={useColorModeValue('gray.100', 'gray.700')}
-                                     color={useColorModeValue('black.800', 'white.500')}
-                                     borderRadius='lg'
-                                     padding={'3'}
-                                     openDelay={500}>
+                                        color={useColorModeValue('blue.500', 'blue.200')} />} />
+                            </CustomTooltip>
+                            <CustomTooltip label='Share'>
                                 <IconButton
                                     aria-label='Share'
                                     padding={'2'}
                                     icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
-                                                color={useColorModeValue('green.500', 'green.200')}/>}/>
-                            </Tooltip>
-                            <Tooltip label='Edit'
-                                     bg={useColorModeValue('gray.100', 'gray.700')}
-                                     color={useColorModeValue('black.800', 'white.500')}
-                                     borderRadius='lg'
-                                     padding={'3'}
-                                     openDelay={500}>
+                                        color={useColorModeValue('green.500', 'green.200')} />} />
+                            </CustomTooltip>
+                            <CustomTooltip label='Edit'>
                                 <IconButton
                                     aria-label='Edit'
                                     padding={'2'}
                                     icon={<Icon as={BiEditAlt} minH={'7'} minW={'7'}
-                                                color={useColorModeValue('yellow.500', 'yellow.200')}/>}/>
-                            </Tooltip>
-                            <Tooltip label='Delete'
-                                     bg={useColorModeValue('gray.100', 'gray.700')}
-                                     color={useColorModeValue('black.800', 'white.500')}
-                                     borderRadius='lg'
-                                     padding={'3'}
-                                     openDelay={500}>
+                                        color={useColorModeValue('yellow.500', 'yellow.200')} />} />
+                            </CustomTooltip>
+                            <CustomTooltip label='Delete'>
                                 <IconButton
                                     aria-label='Delete'
                                     padding={'2'}
                                     icon={<Icon as={BiTrash} minH={'7'} minW={'7'}
-                                                color={useColorModeValue('red.500', 'red.200')}/>}
+                                        color={useColorModeValue('red.500', 'red.200')} />}
                                     onClick={onOpen}
                                 />
-                            </Tooltip>
+                            </CustomTooltip>
                         </ButtonGroup>
                     </Flex>
                 </Flex>

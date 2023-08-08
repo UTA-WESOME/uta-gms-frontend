@@ -1,20 +1,16 @@
-import { 
-    Icon, 
-    IconButton, 
-    Tooltip, 
-    useColorModeValue, 
+import {
+    Icon,
+    IconButton,
+    Tooltip,
+    useColorModeValue,
 } from '@chakra-ui/react';
 import { BiSolidPlusCircle } from "react-icons/bi";
+import CustomTooltip from '../CustomTooltip';
 
 
 const AddProjectCard = () => {
     return (
-        <Tooltip label="New project"
-            bg={useColorModeValue('gray.100', 'gray.700')}
-            color={useColorModeValue('black.800', 'white.500')}
-            borderRadius='lg'
-            padding={'3'}
-            openDelay={500} >
+        <CustomTooltip label="New Project" >
             <IconButton
                 maxW={{ base: 'full', md: '275px', }}
                 w={'full'}
@@ -34,7 +30,7 @@ const AddProjectCard = () => {
                     color={useColorModeValue('teal.500', 'teal.200')}
                     _hover={{ color: useColorModeValue('teal.200', 'teal.500') }} />}
             />
-        </Tooltip>
+        </CustomTooltip>
     );
 };
 export default AddProjectCard;
