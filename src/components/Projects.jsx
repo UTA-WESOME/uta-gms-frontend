@@ -37,7 +37,7 @@ const Projects = () => {
         }).catch(err => {
             console.log(err);
         })
-    }, [jwtToken]);
+    }, []);
 
 
     return (
@@ -56,7 +56,7 @@ const Projects = () => {
                     Your projects
                 </Heading>
 
-                <ProjectsContainer data={projects} />
+                <ProjectsContainer projects={projects} jwtToken={jwtToken} />
             </VStack>
 
         </Center>

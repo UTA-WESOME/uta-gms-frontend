@@ -17,15 +17,15 @@ import AddProjectCard from "./AddProjectCard";
 import {useNavigate} from "react-router-dom";
 
 
-const ProjectsContainer = ({data}) => {
+const ProjectsContainer = ({projects, jwtToken}) => {
 
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(0);
     const projectsPerPage = 12;
-    const totalPages = Math.ceil((data.length + 1) / projectsPerPage);
+    const totalPages = Math.ceil((projects.length + 1) / projectsPerPage);
 
     const startIndex = currentPage * projectsPerPage;
-    const endIndex = Math.min(startIndex + projectsPerPage, data.length);
+    const endIndex = Math.min(startIndex + projectsPerPage, projects.length);
 
     const handleNextPage = () => {
         setCurrentPage((previousPage) => Math.min(previousPage + 1, totalPages - 1));
@@ -87,7 +87,7 @@ const ProjectsContainer = ({data}) => {
                 }}
                 gap={4}>
                 <>
-                    {data.slice(startIndex, endIndex).map((project) => (
+                    {projects && projects.slice(startIndex, endIndex).map((project) => (
                         <GridItem
                             key={project.id}
                             w={'100%'}
@@ -95,8 +95,10 @@ const ProjectsContainer = ({data}) => {
                             align={'center'}
                             maxW={{base: '100%', sm: '4xl', md: '6xl'}}>
                             <ProjectCard
+                                id={project.id}
                                 name={project.name}
                                 description={project.description}
+                                jwtToken={jwtToken}
                             />
                         </GridItem>
                     ))}
