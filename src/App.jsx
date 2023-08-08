@@ -8,8 +8,6 @@ const App = () => {
     const [tickInterval, setTickInterval] = useState();
 
     const toggleRefresh = useCallback((status) => {
-        console.log("clicked");
-
         if (status) {
             console.log("turning on ticking");
             let i = setInterval(() => {

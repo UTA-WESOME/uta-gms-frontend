@@ -14,10 +14,12 @@ import {BiRightArrow, BiLeftArrow,} from "react-icons/bi";
 
 import ProjectCard from "./ProjectCard";
 import AddProjectCard from "./AddProjectCard";
+import {useNavigate} from "react-router-dom";
 
 
 const ProjectsContainer = ({data}) => {
 
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(0);
     const projectsPerPage = 12;
     const totalPages = Math.ceil((data.length + 1) / projectsPerPage);
@@ -105,7 +107,9 @@ const ProjectsContainer = ({data}) => {
                             w={'100%'}
                             h={'100%'}
                             align={'center'}
-                            maxW={{base: '100%', sm: '4xl', md: '6xl'}}>
+                            maxW={{base: '100%', sm: '4xl', md: '6xl'}}
+                            onClick={() => navigate("/newproject")}
+                        >
                             <AddProjectCard/>
                         </GridItem>
                     }
