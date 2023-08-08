@@ -90,7 +90,8 @@ const ProjectsContainer = ({ data }) => {
                 h='full'
                 w='full'
                 templateRows={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)' }}
-                templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }}
+                templateColumns={{ base: 'repeat(1, 1fr)', sm: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)',
+                    lg: 'repeat(3, 1fr)', xl: 'repeat(3, 1fr)', '2xl': 'repeat(4, 1fr)' }}
                 gap={4} >
                 <>
                     {data.slice(startIndex, endIndex).map((project) => (
@@ -98,6 +99,7 @@ const ProjectsContainer = ({ data }) => {
                             key={project.id}
                             w={'100%'}
                             h={'100%'}
+                            align={'center'}
                             maxW={{ base: '100%', sm: '4xl', md: '6xl' }} >
                             <ProjectCard
                                 name={project.name}

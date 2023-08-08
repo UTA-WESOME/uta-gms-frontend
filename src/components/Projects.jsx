@@ -24,8 +24,7 @@ const Projects = () => {
     return (
         <Center>
             <VStack
-                w={{ base: '80%' }}
-                mx={'20'}
+                w={{ base: '80%', sm: '90%', md: '75%', lg: '85%', xl: '75%' }}
                 marginBottom={'10'}
                 justify={'center'}
                 spacing={'1rem'} >

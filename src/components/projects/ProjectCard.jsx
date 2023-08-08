@@ -31,7 +31,7 @@ const ProjectCard = ({ name, description }) => {
             borderRadius='lg'
             overflow='hidden'
             p={5} >
-            <Flex direction={'column'} spacing={'4px'} height='100%' align='start' >
+            <Flex direction={'column'} spacing={'4px'} height='100%' align={{base: 'center', md: 'start'}}>
                 <Heading
                     fontWeight={'400'}
                     fontSize={{ base: '1xl', sm: '2xl', md: '2xl' }}
@@ -50,7 +50,7 @@ const ProjectCard = ({ name, description }) => {
                     6.08.2023
                 </Text>
                 <Spacer />
-                <Flex direction={'row'} spacing={'4px'} width='100%'>
+                <Flex direction={'row'} spacing={'4px'} width='100%' justify={'center'}>
                     <ButtonGroup size='base' isAttached variant='outline'>
                         <Tooltip label={description}
                             bg={useColorModeValue('gray.100', 'gray.700')}
@@ -61,7 +61,7 @@ const ProjectCard = ({ name, description }) => {
                             <IconButton
                                 aria-label='Info'
                                 padding={'2'}
-                                icon={<Icon as={BiInfoCircle} minH={'10'} minW={'10'} color={useColorModeValue('blue.500', 'blue.200')} />} />
+                                icon={<Icon as={BiInfoCircle} minH={'8'} minW={'8'} color={useColorModeValue('blue.500', 'blue.200')} />} />
                         </Tooltip>
                         <Tooltip label='Share'
                             bg={useColorModeValue('gray.100', 'gray.700')}
@@ -72,7 +72,7 @@ const ProjectCard = ({ name, description }) => {
                             <IconButton
                                 aria-label='Share'
                                 padding={'2'}
-                                icon={<Icon as={BiShareAlt} minH={'10'} minW={'10'} color={useColorModeValue('green.500', 'green.200')} />} />
+                                icon={<Icon as={BiShareAlt} minH={'8'} minW={'8'} color={useColorModeValue('green.500', 'green.200')} />} />
                         </Tooltip>
                         <Tooltip label='Edit'
                             bg={useColorModeValue('gray.100', 'gray.700')}
@@ -83,7 +83,7 @@ const ProjectCard = ({ name, description }) => {
                             <IconButton
                                 aria-label='Edit'
                                 padding={'2'}
-                                icon={<Icon as={BiEditAlt} minH={'10'} minW={'10'} color={useColorModeValue('yellow.500', 'yellow.200')} />} />
+                                icon={<Icon as={BiEditAlt} minH={'8'} minW={'8'} color={useColorModeValue('yellow.500', 'yellow.200')} />} />
                         </Tooltip>
                         <Tooltip label='Delete'
                             bg={useColorModeValue('gray.100', 'gray.700')}
@@ -94,7 +94,7 @@ const ProjectCard = ({ name, description }) => {
                             <IconButton
                                 aria-label='Delete'
                                 padding={'2'}
-                                icon={<Icon as={BiTrash} minH={'10'} minW={'10'} color={useColorModeValue('red.500', 'red.200')} />} />
+                                icon={<Icon as={BiTrash} minH={'8'} minW={'8'} color={useColorModeValue('red.500', 'red.200')} />} />
                         </Tooltip>
                     </ButtonGroup>
                 </Flex>
