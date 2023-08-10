@@ -18,10 +18,12 @@ import {
 import {ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon,} from '@chakra-ui/icons';
 import ToggleColorMode from "./ToggleColorMode.jsx";
 import {useNavigate} from "react-router-dom";
+import {useLocalStorage} from "./utils/useLocalStorage.jsx";
 
 export default function Navbar(props) {
 
     const {isOpen, onToggle} = useDisclosure();
+    const [getAuth, setAuth, deleteAuth] = useLocalStorage('auth');
     const navigate = useNavigate();
 
     const logout = () => {
@@ -30,12 +32,12 @@ export default function Navbar(props) {
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',
         });
-        props.setJwtToken("");
+        setAuth(false);
         props.toggleRefresh(false);
     }
 
     let buttons;
-    if (props.jwtToken === undefined || props.jwtToken === '') {
+    if (getAuth() !== true) {
         buttons = (
             <>
                 <Button

@@ -15,14 +15,15 @@ import {
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {useEffect} from "react";
+import {useLocalStorage} from "../utils/useLocalStorage.jsx";
 
 const NewProject = () => {
     const navigate = useNavigate();
     const toast = useToast();
-    const {jwtToken} = useOutletContext();
+    const [getAuth, setAuth, deleteAuth] = useLocalStorage('auth');
 
     useEffect(() => {
-        if (jwtToken === "") {
+        if (getAuth() !== true) {
             navigate("/projects");
         }
     })
@@ -38,7 +39,7 @@ const NewProject = () => {
         onSubmit: (values, actions) => {
             fetch(`http://localhost:8080/api/projects/`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json', "Authorization": "Bearer " + jwtToken},
+                headers: {'Content-Type': 'application/json'},
                 credentials: 'include',
                 body: JSON.stringify(values)
             }).then(response => {

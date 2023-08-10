@@ -17,7 +17,7 @@ import AddProjectCard from "./AddProjectCard";
 import CustomTooltip from "../CustomTooltip";
 
 
-const ProjectsContainer = ({ projects, jwtToken }) => {
+const ProjectsContainer = ({ projects }) => {
 
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(0);
@@ -88,7 +88,6 @@ const ProjectsContainer = ({ projects, jwtToken }) => {
                                 id={project.id}
                                 name={project.name}
                                 description={project.description}
-                                jwtToken={jwtToken}
                             />
                         </GridItem>
                     ))}

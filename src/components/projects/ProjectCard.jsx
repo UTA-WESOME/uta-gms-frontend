@@ -29,7 +29,7 @@ import { BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash, } from "react-icons/bi";
 import CustomTooltip from "../CustomTooltip";
 
 
-const ProjectCard = ({ id, name, description, jwtToken }) => {
+const ProjectCard = ({ id, name, description }) => {
 
     const navigate = useNavigate();
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,7 +39,7 @@ const ProjectCard = ({ id, name, description, jwtToken }) => {
     const deleteProject = () => {
         fetch(`http://localhost:8080/api/projects/${id}`, {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + jwtToken },
+            headers: { 'Content-Type': 'application/json'},
             credentials: 'include',
         }).then(response => {
             if (!response.ok) {
@@ -47,19 +47,13 @@ const ProjectCard = ({ id, name, description, jwtToken }) => {
                     title: 'Error!',
                     description: "Error occurred while deleting the project.",
                     status: 'error',
-                    duration: 7000,
+                    duration: 5000,
                     isClosable: true,
                 });
                 throw new Error("error");
             } else {
-                toast({
-                    title: 'Successfully deleted!',
-                    status: 'success',
-                    duration: 7000,
-                    isClosable: true,
-                });
                 onClose();
-                navigate("/projects");
+                navigate(0);
             }
         }).catch(err => {
             console.log(err);

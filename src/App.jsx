@@ -1,25 +1,26 @@
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import {useCallback, useEffect, useState} from "react";
+import {useLocalStorage} from "./components/utils/useLocalStorage.jsx";
 
 const App = () => {
 
-    const [jwtToken, setJwtToken] = useState("");
+    const navigate = useNavigate();
+    const [getAuth, setAuth, deleteAuth] = useLocalStorage('auth');
     const [tickInterval, setTickInterval] = useState();
 
     const toggleRefresh = useCallback((status) => {
         if (status) {
-            console.log("turning on ticking");
             let i = setInterval(() => {
                 const requestOptions = {
                     method: "GET",
                     credentials: "include",
                 }
-                fetch(`/refresh`, requestOptions)
+                fetch(`http://localhost:8080/api/refresh`, requestOptions)
                     .then((response) => response.json())
                     .then((data) => {
-                        if(data.access_token) {
-                            setJwtToken(data.access_token);
+                        if (data.message === "authenticated") {
+                            setAuth(true);
                         }
                     })
                     .catch(error => {
@@ -38,33 +39,39 @@ const App = () => {
 
 
     useEffect(() => {
-        if (jwtToken === "") {
-            const requestOptions = {
-                method: "GET",
-                credentials: "include",
-            }
-
-            fetch(`http://localhost:8080/api/refresh`, requestOptions)
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.access_token) {
-                        setJwtToken(data.access_token);
-                        toggleRefresh(true);
-                    }
-                })
-                .catch(error => {
-                    console.log("user is not logged in", error);
-                })
+        const requestOptions = {
+            method: "GET",
+            credentials: "include",
         }
-    }, [jwtToken, toggleRefresh])
+
+        fetch(`http://localhost:8080/api/refresh`, requestOptions)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("user not logged in");
+                }
+                return response.json()
+            })
+            .then((data) => {
+                if (data.message === "authenticated") {
+                    setAuth(true);
+                    toggleRefresh(true);
+                }
+            })
+            .catch(error => {
+                if(getAuth() === true) {
+                    // this means that the user was logged in - in the past
+                    // but the refresh token expired
+                    setAuth(false);
+                    navigate(0);
+                }
+                console.log(error);
+            })
+    }, [])
 
     return (
         <>
-            <Navbar jwtToken={jwtToken} setJwtToken={setJwtToken} toggleRefresh={toggleRefresh}/>
-            <Outlet context={{
-                jwtToken, setJwtToken,
-                toggleRefresh
-            }}/>
+            <Navbar toggleRefresh={toggleRefresh}/>
+            <Outlet context={{toggleRefresh}}/>
         </>
     )
 }
