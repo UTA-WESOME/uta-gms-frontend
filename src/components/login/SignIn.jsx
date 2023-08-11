@@ -2,11 +2,12 @@ import {Button, ButtonGroup, FormControl, FormErrorMessage, FormLabel, Heading, 
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {useNavigate, useOutletContext} from "react-router-dom";
+import {useLocalStorage} from "../utils/useLocalStorage.jsx";
 
 const SignIn = () => {
 
     const navigate = useNavigate();
-    const {setJwtToken} = useOutletContext();
+    const [getAuth, setAuth, deleteAuth] = useLocalStorage('auth');
     const {toggleRefresh} = useOutletContext();
 
     const formik = useFormik({
@@ -38,7 +39,7 @@ const SignIn = () => {
                     return response.json()
                 })
                 .then((data) => {
-                    setJwtToken(data.access_token);
+                    setAuth(true);
                     toggleRefresh(true);
                     navigate("/projects");
                 })
