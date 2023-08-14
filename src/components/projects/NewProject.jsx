@@ -53,8 +53,6 @@ const NewProject = () => {
                     })
                     throw new Error("error");
                 }
-                return response.json();
-            }).then(data => {
                 navigate("/projects");
             }).catch(err => {
                 console.log(err);
@@ -67,7 +65,7 @@ const NewProject = () => {
         <>
             <VStack
                 as={"form"}
-                w={{base: "90%", md: "500px"}}
+                w={{base: "90%", md: "650px"}}
                 mx={"auto"}
                 mt={"5rem"}
                 justify={"center"}
