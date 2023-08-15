@@ -39,7 +39,7 @@ const ProjectCard = ({ id, name, description }) => {
     const deleteProject = () => {
         fetch(`http://localhost:8080/api/projects/${id}`, {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
         }).then(response => {
             if (!response.ok) {
@@ -65,9 +65,9 @@ const ProjectCard = ({ id, name, description }) => {
         <>
             <Box
                 as={'div'}
-                maxW={{ base: 'full', md: '275px', }}
+                maxW={{ base: 'full', md: '275px' }}
                 minH={{ base: 'full', md: '200px' }}
-                maxH={{ base: 'full', md: '275px', }}
+                maxH={{ base: 'full', md: '275px' }}
                 w={'full'}
                 h={'full'}
                 borderWidth='1px'
@@ -86,13 +86,13 @@ const ProjectCard = ({ id, name, description }) => {
                         </Text>
                     </Heading>
                     <Text fontSize={'md'}
-                        lineHeight={'110%'}
-                        color={useColorModeValue('gray.700', 'gray.100')}
-                        paddingTop={'2'}
-                        paddingBottom={'10'}>
+                          lineHeight={'110%'}
+                          color={useColorModeValue('gray.700', 'gray.100')}
+                          paddingTop={'2'}
+                          paddingBottom={'10'}>
                         6.08.2023
                     </Text>
-                    <Spacer />
+                    <Spacer/>
                     <Flex direction={'row'} spacing={'4px'} width='100%' justify={'center'}>
                         <ButtonGroup size='base' isAttached variant='outline'>
                             <Popover
@@ -103,11 +103,11 @@ const ProjectCard = ({ id, name, description }) => {
                                         aria-label='Description'
                                         padding={'2'}
                                         icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
-                                            color={useColorModeValue('blue.500', 'blue.200')} />} />
+                                                    color={useColorModeValue('blue.500', 'blue.200')}/>}/>
                                 </PopoverTrigger>
-                                <PopoverContent background={useColorModeValue('gray.100', 'gray.700')} >
-                                    <PopoverCloseButton />
-                                    <PopoverBody textAlign={'left'} p={'6'} >
+                                <PopoverContent background={useColorModeValue('gray.100', 'gray.700')}>
+                                    <PopoverCloseButton/>
+                                    <PopoverBody textAlign={'left'} p={'6'}>
                                         {description}
                                     </PopoverBody>
                                 </PopoverContent>
@@ -118,21 +118,23 @@ const ProjectCard = ({ id, name, description }) => {
                                     aria-label='Share'
                                     padding={'2'}
                                     icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
-                                        color={useColorModeValue('green.500', 'green.200')} />} />
+                                                color={useColorModeValue('green.500', 'green.200')}/>}/>
                             </CustomTooltip>
                             <CustomTooltip label='Edit'>
                                 <IconButton
                                     aria-label='Edit'
                                     padding={'2'}
                                     icon={<Icon as={BiEditAlt} minH={'7'} minW={'7'}
-                                        color={useColorModeValue('yellow.500', 'yellow.200')} />} />
+                                                color={useColorModeValue('yellow.500', 'yellow.200')}/>}
+                                    onClick={() => navigate(`/projects/${id}/edit`)}
+                                />
                             </CustomTooltip>
                             <CustomTooltip label='Delete'>
                                 <IconButton
                                     aria-label='Delete'
                                     padding={'2'}
                                     icon={<Icon as={BiTrash} minH={'7'} minW={'7'}
-                                        color={useColorModeValue('red.500', 'red.200')} />}
+                                                color={useColorModeValue('red.500', 'red.200')}/>}
                                     onClick={onOpen}
                                 />
                             </CustomTooltip>

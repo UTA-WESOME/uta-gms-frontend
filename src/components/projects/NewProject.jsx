@@ -1,4 +1,4 @@
-import {useNavigate, useOutletContext} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     Button,
     ButtonGroup,
@@ -12,10 +12,10 @@ import {
     useToast,
     VStack
 } from "@chakra-ui/react";
-import {useFormik} from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import {useEffect} from "react";
-import {useLocalStorage} from "../utils/useLocalStorage.jsx";
+import { useEffect } from "react";
+import { useLocalStorage } from "../utils/useLocalStorage.jsx";
 
 const NewProject = () => {
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ const NewProject = () => {
 
 
     const formik = useFormik({
-        initialValues: {name: "", description: "", shareable: false},
+        initialValues: { name: "", description: "", shareable: false },
         validationSchema: Yup.object({
             name: Yup.string().required("Name is required!")
                 .min(2, "Should be at least 2 characters long!").max(64, "Name too long!"),
@@ -39,7 +39,7 @@ const NewProject = () => {
         onSubmit: (values, actions) => {
             fetch(`http://localhost:8080/api/projects/`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify(values)
             }).then(response => {
@@ -53,8 +53,6 @@ const NewProject = () => {
                     })
                     throw new Error("error");
                 }
-                return response.json();
-            }).then(data => {
                 navigate("/projects");
             }).catch(err => {
                 console.log(err);
@@ -67,7 +65,7 @@ const NewProject = () => {
         <>
             <VStack
                 as={"form"}
-                w={{base: "90%", md: "500px"}}
+                w={{ base: "90%", md: "650px" }}
                 mx={"auto"}
                 mt={"5rem"}
                 justify={"center"}
