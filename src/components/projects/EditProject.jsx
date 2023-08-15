@@ -59,7 +59,7 @@ const EditProject = () => {
 
 
     const formik = useFormik({
-        initialValues: {name: "", description: "", shareable: ""},
+        initialValues: {name: "", description: "", shareable: false},
         validationSchema: Yup.object({
             name: Yup.string().required("Name is required!")
                 .min(2, "Should be at least 2 characters long!").max(64, "Name too long!"),
@@ -106,7 +106,6 @@ const EditProject = () => {
                         <Icon as={BiEditAlt} minH={'7'} minW={'7'}/>
                     </HStack>
 
-
                     <Heading>
                         {projectName}
                     </Heading>
@@ -137,8 +136,9 @@ const EditProject = () => {
                     <FormControl display='flex' alignItems='center'>
                         <FormLabel fontSize={"lg"} mb={'0'}>Shareable</FormLabel>
                         <Switch
-                            id='shareable'
+                            name={'shareable'}
                             colorScheme={'teal'}
+                            isChecked={formik.values.shareable}
                             {...formik.getFieldProps("shareable")}
                         />
                     </FormControl>
