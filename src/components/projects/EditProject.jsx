@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     Button,
     ButtonGroup,
@@ -14,11 +14,11 @@ import {
     useToast,
     VStack
 } from "@chakra-ui/react";
-import {useFormik} from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import {useEffect, useState} from "react";
-import {useLocalStorage} from "../utils/useLocalStorage.jsx";
-import {BiEditAlt} from "react-icons/bi";
+import { useEffect, useState } from "react";
+import { useLocalStorage } from "../utils/useLocalStorage.jsx";
+import { BiEditAlt } from "react-icons/bi";
 
 const EditProject = () => {
 
@@ -41,8 +41,8 @@ const EditProject = () => {
                 credentials: "include"
             }).then(response => {
                 if (!response.ok) {
-                    if(response.status === 404) {
-                        if(!toast.isActive(toastId)) {
+                    if (response.status === 404) {
+                        if (!toast.isActive(toastId)) {
                             toast({
                                 id: toastId,
                                 title: 'Error!',

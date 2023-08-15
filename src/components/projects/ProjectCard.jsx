@@ -1,5 +1,5 @@
-import {useRef} from "react";
-import {useNavigate} from "react-router-dom";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -25,21 +25,21 @@ import {
     useDisclosure,
     useToast,
 } from '@chakra-ui/react';
-import {BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash,} from "react-icons/bi";
+import { BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash, } from "react-icons/bi";
 import CustomTooltip from "../CustomTooltip";
 
 
-const ProjectCard = ({id, name, description}) => {
+const ProjectCard = ({ id, name, description }) => {
 
     const navigate = useNavigate();
-    const {isOpen, onOpen, onClose} = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
     const toast = useToast();
 
     const deleteProject = () => {
         fetch(`http://localhost:8080/api/projects/${id}`, {
             method: 'DELETE',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
         }).then(response => {
             if (!response.ok) {
@@ -65,19 +65,19 @@ const ProjectCard = ({id, name, description}) => {
         <>
             <Box
                 as={'div'}
-                maxW={{base: 'full', md: '275px'}}
-                minH={{base: 'full', md: '200px'}}
-                maxH={{base: 'full', md: '275px'}}
+                maxW={{ base: 'full', md: '275px' }}
+                minH={{ base: 'full', md: '200px' }}
+                maxH={{ base: 'full', md: '275px' }}
                 w={'full'}
                 h={'full'}
                 borderWidth='1px'
                 borderRadius='lg'
                 overflow='hidden'
                 p={5}>
-                <Flex direction={'column'} spacing={'4px'} height='100%' align={{base: 'center', md: 'start'}}>
+                <Flex direction={'column'} spacing={'4px'} height='100%' align={{ base: 'center', md: 'start' }}>
                     <Heading
                         fontWeight={'400'}
-                        fontSize={{base: '1xl', sm: '2xl', md: '2xl'}}
+                        fontSize={{ base: '1xl', sm: '2xl', md: '2xl' }}
                         lineHeight={'100%'}
                         textAlign={'start'}
                         paddingBottom={2}>
