@@ -1,9 +1,10 @@
-import {useLocation, useNavigate} from "react-router-dom";
-import {Center, Heading, useToast, VStack,} from "@chakra-ui/react";
-import {useEffect, useState} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useToast, } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
+import PageTemplate from "./PageTemplate";
 import ProjectsContainer from "./projects/ProjectsContainer";
-import {useLocalStorage} from "./utils/useLocalStorage.jsx";
+import { useLocalStorage } from "./utils/useLocalStorage.jsx";
 
 const Projects = () => {
 
@@ -18,7 +19,7 @@ const Projects = () => {
     useEffect(() => {
         if (getAuth() !== true) {
             navigate("/");
-            if(!toast.isActive(toastId)) {
+            if (!toast.isActive(toastId)) {
                 toast({
                     id: toastId,
                     title: 'Sign up or log in first!',
@@ -31,7 +32,7 @@ const Projects = () => {
         } else {
             fetch(`http://localhost:8080/api/projects/`, {
                 method: "GET",
-                headers: {"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 credentials: "include",
             }).then(response => {
                 if (!response.ok) {
@@ -52,25 +53,9 @@ const Projects = () => {
     return (
         <>
             {hasLoaded &&
-                <Center>
-                    <VStack
-                        w={{base: '80%', sm: '90%', md: '75%', lg: '85%', xl: '75%'}}
-                        marginBottom={'10'}
-                        justify={'center'}
-                        spacing={'1rem'}>
-                        <Heading
-                            fontWeight={600}
-                            fontSize={{base: '3xl', sm: '4xl', md: '6xl'}}
-                            lineHeight={'110%'}
-                            textAlign={'center'}
-                            py={{base: 10, md: 10}}>
-                            Your projects
-                        </Heading>
-
-                        <ProjectsContainer projects={projects}/>
-                    </VStack>
-
-                </Center>
+             <PageTemplate title='Your Projects'>
+                <ProjectsContainer projects={projects}/>
+            </PageTemplate>
             }
         </>
     );
