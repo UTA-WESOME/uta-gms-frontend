@@ -27,6 +27,7 @@ const EditProject = () => {
     const [hasLoaded, setHasLoaded] = useState(false);
     const [projectName, setProjectName] = useState('');
     const toast = useToast();
+    const toastId = "toast-projects-edit";
 
     let {id} = useParams();
 
@@ -40,7 +41,20 @@ const EditProject = () => {
                 credentials: "include"
             }).then(response => {
                 if (!response.ok) {
-                    console.log(response.status);
+                    if(response.status === 404) {
+                        if(!toast.isActive(toastId)) {
+                            toast({
+                                id: toastId,
+                                title: 'Error!',
+                                description: "This project does not exist.",
+                                status: 'error',
+                                duration: 9000,
+                                isClosable: true,
+                            })
+                        }
+                        navigate("/projects");
+                    }
+                    throw new Error("This project does not exist");
                 }
                 return response.json();
             }).then(data => {
