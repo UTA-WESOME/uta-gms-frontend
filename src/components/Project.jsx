@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "./utils/useLocalStorage.jsx";
 import { useToast } from "@chakra-ui/react";
+import ProjectTabs from "./project/ProjectTabs.jsx";
 
 const Project = () => {
 
@@ -16,7 +17,7 @@ const Project = () => {
 
 
     const displayToast = (title, message, status) => {
-        if(!toast.isActive(toastId)) {
+        if (!toast.isActive(toastId)) {
             toast({
                 id: toastId,
                 title: title,
@@ -30,14 +31,14 @@ const Project = () => {
 
 
     useEffect(() => {
-        if(!getAuth()) {
+        if (!getAuth()) {
             navigate("/login");
         } else {
             fetch(`http://localhost:8080/api/projects/${id}`, {
                 method: "GET",
                 credentials: "include"
             }).then(response => {
-                if(!response.ok) {
+                if (!response.ok) {
                     switch (response.status) {
                         case 403:
                             displayToast("Warning!", "You do not have permission to do this.", "warning");
@@ -64,7 +65,7 @@ const Project = () => {
         <>
             {hasLoaded &&
                 <PageTemplate title={project.name}>
-
+                    <ProjectTabs/>
                 </PageTemplate>
             }
         </>
