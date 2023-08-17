@@ -9,16 +9,17 @@ import {
     AlertDialogOverlay,
     Box,
     Button,
-    ButtonGroup,
     Flex,
     Heading,
     Icon,
     IconButton,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverBody,
-    PopoverCloseButton,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Spacer,
     Text,
     useColorModeValue,
@@ -32,14 +33,15 @@ import CustomTooltip from "../CustomTooltip";
 const ProjectCard = ({ id, name, description }) => {
 
     const navigate = useNavigate();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure()
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
     const cancelRef = useRef();
     const toast = useToast();
 
     const deleteProject = () => {
         fetch(`http://localhost:8080/api/projects/${id}`, {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
         }).then(response => {
             if (!response.ok) {
@@ -60,90 +62,146 @@ const ProjectCard = ({ id, name, description }) => {
         })
     }
 
+    const openProject = () => {
+        toast({
+            title: 'Wow!',
+            description: "You tried to open the project! The feature is yet to be implemented. ",
+            status: 'info',
+            duration: 5000,
+            isClosable: true,
+        });
+    }
+
+    const shareProject = () => {
+        toast({
+            title: 'Wow!',
+            description: "You tried to share the project! The feature is yet to be implemented. ",
+            status: 'info',
+            duration: 5000,
+            isClosable: true,
+        });
+    }
+
+    const editProject = () => {
+        toast({
+            title: 'Wow!',
+            description: "You tried to edit the project! The feature is yet to be implemented. ",
+            status: 'info',
+            duration: 5000,
+            isClosable: true,
+        });
+    }
+
 
     return (
         <>
-            <Box
-                as={'div'}
-                maxW={{ base: 'full', md: '275px', }}
-                minH={{ base: 'full', md: '200px' }}
-                maxH={{ base: 'full', md: '275px', }}
-                w={'full'}
-                h={'full'}
-                borderWidth='1px'
-                borderRadius='lg'
-                overflow='hidden'
-                p={5}>
-                <Flex direction={'column'} spacing={'4px'} height='100%' align={{ base: 'center', md: 'start' }}>
-                    <Heading
-                        fontWeight={'400'}
-                        fontSize={{ base: '1xl', sm: '2xl', md: '2xl' }}
-                        lineHeight={'100%'}
-                        textAlign={'start'}
-                        paddingBottom={2}>
-                        <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
-                            {name}
+            <div>
+                <Box
+                    as={'div'}
+                    maxW={{ base: 'full', md: '275px', }}
+                    minH={{ base: '66%', md: '134px' }}
+                    maxH={{ base: '66%', md: '150px', }}
+                    w={'full'}
+                    h={'66%'}
+                    borderWidth='1px'
+                    borderTopLeftRadius='10px'
+                    borderTopRightRadius='10px'
+                    borderBottomRightRadius='0'
+                    borderBottomLeftRadius='0'
+                    overflow='hidden'
+                    _hover={{ bg: useColorModeValue('gray.100', 'gray.700'), cursor: 'pointer' }}
+                    onClick={openProject}
+                    p={5}>
+                    <Flex direction={'column'} spacing={'4px'} height='100%' align={{ base: 'center', md: 'start' }}>
+                        <Heading
+                            fontWeight={'400'}
+                            fontSize={{ base: '1xl', sm: '2xl', md: '2xl' }}
+                            lineHeight={'100%'}
+                            textAlign={'start'}
+                            paddingBottom={2}>
+                            <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
+                                {name}
+                            </Text>
+                        </Heading>
+                        <Text fontSize={'md'}
+                            lineHeight={'110%'}
+                            color={useColorModeValue('gray.700', 'gray.100')}
+                            paddingTop={'2'}
+                            paddingBottom={'10'}>
+                            6.08.2023
                         </Text>
-                    </Heading>
-                    <Text fontSize={'md'}
-                        lineHeight={'110%'}
-                        color={useColorModeValue('gray.700', 'gray.100')}
-                        paddingTop={'2'}
-                        paddingBottom={'10'}>
-                        6.08.2023
-                    </Text>
-                    <Spacer />
-                    <Flex direction={'row'} spacing={'4px'} width='100%' justify={'center'}>
-                        <ButtonGroup size='base' isAttached variant='outline'>
-                            <Popover
-                                variant={'rounded'}
-                                colorScheme={useColorModeValue('green.500', 'green.200')}>
-                                <PopoverTrigger>
-                                    <IconButton
-                                        aria-label='Description'
-                                        padding={'2'}
-                                        icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
-                                            color={useColorModeValue('blue.500', 'blue.200')} />} />
-                                </PopoverTrigger>
-                                <PopoverContent background={useColorModeValue('gray.100', 'gray.700')} >
-                                    <PopoverCloseButton />
-                                    <PopoverBody textAlign={'left'} p={'6'} >
-                                        {description}
-                                    </PopoverBody>
-                                </PopoverContent>
-                            </Popover>
-
-                            <CustomTooltip label='Share'>
-                                <IconButton
-                                    aria-label='Share'
-                                    padding={'2'}
-                                    icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
-                                        color={useColorModeValue('green.500', 'green.200')} />} />
-                            </CustomTooltip>
-                            <CustomTooltip label='Edit'>
-                                <IconButton
-                                    aria-label='Edit'
-                                    padding={'2'}
-                                    icon={<Icon as={BiEditAlt} minH={'7'} minW={'7'}
-                                        color={useColorModeValue('yellow.500', 'yellow.200')} />} />
-                            </CustomTooltip>
-                            <CustomTooltip label='Delete'>
-                                <IconButton
-                                    aria-label='Delete'
-                                    padding={'2'}
-                                    icon={<Icon as={BiTrash} minH={'7'} minW={'7'}
-                                        color={useColorModeValue('red.500', 'red.200')} />}
-                                    onClick={onOpen}
-                                />
-                            </CustomTooltip>
-                        </ButtonGroup>
                     </Flex>
-                </Flex>
-            </Box>
+
+                </Box >
+                <Box
+                    as={'div'}
+                    maxW={{ base: 'full', md: '275px', }}
+                    minH={{ base: '33%', md: '66px' }}
+                    maxH={{ base: '33%', md: '75px', }}
+                    w={'full'}
+                    h={'33%'}
+                    borderWidth='1px'
+                    borderTopLeftRadius='0'
+                    borderTopRightRadius='0'
+                    borderBottomRightRadius='10px'
+                    borderBottomLeftRadius='10px'
+                    overflow='hidden'
+                    p={'2'}>
+                    <Flex direction={'row'} width={{ base: '50%', md: '100%', }} justify={'center'}>
+                        <CustomTooltip label='Info'>
+                            <IconButton
+                                aria-label='Info'
+                                padding={'7'}
+                                background={'transparent'}
+                                borderRadius={'full'}
+                                icon={<Icon as={BiInfoCircle} minH={'9'} minW={'9'}
+                                    color={useColorModeValue('blue.500', 'blue.200')} />}
+                                onClick={onOpenInfo}
+                            />
+                        </CustomTooltip>
+                        <Spacer />
+                        <CustomTooltip label='Share'>
+                            <IconButton
+                                aria-label='Share'
+                                padding={'7'}
+                                background={'transparent'}
+                                borderRadius={'full'}
+                                icon={<Icon as={BiShareAlt} minH={'9'} minW={'9'}
+                                    color={useColorModeValue('green.500', 'green.200')} />}
+                                onClick={shareProject}
+                            />
+                        </CustomTooltip>
+                        <Spacer />
+                        <CustomTooltip label='Edit'>
+                            <IconButton
+                                aria-label='Edit'
+                                padding={'7'}
+                                background={'transparent'}
+                                borderRadius={'full'}
+                                icon={<Icon as={BiEditAlt} minH={'9'} minW={'9'}
+                                    color={useColorModeValue('yellow.500', 'yellow.200')} />}
+                                onClick={editProject}
+                            />
+                        </CustomTooltip>
+                        <Spacer />
+                        <CustomTooltip label='Delete'>
+                            <IconButton
+                                aria-label='Delete'
+                                padding={'7'}
+                                background={'transparent'}
+                                borderRadius={'full'}
+                                icon={<Icon as={BiTrash} minH={'9'} minW={'9'}
+                                    color={useColorModeValue('red.500', 'red.200')} />}
+                                onClick={onOpenDelete}
+                            />
+                        </CustomTooltip>
+                    </Flex>
+                </Box>
+            </div>
             <AlertDialog
                 leastDestructiveRef={cancelRef}
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isOpenDelete}
+                onClose={onCloseDelete}
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
@@ -156,7 +214,7 @@ const ProjectCard = ({ id, name, description }) => {
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
+                            <Button ref={cancelRef} onClick={onCloseDelete}>
                                 Cancel
                             </Button>
                             <Button colorScheme='red' onClick={deleteProject} ml={3}>
@@ -165,9 +223,29 @@ const ProjectCard = ({ id, name, description }) => {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
-
             </AlertDialog>
 
+            <Modal isOpen={isOpenInfo} onClose={onCloseInfo}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Project description</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {description}
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button
+                            color={useColorModeValue('black.800', 'white.500')}
+                            bg={useColorModeValue('teal.500', 'teal.200')}
+                            _hover={{ bg: useColorModeValue('teal.200', 'teal.500') }}
+                            mr={3}
+                            onClick={onCloseInfo}>
+                            Close
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </>
     )
 };
