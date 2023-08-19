@@ -59,7 +59,7 @@ const Project = () => {
                 console.log(err);
             })
         }
-    })
+    }, [])
 
     return (
         <>
