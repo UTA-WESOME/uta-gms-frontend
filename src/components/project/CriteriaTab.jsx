@@ -4,11 +4,13 @@ import {
     FormControl,
     FormErrorMessage,
     FormLabel,
+    HStack,
     Input,
     Modal,
     ModalBody,
     ModalCloseButton,
-    ModalContent, ModalFooter,
+    ModalContent,
+    ModalFooter,
     ModalHeader,
     ModalOverlay,
     Show,
@@ -17,6 +19,7 @@ import {
     TableContainer,
     Tbody,
     Td,
+    Text,
     Th,
     Thead,
     Tr,
@@ -25,6 +28,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
 
 const CriteriaTab = ({ criteria, setCriteria }) => {
 
@@ -60,8 +64,24 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                     <Tr>
                                         <Td>{criterion.name}</Td>
                                         <Td>
-                                            <Switch colorScheme={'teal'}>
-                                            </Switch>
+                                            <HStack>
+                                                <Text
+                                                    as={criterion.gain ? 'p' : 'b'}
+                                                    color={criterion.gain ? 'gray' : 'red.300'}
+                                                >
+
+                                                    Cost
+                                                </Text>
+                                                <Switch colorSchemeChecked={'teal'} colorSchemeUnchecked={'red'}
+                                                        defaultChecked={criterion.gain}>
+                                                </Switch>
+                                                <Text
+                                                    as={criterion.gain ? 'b' : 'p'}
+                                                    color={criterion.gain ? 'teal.300' : 'gray'}
+                                                >
+                                                    Gain
+                                                </Text>
+                                            </HStack>
                                         </Td>
                                     </Tr>
                                 )
