@@ -45,6 +45,10 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
         }
     })
 
+    const handleChangeType = event => {
+        console.log(event.currentTarget.id);
+    }
+
     return (
         <>
 
@@ -69,11 +73,15 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                                     as={criterion.gain ? 'p' : 'b'}
                                                     color={criterion.gain ? 'gray' : 'red.300'}
                                                 >
-
                                                     Cost
                                                 </Text>
-                                                <Switch colorSchemeChecked={'teal'} colorSchemeUnchecked={'red'}
-                                                        defaultChecked={criterion.gain}>
+                                                <Switch
+                                                    id={criterion.id}
+                                                    colorschemechecked={'teal'}
+                                                    colorschemeunchecked={'red'}
+                                                    defaultChecked={criterion.gain}
+                                                    onChange={handleChangeType}
+                                                >
                                                 </Switch>
                                                 <Text
                                                     as={criterion.gain ? 'b' : 'p'}

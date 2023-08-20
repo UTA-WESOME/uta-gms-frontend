@@ -5,8 +5,8 @@ const { definePartsStyle, defineMultiStyleConfig } =
     createMultiStyleConfigHelpers(switchAnatomy.keys)
 
 const baseStyleTrack = defineStyle((props) => {
-    const { colorSchemeChecked: c } = props
-    const { colorSchemeUnchecked: u } = props
+    const { colorschemechecked: c } = props
+    const { colorschemeunchecked: u } = props
 
 
     if (c !== undefined && u !== undefined) {
