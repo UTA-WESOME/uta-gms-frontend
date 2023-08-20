@@ -95,6 +95,18 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
         }
     }
 
+    const addCriterion = () => {
+        // get max criteria id
+        const maxId = Math.max(...criteria.map(item => item.id));
+
+        // set criteria
+        setCriteria(previousCriteria => [...previousCriteria, {
+            id: maxId + 1,
+            name: "Criterion name",
+            gain: true
+        }])
+    }
+
     return (
         <>
 
@@ -140,6 +152,10 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                         </Tbody>
                     </Table>
                 </TableContainer>
+
+                <Button mx={6} my={4} colorScheme={'teal'} onClick={addCriterion}>
+                    New criterion
+                </Button>
             </Show>
 
             {/*MOBILE*/}
@@ -153,6 +169,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                         return (
                             <HStack
                                 borderTopWidth={'1px'}
+                                borderBottomWidth={index === criteria.length - 1 ? '1px' : '0px'}
                                 p={2}
                             >
                                 <Text isTruncated>{criterion.name}</Text>
@@ -172,6 +189,10 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                     })
                     }
                 </Flex>
+
+                <Button my={4} colorScheme={'teal'} onClick={addCriterion}>
+                    New criterion
+                </Button>
             </Show>
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
