@@ -8,7 +8,7 @@ import {
     Modal,
     ModalBody,
     ModalCloseButton,
-    ModalContent,
+    ModalContent, ModalFooter,
     ModalHeader,
     ModalOverlay,
     Show,
@@ -101,15 +101,15 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay/>
-                <ModalContent mx={'15px'}>
+                <ModalContent
+                    mx={'15px'}
+                    as={"form"}
+                    onSubmit={formik.handleSubmit}
+                >
                     <ModalHeader>Edit criterion</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody textAlign={'center'}>
-                        <VStack
-                            as={"form"}
-                            spacing={"15px"}
-                            onSubmit={formik.handleSubmit}
-                        >
+                        <VStack spacing={"15px"}>
                             <FormControl isInvalid={formik.errors.name && formik.touched.name}>
                                 <FormLabel fontSize={'sm'}>Name</FormLabel>
                                 <Input
@@ -129,14 +129,14 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                     {...formik.getFieldProps("gain")}
                                 />
                             </FormControl>
+                        </VStack>
 
+                        <ModalFooter>
                             <ButtonGroup pt={"1rem"}>
                                 <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
                                 <Button onClick={onClose}>Back</Button>
                             </ButtonGroup>
-
-                        </VStack>
-
+                        </ModalFooter>
 
                     </ModalBody>
                 </ModalContent>
