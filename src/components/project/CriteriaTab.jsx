@@ -31,7 +31,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 
 const CriteriaTab = ({ criteria, setCriteria }) => {
@@ -107,17 +107,22 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
         }])
     }
 
+    const deleteCriterion = (id) => {
+        setCriteria(previousCriteria => previousCriteria.filter(item => item.id !== id));
+    }
+
     return (
         <>
 
             {/*DESKTOP*/}
             <Show above={'md'}>
                 <TableContainer>
-                    <Table __css={{ 'table-layout': 'fixed', width: 'full' }}>
+                    <Table>
                         <Thead>
                             <Tr>
                                 <Th>Name</Th>
                                 <Th>Type</Th>
+                                <Th/>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -145,6 +150,14 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                                     Gain
                                                 </Text>
                                             </HStack>
+                                        </Td>
+                                        <Td textAlign={'right'}>
+                                            <IconButton
+                                                color={'red.300'}
+                                                aria-label={'delete-criterion'}
+                                                icon={<DeleteIcon/>}
+                                                onClick={() => deleteCriterion(criterion.id)}
+                                            />
                                         </Td>
                                     </Tr>
                                 )
@@ -184,6 +197,12 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                         onOpen();
                                     }}>
                                 </IconButton>
+                                <IconButton
+                                    color={'red.300'}
+                                    aria-label={'delete-criterion'}
+                                    icon={<DeleteIcon/>}
+                                    onClick={() => deleteCriterion(criterion.id)}
+                                />
                             </HStack>
                         )
                     })
@@ -236,7 +255,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                             </FormControl>
                         </VStack>
 
-                        <ModalFooter>
+                        <ModalFooter px={0}>
                             <ButtonGroup pt={"1rem"}>
                                 <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
                                 <Button onClick={onClose}>Back</Button>
