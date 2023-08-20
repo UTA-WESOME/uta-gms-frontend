@@ -7,7 +7,7 @@ import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
 
 const ProjectTabs = () => {
 
-    const [criteria, setCriteria] = useState();
+    const [criteria, setCriteria] = useState([]);
     const [isScreenMobile] = useMediaQuery('(max-width: 460px)')
 
 

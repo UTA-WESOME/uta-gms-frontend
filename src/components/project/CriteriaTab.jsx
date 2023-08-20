@@ -97,7 +97,8 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
 
     const addCriterion = () => {
         // get max criteria id
-        const maxId = Math.max(...criteria.map(item => item.id));
+        let maxId = Math.max(...criteria.map(item => item.id));
+        maxId = maxId === -Infinity ? 0 : maxId;
 
         // set criteria
         setCriteria(previousCriteria => [...previousCriteria, {
