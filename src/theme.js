@@ -1,9 +1,13 @@
 import { extendTheme } from "@chakra-ui/react";
+import { switchTheme } from "../theme/components/Switch.js";
 
 const theme = {
   config: {
     initialColorMode: "dark",
     useSystemColorMode: true,
+  },
+  components: {
+    Switch: switchTheme,
   },
   styles: {
     global: {
