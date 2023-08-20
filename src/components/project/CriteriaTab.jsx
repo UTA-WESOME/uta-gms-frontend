@@ -1,6 +1,6 @@
 import {
     Button,
-    ButtonGroup,
+    ButtonGroup, Editable, EditableInput, EditablePreview,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -45,8 +45,35 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
         }
     })
 
-    const handleChangeType = event => {
-        console.log(event.currentTarget.id);
+
+    const handleChangeType = (event, id) => {
+        setCriteria(previousCriteria => {
+            return previousCriteria.map(criterion => {
+                if (criterion.id === id) {
+                    return { ...criterion, gain: !criterion.gain };
+                }
+                return criterion;
+            });
+        });
+    }
+
+    const handleChangeName = (event, id) => {
+        let newName = event.target.value;
+        if(newName.length <= 64) {
+            setCriteria(previousCriteria => {
+                return previousCriteria.map(criterion => {
+                    if (criterion.id === id) {
+                        return { ...criterion, name: newName };
+                    }
+                    return criterion;
+                });
+            });
+        } else {
+            // length of the criterion name is too long, might need a refactor in the future
+            // maybe some kind of message to the user about this problem
+            let criterion = criteria.filter(criterion => criterion.id === id)[0];
+            event.target.value = criterion.name;
+        }
     }
 
     return (
@@ -55,7 +82,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
             {/*DESKTOP*/}
             <Show above={'md'}>
                 <TableContainer>
-                    <Table>
+                    <Table __css={{ 'table-layout': 'fixed', width: 'full' }}>
                         <Thead>
                             <Tr>
                                 <Th>Name</Th>
@@ -66,27 +93,25 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                             {criteria.map((criterion, index) => {
                                 return (
                                     <Tr>
-                                        <Td>{criterion.name}</Td>
+                                        <Td>
+                                            <Input
+                                                defaultValue={criterion.name}
+                                                onChange={(event) => handleChangeName(event, criterion.id)}
+                                            />
+                                        </Td>
                                         <Td>
                                             <HStack>
-                                                <Text
-                                                    as={criterion.gain ? 'p' : 'b'}
-                                                    color={criterion.gain ? 'gray' : 'red.300'}
-                                                >
+                                                <Text color={criterion.gain ? 'gray' : 'red.300'}>
                                                     Cost
                                                 </Text>
                                                 <Switch
-                                                    id={criterion.id}
                                                     colorschemechecked={'teal'}
                                                     colorschemeunchecked={'red'}
                                                     defaultChecked={criterion.gain}
-                                                    onChange={handleChangeType}
+                                                    onChange={(event) => handleChangeType(event, criterion.id)}
                                                 >
                                                 </Switch>
-                                                <Text
-                                                    as={criterion.gain ? 'b' : 'p'}
-                                                    color={criterion.gain ? 'teal.300' : 'gray'}
-                                                >
+                                                <Text color={criterion.gain ? 'teal.300' : 'gray'}>
                                                     Gain
                                                 </Text>
                                             </HStack>
