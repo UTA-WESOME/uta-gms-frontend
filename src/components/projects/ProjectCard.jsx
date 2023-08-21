@@ -82,17 +82,6 @@ const ProjectCard = ({ id, name, description }) => {
         });
     }
 
-    const editProject = () => {
-        toast({
-            title: 'Wow!',
-            description: "You tried to edit the project! The feature is yet to be implemented. ",
-            status: 'info',
-            duration: 5000,
-            isClosable: true,
-        });
-    }
-
-
     return (
         <>
             <div>
@@ -180,7 +169,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 borderRadius={'full'}
                                 icon={<Icon as={BiEditAlt} minH={'9'} minW={'9'}
                                     color={useColorModeValue('yellow.500', 'yellow.200')} />}
-                                onClick={editProject}
+                                onClick={() => navigate(`/projects/${id}/edit`)}
                             />
                         </CustomTooltip>
                         <Spacer />
