@@ -143,7 +143,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 padding={'7'}
                                 background={'transparent'}
                                 borderRadius={'full'}
-                                icon={<Icon as={BiInfoCircle} minH={'9'} minW={'9'}
+                                icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
                                     color={useColorModeValue('blue.500', 'blue.200')} />}
                                 onClick={onOpenInfo}
                             />
@@ -155,7 +155,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 padding={'7'}
                                 background={'transparent'}
                                 borderRadius={'full'}
-                                icon={<Icon as={BiShareAlt} minH={'9'} minW={'9'}
+                                icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
                                     color={useColorModeValue('green.500', 'green.200')} />}
                                 onClick={shareProject}
                             />
@@ -167,7 +167,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 padding={'7'}
                                 background={'transparent'}
                                 borderRadius={'full'}
-                                icon={<Icon as={BiEditAlt} minH={'9'} minW={'9'}
+                                icon={<Icon as={BiEditAlt} minH={'7'} minW={'7'}
                                     color={useColorModeValue('yellow.500', 'yellow.200')} />}
                                 onClick={() => navigate(`/projects/${id}/edit`)}
                             />
@@ -179,7 +179,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 padding={'7'}
                                 background={'transparent'}
                                 borderRadius={'full'}
-                                icon={<Icon as={BiTrash} minH={'9'} minW={'9'}
+                                icon={<Icon as={BiTrash} minH={'7'} minW={'7'}
                                     color={useColorModeValue('red.500', 'red.200')} />}
                                 onClick={onOpenDelete}
                             />
