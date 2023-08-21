@@ -1,4 +1,4 @@
-import { Box, Button, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery, useToast } from "@chakra-ui/react";
 import CriteriaTab from "./CriteriaTab.jsx";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
@@ -14,7 +14,8 @@ const ProjectTabs = (props) => {
     const [previousCriteria, setPreviousCriteria] = useState([]);
 
     const [hasLoaded, setHasLoaded] = useState(false);
-    const [isScreenMobile] = useMediaQuery('(max-width: 460px)')
+    const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
+    const toast = useToast();
 
 
     useEffect(() => {
@@ -44,8 +45,44 @@ const ProjectTabs = (props) => {
             const matchCriterion = previousCriteria.find(pCriterion => pCriterion.id === criterion.id);
             if (matchCriterion) {
                 // PUT
+                fetch(`http://localhost:8080/api/criteria/${criterion.id}`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(criterion)
+                }).then(response => {
+                    if(!response.ok) {
+                        toast({
+                            title: "Error!",
+                            description: `Criterion ${criterion.name} could not be updated.`,
+                            duration: 5000,
+                            isClosable: true,
+                        });
+                        throw new Error(`Criterion ${criterion.name} could not be updated.`);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
             } else {
                 // POST
+                fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(criterion)
+                }).then(response => {
+                    if(!response.ok) {
+                        toast({
+                            title: "Error!",
+                            description: `Criterion ${criterion.name} could not be uploaded.`,
+                            duration: 5000,
+                            isClosable: true,
+                        });
+                        throw new Error(`Criterion ${criterion.name} could not be uploaded.`);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
             }
         });
         // deleting criteria
@@ -54,6 +91,22 @@ const ProjectTabs = (props) => {
         );
         criteriaToDelete.forEach(criterionToDelete => {
             // DELETE
+            fetch(`http://localhost:8080/api/criteria/${criterionToDelete.id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            }).then(response => {
+                if(!response.ok) {
+                    toast({
+                        title: "Error!",
+                        description: `Criterion ${criterionToDelete.name} could not be deleted.`,
+                        duration: 5000,
+                        isClosable: true,
+                    });
+                    throw new Error(`Criterion ${criterionToDelete.name} could not be deleted.`);
+                }
+            }).catch(err => {
+                console.log(err);
+            })
         })
     }
 
