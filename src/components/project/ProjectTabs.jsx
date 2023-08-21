@@ -1,41 +1,61 @@
-import { Box, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
 import CriteriaTab from "./CriteriaTab.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
 
 
-const ProjectTabs = () => {
+const ProjectTabs = (props) => {
 
+    // criteria and previousCriteria will be compared in submitData
+    // criteria holds active data that the user changes
     const [criteria, setCriteria] = useState([]);
+    // previousCriteria holds data downloaded from the backend
+    const [previousCriteria, setPreviousCriteria] = useState([]);
+
+    const [hasLoaded, setHasLoaded] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 460px)')
 
 
-    useState(() => {
-        setCriteria([
-            {
-                "id": 1,
-                "name": "Gain 1",
-                "gain": true,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
-            },
-            {
-                "id": 2,
-                "name": "Gain 2",
-                "gain": true,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
-            },
-            {
-                "id": 3,
-                "name": "Lose 3",
-                "gain": false,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
+    useEffect(() => {
+
+        // get criteria
+        fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
+            method: "GET",
+            credentials: "include"
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting criteria");
             }
-        ])
+            return response.json();
+        }).then(data => {
+            setCriteria(data);
+            setPreviousCriteria(data);
+            setHasLoaded(true);
+        }).catch(err => {
+            console.log(err);
+        })
     }, [])
+
+
+    const submitData = () => {
+        // updating and creating criteria
+        criteria.forEach(criterion => {
+            const matchCriterion = previousCriteria.find(pCriterion => pCriterion.id === criterion.id);
+            if (matchCriterion) {
+                // PUT
+            } else {
+                // POST
+            }
+        });
+        // deleting criteria
+        const criteriaToDelete = previousCriteria.filter(pCriterion =>
+            !criteria.some(criterion => criterion.id === pCriterion.id)
+        );
+        criteriaToDelete.forEach(criterionToDelete => {
+            // DELETE
+        })
+    }
 
 
     return (
@@ -71,17 +91,23 @@ const ProjectTabs = () => {
 
                 </TabList>
                 <TabPanels>
-                    <TabPanel>
-                        <CriteriaTab criteria={criteria} setCriteria={setCriteria}/>
-                    </TabPanel>
+                    {hasLoaded &&
+                        <TabPanel>
+                            <CriteriaTab criteria={criteria} setCriteria={setCriteria}/>
+                        </TabPanel>
+                    }
                     <TabPanel>
                         <p>Alternatives</p>
                     </TabPanel>
                     <TabPanel>
                         <p>Reference ranking</p>
                     </TabPanel>
+
                 </TabPanels>
             </Tabs>
+            <Box textAlign={'right'}>
+                <Button colorScheme={'teal'} mr={6} onClick={submitData}>Save</Button>
+            </Box>
         </Box>
     )
 }

@@ -65,7 +65,7 @@ const Project = () => {
         <>
             {hasLoaded &&
                 <PageTemplate title={project.name}>
-                    <ProjectTabs/>
+                    <ProjectTabs id={id}/>
                 </PageTemplate>
             }
         </>

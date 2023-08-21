@@ -167,7 +167,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                     </Table>
                 </TableContainer>
 
-                <Button mx={6} my={4} colorScheme={'teal'} onClick={addCriterion}>
+                <Button mx={6} my={4} colorScheme={'teal'} onClick={addCriterion} variant='outline'>
                     New criterion
                 </Button>
             </Show>
@@ -210,7 +210,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                     }
                 </Flex>
 
-                <Button my={4} colorScheme={'teal'} onClick={addCriterion}>
+                <Button my={4} colorScheme={'teal'} onClick={addCriterion} variant='outline'>
                     New criterion
                 </Button>
             </Show>
