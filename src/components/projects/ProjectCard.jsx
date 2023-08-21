@@ -84,12 +84,12 @@ const ProjectCard = ({ id, name, description }) => {
 
     return (
         <>
-            <div>
+            <>
                 <Box
                     as={'div'}
                     maxW={{ base: 'full', md: '275px', }}
                     minH={{ base: '66%', md: '134px' }}
-                    maxH={{ base: '66%', md: '150px', }}
+                    maxH={{ base: '66%', md: '150px' }}
                     w={'full'}
                     h={'66%'}
                     borderWidth='1px'
@@ -186,7 +186,7 @@ const ProjectCard = ({ id, name, description }) => {
                         </CustomTooltip>
                     </Flex>
                 </Box>
-            </div>
+            </>
             <AlertDialog
                 leastDestructiveRef={cancelRef}
                 isOpen={isOpenDelete}
