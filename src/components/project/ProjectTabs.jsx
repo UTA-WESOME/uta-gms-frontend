@@ -3,6 +3,7 @@ import CriteriaTab from "./CriteriaTab.jsx";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 
 const ProjectTabs = (props) => {
@@ -15,6 +16,7 @@ const ProjectTabs = (props) => {
 
     const [hasLoaded, setHasLoaded] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
+    const navigate = useNavigate();
     const toast = useToast();
 
 
@@ -38,13 +40,28 @@ const ProjectTabs = (props) => {
         })
     }, [])
 
+    const toastSuccess = () => {
+        toast({
+            title: "Saved!",
+            description: `Settings saved!`,
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+        })
+    }
+
 
     const submitData = () => {
+
+        let waiting = 0;
+        let received = 0;
+
         // updating and creating criteria
         criteria.forEach(criterion => {
             const matchCriterion = previousCriteria.find(pCriterion => pCriterion.id === criterion.id);
             if (matchCriterion) {
                 // PUT
+                waiting++;
                 fetch(`http://localhost:8080/api/criteria/${criterion.id}`, {
                     method: 'PUT',
                     credentials: 'include',
@@ -55,16 +72,24 @@ const ProjectTabs = (props) => {
                         toast({
                             title: "Error!",
                             description: `Criterion ${criterion.name} could not be updated.`,
+                            status: 'error',
                             duration: 5000,
                             isClosable: true,
                         });
                         throw new Error(`Criterion ${criterion.name} could not be updated.`);
+                    } else {
+                        received++;
+                        if (waiting === received){
+                            toastSuccess();
+                            navigate('/projects');
+                        }
                     }
                 }).catch(err => {
                     console.log(err);
                 })
             } else {
                 // POST
+                waiting++;
                 fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
                     method: 'POST',
                     credentials: 'include',
@@ -75,10 +100,17 @@ const ProjectTabs = (props) => {
                         toast({
                             title: "Error!",
                             description: `Criterion ${criterion.name} could not be uploaded.`,
+                            status: 'error',
                             duration: 5000,
                             isClosable: true,
                         });
                         throw new Error(`Criterion ${criterion.name} could not be uploaded.`);
+                    } else {
+                        received++;
+                        if (waiting === received){
+                            toastSuccess();
+                            navigate('/projects');
+                        }
                     }
                 }).catch(err => {
                     console.log(err);
@@ -91,6 +123,7 @@ const ProjectTabs = (props) => {
         );
         criteriaToDelete.forEach(criterionToDelete => {
             // DELETE
+            waiting++;
             fetch(`http://localhost:8080/api/criteria/${criterionToDelete.id}`, {
                 method: 'DELETE',
                 credentials: 'include'
@@ -99,10 +132,17 @@ const ProjectTabs = (props) => {
                     toast({
                         title: "Error!",
                         description: `Criterion ${criterionToDelete.name} could not be deleted.`,
+                        status: 'error',
                         duration: 5000,
                         isClosable: true,
                     });
                     throw new Error(`Criterion ${criterionToDelete.name} could not be deleted.`);
+                } else {
+                    received++;
+                    if (waiting === received){
+                        toastSuccess();
+                        navigate('/projects');
+                    }
                 }
             }).catch(err => {
                 console.log(err);
