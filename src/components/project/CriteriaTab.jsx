@@ -15,6 +15,11 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
     Show,
     Spacer,
     Switch,
@@ -31,7 +36,8 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
+import CustomTooltip from "../CustomTooltip.jsx";
 
 
 const CriteriaTab = ({ criteria, setCriteria }) => {
@@ -95,6 +101,17 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
         }
     }
 
+    const handleChangeLinearSegments = (valueString, id) => {
+        setCriteria(previousCriteria => {
+            return previousCriteria.map(criterion => {
+                if (criterion.id === id) {
+                    return { ...criterion, linear_segments: parseInt(valueString) };
+                }
+                return criterion;
+            });
+        });
+    }
+
     const addCriterion = () => {
         // get max criteria id
         let maxId = Math.max(...criteria.map(item => item.id));
@@ -116,13 +133,39 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
         <>
 
             {/*DESKTOP*/}
-            <Show above={'md'}>
+            <Show above={'lg'}>
                 <TableContainer>
                     <Table>
                         <Thead>
                             <Tr>
-                                <Th>Name</Th>
-                                <Th>Type</Th>
+                                <Th>
+                                    <HStack>
+                                        <Text>Name</Text>
+                                        <CustomTooltip label={"Criterion name"} openDelay={200}>
+                                            <InfoIcon/>
+                                        </CustomTooltip>
+                                    </HStack>
+                                </Th>
+                                <Th>
+                                    <HStack>
+                                        <Text>Type</Text>
+                                        <CustomTooltip
+                                            label={"Gain means that high values of a given alternative on this criterion will result in a higher position of the alternative in the final ranking. Loss means that low values of an alternative on this criterion will result in a higher position of the alternative in the final ranking."}
+                                            openDelay={200}>
+                                            <InfoIcon/>
+                                        </CustomTooltip>
+                                    </HStack>
+                                </Th>
+                                <Th>
+                                    <HStack>
+                                        <Text>Linear segments</Text>
+                                        <CustomTooltip
+                                            label={"Choose how many linear segments the criterion should have. To select the general function, choose 0."}
+                                            openDelay={200}>
+                                            <InfoIcon/>
+                                        </CustomTooltip>
+                                    </HStack>
+                                </Th>
                                 <Th/>
                             </Tr>
                         </Thead>
@@ -152,6 +195,21 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                                 </Text>
                                             </HStack>
                                         </Td>
+                                        <Td>
+                                            <NumberInput
+                                                defaultValue={criterion.linear_segments}
+                                                min={0}
+                                                max={30}
+                                                clampValueOnBlur={false}
+                                                onChange={(valueString) => handleChangeLinearSegments(valueString, criterion.id)}
+                                            >
+                                                <NumberInputField/>
+                                                <NumberInputStepper>
+                                                    <NumberIncrementStepper/>
+                                                    <NumberDecrementStepper/>
+                                                </NumberInputStepper>
+                                            </NumberInput>
+                                        </Td>
                                         <Td textAlign={'right'}>
                                             <IconButton
                                                 color={'red.300'}
@@ -173,8 +231,8 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
             </Show>
 
             {/*MOBILE*/}
-            {/*TODO: change 767px to const, can't be 'md' because mobile and desktop are both seen then*/}
-            <Show below={'767px'}>
+            {/*TODO: change 991px to const, can't be 'md' because mobile and desktop are both seen then*/}
+            <Show below={'991px'}>
                 <Flex
                     direction={'column'}
                     spacing={4}
