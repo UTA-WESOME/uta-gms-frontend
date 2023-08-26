@@ -189,10 +189,12 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                 return (
                                     <Tr>
                                         <Td>
-                                            <Input
-                                                defaultValue={criterion.name}
-                                                onChange={(event) => handleChangeName(event, criterion.id)}
-                                            />
+                                            <FormControl isInvalid={criterion.name.length === 0}>
+                                                <Input
+                                                    defaultValue={criterion.name}
+                                                    onChange={(event) => handleChangeName(event, criterion.id)}
+                                                />
+                                            </FormControl>
                                         </Td>
                                         <Td>
                                             <HStack>

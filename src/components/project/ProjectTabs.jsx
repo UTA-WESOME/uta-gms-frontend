@@ -56,6 +56,20 @@ const ProjectTabs = (props) => {
         let waiting = 0;
         let received = 0;
 
+        // check if all criteria have name
+        const criteriaCheckName = criteria.filter(criterion => criterion.name === "");
+        if (criteriaCheckName.length > 0) {
+            toast({
+                title: "Error!",
+                description: "There is at least one criterion without a name!",
+                status: 'error',
+                duration: 8000,
+                isClosable: false
+            })
+            return;
+        }
+
+
         // updating and creating criteria
         criteria.forEach(criterion => {
             const matchCriterion = previousCriteria.find(pCriterion => pCriterion.id === criterion.id);
@@ -65,10 +79,10 @@ const ProjectTabs = (props) => {
                 fetch(`http://localhost:8080/api/criteria/${criterion.id}`, {
                     method: 'PUT',
                     credentials: 'include',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(criterion)
                 }).then(response => {
-                    if(!response.ok) {
+                    if (!response.ok) {
                         toast({
                             title: "Error!",
                             description: `Criterion ${criterion.name} could not be updated.`,
@@ -79,7 +93,7 @@ const ProjectTabs = (props) => {
                         throw new Error(`Criterion ${criterion.name} could not be updated.`);
                     } else {
                         received++;
-                        if (waiting === received){
+                        if (waiting === received) {
                             toastSuccess();
                             navigate('/projects');
                         }
@@ -93,10 +107,10 @@ const ProjectTabs = (props) => {
                 fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
                     method: 'POST',
                     credentials: 'include',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(criterion)
                 }).then(response => {
-                    if(!response.ok) {
+                    if (!response.ok) {
                         toast({
                             title: "Error!",
                             description: `Criterion ${criterion.name} could not be uploaded.`,
@@ -107,7 +121,7 @@ const ProjectTabs = (props) => {
                         throw new Error(`Criterion ${criterion.name} could not be uploaded.`);
                     } else {
                         received++;
-                        if (waiting === received){
+                        if (waiting === received) {
                             toastSuccess();
                             navigate('/projects');
                         }
@@ -128,7 +142,7 @@ const ProjectTabs = (props) => {
                 method: 'DELETE',
                 credentials: 'include'
             }).then(response => {
-                if(!response.ok) {
+                if (!response.ok) {
                     toast({
                         title: "Error!",
                         description: `Criterion ${criterionToDelete.name} could not be deleted.`,
@@ -139,7 +153,7 @@ const ProjectTabs = (props) => {
                     throw new Error(`Criterion ${criterionToDelete.name} could not be deleted.`);
                 } else {
                     received++;
-                    if (waiting === received){
+                    if (waiting === received) {
                         toastSuccess();
                         navigate('/projects');
                     }
