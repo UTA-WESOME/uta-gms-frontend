@@ -11,7 +11,7 @@ const CustomTooltip = (props) => {
             color={useColorModeValue('black.800', 'white.500')}
             borderRadius='lg'
             padding={'3'}
-            openDelay={1000} >
+            openDelay={props.openDelay ? props.openDelay : 700} >
             {props.children}
         </Tooltip>
     );

@@ -1,41 +1,168 @@
-import { Box, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery, useToast } from "@chakra-ui/react";
 import CriteriaTab from "./CriteriaTab.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 
-const ProjectTabs = () => {
+const ProjectTabs = (props) => {
 
+    // criteria and previousCriteria will be compared in submitData
+    // criteria holds active data that the user changes
     const [criteria, setCriteria] = useState([]);
-    const [isScreenMobile] = useMediaQuery('(max-width: 460px)')
+    // previousCriteria holds data downloaded from the backend
+    const [previousCriteria, setPreviousCriteria] = useState([]);
+
+    const [hasLoaded, setHasLoaded] = useState(false);
+    const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
+    const navigate = useNavigate();
+    const toast = useToast();
 
 
-    useState(() => {
-        setCriteria([
-            {
-                "id": 1,
-                "name": "Gain 1",
-                "gain": true,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
-            },
-            {
-                "id": 2,
-                "name": "Gain 2",
-                "gain": true,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
-            },
-            {
-                "id": 3,
-                "name": "Lose 3",
-                "gain": false,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
+    useEffect(() => {
+
+        // get criteria
+        fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
+            method: "GET",
+            credentials: "include"
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting criteria");
             }
-        ])
+            return response.json();
+        }).then(data => {
+            setCriteria(data);
+            setPreviousCriteria(data);
+            setHasLoaded(true);
+        }).catch(err => {
+            console.log(err);
+        })
     }, [])
+
+    const toastSuccess = () => {
+        toast({
+            title: "Saved!",
+            description: `Settings saved!`,
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+        })
+    }
+
+
+    const submitData = () => {
+
+        let waiting = 0;
+        let received = 0;
+
+        // check if all criteria have name
+        const criteriaCheckName = criteria.filter(criterion => criterion.name === "");
+        if (criteriaCheckName.length > 0) {
+            toast({
+                title: "Error!",
+                description: "There is at least one criterion without a name!",
+                status: 'error',
+                duration: 8000,
+                isClosable: false
+            })
+            return;
+        }
+
+
+        // updating and creating criteria
+        criteria.forEach(criterion => {
+            const matchCriterion = previousCriteria.find(pCriterion => pCriterion.id === criterion.id);
+            if (matchCriterion) {
+                // PUT
+                waiting++;
+                fetch(`http://localhost:8080/api/criteria/${criterion.id}`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(criterion)
+                }).then(response => {
+                    if (!response.ok) {
+                        toast({
+                            title: "Error!",
+                            description: `Criterion ${criterion.name} could not be updated.`,
+                            status: 'error',
+                            duration: 5000,
+                            isClosable: true,
+                        });
+                        throw new Error(`Criterion ${criterion.name} could not be updated.`);
+                    } else {
+                        received++;
+                        if (waiting === received) {
+                            toastSuccess();
+                            navigate('/projects');
+                        }
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            } else {
+                // POST
+                waiting++;
+                fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(criterion)
+                }).then(response => {
+                    if (!response.ok) {
+                        toast({
+                            title: "Error!",
+                            description: `Criterion ${criterion.name} could not be uploaded.`,
+                            status: 'error',
+                            duration: 5000,
+                            isClosable: true,
+                        });
+                        throw new Error(`Criterion ${criterion.name} could not be uploaded.`);
+                    } else {
+                        received++;
+                        if (waiting === received) {
+                            toastSuccess();
+                            navigate('/projects');
+                        }
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
+        });
+        // deleting criteria
+        const criteriaToDelete = previousCriteria.filter(pCriterion =>
+            !criteria.some(criterion => criterion.id === pCriterion.id)
+        );
+        criteriaToDelete.forEach(criterionToDelete => {
+            // DELETE
+            waiting++;
+            fetch(`http://localhost:8080/api/criteria/${criterionToDelete.id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            }).then(response => {
+                if (!response.ok) {
+                    toast({
+                        title: "Error!",
+                        description: `Criterion ${criterionToDelete.name} could not be deleted.`,
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                    });
+                    throw new Error(`Criterion ${criterionToDelete.name} could not be deleted.`);
+                } else {
+                    received++;
+                    if (waiting === received) {
+                        toastSuccess();
+                        navigate('/projects');
+                    }
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        })
+    }
 
 
     return (
@@ -71,17 +198,23 @@ const ProjectTabs = () => {
 
                 </TabList>
                 <TabPanels>
-                    <TabPanel>
-                        <CriteriaTab criteria={criteria} setCriteria={setCriteria}/>
-                    </TabPanel>
+                    {hasLoaded &&
+                        <TabPanel>
+                            <CriteriaTab criteria={criteria} setCriteria={setCriteria}/>
+                        </TabPanel>
+                    }
                     <TabPanel>
                         <p>Alternatives</p>
                     </TabPanel>
                     <TabPanel>
                         <p>Reference ranking</p>
                     </TabPanel>
+
                 </TabPanels>
             </Tabs>
+            <Box textAlign={'right'}>
+                <Button colorScheme={'teal'} mr={6} onClick={submitData}>Save</Button>
+            </Box>
         </Box>
     )
 }
