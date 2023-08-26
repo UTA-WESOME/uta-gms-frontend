@@ -20,6 +20,11 @@ import {
     NumberInput,
     NumberInputField,
     NumberInputStepper,
+    Popover,
+    PopoverBody,
+    PopoverCloseButton,
+    PopoverContent,
+    PopoverTrigger,
     Show,
     Spacer,
     Switch,
@@ -45,10 +50,14 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const formik = useFormik({
-        initialValues: { id: 0, name: "", gain: false },
+        initialValues: { id: 0, name: "", gain: false, linear_segments: 0 },
         validationSchema: Yup.object({
             name: Yup.string().required("Criterion name is required!")
-                .max(64, "Criterion name too long!")
+                .max(64, "Criterion name too long!"),
+            linear_segments: Yup.number()
+                .max(30, "The criterion is limited to a maximum of 30 linear segments!")
+                .min(0, "The criterion must have a minimum of 0 linear segments!")
+                .integer("The count of linear segments must be a whole number!")
         }),
         onSubmit: (values, actions) => {
             // update criterion
@@ -60,6 +69,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                             id: values.id,
                             name: values.name,
                             gain: values.gain,
+                            linear_segments: values.linear_segments,
                         };
                     }
                     return criterion;
@@ -68,7 +78,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
             // close modal
             onClose();
         }
-    })
+    });
 
 
     const handleChangeType = (event, id) => {
@@ -110,6 +120,11 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                 return criterion;
             });
         });
+    }
+
+    const handleChangeLinearSegmentsMobile = (change) => {
+        let newValue = formik.values.linear_segments + change;
+        formik.setFieldValue("linear_segments", newValue);
     }
 
     const addCriterion = () => {
@@ -253,6 +268,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                         formik.values.id = criterion.id;
                                         formik.values.name = criterion.name;
                                         formik.values.gain = criterion.gain;
+                                        formik.values.linear_segments = criterion.linear_segments;
                                         onOpen();
                                     }}>
                                 </IconButton>
@@ -295,7 +311,24 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                             </FormControl>
 
                             <FormControl>
-                                <FormLabel fontSize={'sm'}>Type</FormLabel>
+                                <FormLabel fontSize={'sm'}>
+                                    <HStack>
+                                        <Text>Type</Text>
+                                        <Popover>
+                                            <PopoverTrigger>
+                                                <InfoIcon/>
+                                            </PopoverTrigger>
+                                            <PopoverContent>
+                                                <PopoverCloseButton/>
+                                                <PopoverBody>Gain means that high values of a given alternative on this
+                                                    criterion will result in a higher position of the alternative in the
+                                                    final ranking. Loss means that low values of an alternative on this
+                                                    criterion will result in a higher position of the alternative in the
+                                                    final ranking.</PopoverBody>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </HStack>
+                                </FormLabel>
                                 <HStack>
                                     <Text color={formik.values.gain ? 'gray' : 'red.300'}>
                                         Cost
@@ -311,6 +344,43 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                         Gain
                                     </Text>
                                 </HStack>
+                            </FormControl>
+
+                            <FormControl isInvalid={formik.errors.linear_segments && formik.touched.linear_segments}>
+                                <FormLabel fontSize={'sm'}>
+                                    <HStack>
+                                        <Text>
+                                            Linear segments
+                                        </Text>
+                                        <Popover>
+                                            <PopoverTrigger>
+                                                <InfoIcon/>
+                                            </PopoverTrigger>
+                                            <PopoverContent>
+                                                <PopoverCloseButton/>
+                                                <PopoverBody>Choose how many linear segments the criterion should have.
+                                                    To select the general function, choose 0.</PopoverBody>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </HStack>
+                                </FormLabel>
+                                <HStack>
+                                    <Button
+                                        isDisabled={formik.values.linear_segments >= 30}
+                                        onClick={() => handleChangeLinearSegmentsMobile(1)}
+                                    >+</Button>
+                                    <Input
+                                        id={'input_linear_segments'}
+                                        name={'linear_segments'}
+                                        type={'number'}
+                                        {...formik.getFieldProps("linear_segments")}
+                                    />
+                                    <Button
+                                        isDisabled={formik.values.linear_segments <= 0}
+                                        onClick={() => handleChangeLinearSegmentsMobile(-1)}
+                                    >-</Button>
+                                </HStack>
+                                <FormErrorMessage>{formik.errors.linear_segments}</FormErrorMessage>
                             </FormControl>
                         </VStack>
 
