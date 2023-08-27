@@ -11,11 +11,11 @@ const AddProjectCard = () => {
     return (
         <CustomTooltip label="New Project" >
             <IconButton
-                minH={{ base: '99%', md: '200px' }}
-                maxH={{ base: '99%', md: '225px' }}
-                maxW={{ base: 'full', md: '275px' }}
+                maxW={{ base: 'full', sm: '70%', md: '275px' }}
+                minH={{ base: 'full', md: '200px' }}
+                maxH={{ base: 'full', md: '275px' }}
                 w={'full'}
-                h={'99%'}
+                h={'full'}
                 borderWidth='1px'
                 borderRadius='lg'
                 overflow='hidden'
