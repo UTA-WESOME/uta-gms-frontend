@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import AlternativesTab from "./AlternativesTab.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -13,6 +14,10 @@ const ProjectTabs = (props) => {
     const [criteria, setCriteria] = useState([]);
     // previousCriteria holds data downloaded from the backend
     const [previousCriteria, setPreviousCriteria] = useState([]);
+
+    // alternatives holds active data that the user changes
+    const [alternatives, setAlternatives] = useState([]);
+
 
     const [hasLoaded, setHasLoaded] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
@@ -38,6 +43,48 @@ const ProjectTabs = (props) => {
         }).catch(err => {
             console.log(err);
         })
+
+
+        // get alternatives
+        fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
+            method: 'GET',
+            credentials: 'include',
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting alternatives");
+            }
+            return response.json();
+        }).then(data => {
+            data.forEach(alternative => {
+
+                fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
+                    method: 'GET',
+                    credentials: 'include',
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error("error getting performances");
+                    }
+                    return response.json();
+                }).then(data => {
+
+                    // insert alternative with its performances
+                    setAlternatives(pAlternatives => {
+                        const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
+                        if(!foundAlternative) {
+                            return  [...pAlternatives, {
+                                ...alternative,
+                                performances: data
+                            }]
+                        } else {
+                            return pAlternatives;
+                        }
+                    });
+
+                })
+
+            })
+        })
+
     }, [])
 
     const toastSuccess = () => {
@@ -204,7 +251,7 @@ const ProjectTabs = (props) => {
                         </TabPanel>
                     }
                     <TabPanel>
-                        <p>Alternatives</p>
+                        <AlternativesTab alternatives={alternatives} setAlternatives={setAlternatives}/>
                     </TabPanel>
                     <TabPanel>
                         <p>Reference ranking</p>
