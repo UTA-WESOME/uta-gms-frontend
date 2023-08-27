@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -7,18 +7,20 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogOverlay,
-    Box,
     Button,
-    ButtonGroup,
     Flex,
     Heading,
     Icon,
     IconButton,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverBody,
-    PopoverCloseButton,
+    LinkBox,
+    LinkOverlay,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Spacer,
     Text,
     useColorModeValue,
@@ -32,7 +34,8 @@ import CustomTooltip from "../CustomTooltip";
 const ProjectCard = ({ id, name, description }) => {
 
     const navigate = useNavigate();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure()
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
     const cancelRef = useRef();
     const toast = useToast();
 
@@ -60,12 +63,21 @@ const ProjectCard = ({ id, name, description }) => {
         })
     }
 
+    const shareProject = () => {
+        toast({
+            title: 'Wow!',
+            description: "You tried to share the project! The feature is yet to be implemented. ",
+            status: 'info',
+            duration: 5000,
+            isClosable: true,
+        });
+    }
 
     return (
         <>
-            <Box
+            <LinkBox
                 as={'div'}
-                maxW={{ base: 'full', md: '275px' }}
+                maxW={{ base: 'full', sm: '70%', md: '275px' }}
                 minH={{ base: 'full', md: '200px' }}
                 maxH={{ base: 'full', md: '275px' }}
                 w={'full'}
@@ -81,9 +93,12 @@ const ProjectCard = ({ id, name, description }) => {
                         lineHeight={'100%'}
                         textAlign={'start'}
                         paddingBottom={2}>
-                        <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
-                            {name}
-                        </Text>
+                        {/*TODO: might need refactor*/}
+                        <LinkOverlay  onClick={() => navigate(`/projects/${id}`)} href={`#`}>
+                            <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
+                                {name}
+                            </Text>
+                        </LinkOverlay>
                     </Heading>
                     <Text fontSize={'md'}
                           lineHeight={'110%'}
@@ -92,60 +107,72 @@ const ProjectCard = ({ id, name, description }) => {
                           paddingBottom={'10'}>
                         6.08.2023
                     </Text>
-                    <Spacer/>
-                    <Flex direction={'row'} spacing={'4px'} width='100%' justify={'center'}>
-                        <ButtonGroup size='base' isAttached variant='outline'>
-                            <Popover
-                                variant={'rounded'}
-                                colorScheme={useColorModeValue('green.500', 'green.200')}>
-                                <PopoverTrigger>
-                                    <IconButton
-                                        aria-label='Description'
-                                        padding={'2'}
-                                        icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
-                                                    color={useColorModeValue('blue.500', 'blue.200')}/>}/>
-                                </PopoverTrigger>
-                                <PopoverContent background={useColorModeValue('gray.100', 'gray.700')}>
-                                    <PopoverCloseButton/>
-                                    <PopoverBody textAlign={'left'} p={'6'}>
-                                        {description}
-                                    </PopoverBody>
-                                </PopoverContent>
-                            </Popover>
+                    <Spacer />
 
-                            <CustomTooltip label='Share'>
-                                <IconButton
-                                    aria-label='Share'
-                                    padding={'2'}
-                                    icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
-                                                color={useColorModeValue('green.500', 'green.200')}/>}/>
-                            </CustomTooltip>
-                            <CustomTooltip label='Edit'>
-                                <IconButton
-                                    aria-label='Edit'
-                                    padding={'2'}
-                                    icon={<Icon as={BiEditAlt} minH={'7'} minW={'7'}
-                                                color={useColorModeValue('yellow.500', 'yellow.200')}/>}
-                                    onClick={() => navigate(`/projects/${id}/edit`)}
-                                />
-                            </CustomTooltip>
-                            <CustomTooltip label='Delete'>
-                                <IconButton
-                                    aria-label='Delete'
-                                    padding={'2'}
-                                    icon={<Icon as={BiTrash} minH={'7'} minW={'7'}
-                                                color={useColorModeValue('red.500', 'red.200')}/>}
-                                    onClick={onOpen}
-                                />
-                            </CustomTooltip>
-                        </ButtonGroup>
+
+                    <Flex
+                        direction={'row'}
+                        spacing={'4px'}
+                        justify={'center'}
+                        mx={'auto'}
+                        p={1}
+                        borderWidth={'1px'}
+                        borderRadius={'lg'}
+                    >
+                        <CustomTooltip label='Info'>
+                            <IconButton
+                                aria-label='Info'
+                                padding={'2'}
+                                background={'transparent'}
+                                borderRadius={'full'}
+                                icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
+                                    color={useColorModeValue('blue.500', 'blue.200')} />}
+                                onClick={onOpenInfo}
+                            />
+                        </CustomTooltip>
+                        <CustomTooltip label='Share'>
+                            <IconButton
+                                aria-label='Share'
+                                padding={'2'}
+                                background={'transparent'}
+                                borderRadius={'full'}
+                                icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
+                                    color={useColorModeValue('green.500', 'green.200')} />}
+                                onClick={shareProject}
+                            />
+                        </CustomTooltip>
+                        <CustomTooltip label='Edit'>
+                            <IconButton
+                                aria-label='Edit'
+                                padding={'2'}
+                                background={'transparent'}
+                                borderRadius={'full'}
+                                icon={<Icon as={BiEditAlt} minH={'7'} minW={'7'}
+                                    color={useColorModeValue('yellow.500', 'yellow.200')} />}
+                                onClick={() => navigate(`/projects/${id}/edit`)}
+                            />
+                        </CustomTooltip>
+                        <CustomTooltip label='Delete'>
+                            <IconButton
+                                aria-label='Delete'
+                                padding={'2'}
+                                background={'transparent'}
+                                borderRadius={'full'}
+                                icon={<Icon as={BiTrash} minH={'7'} minW={'7'}
+                                    color={useColorModeValue('red.500', 'red.200')} />}
+                                onClick={onOpenDelete}
+                            />
+                        </CustomTooltip>
                     </Flex>
+
+
                 </Flex>
-            </Box>
+            </LinkBox>
+
             <AlertDialog
                 leastDestructiveRef={cancelRef}
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isOpenDelete}
+                onClose={onCloseDelete}
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
@@ -158,7 +185,7 @@ const ProjectCard = ({ id, name, description }) => {
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
+                            <Button ref={cancelRef} onClick={onCloseDelete}>
                                 Cancel
                             </Button>
                             <Button colorScheme='red' onClick={deleteProject} ml={3}>
@@ -167,8 +194,29 @@ const ProjectCard = ({ id, name, description }) => {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
-
             </AlertDialog>
+
+            <Modal isOpen={isOpenInfo} onClose={onCloseInfo}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Project description</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {description}
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button
+                            colorScheme={useColorModeValue('white.500', 'black.800')}
+                            bg={useColorModeValue('teal.500', 'teal.200')}
+                            _hover={{ bg: useColorModeValue('teal.200', 'teal.500') }}
+                            mr={3}
+                            onClick={onCloseInfo}>
+                            Close
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
 
         </>
     )
