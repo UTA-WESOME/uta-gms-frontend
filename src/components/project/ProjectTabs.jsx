@@ -251,7 +251,11 @@ const ProjectTabs = (props) => {
                         </TabPanel>
                     }
                     <TabPanel>
-                        <AlternativesTab alternatives={alternatives} setAlternatives={setAlternatives}/>
+                        <AlternativesTab
+                            alternatives={alternatives}
+                            setAlternatives={setAlternatives}
+                            criteria={criteria}
+                        />
                     </TabPanel>
                     <TabPanel>
                         <p>Reference ranking</p>
