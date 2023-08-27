@@ -110,10 +110,10 @@ const ProjectCard = ({ id, name, description }) => {
                         </LinkOverlay>
                     </Heading>
                     <Text fontSize={'md'}
-                        lineHeight={'110%'}
-                        color={useColorModeValue('gray.700', 'gray.100')}
-                        paddingTop={'2'}
-                        paddingBottom={'10'}>
+                          lineHeight={'110%'}
+                          color={useColorModeValue('gray.700', 'gray.100')}
+                          paddingTop={'2'}
+                          paddingBottom={'10'}>
                         6.08.2023
                     </Text>
                     <Spacer />
@@ -172,7 +172,6 @@ const ProjectCard = ({ id, name, description }) => {
                                 onClick={onOpenDelete}
                             />
                         </CustomTooltip>
-
                     </Flex>
 
 

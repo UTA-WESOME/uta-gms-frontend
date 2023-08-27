@@ -99,7 +99,7 @@ const ProjectsContainer = ({ projects }) => {
                             h={'100%'}
                             align={'center'}
                             maxW={{ base: '100%', sm: '4xl', md: '6xl' }}
-                            onClick={() => navigate("/newproject")}
+                            onClick={() => navigate("/projects/new")}
                         >
                             <AddProjectCard />
                         </GridItem>

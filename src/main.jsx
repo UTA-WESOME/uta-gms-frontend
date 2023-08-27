@@ -9,6 +9,8 @@ import SignUp from "./components/login/SignUp.jsx";
 import SignIn from "./components/login/SignIn.jsx";
 import Projects from "./components/Projects.jsx";
 import NewProject from "./components/projects/NewProject.jsx";
+import EditProject from "./components/projects/EditProject.jsx";
+import Project from "./components/Project.jsx";
 
 const router = createBrowserRouter([
     {
@@ -29,8 +31,16 @@ const router = createBrowserRouter([
                 element: <Projects/>
             },
             {
-                path: "/newproject",
+                path: "/projects/new",
                 element: <NewProject/>
+            },
+            {
+                path: "/projects/:id/edit",
+                element: <EditProject/>
+            },
+            {
+                path: "/projects/:id",
+                element: <Project/>
             }
         ]
     }
