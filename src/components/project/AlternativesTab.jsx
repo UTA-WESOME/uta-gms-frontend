@@ -4,23 +4,25 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
 
     return (
         <>
-            {JSON.stringify(alternatives, null, 4)}
+            {/*{JSON.stringify(alternatives, null, 4)}*/}
 
 
             {/*DESKTOP*/}
             <Show above={'lg'}>
-                <TableContainer>
-                    <Table>
+                <TableContainer pb={2}>
+                    <Table style={{borderCollapse: 'separate', borderSpacing:"0"}}>
                         <Thead>
                             <Tr>
-                                <Th>
+                                <Th position={'sticky'} backgroundColor={'gray.800'} left={0} borderRightWidth={'2px'}>
                                     <Text>Name</Text>
                                 </Th>
                                 {criteria.map(criterion => {
                                     return (
-                                        <Th>
-                                            {criterion.name}
-                                        </Th>
+                                        <>
+                                            <Th>
+                                                <Text>{criterion.name}</Text>
+                                            </Th>
+                                        </>
                                     )
                                 })}
                             </Tr>
@@ -31,7 +33,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                 .map((alternative, index) => {
                                     return (
                                         <Tr>
-                                            <Td>
+                                            <Td position={'sticky'} backgroundColor={'gray.800'} left={0} borderRightWidth={'2px'} >
                                                 <Text>{alternative.name}</Text>
                                             </Td>
                                             {criteria.map(criterion => {
