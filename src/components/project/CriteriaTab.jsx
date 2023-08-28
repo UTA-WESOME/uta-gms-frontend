@@ -45,7 +45,7 @@ import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import CustomTooltip from "../CustomTooltip.jsx";
 
 
-const CriteriaTab = ({ criteria, setCriteria }) => {
+const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -136,8 +136,25 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
         setCriteria(previousCriteria => [...previousCriteria, {
             id: maxId + 1,
             name: "Criterion name",
-            gain: true
+            gain: true,
+            linear_segments: 0,
         }])
+
+        // set alternatives
+        setAlternatives(pAlternatives => {
+            return pAlternatives.map(alternative => {
+                return {
+                    ...alternative,
+                    performances: [
+                        ...alternative.performances,
+                        {
+                            value: 0,
+                            criterion: maxId + 1,
+                        }
+                    ]
+                }
+            })
+        })
     }
 
     const deleteCriterion = (id) => {

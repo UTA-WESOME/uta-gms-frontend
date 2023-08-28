@@ -247,7 +247,11 @@ const ProjectTabs = (props) => {
                 <TabPanels>
                     {hasLoaded &&
                         <TabPanel>
-                            <CriteriaTab criteria={criteria} setCriteria={setCriteria}/>
+                            <CriteriaTab
+                                criteria={criteria}
+                                setCriteria={setCriteria}
+                                setAlternatives={setAlternatives}
+                            />
                         </TabPanel>
                     }
                     <TabPanel>
