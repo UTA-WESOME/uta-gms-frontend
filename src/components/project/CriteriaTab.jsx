@@ -158,7 +158,18 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
     }
 
     const deleteCriterion = (id) => {
+        // set criteria
         setCriteria(previousCriteria => previousCriteria.filter(item => item.id !== id));
+
+        // set alternatives
+        setAlternatives(pAlternatives => {
+            return pAlternatives.map(alternative => {
+                return {
+                    ...alternative,
+                    performances: alternative.performances.filter(performace => performace.criterion !== id)
+                }
+            })
+        })
     }
 
     return (
