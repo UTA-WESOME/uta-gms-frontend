@@ -1,4 +1,4 @@
-import { Show, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Show, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from "@chakra-ui/react";
 
 const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
 
@@ -10,10 +10,15 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
             {/*DESKTOP*/}
             <Show above={'lg'}>
                 <TableContainer pb={2}>
-                    <Table style={{borderCollapse: 'separate', borderSpacing:"0"}}>
+                    <Table style={{borderCollapse: 'separate', borderSpacing: "0"}}>
                         <Thead>
                             <Tr>
-                                <Th position={'sticky'} backgroundColor={'gray.800'} left={0} borderRightWidth={'2px'}>
+                                <Th
+                                    position={'sticky'}
+                                    backgroundColor={useColorModeValue('white', 'gray.800')}
+                                    left={0}
+                                    borderRightWidth={'2px'}
+                                >
                                     <Text>Name</Text>
                                 </Th>
                                 {criteria.map(criterion => {
@@ -33,7 +38,11 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                 .map((alternative, index) => {
                                     return (
                                         <Tr>
-                                            <Td position={'sticky'} backgroundColor={'gray.800'} left={0} borderRightWidth={'2px'} >
+                                            <Td
+                                                position={'sticky'}
+                                                backgroundColor={useColorModeValue('white', 'gray.800')}
+                                                left={0}
+                                                borderRightWidth={'2px'} >
                                                 <Text>{alternative.name}</Text>
                                             </Td>
                                             {criteria.map(criterion => {
