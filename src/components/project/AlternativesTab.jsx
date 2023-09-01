@@ -119,7 +119,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                             >
                                                 <FormControl isInvalid={alternative.name.length === 0}>
                                                     <Input
-                                                        defaultValue={alternative.name}
+                                                        value={alternative.name}
                                                         onChange={(event) => handleChangeName(event, alternative.id)}
                                                     />
                                                 </FormControl>
@@ -129,10 +129,9 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                                 return (
                                                     <Td zIndex={1} minW={'175px'}>
                                                         <NumberInput
-                                                            defaultValue={performance.value}
+                                                            value={performance.value}
                                                             clampValueOnBlur={false}
                                                             onChange={(_, valueNumber) => handleChangePerformance(valueNumber, alternative.id, criterion.id)}
-                                                            zIndex={0}
                                                         >
                                                             <NumberInputField/>
                                                             <NumberInputStepper>

@@ -219,7 +219,7 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
                                         <Td>
                                             <FormControl isInvalid={criterion.name.length === 0}>
                                                 <Input
-                                                    defaultValue={criterion.name}
+                                                    value={criterion.name}
                                                     onChange={(event) => handleChangeName(event, criterion.id)}
                                                 />
                                             </FormControl>
@@ -242,7 +242,7 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
                                         </Td>
                                         <Td>
                                             <NumberInput
-                                                defaultValue={criterion.linear_segments}
+                                                value={criterion.linear_segments}
                                                 min={0}
                                                 max={30}
                                                 clampValueOnBlur={false}
