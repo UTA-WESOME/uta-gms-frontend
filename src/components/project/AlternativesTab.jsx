@@ -1,5 +1,6 @@
 import {
     Button,
+    Flex,
     FormControl,
     HStack,
     IconButton,
@@ -10,6 +11,7 @@ import {
     NumberInputField,
     NumberInputStepper,
     Show,
+    Spacer,
     Table,
     TableContainer,
     Tbody,
@@ -21,7 +23,7 @@ import {
     useColorModeValue
 } from "@chakra-ui/react";
 import CustomTooltip from "../CustomTooltip.jsx";
-import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 
 const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
 
@@ -119,8 +121,10 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                         <>
                                             <Th>
                                                 <HStack>
-                                                    <Text color={criterion.gain ? 'teal.400' : 'red.300'}>{criterion.name}</Text>
-                                                    <CustomTooltip label={criterion.gain ? "Gain" : "Cost"} openDelay={200}>
+                                                    <Text
+                                                        color={criterion.gain ? 'teal.400' : 'red.300'}>{criterion.name}</Text>
+                                                    <CustomTooltip label={criterion.gain ? "Gain" : "Cost"}
+                                                                   openDelay={200}>
                                                         <InfoIcon/>
                                                     </CustomTooltip>
                                                 </HStack>
@@ -201,7 +205,45 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
 
             {/*MOBILE*/}
             <Show below={'991px'}>
+                <Flex
+                    direction={'column'}
+                    spacing={4}
+                >
+                    {alternatives.map((alternative, index) => {
+                        return (
+                            <HStack
+                                borderTopWidth={'1px'}
+                                borderBottomWidth={index === alternatives.length - 1 ? '1px' : '0px'}
+                                p={2}
+                            >
+                                <Text isTruncated>{alternative.name}</Text>
+                                <Spacer/>
+                                <IconButton
+                                    aria-label={'edit-alternative'}
+                                    icon={<EditIcon/>}
+                                    onClick={() => {
 
+                                    }}
+                                />
+                                <IconButton
+                                    color={'red.300'}
+                                    aria-label={'delete-alternative'}
+                                    icon={<DeleteIcon/>}
+                                    onClick={() => deleteAlternative(alternative.id)}
+                                />
+                            </HStack>
+                        )
+                    })}
+                </Flex>
+
+                <Button
+                    my={4}
+                    colorScheme={'teal'}
+                    onClick={addAlternative}
+                    variant='outline'
+                >
+                    New alternative
+                </Button>
             </Show>
 
 
