@@ -166,7 +166,7 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
             return pAlternatives.map(alternative => {
                 return {
                     ...alternative,
-                    performances: alternative.performances.filter(performace => performace.criterion !== id)
+                    performances: alternative.performances.filter(performance => performance.criterion !== id)
                 }
             })
         })

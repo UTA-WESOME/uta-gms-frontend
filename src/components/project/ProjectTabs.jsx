@@ -19,7 +19,8 @@ const ProjectTabs = (props) => {
     const [alternatives, setAlternatives] = useState([]);
 
 
-    const [hasLoaded, setHasLoaded] = useState(false);
+    const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
+    const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
     const navigate = useNavigate();
     const toast = useToast();
@@ -39,7 +40,7 @@ const ProjectTabs = (props) => {
         }).then(data => {
             setCriteria(data);
             setPreviousCriteria(data);
-            setHasLoaded(true);
+            setHasLoadedCriteria(true);
         }).catch(err => {
             console.log(err);
         })
@@ -55,7 +56,12 @@ const ProjectTabs = (props) => {
             }
             return response.json();
         }).then(data => {
+
+            let waiting = 0;
+            let received = 0;
             data.forEach(alternative => {
+
+                waiting++;
 
                 fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
                     method: 'GET',
@@ -70,8 +76,8 @@ const ProjectTabs = (props) => {
                     // insert alternative with its performances
                     setAlternatives(pAlternatives => {
                         const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
-                        if(!foundAlternative) {
-                            return  [...pAlternatives, {
+                        if (!foundAlternative) {
+                            return [...pAlternatives, {
                                 ...alternative,
                                 performances: data
                             }]
@@ -80,9 +86,16 @@ const ProjectTabs = (props) => {
                         }
                     });
 
+                    received++;
+                    if (received === waiting) {
+                        setHasLoadedAlternatives(true);
+                    }
+
                 })
 
             })
+        }).catch(err => {
+            console.log(err);
         })
 
     }, [])
@@ -245,7 +258,7 @@ const ProjectTabs = (props) => {
 
                 </TabList>
                 <TabPanels>
-                    {hasLoaded &&
+                    {hasLoadedCriteria &&
                         <TabPanel>
                             <CriteriaTab
                                 criteria={criteria}
@@ -254,13 +267,15 @@ const ProjectTabs = (props) => {
                             />
                         </TabPanel>
                     }
-                    <TabPanel>
-                        <AlternativesTab
-                            alternatives={alternatives}
-                            setAlternatives={setAlternatives}
-                            criteria={criteria}
-                        />
-                    </TabPanel>
+                    {hasLoadedAlternatives &&
+                        <TabPanel>
+                            <AlternativesTab
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                                criteria={criteria}
+                            />
+                        </TabPanel>
+                    }
                     <TabPanel>
                         <p>Reference ranking</p>
                     </TabPanel>
