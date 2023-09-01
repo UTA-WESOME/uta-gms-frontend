@@ -2,6 +2,11 @@ import {
     FormControl,
     HStack,
     Input,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
     Show,
     Table,
     TableContainer,
@@ -36,6 +41,29 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
             let alternative = alternatives.filter(alternative => alternative.id === id)[0];
             event.target.value = alternative.name;
         }
+    }
+
+    const handleChangePerformance = (valueNumber, alternativeId, criterionId) => {
+        setAlternatives(pAlternatives => {
+            return pAlternatives.map(alternative => {
+                if (alternative.id === alternativeId) {
+                    let newPerformances = alternative.performances.map(performance => {
+                        if (performance.criterion === criterionId) {
+                            return {
+                                ...performance,
+                                value: valueNumber,
+                            }
+                        }
+                        return performance;
+                    })
+                    return {
+                        ...alternative,
+                        performances: newPerformances
+                    }
+                }
+                return alternative;
+            });
+        });
     }
 
 
@@ -87,6 +115,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                                 borderRightWidth={'2px'}
                                                 minW={'225px'}
                                                 maxW={'225px'}
+                                                zIndex={2}
                                             >
                                                 <FormControl isInvalid={alternative.name.length === 0}>
                                                     <Input
@@ -98,8 +127,19 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                             {criteria.map(criterion => {
                                                 const performance = alternative.performances.filter(p => p.criterion === criterion.id)[0]
                                                 return (
-                                                    <Td>
-                                                        <Text>{performance.value}</Text>
+                                                    <Td zIndex={1} minW={'175px'}>
+                                                        <NumberInput
+                                                            defaultValue={performance.value}
+                                                            clampValueOnBlur={false}
+                                                            onChange={(_, valueNumber) => handleChangePerformance(valueNumber, alternative.id, criterion.id)}
+                                                            zIndex={0}
+                                                        >
+                                                            <NumberInputField/>
+                                                            <NumberInputStepper>
+                                                                <NumberIncrementStepper/>
+                                                                <NumberDecrementStepper/>
+                                                            </NumberInputStepper>
+                                                        </NumberInput>
                                                     </Td>
                                                 )
                                             })}
