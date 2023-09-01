@@ -118,7 +118,12 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                     return (
                                         <>
                                             <Th>
-                                                <Text>{criterion.name}</Text>
+                                                <HStack>
+                                                    <Text color={criterion.gain ? 'teal.400' : 'red.300'}>{criterion.name}</Text>
+                                                    <CustomTooltip label={criterion.gain ? "Gain" : "Cost"} openDelay={200}>
+                                                        <InfoIcon/>
+                                                    </CustomTooltip>
+                                                </HStack>
                                             </Th>
                                         </>
                                     )
