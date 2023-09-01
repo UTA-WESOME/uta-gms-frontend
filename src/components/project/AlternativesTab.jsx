@@ -1,6 +1,7 @@
 import {
     FormControl,
     HStack,
+    IconButton,
     Input,
     NumberDecrementStepper,
     NumberIncrementStepper,
@@ -19,7 +20,7 @@ import {
     useColorModeValue
 } from "@chakra-ui/react";
 import CustomTooltip from "../CustomTooltip.jsx";
-import { InfoIcon } from "@chakra-ui/icons";
+import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
 
 const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
 
@@ -66,10 +67,13 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
         });
     }
 
+    const deleteAlternative = (id) => {
+        setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id))
+    }
+
 
     return (
         <>
-
 
             {/*DESKTOP*/}
             <Show above={'lg'}>
@@ -113,16 +117,25 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                                 backgroundColor={colorMode}
                                                 left={0}
                                                 borderRightWidth={'2px'}
-                                                minW={'225px'}
-                                                maxW={'225px'}
+                                                minW={'280px'}
+                                                maxW={'280px'}
                                                 zIndex={2}
                                             >
-                                                <FormControl isInvalid={alternative.name.length === 0}>
-                                                    <Input
-                                                        value={alternative.name}
-                                                        onChange={(event) => handleChangeName(event, alternative.id)}
+                                                <HStack>
+                                                    <FormControl isInvalid={alternative.name.length === 0}>
+                                                        <Input
+                                                            value={alternative.name}
+                                                            onChange={(event) => handleChangeName(event, alternative.id)}
+                                                        />
+                                                    </FormControl>
+
+                                                    <IconButton
+                                                        color={'red.300'}
+                                                        aria-label={'delete-alternative'}
+                                                        icon={<DeleteIcon/>}
+                                                        onClick={() => deleteAlternative(alternative.id)}
                                                     />
-                                                </FormControl>
+                                                </HStack>
                                             </Td>
                                             {criteria.map(criterion => {
                                                 const performance = alternative.performances.filter(p => p.criterion === criterion.id)[0]
