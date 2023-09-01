@@ -28,77 +28,81 @@ const ProjectTabs = (props) => {
 
     useEffect(() => {
 
-        // get criteria
-        fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
-            method: "GET",
-            credentials: "include"
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("error getting criteria");
-            }
-            return response.json();
-        }).then(data => {
-            setCriteria(data);
-            setPreviousCriteria(data);
-            setHasLoadedCriteria(true);
-        }).catch(err => {
-            console.log(err);
-        })
-
-
-        // get alternatives
-        fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
-            method: 'GET',
-            credentials: 'include',
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("error getting alternatives");
-            }
-            return response.json();
-        }).then(data => {
-
-            let waiting = 0;
-            let received = 0;
-            data.forEach(alternative => {
-
-                waiting++;
-
-                fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
-                    method: 'GET',
-                    credentials: 'include',
-                }).then(response => {
-                    if (!response.ok) {
-                        throw new Error("error getting performances");
-                    }
-                    return response.json();
-                }).then(data => {
-
-                    // insert alternative with its performances
-                    setAlternatives(pAlternatives => {
-                        const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
-                        if (!foundAlternative) {
-                            return [...pAlternatives, {
-                                ...alternative,
-                                performances: data
-                            }]
-                        } else {
-                            return pAlternatives;
-                        }
-                    });
-
-                    received++;
-                    if (received === waiting) {
-                        setHasLoadedAlternatives(true);
-                    }
-
-                })
-
+            // get criteria
+            fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
+                method: "GET",
+                credentials: "include"
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error("error getting criteria");
+                }
+                return response.json();
+            }).then(data => {
+                setCriteria(data);
+                setPreviousCriteria(data);
+                setHasLoadedCriteria(true);
+            }).catch(err => {
+                console.log(err);
             })
-        }).catch(err => {
-            console.log(err);
-        })
 
-    }, [])
+
+            // get alternatives
+            fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
+                method: 'GET',
+                credentials: 'include',
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error("error getting alternatives");
+                }
+                return response.json();
+            }).then(data => {
+
+                let waiting = 0;
+                let received = 0;
+                if (data.length === 0) {
+                    setHasLoadedAlternatives(true);
+                } else {
+                    data.forEach(alternative => {
+
+                        waiting++;
+
+                        fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
+                            method: 'GET',
+                            credentials: 'include',
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error("error getting performances");
+                            }
+                            return response.json();
+                        }).then(data => {
+
+                            // insert alternative with its performances
+                            setAlternatives(pAlternatives => {
+                                const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
+                                if (!foundAlternative) {
+                                    return [...pAlternatives, {
+                                        ...alternative,
+                                        performances: data
+                                    }]
+                                } else {
+                                    return pAlternatives;
+                                }
+                            });
+
+                            received++;
+                            if (received === waiting) {
+                                setHasLoadedAlternatives(true);
+                            }
+
+                        })
+
+                    })
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+
+        }, [])
 
     const toastSuccess = () => {
         toast({
