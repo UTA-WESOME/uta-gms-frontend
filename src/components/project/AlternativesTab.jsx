@@ -1,4 +1,5 @@
 import {
+    Button,
     FormControl,
     HStack,
     IconButton,
@@ -67,6 +68,25 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
         });
     }
 
+    const addAlternative = () => {
+        // get max alternative id
+        let maxId = Math.max(...alternatives.map(item => item.id));
+        maxId = maxId === -Infinity ? 0 : maxId;
+
+        setAlternatives(pAlternatives => [...pAlternatives,
+            {
+                id: maxId + 1,
+                name: "Alternative name",
+                reference_ranking: 0,
+                performances: criteria.map(item => {
+                    return {
+                        value: 0,
+                        criterion: item.id
+                    }
+                })
+            }])
+    }
+
     const deleteAlternative = (id) => {
         setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id))
     }
@@ -109,7 +129,6 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                             {alternatives
                                 .sort((x, y) => (x.name > y.name) ? 1 : ((x.name < y.name) ? -1 : 0))
                                 .map((alternative, index) => {
-                                    console.log(alternative.name, index);
                                     return (
                                         <Tr>
                                             <Td
@@ -160,7 +179,19 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                 })}
                         </Tbody>
                     </Table>
+
+                    <Button
+                        my={4}
+                        colorScheme={'teal'}
+                        onClick={addAlternative}
+                        variant='outline'
+                        position={'sticky'}
+                        left={6}
+                    >
+                        New alternative
+                    </Button>
                 </TableContainer>
+
             </Show>
 
             {/*MOBILE*/}
@@ -168,7 +199,6 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
 
             </Show>
 
-            {JSON.stringify(alternatives, null, 4)}
 
         </>
 
