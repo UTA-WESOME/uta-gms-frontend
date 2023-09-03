@@ -123,7 +123,7 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
     }
 
     const handleChangeLinearSegmentsMobile = (change) => {
-        let newValue = formik.values.linear_segments + change;
+        let newValue = (formik.values.linear_segments === "" ? 0 : formik.values.linear_segments) + change;
         formik.setFieldValue("linear_segments", newValue);
     }
 

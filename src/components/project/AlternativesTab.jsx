@@ -43,6 +43,8 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
 
     const colorMode = useColorModeValue('white', 'gray.800');
 
+    // -------------------------------------------------------------------------------------------------------------- //
+    // DESKTOP
     const handleChangeName = (event, id) => {
         let newName = event.target.value;
         if (newName.length <= 64) {
@@ -107,6 +109,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
         setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id))
     }
 
+    // -------------------------------------------------------------------------------------------------------------- //
     // MOBILE
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -127,11 +130,27 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
             )
         }),
         onSubmit: (values, actions) => {
-            console.log(values);
+            setAlternatives(pAlternatives => {
+                return pAlternatives.map(alternative => {
+                    if (alternative.id === values.id) {
+                        return {
+                            ...alternative,
+                            name: values.name,
+                            performances: values.performances
+                        }
+                    }
+                    return alternative
+                })
+            })
             // close modal
             onClose();
         }
     });
+
+    const handleChangePerformanceMobile = (change, index) => {
+        let newValue = (formik.values.performances[index].value === "" ? 0 : formik.values.performances[index].value) + change;
+        formik.setFieldValue(`performances[${index}].value`, newValue);
+    }
 
     return (
         <>
@@ -160,10 +179,13 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                         <>
                                             <Th>
                                                 <HStack>
-                                                    <Text
-                                                        color={criterion.gain ? 'teal.400' : 'red.300'}>{criterion.name}</Text>
-                                                    <CustomTooltip label={criterion.gain ? "Gain" : "Cost"}
-                                                                   openDelay={200}>
+                                                    <Text color={criterion.gain ? 'teal.400' : 'red.300'}>
+                                                        {criterion.name}
+                                                    </Text>
+                                                    <CustomTooltip
+                                                        label={criterion.gain ? "Gain" : "Cost"}
+                                                        openDelay={200}
+                                                    >
                                                         <InfoIcon/>
                                                     </CustomTooltip>
                                                 </HStack>
@@ -311,6 +333,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                             />
                             <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
                         </FormControl>
+
                         <ModalBody
                             textAlign={'center'}
                             borderBottomWidth={'1px'}
@@ -321,30 +344,40 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                     name={'performances'}
                                     render={() => (
                                         <>
-                                            {(formik.values.performances.map((performance, index) => (
-                                                <FormControl
-                                                    isInvalid={getIn(formik.errors, `performances[${index}].value`)
-                                                        && getIn(formik.touched, `performances[${index}].value`)}>
-                                                    <FormLabel fontSize={'sm'}>
-                                                        <Text>
-                                                            Criterion
-                                                        </Text>
-                                                    </FormLabel>
-                                                    <HStack>
-                                                        <Button>+</Button>
-                                                        <Input
-                                                            id={`input_performance_${index}`}
-                                                            name={`performance_${index}`}
-                                                            type={'number'}
-                                                            {...formik.getFieldProps(`performances[${index}].value`)}
-                                                        />
-                                                        <Button>-</Button>
-                                                    </HStack>
-                                                    <FormErrorMessage>
-                                                        {getIn(formik.errors, `performances[${index}].value`)}
-                                                    </FormErrorMessage>
-                                                </FormControl>
-                                            )))}
+                                            {(formik.values.performances.map((performance, index) => {
+                                                const criterion = criteria.filter(c => c.id === formik.values.performances[index].criterion)[0];
+                                                return (
+                                                    <>
+                                                        <FormControl
+                                                            isInvalid={getIn(formik.errors, `performances[${index}].value`)
+                                                                && getIn(formik.touched, `performances[${index}].value`)}>
+                                                            <FormLabel fontSize={'sm'}>
+                                                                <Text
+                                                                    color={criterion.gain ? 'teal.400' : 'red.300'}>
+                                                                    {criterion.name}
+                                                                </Text>
+                                                            </FormLabel>
+                                                            <HStack>
+                                                                <Button
+                                                                    onClick={() => handleChangePerformanceMobile(1, index)}
+                                                                >+</Button>
+                                                                <Input
+                                                                    id={`input_performance_${index}`}
+                                                                    name={`performance_${index}`}
+                                                                    type={'number'}
+                                                                    {...formik.getFieldProps(`performances[${index}].value`)}
+                                                                />
+                                                                <Button
+                                                                    onClick={() => handleChangePerformanceMobile(-1, index)}
+                                                                >-</Button>
+                                                            </HStack>
+                                                            <FormErrorMessage>
+                                                                {getIn(formik.errors, `performances[${index}].value`)}
+                                                            </FormErrorMessage>
+                                                        </FormControl>
+                                                    </>
+                                                )
+                                            }))}
                                         </>
                                     )}
                                 />
@@ -358,8 +391,6 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                             </ButtonGroup>
                         </ModalFooter>
                     </ModalContent>
-
-
 
                 </FormikProvider>
 
