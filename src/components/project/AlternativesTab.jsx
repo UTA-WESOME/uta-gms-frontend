@@ -113,8 +113,8 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
     const formik = useFormik({
         initialValues: {
             id: 0,
-            name: "Alternative 1",
-            performances: [{ value: 3, criterion: 1 }, { value: 2, criterion: 2 }]
+            name: "Alternative 0",
+            performances: [{ value: 0, criterion: 0 }]
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Alternative name is required!")
@@ -261,6 +261,9 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                     aria-label={'edit-alternative'}
                                     icon={<EditIcon/>}
                                     onClick={() => {
+                                        formik.values.id = alternative.id;
+                                        formik.values.name = alternative.name;
+                                        formik.values.performances = alternative.performances;
                                         onOpen();
                                     }}
                                 />
@@ -285,7 +288,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                 </Button>
             </Show>
 
-            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior={'inside'}>
                 <ModalOverlay/>
                 <FormikProvider value={formik}>
                     <ModalContent
@@ -295,18 +298,25 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                     >
                         <ModalHeader>Edit alternative</ModalHeader>
                         <ModalCloseButton/>
-                        <ModalBody textAlign={'center'}>
-                            {JSON.stringify(formik.values)}
+                        <FormControl
+                            isInvalid={formik.errors.name && formik.touched.name}
+                            px={6}
+                            py={2}
+                        >
+                            <FormLabel fontSize={'sm'}>Name</FormLabel>
+                            <Input
+                                name={"name"}
+                                autoComplete={"off"}
+                                {...formik.getFieldProps("name")}
+                            />
+                            <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+                        </FormControl>
+                        <ModalBody
+                            textAlign={'center'}
+                            borderBottomWidth={'1px'}
+                            borderTopWidth={'1px'}
+                        >
                             <VStack spacing={"15px"}>
-                                <FormControl isInvalid={formik.errors.name && formik.touched.name}>
-                                    <FormLabel fontSize={'sm'}>Name</FormLabel>
-                                    <Input
-                                        name={"name"}
-                                        autoComplete={"off"}
-                                        {...formik.getFieldProps("name")}
-                                    />
-                                    <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
-                                </FormControl>
                                 <FieldArray
                                     name={'performances'}
                                     render={() => (
@@ -339,16 +349,16 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                     )}
                                 />
                             </VStack>
-
-                            <ModalFooter px={0}>
-                                <ButtonGroup pt={"1rem"}>
-                                    <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
-                                    <Button onClick={onClose}>Back</Button>
-                                </ButtonGroup>
-                            </ModalFooter>
-
                         </ModalBody>
+
+                        <ModalFooter>
+                            <ButtonGroup pt={"1rem"}>
+                                <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
+                                <Button onClick={onClose}>Back</Button>
+                            </ButtonGroup>
+                        </ModalFooter>
                     </ModalContent>
+
 
 
                 </FormikProvider>
