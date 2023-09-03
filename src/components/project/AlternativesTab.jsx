@@ -1,10 +1,20 @@
 import {
     Button,
+    ButtonGroup,
     Flex,
     FormControl,
+    FormErrorMessage,
+    FormLabel,
     HStack,
     IconButton,
     Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     NumberDecrementStepper,
     NumberIncrementStepper,
     NumberInput,
@@ -20,10 +30,14 @@ import {
     Th,
     Thead,
     Tr,
-    useColorModeValue
+    useColorModeValue,
+    useDisclosure,
+    VStack
 } from "@chakra-ui/react";
 import CustomTooltip from "../CustomTooltip.jsx";
 import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
+import * as Yup from 'yup';
+import { FieldArray, FormikProvider, getIn, useFormik } from "formik";
 
 const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
 
@@ -93,6 +107,31 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
         setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id))
     }
 
+    // MOBILE
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const formik = useFormik({
+        initialValues: {
+            id: 0,
+            name: "Alternative 1",
+            performances: [{ value: 3, criterion: 1 }, { value: 2, criterion: 2 }]
+        },
+        validationSchema: Yup.object({
+            name: Yup.string().required("Alternative name is required!")
+                .max(64, "Alternative name too long!"),
+            performances: Yup.array().of(
+                Yup.object().shape({
+                    value: Yup.number().required("Value required!"),
+                    criterion: Yup.number().required("Criterion required!")
+                })
+            )
+        }),
+        onSubmit: (values, actions) => {
+            console.log(values);
+            // close modal
+            onClose();
+        }
+    });
 
     return (
         <>
@@ -222,7 +261,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                     aria-label={'edit-alternative'}
                                     icon={<EditIcon/>}
                                     onClick={() => {
-
+                                        onOpen();
                                     }}
                                 />
                                 <IconButton
@@ -246,7 +285,75 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                 </Button>
             </Show>
 
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                <ModalOverlay/>
+                <FormikProvider value={formik}>
+                    <ModalContent
+                        mx={'15px'}
+                        as={'form'}
+                        onSubmit={formik.handleSubmit}
+                    >
+                        <ModalHeader>Edit alternative</ModalHeader>
+                        <ModalCloseButton/>
+                        <ModalBody textAlign={'center'}>
+                            {JSON.stringify(formik.values)}
+                            <VStack spacing={"15px"}>
+                                <FormControl isInvalid={formik.errors.name && formik.touched.name}>
+                                    <FormLabel fontSize={'sm'}>Name</FormLabel>
+                                    <Input
+                                        name={"name"}
+                                        autoComplete={"off"}
+                                        {...formik.getFieldProps("name")}
+                                    />
+                                    <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+                                </FormControl>
+                                <FieldArray
+                                    name={'performances'}
+                                    render={() => (
+                                        <>
+                                            {(formik.values.performances.map((performance, index) => (
+                                                <FormControl
+                                                    isInvalid={getIn(formik.errors, `performances[${index}].value`)
+                                                        && getIn(formik.touched, `performances[${index}].value`)}>
+                                                    <FormLabel fontSize={'sm'}>
+                                                        <Text>
+                                                            Criterion
+                                                        </Text>
+                                                    </FormLabel>
+                                                    <HStack>
+                                                        <Button>+</Button>
+                                                        <Input
+                                                            id={`input_performance_${index}`}
+                                                            name={`performance_${index}`}
+                                                            type={'number'}
+                                                            {...formik.getFieldProps(`performances[${index}].value`)}
+                                                        />
+                                                        <Button>-</Button>
+                                                    </HStack>
+                                                    <FormErrorMessage>
+                                                        {getIn(formik.errors, `performances[${index}].value`)}
+                                                    </FormErrorMessage>
+                                                </FormControl>
+                                            )))}
+                                        </>
+                                    )}
+                                />
+                            </VStack>
 
+                            <ModalFooter px={0}>
+                                <ButtonGroup pt={"1rem"}>
+                                    <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
+                                    <Button onClick={onClose}>Back</Button>
+                                </ButtonGroup>
+                            </ModalFooter>
+
+                        </ModalBody>
+                    </ModalContent>
+
+
+                </FormikProvider>
+
+            </Modal>
         </>
 
     )
