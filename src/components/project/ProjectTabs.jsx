@@ -132,12 +132,12 @@ const ProjectTabs = (props) => {
         })
     }
 
-    const toastError = (description) => {
+    const toastError = (description, duration=5000) => {
         toast({
             title: "Error!",
             description: description,
             status: 'error',
-            duration: 5000,
+            duration: duration,
             isClosable: true
         })
     }
@@ -403,16 +403,17 @@ const ProjectTabs = (props) => {
 
     const submitData = () => {
 
-        // check if all criteria have name
+        // check if all criteria have a name
         const criteriaCheckName = criteria.filter(criterion => criterion.name === "");
         if (criteriaCheckName.length > 0) {
-            toast({
-                title: "Error!",
-                description: "There is at least one criterion without a name!",
-                status: 'error',
-                duration: 8000,
-                isClosable: false
-            })
+            toastError("There is at least one criterion without a name!", 8000);
+            return;
+        }
+
+        // check if all alternatives have a name
+        const alternativesCheckName = alternatives.filter(alternative => alternative.name === "");
+        if (alternativesCheckName.length > 0) {
+            toastError("There is at least one alternative without a name!", 8000);
             return;
         }
 
