@@ -303,16 +303,18 @@ const ProjectTabs = (props) => {
 
     const submitCriteria = () => {
 
-        let waiting = 0;
-        let received = 0;
+        const criteriaToDelete = previousCriteria.filter(pCriterion =>
+            !criteria.some(criterion => criterion.id === pCriterion.id)
+        );
+        let waitingArrayUpdateCreate = criteria.map(() => true);
+        let waitingArrayDelete = criteriaToDelete.map(() => true);
 
         // --------------------------------------------------------------------- //
         // update and create criteria
-        criteria.forEach(criterion => {
+        criteria.forEach((criterion, index) => {
             const matchCriterion = previousCriteria.find(pCriterion => pCriterion.id === criterion.id);
             if (matchCriterion) {
                 // PUT
-                waiting++;
                 fetch(`http://localhost:8080/api/criteria/${criterion.id}`, {
                     method: 'PUT',
                     credentials: 'include',
@@ -323,8 +325,9 @@ const ProjectTabs = (props) => {
                         toastError(`Criterion ${criterion.name} could not be updated.`);
                         throw new Error(`Criterion ${criterion.name} could not be updated.`);
                     } else {
-                        received++;
-                        if (waiting === received) {
+                        waitingArrayUpdateCreate[index] = false;
+                        if (waitingArrayUpdateCreate.every(item => item === false)
+                            && waitingArrayDelete.every(item => item === false)) {
                             submitAlternatives();
                         }
                     }
@@ -333,7 +336,6 @@ const ProjectTabs = (props) => {
                 })
             } else {
                 // POST
-                waiting++;
                 fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
                     method: 'POST',
                     credentials: 'include',
@@ -346,7 +348,7 @@ const ProjectTabs = (props) => {
                     }
                     return response.json();
                 }).then(data => {
-                    received++;
+                    waitingArrayUpdateCreate[index] = false;
 
                     // update alternatives' performances with a valid criterion id got from the backend
                     toSendAlternatives = toSendAlternatives.map(alt => {
@@ -365,7 +367,8 @@ const ProjectTabs = (props) => {
                         }
                     })
 
-                    if (waiting === received) {
+                    if (waitingArrayUpdateCreate.every(item => item === false)
+                        && waitingArrayDelete.every(item => item === false)) {
                         submitAlternatives();
                     }
                 }).catch(err => {
@@ -376,12 +379,8 @@ const ProjectTabs = (props) => {
 
         // --------------------------------------------------------------------- //
         // delete criteria
-        const criteriaToDelete = previousCriteria.filter(pCriterion =>
-            !criteria.some(criterion => criterion.id === pCriterion.id)
-        );
-        criteriaToDelete.forEach(criterionToDelete => {
+        criteriaToDelete.forEach((criterionToDelete, index) => {
             // DELETE
-            waiting++;
             fetch(`http://localhost:8080/api/criteria/${criterionToDelete.id}`, {
                 method: 'DELETE',
                 credentials: 'include'
@@ -390,8 +389,9 @@ const ProjectTabs = (props) => {
                     toastError(`Criterion ${criterionToDelete.name} could not be deleted.`);
                     throw new Error(`Criterion ${criterionToDelete.name} could not be deleted.`);
                 } else {
-                    received++;
-                    if (waiting === received) {
+                    waitingArrayDelete[index] = false;
+                    if (waitingArrayUpdateCreate.every(item => item === false)
+                        && waitingArrayDelete.every(item => item === false)) {
                         submitAlternatives();
                     }
                 }
@@ -404,7 +404,7 @@ const ProjectTabs = (props) => {
     const submitData = () => {
 
         // check if there are any criteria
-        if(criteria.length === 0){
+        if (criteria.length === 0) {
             toastError("No criteria!");
             return;
         }
@@ -424,7 +424,7 @@ const ProjectTabs = (props) => {
         }
 
         // check if there are any alternatives
-        if(alternatives.length === 0) {
+        if (alternatives.length === 0) {
             toastError("No alternatives!");
             return;
         }
