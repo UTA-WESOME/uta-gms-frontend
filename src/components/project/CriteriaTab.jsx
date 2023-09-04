@@ -397,19 +397,20 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
                                 </FormLabel>
                                 <HStack>
                                     <Button
-                                        isDisabled={formik.values.linear_segments >= 30}
-                                        onClick={() => handleChangeLinearSegmentsMobile(1)}
-                                    >+</Button>
+                                        isDisabled={formik.values.linear_segments <= 0}
+                                        onClick={() => handleChangeLinearSegmentsMobile(-1)}
+                                    >-</Button>
                                     <Input
                                         id={'input_linear_segments'}
                                         name={'linear_segments'}
                                         type={'number'}
                                         {...formik.getFieldProps("linear_segments")}
                                     />
+
                                     <Button
-                                        isDisabled={formik.values.linear_segments <= 0}
-                                        onClick={() => handleChangeLinearSegmentsMobile(-1)}
-                                    >-</Button>
+                                        isDisabled={formik.values.linear_segments >= 30}
+                                        onClick={() => handleChangeLinearSegmentsMobile(1)}
+                                    >+</Button>
                                 </HStack>
                                 <FormErrorMessage>{formik.errors.linear_segments}</FormErrorMessage>
                             </FormControl>
