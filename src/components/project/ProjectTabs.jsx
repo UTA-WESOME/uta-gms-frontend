@@ -403,6 +403,12 @@ const ProjectTabs = (props) => {
 
     const submitData = () => {
 
+        // check if there are any criteria
+        if(criteria.length === 0){
+            toastError("No criteria!");
+            return;
+        }
+
         // check if all criteria have a name
         const criteriaCheckName = criteria.some(criterion => criterion.name === "");
         if (criteriaCheckName) {
@@ -414,6 +420,12 @@ const ProjectTabs = (props) => {
         const criteriaCheckLinearSegments = criteria.some(criterion => isNaN(criterion.linear_segments))
         if (criteriaCheckLinearSegments) {
             toastError("There is at least one criterion with an empty linear segments value!", 6000);
+            return;
+        }
+
+        // check if there are any alternatives
+        if(alternatives.length === 0) {
+            toastError("No alternatives!");
             return;
         }
 
