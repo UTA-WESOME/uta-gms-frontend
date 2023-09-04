@@ -96,6 +96,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                 id: maxId + 1,
                 name: "Alternative name",
                 reference_ranking: 0,
+                ranking: 0,
                 performances: criteria.map(item => {
                     return {
                         value: 0,

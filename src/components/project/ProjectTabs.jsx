@@ -17,6 +17,11 @@ const ProjectTabs = (props) => {
 
     // alternatives holds active data that the user changes
     const [alternatives, setAlternatives] = useState([]);
+    // previousAlternatives holds data downloaded from the backend
+    const [previousAlternatives, setPreviousAlternatives] = useState([]);
+    // toSendAlternatives holds data that will be sent to the backend,
+    // it has updated data about criterion's id in new performances that were created because a new criterion was added
+    let toSendAlternatives = [];
 
 
     const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
@@ -28,81 +33,94 @@ const ProjectTabs = (props) => {
 
     useEffect(() => {
 
-            // get criteria
-            fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
-                method: "GET",
-                credentials: "include"
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error("error getting criteria");
-                }
-                return response.json();
-            }).then(data => {
-                setCriteria(data);
-                setPreviousCriteria(data);
-                setHasLoadedCriteria(true);
-            }).catch(err => {
-                console.log(err);
-            })
+        // get criteria
+        fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
+            method: "GET",
+            credentials: "include"
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting criteria");
+            }
+            return response.json();
+        }).then(data => {
+            setCriteria(data);
+            setPreviousCriteria(data);
+            setHasLoadedCriteria(true);
+        }).catch(err => {
+            console.log(err);
+        })
 
 
-            // get alternatives
-            fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
-                method: 'GET',
-                credentials: 'include',
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error("error getting alternatives");
-                }
-                return response.json();
-            }).then(data => {
+        // get alternatives
+        fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
+            method: 'GET',
+            credentials: 'include',
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting alternatives");
+            }
+            return response.json();
+        }).then(data => {
 
-                let waiting = 0;
-                let received = 0;
-                if (data.length === 0) {
-                    setHasLoadedAlternatives(true);
-                } else {
-                    data.forEach(alternative => {
+            let waiting = 0;
+            let received = 0;
+            if (data.length === 0) {
+                setHasLoadedAlternatives(true);
+            } else {
+                data.forEach(alternative => {
 
-                        waiting++;
+                    waiting++;
 
-                        fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
-                            method: 'GET',
-                            credentials: 'include',
-                        }).then(response => {
-                            if (!response.ok) {
-                                throw new Error("error getting performances");
+                    fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
+                        method: 'GET',
+                        credentials: 'include',
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error("error getting performances");
+                        }
+                        return response.json();
+                    }).then(data => {
+
+                        // insert alternative with its performances
+                        setAlternatives(pAlternatives => {
+                            const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
+                            if (!foundAlternative) {
+                                return [...pAlternatives, {
+                                    ...alternative,
+                                    performances: data
+                                }]
+                            } else {
+                                return pAlternatives;
                             }
-                            return response.json();
-                        }).then(data => {
+                        });
 
-                            // insert alternative with its performances
-                            setAlternatives(pAlternatives => {
-                                const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
-                                if (!foundAlternative) {
-                                    return [...pAlternatives, {
-                                        ...alternative,
-                                        performances: data
-                                    }]
-                                } else {
-                                    return pAlternatives;
-                                }
-                            });
-
-                            received++;
-                            if (received === waiting) {
-                                setHasLoadedAlternatives(true);
+                        // save state from backend in previousAlternatives variable
+                        setPreviousAlternatives(pAlternatives => {
+                            const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
+                            if (!foundAlternative) {
+                                return [...pAlternatives, {
+                                    ...alternative,
+                                    performances: data
+                                }]
+                            } else {
+                                return pAlternatives;
                             }
-
                         })
 
-                    })
-                }
-            }).catch(err => {
-                console.log(err);
-            })
+                        received++;
+                        if (received === waiting) {
+                            setHasLoadedAlternatives(true);
+                        }
 
-        }, [])
+                    })
+
+                })
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+
+    }, [])
 
     const toastSuccess = () => {
         toast({
@@ -114,27 +132,151 @@ const ProjectTabs = (props) => {
         })
     }
 
+    const toastError = (description) => {
+        toast({
+            title: "Error!",
+            description: description,
+            status: 'error',
+            duration: 5000,
+            isClosable: true
+        })
+    }
 
-    const submitData = () => {
+    // submitAlternatives sends data about alternatives and performances to the backend using toSendAlternatives global variable
+    const submitAlternatives = () => {
+
+        // ---------------------------------------------------------------------------------------------------------- //
+        // update and create alternatives
+        toSendAlternatives.forEach((alternative, index) => {
+            const matchAlternative = previousAlternatives.find(pAlternative => pAlternative.id === alternative.id);
+            if (matchAlternative) {
+                // PUT alternative
+                fetch(`http://localhost:8080/api/alternatives/${alternative.id}`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(alternative)
+                }).then(response => {
+                    if (!response.ok) {
+                        toastError(`Alternative ${alternative.name} could not be updated.`);
+                        throw new Error(`Alternative ${alternative.name} could not be updated.`);
+                    } else {
+                        // POST or PUT performances
+                        // if the alternative was PUT then it means that its performances should either be:
+                        // 1. PUT - their criterion is not new - they have an id from the database
+                        // 2. POST - their criterion is new - they don't have an id
+                        alternative.performances.forEach(performance => {
+                            if (performance?.id !== undefined) {
+                                // PUT
+                                fetch(`http://localhost:8080/api/performances/${performance.id}`, {
+                                    method: 'PUT',
+                                    credentials: 'include',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(performance)
+                                }).then(response => {
+                                    if (!response.ok) {
+                                        toastError(`Performance ${performance.id} could not be updated.`);
+                                        throw new Error(`Performance ${performance.id} could not be updated.`);
+                                    } else {
+                                        // TODO ------------------------------------------------------------------------------------------------------------------------------------------------
+                                        // need to take action if everything is done
+                                    }
+                                }).catch(err => {
+                                    console.log(err);
+                                })
+                            } else {
+                                // POST
+                                fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
+                                    method: 'POST',
+                                    credentials: 'include',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(performance)
+                                }).then(response => {
+                                    if (!response.ok) {
+                                        toastError(`Performance ${performance.id} could not be uploaded.`);
+                                        throw new Error(`Performance ${performance.id} could not be uploaded.`);
+                                    } else {
+                                        // TODO ------------------------------------------------------------------------------------------------------------------------------------------------
+                                        // need to take action if everything is done
+                                    }
+                                }).catch(err => {
+                                    console.log(err);
+                                })
+                            }
+                        })
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            } else {
+                // POST alternative
+                fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(alternative)
+                }).then(response => {
+                    if (!response.ok) {
+                        toastError(`Alternative ${alternative.name} could not be uploaded.`);
+                        throw new Error(`Alternative ${alternative.name} could not be uploaded.`);
+                    }
+                    return response.json();
+                }).then(data => {
+
+                    // POST performances
+                    // if alternative was POSTed then it means that all its performances are new and there is no need to check if they existed before,
+                    // they can just be POSTed with the performance's ID got from the backend
+                    alternative.performances.forEach(performance => {
+                        fetch(`http://localhost:8080/api/alternatives/${data.id}/performances/`, {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(performance)
+                        }).then(response => {
+                            if (!response.ok) {
+                                toastError(`Alternative ${alternative.name} could not be uploaded.`);
+                                throw new Error(`Alternative ${alternative.name} could not be uploaded.`);
+                            } else {
+                                // TODO ------------------------------------------------------------------------------------------------------------------------------------------------
+                                // need to take action if everything is done
+                            }
+                        })
+                    })
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
+        })
+
+        // ---------------------------------------------------------------------------------------------------------- //
+        // delete alternatives
+        const alternativesToDelete = previousAlternatives.filter(pAlternative =>
+            !toSendAlternatives.some(alternative => alternative.id === pAlternative.id)
+        );
+        alternativesToDelete.forEach(alternativeToDelete => {
+            // DELETE
+            fetch(`http://localhost:8080/api/alternatives/${alternativeToDelete.id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            }).then(response => {
+                if (!response.ok) {
+                    toastError(`Alternative ${alternativeToDelete.name} could not be deleted!`);
+                    throw new Error(`Alternative ${alternativeToDelete.name} could not be deleted!`)
+                } else {
+                    // TODO ------------------------------------------------------------------------------------------------------------------------------------------------
+                    // need to take action if everything is done
+                }
+            })
+        })
+    }
+
+    const submitCriteria = () => {
 
         let waiting = 0;
         let received = 0;
 
-        // check if all criteria have name
-        const criteriaCheckName = criteria.filter(criterion => criterion.name === "");
-        if (criteriaCheckName.length > 0) {
-            toast({
-                title: "Error!",
-                description: "There is at least one criterion without a name!",
-                status: 'error',
-                duration: 8000,
-                isClosable: false
-            })
-            return;
-        }
-
-
-        // updating and creating criteria
+        // --------------------------------------------------------------------- //
+        // update and create criteria
         criteria.forEach(criterion => {
             const matchCriterion = previousCriteria.find(pCriterion => pCriterion.id === criterion.id);
             if (matchCriterion) {
@@ -147,19 +289,13 @@ const ProjectTabs = (props) => {
                     body: JSON.stringify(criterion)
                 }).then(response => {
                     if (!response.ok) {
-                        toast({
-                            title: "Error!",
-                            description: `Criterion ${criterion.name} could not be updated.`,
-                            status: 'error',
-                            duration: 5000,
-                            isClosable: true,
-                        });
+                        toastError(`Criterion ${criterion.name} could not be updated.`);
                         throw new Error(`Criterion ${criterion.name} could not be updated.`);
                     } else {
                         received++;
                         if (waiting === received) {
                             toastSuccess();
-                            navigate('/projects');
+                            submitAlternatives();
                         }
                     }
                 }).catch(err => {
@@ -175,27 +311,42 @@ const ProjectTabs = (props) => {
                     body: JSON.stringify(criterion)
                 }).then(response => {
                     if (!response.ok) {
-                        toast({
-                            title: "Error!",
-                            description: `Criterion ${criterion.name} could not be uploaded.`,
-                            status: 'error',
-                            duration: 5000,
-                            isClosable: true,
-                        });
+                        toastError(`Criterion ${criterion.name} could not be uploaded.`);
                         throw new Error(`Criterion ${criterion.name} could not be uploaded.`);
-                    } else {
-                        received++;
-                        if (waiting === received) {
-                            toastSuccess();
-                            navigate('/projects');
+                    }
+                    return response.json();
+                }).then(data => {
+                    received++;
+
+                    // update alternatives' performances with a valid criterion id got from the backend
+                    toSendAlternatives = toSendAlternatives.map(alt => {
+                        let newPerformances = alt.performances.map(performance => {
+                            if (performance.criterion === criterion.id) {
+                                return {
+                                    ...performance,
+                                    criterion: data.id,
+                                }
+                            }
+                            return performance;
+                        })
+                        return {
+                            ...alt,
+                            performances: newPerformances,
                         }
+                    })
+
+                    if (waiting === received) {
+                        toastSuccess();
+                        submitAlternatives();
                     }
                 }).catch(err => {
                     console.log(err);
                 })
             }
         });
-        // deleting criteria
+
+        // --------------------------------------------------------------------- //
+        // delete criteria
         const criteriaToDelete = previousCriteria.filter(pCriterion =>
             !criteria.some(criterion => criterion.id === pCriterion.id)
         );
@@ -207,25 +358,39 @@ const ProjectTabs = (props) => {
                 credentials: 'include'
             }).then(response => {
                 if (!response.ok) {
-                    toast({
-                        title: "Error!",
-                        description: `Criterion ${criterionToDelete.name} could not be deleted.`,
-                        status: 'error',
-                        duration: 5000,
-                        isClosable: true,
-                    });
+                    toastError(`Criterion ${criterionToDelete.name} could not be deleted.`);
                     throw new Error(`Criterion ${criterionToDelete.name} could not be deleted.`);
                 } else {
                     received++;
                     if (waiting === received) {
-                        toastSuccess();
-                        navigate('/projects');
+                        submitAlternatives();
                     }
                 }
             }).catch(err => {
                 console.log(err);
             })
         })
+    }
+
+    const submitData = () => {
+
+        // check if all criteria have name
+        const criteriaCheckName = criteria.filter(criterion => criterion.name === "");
+        if (criteriaCheckName.length > 0) {
+            toast({
+                title: "Error!",
+                description: "There is at least one criterion without a name!",
+                status: 'error',
+                duration: 8000,
+                isClosable: false
+            })
+            return;
+        }
+
+        // set toSendAlternatives to alternatives
+        toSendAlternatives = alternatives;
+
+        submitCriteria();
     }
 
 
