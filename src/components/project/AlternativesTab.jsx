@@ -198,7 +198,6 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                         </Thead>
                         <Tbody>
                             {alternatives
-                                .sort((x, y) => (x.name > y.name) ? 1 : ((x.name < y.name) ? -1 : 0))
                                 .map(alternative => {
                                     return (
                                         <Tr>
@@ -214,7 +213,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                                 <HStack>
                                                     <FormControl isInvalid={alternative.name.length === 0}>
                                                         <Input
-                                                            value={alternative.name}
+                                                            defaultValue={alternative.name}
                                                             onChange={(event) => handleChangeName(event, alternative.id)}
                                                         />
                                                     </FormControl>
@@ -360,17 +359,18 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                                             </FormLabel>
                                                             <HStack>
                                                                 <Button
-                                                                    onClick={() => handleChangePerformanceMobile(1, index)}
-                                                                >+</Button>
+                                                                    onClick={() => handleChangePerformanceMobile(-1, index)}
+                                                                >-</Button>
                                                                 <Input
                                                                     id={`input_performance_${index}`}
                                                                     name={`performance_${index}`}
                                                                     type={'number'}
                                                                     {...formik.getFieldProps(`performances[${index}].value`)}
                                                                 />
+
                                                                 <Button
-                                                                    onClick={() => handleChangePerformanceMobile(-1, index)}
-                                                                >-</Button>
+                                                                    onClick={() => handleChangePerformanceMobile(1, index)}
+                                                                >+</Button>
                                                             </HStack>
                                                             <FormErrorMessage>
                                                                 {getIn(formik.errors, `performances[${index}].value`)}

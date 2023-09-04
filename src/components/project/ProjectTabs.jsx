@@ -62,14 +62,11 @@ const ProjectTabs = (props) => {
             return response.json();
         }).then(data => {
 
-            let waiting = 0;
-            let received = 0;
             if (data.length === 0) {
                 setHasLoadedAlternatives(true);
             } else {
-                data.forEach(alternative => {
-
-                    waiting++;
+                let waitingArray = data.map(() => true);
+                data.forEach((alternative, index) => {
 
                     fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
                         method: 'GET',
@@ -107,8 +104,12 @@ const ProjectTabs = (props) => {
                             }
                         })
 
-                        received++;
-                        if (received === waiting) {
+                        waitingArray[index] = false;
+
+                        if (waitingArray.every(item => item === false)) {
+                            setAlternatives(alternatives =>
+                                alternatives.sort((x, y) => (x.name > y.name) ? 1 : ((x.name < y.name) ? -1 : 0))
+                            )
                             setHasLoadedAlternatives(true);
                         }
 
