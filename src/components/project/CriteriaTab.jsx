@@ -59,7 +59,7 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
                 .min(0, "The criterion must have a minimum of 0 linear segments!")
                 .integer("The count of linear segments must be a whole number!")
         }),
-        onSubmit: (values, actions) => {
+        onSubmit: (values, _) => {
             // update criterion
             setCriteria(previousCriteria => {
                 return previousCriteria.map(criterion => {
@@ -213,7 +213,7 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {criteria.map((criterion, index) => {
+                            {criteria.map(criterion => {
                                 return (
                                     <Tr>
                                         <Td>

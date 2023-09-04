@@ -130,7 +130,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                 })
             )
         }),
-        onSubmit: (values, actions) => {
+        onSubmit: (values, _) => {
             setAlternatives(pAlternatives => {
                 return pAlternatives.map(alternative => {
                     if (alternative.id === values.id) {
@@ -199,7 +199,7 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                         <Tbody>
                             {alternatives
                                 .sort((x, y) => (x.name > y.name) ? 1 : ((x.name < y.name) ? -1 : 0))
-                                .map((alternative, index) => {
+                                .map(alternative => {
                                     return (
                                         <Tr>
                                             <Td
