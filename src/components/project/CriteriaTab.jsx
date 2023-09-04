@@ -242,10 +242,11 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
                                         </Td>
                                         <Td>
                                             <NumberInput
-                                                value={criterion.linear_segments}
+                                                isInvalid={isNaN(criterion.linear_segments)}
+                                                defaultValue={criterion.linear_segments}
                                                 min={0}
                                                 max={30}
-                                                clampValueOnBlur={false}
+                                                precision={0}
                                                 onChange={(valueString) => handleChangeLinearSegments(valueString, criterion.id)}
                                             >
                                                 <NumberInputField/>

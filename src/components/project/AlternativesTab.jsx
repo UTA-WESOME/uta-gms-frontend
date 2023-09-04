@@ -232,8 +232,8 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                                                 return (
                                                     <Td zIndex={1} minW={'175px'}>
                                                         <NumberInput
-                                                            value={performance.value}
-                                                            clampValueOnBlur={false}
+                                                            isInvalid={isNaN(performance.value)}
+                                                            defaultValue={performance.value}
                                                             onChange={(_, valueNumber) => handleChangePerformance(valueNumber, alternative.id, criterion.id)}
                                                         >
                                                             <NumberInputField/>

@@ -132,7 +132,7 @@ const ProjectTabs = (props) => {
         })
     }
 
-    const toastError = (description, duration=5000) => {
+    const toastError = (description, duration = 5000) => {
         toast({
             title: "Error!",
             description: description,
@@ -404,16 +404,32 @@ const ProjectTabs = (props) => {
     const submitData = () => {
 
         // check if all criteria have a name
-        const criteriaCheckName = criteria.filter(criterion => criterion.name === "");
-        if (criteriaCheckName.length > 0) {
-            toastError("There is at least one criterion without a name!", 8000);
+        const criteriaCheckName = criteria.some(criterion => criterion.name === "");
+        if (criteriaCheckName) {
+            toastError("There is at least one criterion without a name!", 6000);
+            return;
+        }
+
+        // check if all linear_segments are filled
+        const criteriaCheckLinearSegments = criteria.some(criterion => isNaN(criterion.linear_segments))
+        if (criteriaCheckLinearSegments) {
+            toastError("There is at least one criterion with an empty linear segments value!", 6000);
             return;
         }
 
         // check if all alternatives have a name
-        const alternativesCheckName = alternatives.filter(alternative => alternative.name === "");
-        if (alternativesCheckName.length > 0) {
-            toastError("There is at least one alternative without a name!", 8000);
+        const alternativesCheckName = alternatives.some(alternative => alternative.name === "");
+        if (alternativesCheckName) {
+            toastError("There is at least one alternative without a name!", 6000);
+            return;
+        }
+
+        // check if all performances are filled
+        const alternativesCheckPerformances = alternatives.some(alternative =>
+            alternative.performances.some(performance => isNaN(performance.value))
+        )
+        if (alternativesCheckPerformances) {
+            toastError("There is at least one alternative with an empty performance!");
             return;
         }
 
