@@ -145,9 +145,15 @@ const ProjectTabs = (props) => {
     // submitAlternatives sends data about alternatives and performances to the backend using toSendAlternatives global variable
     const submitAlternatives = () => {
 
+        const alternativesToDelete = previousAlternatives.filter(pAlternative =>
+            !toSendAlternatives.some(alternative => alternative.id === pAlternative.id)
+        );
+        let waitingArrayUpdateCreate = toSendAlternatives.map(() => true);
+        let waitingArrayDelete = alternativesToDelete.map(() => true);
+
         // ---------------------------------------------------------------------------------------------------------- //
         // update and create alternatives
-        toSendAlternatives.forEach((alternative, index) => {
+        toSendAlternatives.forEach((alternative, indexA) => {
             const matchAlternative = previousAlternatives.find(pAlternative => pAlternative.id === alternative.id);
             if (matchAlternative) {
                 // PUT alternative
@@ -165,7 +171,8 @@ const ProjectTabs = (props) => {
                         // if the alternative was PUT then it means that its performances should either be:
                         // 1. PUT - their criterion is not new - they have an id from the database
                         // 2. POST - their criterion is new - they don't have an id
-                        alternative.performances.forEach(performance => {
+                        let waitingPerformances = alternative.performances.map(() => true);
+                        alternative.performances.forEach((performance, indexP) => {
                             if (performance?.id !== undefined) {
                                 // PUT
                                 fetch(`http://localhost:8080/api/performances/${performance.id}`, {
@@ -178,8 +185,15 @@ const ProjectTabs = (props) => {
                                         toastError(`Performance ${performance.id} could not be updated.`);
                                         throw new Error(`Performance ${performance.id} could not be updated.`);
                                     } else {
-                                        // TODO ------------------------------------------------------------------------------------------------------------------------------------------------
-                                        // need to take action if everything is done
+                                        waitingPerformances[indexP] = false;
+                                        if (waitingPerformances.every(item => item === false)) {
+                                            waitingArrayUpdateCreate[indexA] = false;
+                                            if (waitingArrayDelete.every(item => item === false)
+                                                && waitingArrayUpdateCreate.every(item => item === false)) {
+                                                toastSuccess();
+                                                navigate('/projects');
+                                            }
+                                        }
                                     }
                                 }).catch(err => {
                                     console.log(err);
@@ -196,8 +210,15 @@ const ProjectTabs = (props) => {
                                         toastError(`Performance ${performance.id} could not be uploaded.`);
                                         throw new Error(`Performance ${performance.id} could not be uploaded.`);
                                     } else {
-                                        // TODO ------------------------------------------------------------------------------------------------------------------------------------------------
-                                        // need to take action if everything is done
+                                        waitingPerformances[indexP] = false;
+                                        if (waitingPerformances.every(item => item === false)) {
+                                            waitingArrayUpdateCreate[indexA] = false;
+                                            if (waitingArrayDelete.every(item => item === false)
+                                                && waitingArrayUpdateCreate.every(item => item === false)) {
+                                                toastSuccess();
+                                                navigate('/projects');
+                                            }
+                                        }
                                     }
                                 }).catch(err => {
                                     console.log(err);
@@ -226,7 +247,8 @@ const ProjectTabs = (props) => {
                     // POST performances
                     // if alternative was POSTed then it means that all its performances are new and there is no need to check if they existed before,
                     // they can just be POSTed with the performance's ID got from the backend
-                    alternative.performances.forEach(performance => {
+                    let waitingPerformances = alternative.performances.map(() => true);
+                    alternative.performances.forEach((performance, indexP) => {
                         fetch(`http://localhost:8080/api/alternatives/${data.id}/performances/`, {
                             method: 'POST',
                             credentials: 'include',
@@ -237,8 +259,15 @@ const ProjectTabs = (props) => {
                                 toastError(`Alternative ${alternative.name} could not be uploaded.`);
                                 throw new Error(`Alternative ${alternative.name} could not be uploaded.`);
                             } else {
-                                // TODO ------------------------------------------------------------------------------------------------------------------------------------------------
-                                // need to take action if everything is done
+                                waitingPerformances[indexP] = false;
+                                if (waitingPerformances.every(item => item === false)) {
+                                    waitingArrayUpdateCreate[indexA] = false;
+                                    if (waitingArrayDelete.every(item => item === false)
+                                        && waitingArrayUpdateCreate.every(item => item === false)) {
+                                        toastSuccess();
+                                        navigate('/projects');
+                                    }
+                                }
                             }
                         })
                     })
@@ -250,10 +279,7 @@ const ProjectTabs = (props) => {
 
         // ---------------------------------------------------------------------------------------------------------- //
         // delete alternatives
-        const alternativesToDelete = previousAlternatives.filter(pAlternative =>
-            !toSendAlternatives.some(alternative => alternative.id === pAlternative.id)
-        );
-        alternativesToDelete.forEach(alternativeToDelete => {
+        alternativesToDelete.forEach((alternativeToDelete, index) => {
             // DELETE
             fetch(`http://localhost:8080/api/alternatives/${alternativeToDelete.id}`, {
                 method: 'DELETE',
@@ -263,8 +289,13 @@ const ProjectTabs = (props) => {
                     toastError(`Alternative ${alternativeToDelete.name} could not be deleted!`);
                     throw new Error(`Alternative ${alternativeToDelete.name} could not be deleted!`)
                 } else {
-                    // TODO ------------------------------------------------------------------------------------------------------------------------------------------------
-                    // need to take action if everything is done
+                    waitingArrayDelete[index] = false;
+                    if (waitingArrayDelete.every(item => item === false)
+                        && waitingArrayUpdateCreate.every(item => item === false)) {
+                        toastSuccess();
+                        navigate('/projects');
+                    }
+
                 }
             })
         })
@@ -294,7 +325,6 @@ const ProjectTabs = (props) => {
                     } else {
                         received++;
                         if (waiting === received) {
-                            toastSuccess();
                             submitAlternatives();
                         }
                     }
@@ -336,7 +366,6 @@ const ProjectTabs = (props) => {
                     })
 
                     if (waiting === received) {
-                        toastSuccess();
                         submitAlternatives();
                     }
                 }).catch(err => {
