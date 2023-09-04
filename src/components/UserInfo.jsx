@@ -1,17 +1,17 @@
 import {
-    Box,
     Button,
     Icon,
     IconButton,
     Popover,
+    PopoverArrow,
     PopoverBody,
     PopoverContent,
-    PopoverFooter,
-    PopoverHeader,
     PopoverTrigger,
+    Text,
+    VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
-import { BiSolidUser, BiUser, } from "react-icons/bi";
+import { BiSolidUser, BiSolidUserCircle, BiUser, } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./utils/useLocalStorage.jsx";
 
@@ -30,42 +30,54 @@ const UserInfo = (props) => {
         setAuth(false);
         props.toggleRefresh(false)
     }
-    
+
 
     return (
-        <Popover placement='bottom'>
-                {({ isOpen, onClose }) => (
-                    <>
-                        <PopoverTrigger>
-                            <IconButton
-                                fontSize={'sm'}
-                                fontWeight={400}
-                                icon={<Icon as={isOpen ? BiSolidUser : BiUser} minH={'7'} minW={'7'}
-                                    color={useColorModeValue('teal.500', 'teal.200')} />} />
-                        </PopoverTrigger>
-                        <PopoverContent>
-                            <PopoverHeader>{props.userName} {props.userSurname}</PopoverHeader>
-                            <PopoverBody>
-                                <Box>
+        <Popover placement='bottom' arrowSize={'12'} offset={[0, 16]}>
+            {({ isOpen, onClose }) => (
+                <>
+                    <PopoverTrigger>
+                        <IconButton
+                            fontSize={'sm'}
+                            fontWeight={400}
+                            icon={<Icon as={isOpen ? BiSolidUser : BiUser} minH={'7'} minW={'7'}
+                                color={useColorModeValue('teal.500', 'teal.200')} />} />
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <PopoverArrow />
+                        <PopoverBody>
+                            <VStack
+                                justify={'center'}
+                                spacing={'1rem'}>
+                                <Text fontSize={{ base: '12px', sm: '18px', md: '24px' }} textAlign="center" marginTop={'20px'} lineHeight={'80%'}>
+                                    {props.userName} {props.userSurname}
+                                </Text>
+
+                                <Icon as={BiSolidUserCircle} minH={'32'} minW={'32'}
+                                    color={useColorModeValue('teal.500', 'teal.200')} />
+
+                                <Text fontSize={{ base: '8px', sm: '12px', md: '16px' }} textAlign="center" lineHeight={'50%'}>
                                     {props.userEmail}
-                                </Box>
+                                </Text>
+
                                 <Button
                                     fontSize={'sm'}
                                     fontWeight={400}
+                                    marginBottom={'10px'}
+                                    size={'md'}
                                     onClick={() => {
                                         logout();
                                         navigate("/");
-                                    }}
-                                >
+                                    }} >
                                     Logout
                                 </Button>
-                            </PopoverBody>
-                            <PopoverFooter>This is the footer</PopoverFooter>
-                        </PopoverContent>
-                    </>
-                )
-                }
-            </Popover >
+                            </VStack>
+                        </PopoverBody>
+                    </PopoverContent>
+                </>
+            )
+            }
+        </Popover >
     )
 };
 export default UserInfo;
