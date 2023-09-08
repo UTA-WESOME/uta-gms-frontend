@@ -95,7 +95,7 @@ const ProjectCard = ({ id, name, description }) => {
                 borderWidth='1px'
                 borderRadius='lg'
                 overflow='hidden'
-                _hover={{bg: useColorModeValue('gray.200', 'gray.700')}}
+                _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
                 p={5}>
                 <Flex direction={'column'} spacing={'4px'} height='100%' align={{ base: 'center', md: 'start' }}>
                     <Heading
@@ -111,14 +111,24 @@ const ProjectCard = ({ id, name, description }) => {
                         </LinkOverlay>
                     </Heading>
                     <Text fontSize={'md'}
-                          lineHeight={'110%'}
-                          color={useColorModeValue('gray.700', 'gray.100')}
-                          paddingTop={'2'}
-                          paddingBottom={'10'}>
+                        lineHeight={'110%'}
+                        color={useColorModeValue('gray.700', 'gray.100')}
+                        paddingTop={'2'}
+                        paddingBottom={'10'}>
                         6.08.2023
                     </Text>
                     <Spacer />
 
+                    <Text
+                        as={'div'}
+                        justify={'center'}
+                        fontSize={'md'}
+                        lineHeight={'110%'}
+                        color={useColorModeValue('gray.400', 'gray.400')}
+                        paddingBottom={'2'}
+                        mx={'auto'} >
+                        Click to open project
+                    </Text>
 
                     <Flex
                         direction={'row'}
