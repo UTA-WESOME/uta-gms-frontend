@@ -95,6 +95,7 @@ const ProjectCard = ({ id, name, description }) => {
                 borderWidth='1px'
                 borderRadius='lg'
                 overflow='hidden'
+                _hover={{bg: useColorModeValue('gray.200', 'gray.700')}}
                 p={5}>
                 <Flex direction={'column'} spacing={'4px'} height='100%' align={{ base: 'center', md: 'start' }}>
                     <Heading
