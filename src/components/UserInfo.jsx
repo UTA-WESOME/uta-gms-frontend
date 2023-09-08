@@ -33,7 +33,7 @@ const UserInfo = (props) => {
 
 
     return (
-        <Popover placement='bottom' arrowSize={'12'} offset={[0, 16]}>
+        <Popover placement='bottom-start' arrowSize={'20'} offset={[0, 16]} >
             {({ isOpen, onClose }) => (
                 <>
                     <PopoverTrigger>
@@ -44,19 +44,19 @@ const UserInfo = (props) => {
                                 color={useColorModeValue('teal.500', 'teal.200')} />} />
                     </PopoverTrigger>
                     <PopoverContent>
-                        <PopoverArrow />
+                        <PopoverArrow borderRadius={'4px'} />
                         <PopoverBody>
                             <VStack
                                 justify={'center'}
                                 spacing={'1rem'}>
-                                <Text fontSize={{ base: '12px', sm: '18px', md: '24px' }} textAlign="center" marginTop={'20px'} lineHeight={'80%'}>
+                                <Text fontSize={'24px'} textAlign="center" marginTop={'20px'} lineHeight={'80%'}>
                                     {props.userName} {props.userSurname}
                                 </Text>
 
-                                <Icon as={BiSolidUserCircle} minH={'32'} minW={'32'}
+                                <Icon as={BiSolidUserCircle} minH={32} minW={32}
                                     color={useColorModeValue('teal.500', 'teal.200')} />
 
-                                <Text fontSize={{ base: '8px', sm: '12px', md: '16px' }} textAlign="center" lineHeight={'50%'}>
+                                <Text fontSize={'24px'}textAlign="center" lineHeight={'50%'}>
                                     {props.userEmail}
                                 </Text>
 
