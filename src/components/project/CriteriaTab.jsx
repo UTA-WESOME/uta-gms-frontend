@@ -45,7 +45,7 @@ import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import CustomTooltip from "../CustomTooltip.jsx";
 
 
-const CriteriaTab = ({ criteria, setCriteria }) => {
+const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -59,7 +59,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                 .min(0, "The criterion must have a minimum of 0 linear segments!")
                 .integer("The count of linear segments must be a whole number!")
         }),
-        onSubmit: (values, actions) => {
+        onSubmit: (values, _) => {
             // update criterion
             setCriteria(previousCriteria => {
                 return previousCriteria.map(criterion => {
@@ -123,7 +123,7 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
     }
 
     const handleChangeLinearSegmentsMobile = (change) => {
-        let newValue = formik.values.linear_segments + change;
+        let newValue = (formik.values.linear_segments === "" ? 0 : formik.values.linear_segments) + change;
         formik.setFieldValue("linear_segments", newValue);
     }
 
@@ -136,12 +136,40 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
         setCriteria(previousCriteria => [...previousCriteria, {
             id: maxId + 1,
             name: "Criterion name",
-            gain: true
+            gain: true,
+            linear_segments: 0,
         }])
+
+        // set alternatives
+        setAlternatives(pAlternatives => {
+            return pAlternatives.map(alternative => {
+                return {
+                    ...alternative,
+                    performances: [
+                        ...alternative.performances,
+                        {
+                            value: 0,
+                            criterion: maxId + 1,
+                        }
+                    ]
+                }
+            })
+        })
     }
 
     const deleteCriterion = (id) => {
+        // set criteria
         setCriteria(previousCriteria => previousCriteria.filter(item => item.id !== id));
+
+        // set alternatives
+        setAlternatives(pAlternatives => {
+            return pAlternatives.map(alternative => {
+                return {
+                    ...alternative,
+                    performances: alternative.performances.filter(performance => performance.criterion !== id)
+                }
+            })
+        })
     }
 
     return (
@@ -185,13 +213,13 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {criteria.map((criterion, index) => {
+                            {criteria.map(criterion => {
                                 return (
                                     <Tr>
                                         <Td>
                                             <FormControl isInvalid={criterion.name.length === 0}>
                                                 <Input
-                                                    defaultValue={criterion.name}
+                                                    value={criterion.name}
                                                     onChange={(event) => handleChangeName(event, criterion.id)}
                                                 />
                                             </FormControl>
@@ -214,10 +242,11 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                         </Td>
                                         <Td>
                                             <NumberInput
+                                                isInvalid={isNaN(criterion.linear_segments)}
                                                 defaultValue={criterion.linear_segments}
                                                 min={0}
                                                 max={30}
-                                                clampValueOnBlur={false}
+                                                precision={0}
                                                 onChange={(valueString) => handleChangeLinearSegments(valueString, criterion.id)}
                                             >
                                                 <NumberInputField/>
@@ -368,19 +397,20 @@ const CriteriaTab = ({ criteria, setCriteria }) => {
                                 </FormLabel>
                                 <HStack>
                                     <Button
-                                        isDisabled={formik.values.linear_segments >= 30}
-                                        onClick={() => handleChangeLinearSegmentsMobile(1)}
-                                    >+</Button>
+                                        isDisabled={formik.values.linear_segments <= 0}
+                                        onClick={() => handleChangeLinearSegmentsMobile(-1)}
+                                    >-</Button>
                                     <Input
                                         id={'input_linear_segments'}
                                         name={'linear_segments'}
                                         type={'number'}
                                         {...formik.getFieldProps("linear_segments")}
                                     />
+
                                     <Button
-                                        isDisabled={formik.values.linear_segments <= 0}
-                                        onClick={() => handleChangeLinearSegmentsMobile(-1)}
-                                    >-</Button>
+                                        isDisabled={formik.values.linear_segments >= 30}
+                                        onClick={() => handleChangeLinearSegmentsMobile(1)}
+                                    >+</Button>
                                 </HStack>
                                 <FormErrorMessage>{formik.errors.linear_segments}</FormErrorMessage>
                             </FormControl>
