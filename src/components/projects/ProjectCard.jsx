@@ -55,7 +55,6 @@ const ProjectCard = ({ id, name, description }) => {
                 });
                 throw new Error("error");
             } else {
-                onClose();
                 navigate(0);
             }
         }).catch(err => {
