@@ -5,6 +5,7 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import AlternativesTab from "./AlternativesTab.jsx";
+import RankingTab from "./RankingTab.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -480,7 +481,7 @@ const ProjectTabs = (props) => {
                         <>
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
-                            <Tab>Reference</Tab>
+                            <Tab>Ranking</Tab>
                         </>
                     }
 
@@ -504,10 +505,14 @@ const ProjectTabs = (props) => {
                             />
                         </TabPanel>
                     }
-                    <TabPanel>
-                        <p>Reference ranking</p>
-                    </TabPanel>
-
+                    {hasLoadedAlternatives &&
+                        <TabPanel>
+                            <RankingTab
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                            />
+                        </TabPanel>
+                    }
                 </TabPanels>
             </Tabs>
             <Box textAlign={'right'}>
