@@ -11,6 +11,7 @@ import Projects from "./components/Projects.jsx";
 import NewProject from "./components/projects/NewProject.jsx";
 import EditProject from "./components/projects/EditProject.jsx";
 import Project from "./components/Project.jsx";
+import PageNotFound from "./components/PageNotFound.jsx";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
             {
                 path: "/projects/:id",
                 element: <Project/>
+            },
+            {
+                path: "*",
+                element: <PageNotFound/>
             }
         ]
     }
