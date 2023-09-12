@@ -119,17 +119,6 @@ const ProjectCard = ({ id, name, description }) => {
                     </Text>
                     <Spacer />
 
-                    <Text
-                        as={'div'}
-                        justify={'center'}
-                        fontSize={'md'}
-                        lineHeight={'110%'}
-                        color={useColorModeValue('gray.400', 'gray.400')}
-                        paddingBottom={'2'}
-                        mx={'auto'} >
-                        Click to open project
-                    </Text>
-
                     <Flex
                         direction={'row'}
                         spacing={'4px'}
