@@ -1,6 +1,13 @@
 import { Box, HStack, Show, Spacer, Text } from "@chakra-ui/react";
+import Rank from "./drag-and-drop/Rank.jsx";
+import Alternative from "./drag-and-drop/Alternative.jsx";
+import { useState } from "react";
 
 const RankingTab = ({ alternatives, setAlternatives }) => {
+
+    const [ranks, setRanks] = useState([1, 2, 3]);
+
+
     return (
         <>
 
@@ -17,17 +24,11 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                         borderRadius={'lg'}
                         p={5}
                     >
-                        {alternatives.map(alternative => (
-                            <Box
-                                borderWidth={'1px'}
-                                borderRadius={'lg'}
-                                p={3}
-                                m={3}
-                            >
-                                <Text>{alternative.name}</Text>
-                            </Box>
+                        {alternatives.filter(alt => alt.reference_ranking === 0).map(alternative => (
+                            <Alternative id={alternative.id} name={alternative.name}/>
                         ))}
                     </Box>
+
                     <Spacer/>
 
                     <Box
@@ -37,20 +38,17 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                         borderRadius={'lg'}
                         p={5}
                     >
-                        {alternatives.map(alternative => (
-                            <Box
-                                borderWidth={'1px'}
-                                borderRadius={'lg'}
-                                p={3}
-                                m={3}
-                            >
-                                <Text>{alternative.name}</Text>
-                            </Box>
+                        {ranks.map(rank => (
+                            <Rank key={rank} id={rank}>
+                                {alternatives
+                                    .filter(alt => alt.reference_ranking === rank)
+                                    .map(alternative => (
+                                    <Alternative id={alternative.id} name={alternative.name}/>
+                                ))}
+                            </Rank>
                         ))}
                     </Box>
                 </HStack>
-
-
             </Show>
 
             {/*MOBILE*/}

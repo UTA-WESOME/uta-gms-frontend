@@ -6,6 +6,7 @@ import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import AlternativesTab from "./AlternativesTab.jsx";
 import RankingTab from "./RankingTab.jsx";
+import { DndContext } from "@dnd-kit/core";
 
 
 const ProjectTabs = (props) => {
@@ -453,73 +454,88 @@ const ProjectTabs = (props) => {
         submitCriteria();
     }
 
+    const handleDragEnd = (event) => {
+        const { active, over } = event;
+        setAlternatives(pAlternatives => {
+            return pAlternatives.map(pAlternative => {
+                if (pAlternative.id.toString() === active.id) {
+                    return {
+                        ...pAlternative,
+                        reference_ranking: over ? parseInt(over.id) : 0
+                    };
+                }
+                return pAlternative;
+            })
+        })
+    }
 
-    return (
-        <Box
-            w={'full'}
-            h={'full'}
-            borderWidth={'1px'}
-            borderRadius={'lg'}
-            overflow={'hidden'}
-            p={5}
-        >
-            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}>
-                <TabList mx={'15px'}>
-                    {isScreenMobile ?
-                        <>
-                            <Tab fontSize={'20px'}>
-                                <Icon as={FaArrowTrendUp}></Icon>
-                            </Tab>
-                            <Tab fontSize={'20px'}>
-                                <Icon as={FaList}></Icon>
-                            </Tab>
-                            <Tab fontSize={'20px'}>
-                                <Icon as={FaBalanceScaleLeft}></Icon>
-                            </Tab>
-                        </>
-                        :
-                        <>
-                            <Tab>Criteria</Tab>
-                            <Tab>Alternatives</Tab>
-                            <Tab>Ranking</Tab>
-                        </>
-                    }
+        return (
+            <Box
+                w={'full'}
+                h={'full'}
+                borderWidth={'1px'}
+                borderRadius={'lg'}
+                p={5}
+            >
+                <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}>
+                    <TabList mx={'15px'}>
+                        {isScreenMobile ?
+                            <>
+                                <Tab fontSize={'20px'}>
+                                    <Icon as={FaArrowTrendUp}></Icon>
+                                </Tab>
+                                <Tab fontSize={'20px'}>
+                                    <Icon as={FaList}></Icon>
+                                </Tab>
+                                <Tab fontSize={'20px'}>
+                                    <Icon as={FaBalanceScaleLeft}></Icon>
+                                </Tab>
+                            </>
+                            :
+                            <>
+                                <Tab>Criteria</Tab>
+                                <Tab>Alternatives</Tab>
+                                <Tab>Ranking</Tab>
+                            </>
+                        }
 
-                </TabList>
-                <TabPanels>
-                    {hasLoadedCriteria &&
-                        <TabPanel>
-                            <CriteriaTab
-                                criteria={criteria}
-                                setCriteria={setCriteria}
-                                setAlternatives={setAlternatives}
-                            />
-                        </TabPanel>
-                    }
-                    {hasLoadedAlternatives &&
-                        <TabPanel>
-                            <AlternativesTab
-                                alternatives={alternatives}
-                                setAlternatives={setAlternatives}
-                                criteria={criteria}
-                            />
-                        </TabPanel>
-                    }
-                    {hasLoadedAlternatives &&
-                        <TabPanel>
-                            <RankingTab
-                                alternatives={alternatives}
-                                setAlternatives={setAlternatives}
-                            />
-                        </TabPanel>
-                    }
-                </TabPanels>
-            </Tabs>
-            <Box textAlign={'right'}>
-                <Button colorScheme={'teal'} mr={6} onClick={submitData}>Save</Button>
+                    </TabList>
+                    <TabPanels>
+                        {hasLoadedCriteria &&
+                            <TabPanel>
+                                <CriteriaTab
+                                    criteria={criteria}
+                                    setCriteria={setCriteria}
+                                    setAlternatives={setAlternatives}
+                                />
+                            </TabPanel>
+                        }
+                        {hasLoadedAlternatives &&
+                            <TabPanel>
+                                <AlternativesTab
+                                    alternatives={alternatives}
+                                    setAlternatives={setAlternatives}
+                                    criteria={criteria}
+                                />
+                            </TabPanel>
+                        }
+                        {hasLoadedAlternatives &&
+                            <TabPanel>
+                                <DndContext onDragEnd={handleDragEnd}>
+                                    <RankingTab
+                                        alternatives={alternatives}
+                                        setAlternatives={setAlternatives}
+                                    />
+                                </DndContext>
+                            </TabPanel>
+                        }
+                    </TabPanels>
+                </Tabs>
+                <Box textAlign={'right'}>
+                    <Button colorScheme={'teal'} mr={6} onClick={submitData}>Save</Button>
+                </Box>
             </Box>
-        </Box>
-    )
-}
+        )
+    }
 
-export default ProjectTabs;
+    export default ProjectTabs;
