@@ -20,7 +20,7 @@ const Alternative = ({ id, name }) => {
             borderRadius={'lg'}
             bg={'teal'}
             py={2}
-            my={5}
+            my={3}
             mx={12}
             cursor={'move'}
             textAlign={'center'}
