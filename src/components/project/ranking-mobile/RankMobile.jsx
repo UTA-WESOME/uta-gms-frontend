@@ -43,13 +43,11 @@ const RankMobile = (props) => {
     }
 
     const handleCheck = (event, alternativeId) => {
-        console.log(checkedAlternatives);
         if (!event.target.checked) {
             checkedAlternatives = checkedAlternatives.filter(item => item !== alternativeId);
         } else {
             checkedAlternatives = [...checkedAlternatives, alternativeId];
         }
-        console.log(checkedAlternatives);
     }
 
     const handleSubmit = (event) => {
