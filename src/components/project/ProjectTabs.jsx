@@ -26,6 +26,7 @@ const ProjectTabs = (props) => {
     let toSendAlternatives = [];
 
 
+    const [tabIndex, setTabIndex] = useState(0);
     const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
     const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
@@ -454,71 +455,81 @@ const ProjectTabs = (props) => {
         submitCriteria();
     }
 
-        return (
+    return (
+        <Box
+            w={'full'}
+            h={'full'}
+            borderWidth={'1px'}
+            borderRadius={'lg'}
+            p={5}
+        >
+            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}
+                  onChange={(index) => {
+                      setTabIndex(index);
+                  }}>
+                <TabList mx={'15px'}>
+                    {isScreenMobile ?
+                        <>
+                            <Tab fontSize={'20px'}>
+                                <Icon as={FaArrowTrendUp}></Icon>
+                            </Tab>
+                            <Tab fontSize={'20px'}>
+                                <Icon as={FaList}></Icon>
+                            </Tab>
+                            <Tab fontSize={'20px'}>
+                                <Icon as={FaBalanceScaleLeft}></Icon>
+                            </Tab>
+                        </>
+                        :
+                        <>
+                            <Tab>Criteria</Tab>
+                            <Tab>Alternatives</Tab>
+                            <Tab>Ranking</Tab>
+                        </>
+                    }
+
+                </TabList>
+                <TabPanels>
+                    {hasLoadedCriteria &&
+                        <TabPanel>
+                            <CriteriaTab
+                                criteria={criteria}
+                                setCriteria={setCriteria}
+                                setAlternatives={setAlternatives}
+                            />
+                        </TabPanel>
+                    }
+                    {hasLoadedAlternatives &&
+                        <TabPanel>
+                            <AlternativesTab
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                                criteria={criteria}
+                            />
+                        </TabPanel>
+                    }
+                    {hasLoadedAlternatives &&
+                        <TabPanel p={1} py={2}>
+                            <RankingTab
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                            />
+                        </TabPanel>
+                    }
+                </TabPanels>
+            </Tabs>
             <Box
-                w={'full'}
-                h={'full'}
-                borderWidth={'1px'}
-                borderRadius={'lg'}
-                p={5}
+                textAlign={'right'}
+                mt={tabIndex === 2 ? 3 : 0}
             >
-                <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}>
-                    <TabList mx={'15px'}>
-                        {isScreenMobile ?
-                            <>
-                                <Tab fontSize={'20px'}>
-                                    <Icon as={FaArrowTrendUp}></Icon>
-                                </Tab>
-                                <Tab fontSize={'20px'}>
-                                    <Icon as={FaList}></Icon>
-                                </Tab>
-                                <Tab fontSize={'20px'}>
-                                    <Icon as={FaBalanceScaleLeft}></Icon>
-                                </Tab>
-                            </>
-                            :
-                            <>
-                                <Tab>Criteria</Tab>
-                                <Tab>Alternatives</Tab>
-                                <Tab>Ranking</Tab>
-                            </>
-                        }
-
-                    </TabList>
-                    <TabPanels>
-                        {hasLoadedCriteria &&
-                            <TabPanel>
-                                <CriteriaTab
-                                    criteria={criteria}
-                                    setCriteria={setCriteria}
-                                    setAlternatives={setAlternatives}
-                                />
-                            </TabPanel>
-                        }
-                        {hasLoadedAlternatives &&
-                            <TabPanel>
-                                <AlternativesTab
-                                    alternatives={alternatives}
-                                    setAlternatives={setAlternatives}
-                                    criteria={criteria}
-                                />
-                            </TabPanel>
-                        }
-                        {hasLoadedAlternatives &&
-                            <TabPanel p={1} py={2}>
-                                <RankingTab
-                                    alternatives={alternatives}
-                                    setAlternatives={setAlternatives}
-                                />
-                            </TabPanel>
-                        }
-                    </TabPanels>
-                </Tabs>
-                <Box textAlign={'right'}>
-                    <Button colorScheme={'teal'} mr={6} onClick={submitData}>Save</Button>
-                </Box>
+                <Button
+                    colorScheme={'teal'}
+                    mr={tabIndex === 2 ? 1 : 6}
+                    onClick={submitData}
+                >Save</Button>
             </Box>
-        )
-    }
+        </Box>
+    )
+}
 
-    export default ProjectTabs;
+export default ProjectTabs;

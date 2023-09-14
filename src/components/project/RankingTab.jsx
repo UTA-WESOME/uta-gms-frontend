@@ -55,7 +55,7 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
         <>
 
             {/*DESKTOP*/}
-            <Show above={'1200px'}>
+            <Show above={'1000px'}>
 
                 <DndContext onDragEnd={handleDragEnd}>
                     <Flex justify={'center'} mx={{ base: '5%', xl: '8%' }}>
@@ -111,7 +111,7 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
 
             {/*MOBILE*/}
             {/*TODO: change 1200px to const*/}
-            <Show below={'1199px'}>
+            <Show below={'999px'}>
                 <Flex direction={'column'}>
                     {ranks.map(rank => (
                         <RankMobile id={rank}
@@ -130,15 +130,13 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                     <Button
                         colorScheme={"teal"}
                         variant='outline'
-                        ml={5}
-                        mt={2}
+                        ml={1}
                         onClick={handleNewRank}
                     >New rank</Button>
                     <Button
                         colorScheme={'red'}
                         variant='outline'
-                        ml={5}
-                        mt={2}
+                        ml={1}
                         onClick={handleReset}
                     >Reset</Button>
                 </ButtonGroup>

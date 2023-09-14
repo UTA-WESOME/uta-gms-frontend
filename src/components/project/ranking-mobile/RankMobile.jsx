@@ -24,7 +24,7 @@ const RankMobile = (props) => {
         <Box
             borderWidth={useColorModeValue('3px', '1px')}
             borderRadius={'lg'}
-            mx={5} my={3}
+            mx={1} my={3}
             bg={useColorModeValue('gray.50', 'gray.700')}
         >
             <Flex justify={'center'}>
