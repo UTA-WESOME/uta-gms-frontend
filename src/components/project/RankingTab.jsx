@@ -114,7 +114,9 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
             <Show below={'1199px'}>
                 <Flex direction={'column'}>
                     {ranks.map(rank => (
-                        <RankMobile id={rank}>
+                        <RankMobile id={rank}
+                            // needed for deleting a rank
+                            setRanks={setRanks} setAlternatives={setAlternatives}>
                             {alternatives
                                 .filter(alt => alt.reference_ranking === rank)
                                 .map(alternative => (
@@ -123,6 +125,23 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                         </RankMobile>
                     ))}
                 </Flex>
+
+                <ButtonGroup pt={"1rem"}>
+                    <Button
+                        colorScheme={"teal"}
+                        variant='outline'
+                        ml={5}
+                        mt={2}
+                        onClick={handleNewRank}
+                    >New rank</Button>
+                    <Button
+                        colorScheme={'red'}
+                        variant='outline'
+                        ml={5}
+                        mt={2}
+                        onClick={handleReset}
+                    >Reset</Button>
+                </ButtonGroup>
             </Show>
 
         </>

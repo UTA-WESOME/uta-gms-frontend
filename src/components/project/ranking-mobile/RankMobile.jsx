@@ -3,6 +3,23 @@ import { DeleteIcon } from "@chakra-ui/icons";
 
 
 const RankMobile = (props) => {
+
+    const handleDeleteRank = () => {
+        // delete rank
+        props.setRanks(pRanks => pRanks.filter(rank => rank !== props.id));
+
+        // update alternatives that have this rank
+        props.setAlternatives(pAlternatives => pAlternatives.map(pAlternative => {
+            if (pAlternative.reference_ranking === props.id) {
+                return {
+                    ...pAlternative,
+                    reference_ranking: 0,
+                }
+            }
+            return pAlternative
+        }))
+    }
+
     return (
         <Box
             borderWidth={useColorModeValue('3px', '1px')}
@@ -21,6 +38,7 @@ const RankMobile = (props) => {
                         aria-label={'delete-rank'}
                         icon={<DeleteIcon/>}
                         ml={'auto'} my={1} mr={1}
+                        onClick={handleDeleteRank}
                     />
                 </Flex>
             </Flex>
