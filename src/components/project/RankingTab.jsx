@@ -11,9 +11,8 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
             .filter(value => value !== 0)
             .sort()
 
-        let minRank = Math.min(...ranksInAlternatives)
         let maxRank = Math.max(...ranksInAlternatives)
-        return Array.from({ length: maxRank - minRank + 1 }, (_, index) => minRank + index);
+        return Array.from({ length: maxRank  }, (_, index) => 1 + index);
 
     });
 
@@ -39,23 +38,10 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
 
             {/*DESKTOP*/}
             <Show above={'lg'}>
-                <Flex
-                    justify={'center'}
-                    mx={'10%'}
-                >
+                <Flex justify={'center'} mx={'10%'}>
                     {/*ALTERNATIVES BOX*/}
-                    <Box
-                        w={'full'}
-                        borderWidth={'1px'}
-                        borderRadius={'lg'}
-                        p={3}
-                        m={5}
-                    >
-                        <Heading
-                            fontWeight={400}
-                            fontSize={'3xl'}
-                            textAlign={'center'}
-                        >
+                    <Box w={'full'} borderWidth={'1px'} borderRadius={'lg'} p={3} m={5}>
+                        <Heading fontWeight={400} fontSize={'3xl'} textAlign={'center'}>
                             Alternatives
                         </Heading>
                         {alternatives.filter(alt => alt.reference_ranking === 0).map(alternative => (
@@ -66,18 +52,14 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                     <Spacer/>
 
                     {/*RANKS BOX*/}
-                    <Box
-                        w={'full'}
-                        borderWidth={'1px'}
-                        borderRadius={'lg'}
-                        p={3}
-                        m={5}
-                    >
+                    <Box w={'full'} borderWidth={'1px'} borderRadius={'lg'} p={3} m={5}>
                         <Heading fontWeight={400} fontSize={'3xl'} textAlign={'center'}>
                             Ranks
                         </Heading>
                         {ranks.map(rank => (
-                            <Rank id={rank} ranks={ranks} setRanks={setRanks}>
+                            <Rank id={rank}
+                                  // needed for deleting a rank
+                                  setRanks={setRanks} setAlternatives={setAlternatives}>
                                 {alternatives
                                     .filter(alt => alt.reference_ranking === rank)
                                     .map(alternative => (

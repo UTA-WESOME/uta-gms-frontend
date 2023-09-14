@@ -9,7 +9,19 @@ const Rank = (props) => {
     });
 
     const handleDeleteRank = () => {
-        props.setRanks(props.ranks.filter(rank => rank !== props.id))
+        // delete rank
+        props.setRanks(pRanks => pRanks.filter(rank => rank !== props.id));
+
+        // update alternatives that have this rank
+        props.setAlternatives(pAlternatives => pAlternatives.map(pAlternative => {
+            if(pAlternative.reference_ranking === props.id) {
+                return {
+                    ...pAlternative,
+                    reference_ranking: 0,
+                }
+            }
+            return pAlternative
+        }))
     }
 
     return (
