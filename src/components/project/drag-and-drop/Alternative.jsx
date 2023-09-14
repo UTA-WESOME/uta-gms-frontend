@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 import { useDraggable } from "@dnd-kit/core";
 
 const Alternative = ({ id, name }) => {
@@ -18,7 +18,7 @@ const Alternative = ({ id, name }) => {
             {...attributes}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            bg={'teal'}
+            bg={useColorModeValue('teal.200', 'teal')}
             py={2}
             my={3}
             mx={12}

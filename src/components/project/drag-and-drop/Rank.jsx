@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/react";
 import { useDroppable } from "@dnd-kit/core";
 import { DeleteIcon } from "@chakra-ui/icons";
 
@@ -27,10 +27,10 @@ const Rank = (props) => {
     return (
         <Box
             ref={setNodeRef}
-            borderWidth={'1px'}
+            borderWidth={useColorModeValue('3px', '1px')}
             borderRadius={'lg'}
             mx={5} my={3}
-            bg={isOver ? 'teal.700' : 'gray.700'}
+            bg={isOver ? useColorModeValue('teal.100', 'teal.700') : useColorModeValue('gray.50', 'gray.700')}
         >
             <Flex justify={'center'}>
                 <Box w={'100%'}/>
@@ -39,7 +39,7 @@ const Rank = (props) => {
                 </Flex>
                 <Flex w={'100%'}>
                     <IconButton
-                        color={'red.300'} bg={'gray.700'}
+                        color={'red.300'} bg={useColorModeValue('gray.50', 'gray.700')}
                         aria-label={'delete-rank'}
                         icon={<DeleteIcon/>}
                         ml={'auto'} my={1} mr={1}
@@ -47,7 +47,7 @@ const Rank = (props) => {
                     />
                 </Flex>
             </Flex>
-            <Divider/>
+            <hr/>
             {props.children.length !== 0 ?
                 props.children
                 :
