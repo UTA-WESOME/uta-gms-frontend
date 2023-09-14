@@ -454,21 +454,6 @@ const ProjectTabs = (props) => {
         submitCriteria();
     }
 
-    const handleDragEnd = (event) => {
-        const { active, over } = event;
-        setAlternatives(pAlternatives => {
-            return pAlternatives.map(pAlternative => {
-                if (pAlternative.id.toString() === active.id) {
-                    return {
-                        ...pAlternative,
-                        reference_ranking: over ? parseInt(over.id) : 0
-                    };
-                }
-                return pAlternative;
-            })
-        })
-    }
-
         return (
             <Box
                 w={'full'}
@@ -520,13 +505,11 @@ const ProjectTabs = (props) => {
                             </TabPanel>
                         }
                         {hasLoadedAlternatives &&
-                            <TabPanel>
-                                <DndContext onDragEnd={handleDragEnd}>
-                                    <RankingTab
-                                        alternatives={alternatives}
-                                        setAlternatives={setAlternatives}
-                                    />
-                                </DndContext>
+                            <TabPanel p={1} py={2}>
+                                <RankingTab
+                                    alternatives={alternatives}
+                                    setAlternatives={setAlternatives}
+                                />
                             </TabPanel>
                         }
                     </TabPanels>
