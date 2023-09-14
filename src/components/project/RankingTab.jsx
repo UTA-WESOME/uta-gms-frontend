@@ -116,7 +116,10 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                     {ranks.map(rank => (
                         <RankMobile id={rank}
                             // needed for deleting a rank
-                            setRanks={setRanks} setAlternatives={setAlternatives}>
+                            setRanks={setRanks} setAlternatives={setAlternatives}
+                            // needed for modal
+                            alternatives={alternatives}
+                        >
                             {alternatives
                                 .filter(alt => alt.reference_ranking === rank)
                                 .map(alternative => (
