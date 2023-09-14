@@ -19,9 +19,11 @@ const Alternative = ({ id, name }) => {
             borderWidth={'1px'}
             borderRadius={'lg'}
             bg={'teal'}
-            p={3}
-            m={3}
+            py={2}
+            my={5}
+            mx={12}
             cursor={'move'}
+            textAlign={'center'}
         >
             <Text>{name}</Text>
         </Box>

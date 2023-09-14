@@ -1,4 +1,4 @@
-import { Box, HStack, Show, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Show, Spacer, Text } from "@chakra-ui/react";
 import Rank from "./drag-and-drop/Rank.jsx";
 import Alternative from "./drag-and-drop/Alternative.jsx";
 import { useState } from "react";
@@ -13,17 +13,24 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
 
             {/*DESKTOP*/}
             <Show above={'lg'}>
-                <HStack
+                <Flex
                     justify={'center'}
                     mx={'10%'}
                 >
                     <Box
                         w={'full'}
-                        h={'full'}
                         borderWidth={'1px'}
                         borderRadius={'lg'}
-                        p={5}
+                        p={3}
+                        m={5}
                     >
+                        <Heading
+                            fontWeight={400}
+                            fontSize={'3xl'}
+                            textAlign={'center'}
+                        >
+                            Alternatives
+                        </Heading>
                         {alternatives.filter(alt => alt.reference_ranking === 0).map(alternative => (
                             <Alternative id={alternative.id} name={alternative.name}/>
                         ))}
@@ -33,11 +40,18 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
 
                     <Box
                         w={'full'}
-                        h={'full'}
                         borderWidth={'1px'}
                         borderRadius={'lg'}
-                        p={5}
+                        p={3}
+                        m={5}
                     >
+                        <Heading
+                            fontWeight={400}
+                            fontSize={'3xl'}
+                            textAlign={'center'}
+                        >
+                            Ranks
+                        </Heading>
                         {ranks.map(rank => (
                             <Rank key={rank} id={rank}>
                                 {alternatives
@@ -48,7 +62,7 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                             </Rank>
                         ))}
                     </Box>
-                </HStack>
+                </Flex>
             </Show>
 
             {/*MOBILE*/}

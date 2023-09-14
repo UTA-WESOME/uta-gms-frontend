@@ -6,18 +6,15 @@ const Rank = (props) => {
     const {isOver, setNodeRef} = useDroppable({
         id: props.id.toString(),
     });
-    const style = {
-        backgroundColor: isOver ? 'green' : 'magenta',
-    };
 
     return (
         <Box
             ref={setNodeRef}
-            style={style}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            p={5}
+            py={props.children.length !== 0 ? 3 : 8}
             m={5}
+            bg={isOver ? 'teal.700' : 'teal.300'}
         >
             {props.children}
         </Box>
