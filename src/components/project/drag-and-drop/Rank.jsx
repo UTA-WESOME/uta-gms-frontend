@@ -1,10 +1,10 @@
-import { Box, Divider, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
 import { useDroppable } from "@dnd-kit/core";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 const Rank = (props) => {
 
-    const {isOver, setNodeRef} = useDroppable({
+    const { isOver, setNodeRef } = useDroppable({
         id: props.id.toString(),
     });
 
@@ -14,7 +14,7 @@ const Rank = (props) => {
 
         // update alternatives that have this rank
         props.setAlternatives(pAlternatives => pAlternatives.map(pAlternative => {
-            if(pAlternative.reference_ranking === props.id) {
+            if (pAlternative.reference_ranking === props.id) {
                 return {
                     ...pAlternative,
                     reference_ranking: 0,
@@ -29,7 +29,7 @@ const Rank = (props) => {
             ref={setNodeRef}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            m={5}
+            mx={5} my={3}
             bg={isOver ? 'teal.700' : 'gray.700'}
         >
             <Flex justify={'center'}>
@@ -47,7 +47,7 @@ const Rank = (props) => {
                     />
                 </Flex>
             </Flex>
-            <Divider />
+            <Divider/>
             {props.children.length !== 0 ?
                 props.children
                 :
