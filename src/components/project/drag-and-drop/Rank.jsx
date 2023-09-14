@@ -1,11 +1,16 @@
-import { Box, Divider, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
 import { useDroppable } from "@dnd-kit/core";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const Rank = (props) => {
 
     const {isOver, setNodeRef} = useDroppable({
         id: props.id.toString(),
     });
+
+    const handleDeleteRank = () => {
+        props.setRanks(props.ranks.filter(rank => rank !== props.id))
+    }
 
     return (
         <Box
@@ -15,7 +20,21 @@ const Rank = (props) => {
             m={5}
             bg={isOver ? 'teal.700' : 'gray.700'}
         >
-            <Text textAlign={'center'} verticalAlign={'center'} my={2}>Rank {props.id}</Text>
+            <Flex justify={'center'}>
+                <Box w={'100%'}/>
+                <Flex w={'100%'} justify={'center'} m={1}>
+                    <Text my={2}>Rank {props.id}</Text>
+                </Flex>
+                <Flex w={'100%'}>
+                    <IconButton
+                        color={'red.300'} bg={'gray.700'}
+                        aria-label={'delete-rank'}
+                        icon={<DeleteIcon/>}
+                        ml={'auto'} my={1} mr={1}
+                        onClick={handleDeleteRank}
+                    />
+                </Flex>
+            </Flex>
             <Divider />
             {props.children.length !== 0 ?
                 props.children

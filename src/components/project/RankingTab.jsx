@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, HStack, Show, Spacer, Text } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Heading, Show, Spacer } from "@chakra-ui/react";
 import Rank from "./drag-and-drop/Rank.jsx";
 import Alternative from "./drag-and-drop/Alternative.jsx";
 import { useState } from "react";
@@ -13,7 +13,7 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
 
         let minRank = Math.min(...ranksInAlternatives)
         let maxRank = Math.max(...ranksInAlternatives)
-        return Array.from({length: maxRank - minRank + 1}, (_, index) => minRank + index);
+        return Array.from({ length: maxRank - minRank + 1 }, (_, index) => minRank + index);
 
     });
 
@@ -23,6 +23,14 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
         maxRank = maxRank === -Infinity ? 0 : maxRank;
 
         setRanks(pRanks => [...pRanks, maxRank + 1])
+    }
+
+    const handleReset = () => {
+        setAlternatives(pAlternatives =>
+            pAlternatives.map(pAlternative => ({
+                ...pAlternative,
+                reference_ranking: 0,
+            })))
     }
 
 
@@ -65,27 +73,35 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                         p={3}
                         m={5}
                     >
-                        <Heading
-                            fontWeight={400}
-                            fontSize={'3xl'}
-                            textAlign={'center'}
-                        >
+                        <Heading fontWeight={400} fontSize={'3xl'} textAlign={'center'}>
                             Ranks
                         </Heading>
                         {ranks.map(rank => (
-                            <Rank key={rank} id={rank}>
+                            <Rank id={rank} ranks={ranks} setRanks={setRanks}>
                                 {alternatives
                                     .filter(alt => alt.reference_ranking === rank)
                                     .map(alternative => (
-                                    <Alternative id={alternative.id} name={alternative.name}/>
-                                ))}
+                                        <Alternative id={alternative.id} name={alternative.name}/>
+                                    ))}
                             </Rank>
                         ))}
-                        <Button
-                            ml={5}
-                            mt={2}
-                            onClick={handleNewRank}
-                        >New rank</Button>
+
+                        <ButtonGroup pt={"1rem"}>
+                            <Button
+                                colorScheme={"teal"}
+                                variant='outline'
+                                ml={5}
+                                mt={2}
+                                onClick={handleNewRank}
+                            >New rank</Button>
+                            <Button
+                                colorScheme={'red'}
+                                variant='outline'
+                                ml={5}
+                                mt={2}
+                                onClick={handleReset}
+                            >Reset</Button>
+                        </ButtonGroup>
                     </Box>
                 </Flex>
             </Show>
