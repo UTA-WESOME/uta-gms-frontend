@@ -5,6 +5,8 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import AlternativesTab from "./AlternativesTab.jsx";
+import RankingTab from "./RankingTab.jsx";
+import { DndContext } from "@dnd-kit/core";
 
 
 const ProjectTabs = (props) => {
@@ -24,6 +26,7 @@ const ProjectTabs = (props) => {
     let toSendAlternatives = [];
 
 
+    const [tabIndex, setTabIndex] = useState(0);
     const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
     const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
@@ -452,17 +455,18 @@ const ProjectTabs = (props) => {
         submitCriteria();
     }
 
-
     return (
         <Box
             w={'full'}
             h={'full'}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            overflow={'hidden'}
             p={5}
         >
-            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}>
+            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}
+                  onChange={(index) => {
+                      setTabIndex(index);
+                  }}>
                 <TabList mx={'15px'}>
                     {isScreenMobile ?
                         <>
@@ -480,7 +484,7 @@ const ProjectTabs = (props) => {
                         <>
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
-                            <Tab>Reference</Tab>
+                            <Tab>Ranking</Tab>
                         </>
                     }
 
@@ -504,14 +508,25 @@ const ProjectTabs = (props) => {
                             />
                         </TabPanel>
                     }
-                    <TabPanel>
-                        <p>Reference ranking</p>
-                    </TabPanel>
-
+                    {hasLoadedAlternatives &&
+                        <TabPanel p={1} py={2}>
+                            <RankingTab
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                            />
+                        </TabPanel>
+                    }
                 </TabPanels>
             </Tabs>
-            <Box textAlign={'right'}>
-                <Button colorScheme={'teal'} mr={6} onClick={submitData}>Save</Button>
+            <Box
+                textAlign={'right'}
+                mt={tabIndex === 2 ? 3 : 0}
+            >
+                <Button
+                    colorScheme={'teal'}
+                    mr={tabIndex === 2 ? 1 : 6}
+                    onClick={submitData}
+                >Save</Button>
             </Box>
         </Box>
     )
