@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/react";
 import { useDroppable } from "@dnd-kit/core";
 import { DeleteIcon } from "@chakra-ui/icons";
 

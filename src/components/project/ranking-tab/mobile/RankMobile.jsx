@@ -120,12 +120,14 @@ const RankMobile = (props) => {
 
                     <ModalBody>
                         <Flex spacing={"15px"} direction={'column'}>
-                            {props.alternatives.map(alternative => (<Checkbox
+                            {props.alternatives.map((alternative, index) => (
+                                <Checkbox
                                     my={1}
                                     colorScheme={'teal'}
                                     isDisabled={alternative.reference_ranking !== 0 && alternative.reference_ranking !== props.id}
                                     onChange={(event) => handleCheck(event, alternative.id)}
                                     defaultChecked={alternative.reference_ranking === props.id}
+                                    key={index}
                                 >{alternative.name}</Checkbox>))}
                         </Flex>
 
