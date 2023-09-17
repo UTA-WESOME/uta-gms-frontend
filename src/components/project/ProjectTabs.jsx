@@ -5,7 +5,7 @@ import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
-import AlternativesTab from "./AlternativesTab.jsx";
+import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./RankingTab.jsx";
 
 
