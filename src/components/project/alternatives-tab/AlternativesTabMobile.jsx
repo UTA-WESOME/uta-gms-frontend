@@ -79,6 +79,7 @@ const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlt
                             borderTopWidth={'1px'}
                             borderBottomWidth={index === alternatives.length - 1 ? '1px' : '0px'}
                             p={2}
+                            key={index}
                         >
                             <Text isTruncated>{alternative.name}</Text>
                             <Spacer/>

@@ -82,6 +82,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                             borderTopWidth={'1px'}
                             borderBottomWidth={index === criteria.length - 1 ? '1px' : '0px'}
                             p={2}
+                            key={index}
                         >
                             <Text isTruncated>{criterion.name}</Text>
                             <Spacer/>
