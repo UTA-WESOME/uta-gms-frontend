@@ -104,9 +104,9 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {criteria.map(criterion => {
+                        {criteria.map((criterion, index) => {
                             return (
-                                <Tr>
+                                <Tr key={index}>
                                     <Td>
                                         <FormControl isInvalid={criterion.name.length === 0}>
                                             <Input
