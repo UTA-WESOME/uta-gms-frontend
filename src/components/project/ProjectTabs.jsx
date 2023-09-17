@@ -1,12 +1,12 @@
 import { Box, Button, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery, useToast } from "@chakra-ui/react";
-import CriteriaTab from "./CriteriaTab.jsx";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
+import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./AlternativesTab.jsx";
 import RankingTab from "./RankingTab.jsx";
-import { DndContext } from "@dnd-kit/core";
 
 
 const ProjectTabs = (props) => {
