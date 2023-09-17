@@ -1,10 +1,10 @@
 import { Box, Button, ButtonGroup, Flex, Heading, Show, Spacer } from "@chakra-ui/react";
-import Rank from "./drag-and-drop/Rank.jsx";
-import Alternative from "./drag-and-drop/Alternative.jsx";
+import Rank from "./desktop/Rank.jsx";
+import Alternative from "./desktop/Alternative.jsx";
 import { useState } from "react";
-import RankMobile from "./ranking-mobile/RankMobile.jsx";
+import RankMobile from "./mobile/RankMobile.jsx";
 import { DndContext } from "@dnd-kit/core";
-import AlternativeMobile from "./ranking-mobile/AlternativeMobile.jsx";
+import AlternativeMobile from "./mobile/AlternativeMobile.jsx";
 
 const RankingTab = ({ alternatives, setAlternatives }) => {
 
@@ -64,8 +64,8 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                             <Heading fontWeight={400} fontSize={'3xl'} textAlign={'center'}>
                                 Alternatives
                             </Heading>
-                            {alternatives.filter(alt => alt.reference_ranking === 0).map(alternative => (
-                                <Alternative id={alternative.id} name={alternative.name}/>
+                            {alternatives.filter(alt => alt.reference_ranking === 0).map((alternative, index) => (
+                                <Alternative id={alternative.id} name={alternative.name} key={index}/>
                             ))}
                         </Box>
 
@@ -76,14 +76,16 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                             <Heading fontWeight={400} fontSize={'3xl'} textAlign={'center'}>
                                 Ranks
                             </Heading>
-                            {ranks.map(rank => (
+                            {ranks.map((rank, index) => (
                                 <Rank id={rank}
                                     // needed for deleting a rank
-                                      setRanks={setRanks} setAlternatives={setAlternatives}>
+                                      setRanks={setRanks} setAlternatives={setAlternatives}
+                                      key={index}
+                                >
                                     {alternatives
                                         .filter(alt => alt.reference_ranking === rank)
-                                        .map(alternative => (
-                                            <Alternative id={alternative.id} name={alternative.name}/>
+                                        .map((alternative, index) => (
+                                            <Alternative id={alternative.id} name={alternative.name} key={index}/>
                                         ))}
                                 </Rank>
                             ))}
@@ -113,17 +115,17 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
             {/*TODO: change 1200px to const*/}
             <Show below={'999px'}>
                 <Flex direction={'column'}>
-                    {ranks.map(rank => (
-                        <RankMobile id={rank}
+                    {ranks.map((rank, index) => (
+                        <RankMobile id={rank} key={index}
                             // needed for deleting a rank
-                            setRanks={setRanks} setAlternatives={setAlternatives}
+                                    setRanks={setRanks} setAlternatives={setAlternatives}
                             // needed for modal
-                            alternatives={alternatives}
+                                    alternatives={alternatives}
                         >
                             {alternatives
                                 .filter(alt => alt.reference_ranking === rank)
-                                .map(alternative => (
-                                    <AlternativeMobile name={alternative.name}/>
+                                .map((alternative, index) => (
+                                    <AlternativeMobile name={alternative.name} key={index}/>
                                 ))}
                         </RankMobile>
                     ))}

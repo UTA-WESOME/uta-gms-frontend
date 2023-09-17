@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
-import RankingTab from "./RankingTab.jsx";
+import RankingTab from "./ranking-tab/RankingTab.jsx";
 
 
 const ProjectTabs = (props) => {
