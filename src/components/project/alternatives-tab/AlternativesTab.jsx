@@ -1,27 +1,4 @@
-import {
-    Button,
-    FormControl,
-    HStack,
-    IconButton,
-    Input,
-    NumberDecrementStepper,
-    NumberIncrementStepper,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    Show,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tr,
-    useColorModeValue
-} from "@chakra-ui/react";
-import CustomTooltip from "../../CustomTooltip.jsx";
-import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
+import { Show } from "@chakra-ui/react";
 import AlternativesTabMobile from "./AlternativesTabMobile.jsx";
 import AlternativesTabDesktop from "./AlternativesTabDesktop.jsx";
 

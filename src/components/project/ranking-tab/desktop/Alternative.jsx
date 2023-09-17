@@ -3,7 +3,7 @@ import { useDraggable } from "@dnd-kit/core";
 
 const Alternative = ({ id, name }) => {
 
-    const {attributes, listeners, setNodeRef, transform} = useDraggable({
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
         id: id.toString(),
     });
     const style = transform ? {
