@@ -1,4 +1,16 @@
-import { Box, Button, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery, useToast } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Icon,
+    Spinner,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+    useMediaQuery,
+    useToast
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
@@ -22,6 +34,7 @@ const ProjectTabs = (props) => {
     const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
     const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
+    const [saveClicked, setSaveClicked] = useState(false);
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -121,10 +134,13 @@ const ProjectTabs = (props) => {
             status: 'error',
             duration: duration,
             isClosable: true
-        })
+        });
+        setSaveClicked(false);
     }
 
     const submitData = () => {
+
+        setSaveClicked(true);
 
         // check if there are any criteria
         if (criteria.length === 0) {
@@ -257,11 +273,18 @@ const ProjectTabs = (props) => {
                 textAlign={'right'}
                 mt={tabIndex === 2 ? 3 : 0}
             >
-                <Button
-                    colorScheme={'teal'}
-                    mr={tabIndex === 2 ? 1 : 6}
-                    onClick={submitData}
-                >Save</Button>
+                {!saveClicked ?
+                    <Button
+                        colorScheme={'teal'}
+                        onClick={submitData}
+                    >Save</Button>
+                    :
+                    <Spinner
+                        color={'teal'}
+                        mr={tabIndex === 2 ? 1 : 6}
+                    />
+
+                }
             </Box>
         </Box>
     )
