@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -62,16 +62,6 @@ const ProjectCard = ({ id, name, description }) => {
         })
     }
 
-    const openProject = () => {
-        toast({
-            title: 'Wow!',
-            description: "You tried to open the project! The feature is yet to be implemented. ",
-            status: 'info',
-            duration: 5000,
-            isClosable: true,
-        });
-    }
-
     const shareProject = () => {
         toast({
             title: 'Wow!',
@@ -102,7 +92,8 @@ const ProjectCard = ({ id, name, description }) => {
                         lineHeight={'100%'}
                         textAlign={'start'}
                         paddingBottom={2}>
-                        <LinkOverlay onClick={openProject} href={'#'}>
+                        {/*TODO: might need refactor*/}
+                        <LinkOverlay  onClick={() => navigate(`/projects/${id}`)} href={`#`}>
                             <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
                                 {name}
                             </Text>

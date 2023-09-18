@@ -32,7 +32,7 @@ const Project = () => {
 
     useEffect(() => {
         if (!getAuth()) {
-            navigate("/login");
+            navigate("/signin");
         } else {
             fetch(`http://localhost:8080/api/projects/${id}`, {
                 method: "GET",
@@ -65,7 +65,7 @@ const Project = () => {
         <>
             {hasLoaded &&
                 <PageTemplate title={project.name}>
-                    <ProjectTabs/>
+                    <ProjectTabs id={id}/>
                 </PageTemplate>
             }
         </>

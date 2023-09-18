@@ -1,42 +1,210 @@
-import { Box, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
-import CriteriaTab from "./CriteriaTab.jsx";
-import { useState } from "react";
+import {
+    Box,
+    Button,
+    Icon,
+    Spinner,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+    useMediaQuery,
+    useToast
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
+import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
+import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
+import RankingTab from "./ranking-tab/RankingTab.jsx";
 
 
-const ProjectTabs = () => {
+const ProjectTabs = (props) => {
 
-    const [criteria, setCriteria] = useState();
-    const [isScreenMobile] = useMediaQuery('(max-width: 460px)')
+    // criteria and previousCriteria will be compared in submitData
+    // criteria holds active data that the user changes
+    const [criteria, setCriteria] = useState([]);
+
+    // alternatives holds active data that the user changes
+    const [alternatives, setAlternatives] = useState([]);
+
+    const [tabIndex, setTabIndex] = useState(0);
+    const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
+    const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
+    const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
+    const [saveClicked, setSaveClicked] = useState(false);
+    const navigate = useNavigate();
+    const toast = useToast();
 
 
-    useState(() => {
-        setCriteria([
-            {
-                "id": 1,
-                "name": "Gain 1",
-                "gain": true,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
-            },
-            {
-                "id": 2,
-                "name": "Gain 2",
-                "gain": true,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
-            },
-            {
-                "id": 3,
-                "name": "Lose 3",
-                "gain": false,
-                "created_at": "2023-08-16T20:35:01.781216Z",
-                "updated_at": "2023-08-16T20:35:01.785383Z"
+    useEffect(() => {
+
+        // get criteria
+        fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
+            method: "GET",
+            credentials: "include"
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting criteria");
             }
-        ])
+            return response.json();
+        }).then(data => {
+            setCriteria(data);
+            setHasLoadedCriteria(true);
+        }).catch(err => {
+            console.log(err);
+        })
+
+
+        // get alternatives
+        fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
+            method: 'GET',
+            credentials: 'include',
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting alternatives");
+            }
+            return response.json();
+        }).then(data => {
+
+            if (data.length === 0) {
+                setHasLoadedAlternatives(true);
+            } else {
+                let waitingArray = data.map(() => true);
+                data.forEach((alternative, index) => {
+
+                    fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
+                        method: 'GET',
+                        credentials: 'include',
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error("error getting performances");
+                        }
+                        return response.json();
+                    }).then(data => {
+
+                        // insert alternative with its performances
+                        setAlternatives(pAlternatives => {
+                            const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
+                            if (!foundAlternative) {
+                                return [...pAlternatives, {
+                                    ...alternative,
+                                    performances: data
+                                }]
+                            } else {
+                                return pAlternatives;
+                            }
+                        });
+
+                        waitingArray[index] = false;
+
+                        if (waitingArray.every(item => item === false)) {
+                            setAlternatives(alternatives =>
+                                alternatives.sort((x, y) => (x.name > y.name) ? 1 : ((x.name < y.name) ? -1 : 0))
+                            )
+                            setHasLoadedAlternatives(true);
+                        }
+
+                    })
+
+                })
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+
     }, [])
 
+    const toastSuccess = () => {
+        toast({
+            title: "Saved!",
+            description: `Settings saved!`,
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+        })
+    }
+
+    const toastError = (description, duration = 5000) => {
+        toast({
+            title: "Error!",
+            description: description,
+            status: 'error',
+            duration: duration,
+            isClosable: true
+        });
+        setSaveClicked(false);
+    }
+
+    const submitData = () => {
+
+        setSaveClicked(true);
+
+        // check if there are any criteria
+        if (criteria.length === 0) {
+            toastError("No criteria!");
+            return;
+        }
+
+        // check if all criteria have a name
+        const criteriaCheckName = criteria.some(criterion => criterion.name === "");
+        if (criteriaCheckName) {
+            toastError("There is at least one criterion without a name!", 6000);
+            return;
+        }
+
+        // check if all linear_segments are filled
+        const criteriaCheckLinearSegments = criteria.some(criterion => isNaN(criterion.linear_segments))
+        if (criteriaCheckLinearSegments) {
+            toastError("There is at least one criterion with an empty linear segments value!", 6000);
+            return;
+        }
+
+        // check if there are any alternatives
+        if (alternatives.length === 0) {
+            toastError("No alternatives!");
+            return;
+        }
+
+        // check if all alternatives have a name
+        const alternativesCheckName = alternatives.some(alternative => alternative.name === "");
+        if (alternativesCheckName) {
+            toastError("There is at least one alternative without a name!", 6000);
+            return;
+        }
+
+        // check if all performances are filled
+        const alternativesCheckPerformances = alternatives.some(alternative =>
+            alternative.performances.some(performance => isNaN(performance.value))
+        )
+        if (alternativesCheckPerformances) {
+            toastError("There is at least one alternative with an empty performance!");
+            return;
+        }
+
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                criteria: criteria,
+                alternatives: alternatives,
+            })
+        }).then(response => {
+            if (!response.ok) {
+                toastError('Sorry, some unexpected error occurred')
+                throw new Error('Error updating data')
+            } else {
+                toastSuccess();
+                navigate('/projects');
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+
+    }
 
     return (
         <Box
@@ -44,10 +212,12 @@ const ProjectTabs = () => {
             h={'full'}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            overflow={'hidden'}
             p={5}
         >
-            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}>
+            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}
+                  onChange={(index) => {
+                      setTabIndex(index);
+                  }}>
                 <TabList mx={'15px'}>
                     {isScreenMobile ?
                         <>
@@ -65,23 +235,57 @@ const ProjectTabs = () => {
                         <>
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
-                            <Tab>Reference</Tab>
+                            <Tab>Ranking</Tab>
                         </>
                     }
 
                 </TabList>
                 <TabPanels>
-                    <TabPanel>
-                        <CriteriaTab criteria={criteria} setCriteria={setCriteria}/>
-                    </TabPanel>
-                    <TabPanel>
-                        <p>Alternatives</p>
-                    </TabPanel>
-                    <TabPanel>
-                        <p>Reference ranking</p>
-                    </TabPanel>
+                    {hasLoadedCriteria &&
+                        <TabPanel>
+                            <CriteriaTab
+                                criteria={criteria}
+                                setCriteria={setCriteria}
+                                setAlternatives={setAlternatives}
+                            />
+                        </TabPanel>
+                    }
+                    {hasLoadedAlternatives &&
+                        <TabPanel>
+                            <AlternativesTab
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                                criteria={criteria}
+                            />
+                        </TabPanel>
+                    }
+                    {hasLoadedAlternatives &&
+                        <TabPanel p={1} py={2}>
+                            <RankingTab
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                            />
+                        </TabPanel>
+                    }
                 </TabPanels>
             </Tabs>
+            <Box
+                textAlign={'right'}
+                mt={tabIndex === 2 ? 3 : 0}
+            >
+                {!saveClicked ?
+                    <Button
+                        colorScheme={'teal'}
+                        onClick={submitData}
+                    >Save</Button>
+                    :
+                    <Spinner
+                        color={'teal'}
+                        mr={tabIndex === 2 ? 1 : 6}
+                    />
+
+                }
+            </Box>
         </Box>
     )
 }
