@@ -21,8 +21,10 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Show,
     Spacer,
     Text,
+    useBoolean,
     useColorModeValue,
     useDisclosure,
     useToast,
@@ -34,8 +36,9 @@ import CustomTooltip from "../CustomTooltip";
 const ProjectCard = ({ id, name, description }) => {
 
     const navigate = useNavigate();
-    const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure()
-    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
+    const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
+    const [hoveredFlag, setHoveredFlag] = useBoolean();
     const cancelRef = useRef();
     const toast = useToast();
 
@@ -96,6 +99,8 @@ const ProjectCard = ({ id, name, description }) => {
                 borderRadius='lg'
                 overflow='hidden'
                 _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
+                onMouseEnter={setHoveredFlag.on}
+                onMouseLeave={setHoveredFlag.off}
                 p={5}>
                 <Flex direction={'column'} spacing={'4px'} height='100%' align={{ base: 'center', md: 'start' }}>
                     <Heading
@@ -118,6 +123,17 @@ const ProjectCard = ({ id, name, description }) => {
                         6.08.2023
                     </Text>
                     <Spacer />
+
+                    <Text
+                        as={'div'}
+                        justify={'center'}
+                        fontSize={'md'}
+                        lineHeight={'110%'}
+                        color={useColorModeValue('gray.400', 'gray.400')}
+                        paddingBottom={'2'}
+                        mx={'auto'} >
+                        {hoveredFlag ? "Click to open project" : <span>&nbsp;&nbsp;</span>}
+                    </Text>
 
                     <Flex
                         direction={'row'}
