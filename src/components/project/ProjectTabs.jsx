@@ -13,12 +13,13 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
+import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
+import ResultsTab from "./results-tab/ResultsTab.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -221,14 +222,17 @@ const ProjectTabs = (props) => {
                 <TabList mx={'15px'}>
                     {isScreenMobile ?
                         <>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaArrowTrendUp}></Icon>
                             </Tab>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaList}></Icon>
                             </Tab>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaBalanceScaleLeft}></Icon>
+                            </Tab>
+                            <Tab fontSize={'20px'}>
+                                <Icon as={FaRegCheckCircle}></Icon>
                             </Tab>
                         </>
                         :
@@ -236,6 +240,7 @@ const ProjectTabs = (props) => {
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
                             <Tab>Ranking</Tab>
+                            <Tab>Results</Tab>
                         </>
                     }
 
@@ -267,6 +272,9 @@ const ProjectTabs = (props) => {
                             />
                         </TabPanel>
                     }
+                    <TabPanel p={1} py={2}>
+                        <ResultsTab/>
+                    </TabPanel>
                 </TabPanels>
             </Tabs>
             <Box
