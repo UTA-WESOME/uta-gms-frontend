@@ -35,14 +35,20 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const formik = useFormik({
-        initialValues: { id: 0, name: "", gain: false, linear_segments: 0 },
+        initialValues: { id: 0, name: "", gain: false, linear_segments: 0, weight: 1 },
         validationSchema: Yup.object({
             name: Yup.string().required("Criterion name is required!")
                 .max(64, "Criterion name too long!"),
             linear_segments: Yup.number()
+                .required("This field is required!")
                 .max(30, "The criterion is limited to a maximum of 30 linear segments!")
                 .min(0, "The criterion must have a minimum of 0 linear segments!")
-                .integer("The count of linear segments must be a whole number!")
+                .integer("The count of linear segments must be a whole number!"),
+            weight: Yup.number()
+                .required("Weight is required!")
+                .max(30, "The maximum value is 30")
+                .min(1, "The minimum value is 1")
+                .integer("The weight must a whole number!")
         }),
         onSubmit: (values, _) => {
             // update criterion
@@ -55,6 +61,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                             name: values.name,
                             gain: values.gain,
                             linear_segments: values.linear_segments,
+                            weight: values.weight
                         };
                     }
                     return criterion;
@@ -65,9 +72,14 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
         }
     });
 
-    const handleChangeLinearSegmentsMobile = (change) => {
+    const handleChangeLinearSegments = (change) => {
         let newValue = (formik.values.linear_segments === "" ? 0 : formik.values.linear_segments) + change;
         formik.setFieldValue("linear_segments", newValue);
+    }
+
+    const handleChangeWeight = (change) => {
+        let newValue = (formik.values.weight === "" ? 0 : formik.values.weight) + change;
+        formik.setFieldValue("weight", newValue);
     }
 
     return (
@@ -90,10 +102,8 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                                 aria-label={'Edit criterion'}
                                 icon={<EditIcon/>}
                                 onClick={() => {
-                                    formik.values.id = criterion.id;
-                                    formik.values.name = criterion.name;
-                                    formik.values.gain = criterion.gain;
-                                    formik.values.linear_segments = criterion.linear_segments;
+                                    formik.setValues(criterion);
+                                    formik.setErrors({});
                                     onOpen();
                                 }}>
                             </IconButton>
@@ -192,7 +202,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                                 <HStack>
                                     <Button
                                         isDisabled={formik.values.linear_segments <= 0}
-                                        onClick={() => handleChangeLinearSegmentsMobile(-1)}
+                                        onClick={() => handleChangeLinearSegments(-1)}
                                     >-</Button>
                                     <Input
                                         id={'input_linear_segments'}
@@ -203,10 +213,47 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
 
                                     <Button
                                         isDisabled={formik.values.linear_segments >= 30}
-                                        onClick={() => handleChangeLinearSegmentsMobile(1)}
+                                        onClick={() => handleChangeLinearSegments(1)}
                                     >+</Button>
                                 </HStack>
                                 <FormErrorMessage>{formik.errors.linear_segments}</FormErrorMessage>
+                            </FormControl>
+
+                            <FormControl isInvalid={formik.errors.weight && formik.touched.weight}>
+                                <FormLabel fontSize={'sm'}>
+                                    <HStack>
+                                        <Text>
+                                            Weight
+                                        </Text>
+                                        <Popover>
+                                            <PopoverTrigger>
+                                                <InfoIcon/>
+                                            </PopoverTrigger>
+                                            <PopoverContent>
+                                                <PopoverCloseButton/>
+                                                <PopoverBody>Choose the weight of the criterion.</PopoverBody>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </HStack>
+                                </FormLabel>
+                                <HStack>
+                                    <Button
+                                        isDisabled={formik.values.weight <= 1}
+                                        onClick={() => handleChangeWeight(-1)}
+                                    >-</Button>
+                                    <Input
+                                        id={'input_weight'}
+                                        name={'weight'}
+                                        type={'number'}
+                                        {...formik.getFieldProps("weight")}
+                                    />
+
+                                    <Button
+                                        isDisabled={formik.values.weight >= 30}
+                                        onClick={() => handleChangeWeight(1)}
+                                    >+</Button>
+                                </HStack>
+                                <FormErrorMessage>{formik.errors.weight}</FormErrorMessage>
                             </FormControl>
                         </VStack>
 
