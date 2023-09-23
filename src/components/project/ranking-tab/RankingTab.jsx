@@ -1,10 +1,12 @@
-import { Box, Button, ButtonGroup, Flex, Heading, Show, Spacer } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Heading, IconButton, Show, Spacer } from "@chakra-ui/react";
 import Rank from "./desktop/Rank.jsx";
 import Alternative from "./desktop/Alternative.jsx";
 import { useState } from "react";
 import RankMobile from "./mobile/RankMobile.jsx";
 import { DndContext } from "@dnd-kit/core";
 import AlternativeMobile from "./mobile/AlternativeMobile.jsx";
+import { BiSolidFileImport, } from "react-icons/bi";
+import CustomTooltip from "../../CustomTooltip.jsx";
 
 const RankingTab = ({ alternatives, setAlternatives }) => {
 
@@ -65,11 +67,11 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                                 Alternatives
                             </Heading>
                             {alternatives.filter(alt => alt.reference_ranking === 0).map((alternative, index) => (
-                                <Alternative id={alternative.id} name={alternative.name} key={index}/>
+                                <Alternative id={alternative.id} name={alternative.name} key={index} />
                             ))}
                         </Box>
 
-                        <Spacer/>
+                        <Spacer />
 
                         {/*RANKS BOX*/}
                         <Box w={'full'} borderWidth={'1px'} borderRadius={'lg'} p={3} m={5}>
@@ -79,13 +81,13 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                             {ranks.map((rank, index) => (
                                 <Rank id={rank}
                                     // needed for deleting a rank
-                                      setRanks={setRanks} setAlternatives={setAlternatives}
-                                      key={index}
+                                    setRanks={setRanks} setAlternatives={setAlternatives}
+                                    key={index}
                                 >
                                     {alternatives
                                         .filter(alt => alt.reference_ranking === rank)
                                         .map((alternative, index) => (
-                                            <Alternative id={alternative.id} name={alternative.name} key={index}/>
+                                            <Alternative id={alternative.id} name={alternative.name} key={index} />
                                         ))}
                                 </Rank>
                             ))}
@@ -105,6 +107,14 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                                     mt={2}
                                     onClick={handleReset}
                                 >Reset</Button>
+                                <Button
+                                    ml={5}
+                                    mt={2}
+                                    mr={5}
+                                    colorScheme={'teal'}
+                                    leftIcon={<BiSolidFileImport />}>
+                                    Import from file
+                                </Button>
                             </ButtonGroup>
                         </Box>
                     </Flex>
@@ -118,14 +128,14 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                     {ranks.map((rank, index) => (
                         <RankMobile id={rank} key={index}
                             // needed for deleting a rank
-                                    setRanks={setRanks} setAlternatives={setAlternatives}
+                            setRanks={setRanks} setAlternatives={setAlternatives}
                             // needed for modal
-                                    alternatives={alternatives}
+                            alternatives={alternatives}
                         >
                             {alternatives
                                 .filter(alt => alt.reference_ranking === rank)
                                 .map((alternative, index) => (
-                                    <AlternativeMobile name={alternative.name} key={index}/>
+                                    <AlternativeMobile name={alternative.name} key={index} />
                                 ))}
                         </RankMobile>
                     ))}
@@ -144,6 +154,14 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                         ml={1}
                         onClick={handleReset}
                     >Reset</Button>
+                    <CustomTooltip label={"Import from file"} openDelay={200}>
+                        <IconButton
+                            ml={1}
+                            mr={1}
+                            colorScheme={'teal'}
+                            icon={<BiSolidFileImport />}>
+                        </IconButton>
+                    </CustomTooltip>
                 </ButtonGroup>
             </Show>
 

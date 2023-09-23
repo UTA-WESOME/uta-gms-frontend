@@ -21,6 +21,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { BiSolidFileImport, } from "react-icons/bi";
 import { FieldArray, FormikProvider, getIn, useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -82,10 +83,10 @@ const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlt
                             key={index}
                         >
                             <Text isTruncated>{alternative.name}</Text>
-                            <Spacer/>
+                            <Spacer />
                             <IconButton
                                 aria-label={'edit-alternative'}
-                                icon={<EditIcon/>}
+                                icon={<EditIcon />}
                                 onClick={() => {
                                     formik.values.id = alternative.id;
                                     formik.values.name = alternative.name;
@@ -96,7 +97,7 @@ const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlt
                             <IconButton
                                 color={'red.300'}
                                 aria-label={'delete-alternative'}
-                                icon={<DeleteIcon/>}
+                                icon={<DeleteIcon />}
                                 onClick={() => deleteAlternative(alternative.id)}
                             />
                         </HStack>
@@ -105,17 +106,24 @@ const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlt
             </Flex>
 
             <Button
-                my={4}
+                mr={6}
+                mt={4}
                 colorScheme={'teal'}
                 onClick={addAlternative}
-                variant='outline'
-            >
+                variant='outline' >
                 New alternative
+            </Button>
+
+            <Button
+                mt={4}
+                colorScheme={'teal'}
+                leftIcon={<BiSolidFileImport />}>
+                Import from file
             </Button>
 
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior={'inside'}>
-                <ModalOverlay/>
+                <ModalOverlay />
                 <FormikProvider value={formik}>
                     <ModalContent
                         mx={'15px'}
@@ -123,7 +131,7 @@ const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlt
                         onSubmit={formik.handleSubmit}
                     >
                         <ModalHeader>Edit alternative</ModalHeader>
-                        <ModalCloseButton/>
+                        <ModalCloseButton />
                         <FormControl
                             isInvalid={formik.errors.name && formik.touched.name}
                             px={6}

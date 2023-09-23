@@ -1,5 +1,6 @@
 import {
     Button,
+    ButtonGroup,
     FormControl,
     HStack,
     IconButton,
@@ -15,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
+import { BiSolidFileImport, } from "react-icons/bi";
 
 const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAlternative, deleteAlternative }) => {
 
@@ -76,7 +78,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                             <HStack>
                                 <Text>Name</Text>
                                 <CustomTooltip label={"Alternative name"} openDelay={200}>
-                                    <InfoIcon/>
+                                    <InfoIcon />
                                 </CustomTooltip>
                             </HStack>
                         </Th>
@@ -91,7 +93,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                             label={criterion.gain ? "Gain" : "Cost"}
                                             openDelay={200}
                                         >
-                                            <InfoIcon/>
+                                            <InfoIcon />
                                         </CustomTooltip>
                                     </HStack>
                                 </Th>
@@ -123,7 +125,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                         <IconButton
                                             color={'red.300'}
                                             aria-label={'delete-alternative'}
-                                            icon={<DeleteIcon/>}
+                                            icon={<DeleteIcon />}
                                             onClick={() => deleteAlternative(alternative.id)}
                                         />
                                     </HStack>
@@ -137,10 +139,10 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                                 defaultValue={performance.value}
                                                 onChange={(_, valueNumber) => handleChangePerformance(valueNumber, alternative.id, criterion.id)}
                                             >
-                                                <NumberInputField/>
+                                                <NumberInputField />
                                                 <NumberInputStepper>
-                                                    <NumberIncrementStepper/>
-                                                    <NumberDecrementStepper/>
+                                                    <NumberIncrementStepper />
+                                                    <NumberDecrementStepper />
                                                 </NumberInputStepper>
                                             </NumberInput>
                                         </Td>
@@ -152,16 +154,24 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                 </Tbody>
             </Table>
 
-            <Button
-                my={4}
-                colorScheme={'teal'}
-                onClick={addAlternative}
-                variant='outline'
-                position={'sticky'}
-                left={6}
-            >
-                New alternative
-            </Button>
+            <ButtonGroup position={'sticky'} left={6}>
+                <Button
+                    my={4}
+                    mr={6}
+                    colorScheme={'teal'}
+                    onClick={addAlternative}
+                    variant='outline' >
+                    New alternative
+                </Button>
+
+                <Button
+                    my={4}
+                    colorScheme={'teal'}
+                    leftIcon={<BiSolidFileImport />}>
+                    Import from file
+                </Button>
+            </ButtonGroup>
+
         </TableContainer>
     )
 

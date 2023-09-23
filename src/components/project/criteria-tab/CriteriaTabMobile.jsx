@@ -27,6 +27,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
+import { BiSolidFileImport, } from "react-icons/bi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -109,8 +110,12 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                 }
             </Flex>
 
-            <Button my={4} colorScheme={'teal'} onClick={addCriterion} variant='outline'>
+            <Button mr={6} mt={4} colorScheme={'teal'} onClick={addCriterion} variant='outline'>
                 New criterion
+            </Button>
+
+            <Button mt={4} colorScheme={'teal'} leftIcon={<BiSolidFileImport />}>
+                Import from file
             </Button>
 
 
