@@ -24,6 +24,7 @@ const AddProjectCard = () => {
                 variant='solid'
                 colorScheme='black'
                 aria-label='Add'
+                _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
                 icon={<Icon
                     as={BiSolidPlusCircle}
                     w={'50%'}
