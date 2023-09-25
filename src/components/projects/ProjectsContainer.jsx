@@ -87,6 +87,7 @@ const ProjectsContainer = ({ projects }) => {
                             <ProjectCard
                                 id={project.id}
                                 name={project.name}
+                                createdAt={project.created_at}
                                 description={project.description}
                             />
                         </GridItem>

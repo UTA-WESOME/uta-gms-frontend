@@ -54,15 +54,26 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
         }
     }
 
-    const handleChangeLinearSegments = (valueString, id) => {
+    const handleChangeLinearSegments = (valueNumber, id) => {
         setCriteria(previousCriteria => {
             return previousCriteria.map(criterion => {
                 if (criterion.id === id) {
-                    return { ...criterion, linear_segments: parseInt(valueString) };
+                    return { ...criterion, linear_segments: valueNumber };
                 }
                 return criterion;
             });
         });
+    }
+
+    const handleChangeWeight = (valueNumber, id) => {
+        setCriteria(previousCriteria => {
+            return previousCriteria.map(criterion => {
+                if (criterion.id === id) {
+                    return { ...criterion, weight: valueNumber };
+                }
+                return criterion;
+            })
+        })
     }
 
 
@@ -95,6 +106,16 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <Text>Linear segments</Text>
                                     <CustomTooltip
                                         label={"Choose how many linear segments the criterion should have. To select the general function, choose 0."}
+                                        openDelay={200}>
+                                        <InfoIcon/>
+                                    </CustomTooltip>
+                                </HStack>
+                            </Th>
+                            <Th>
+                                <HStack>
+                                    <Text>Weight</Text>
+                                    <CustomTooltip
+                                        label={"Choose the weight of the criterion."}
                                         openDelay={200}>
                                         <InfoIcon/>
                                     </CustomTooltip>
@@ -138,7 +159,22 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                             min={0}
                                             max={30}
                                             precision={0}
-                                            onChange={(valueString) => handleChangeLinearSegments(valueString, criterion.id)}
+                                            onChange={(_, valueNumber) => handleChangeLinearSegments(valueNumber, criterion.id)}
+                                        >
+                                            <NumberInputField/>
+                                            <NumberInputStepper>
+                                                <NumberIncrementStepper/>
+                                                <NumberDecrementStepper/>
+                                            </NumberInputStepper>
+                                        </NumberInput>
+                                    </Td>
+                                    <Td>
+                                        <NumberInput
+                                            isInvalid={isNaN(criterion.weight)}
+                                            defaultValue={criterion.weight}
+                                            min={0}
+                                            step={criterion.weight >= 1.0 ? 1 : 0.05}
+                                            onChange={(_, valueNumber) => handleChangeWeight(valueNumber, criterion.id)}
                                         >
                                             <NumberInputField/>
                                             <NumberInputStepper>
