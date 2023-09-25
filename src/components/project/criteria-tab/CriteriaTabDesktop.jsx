@@ -172,9 +172,8 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                         <NumberInput
                                             isInvalid={isNaN(criterion.weight)}
                                             defaultValue={criterion.weight}
-                                            min={1}
-                                            max={30}
-                                            precision={0}
+                                            min={0}
+                                            step={criterion.weight >= 1.0 ? 1 : 0.05}
                                             onChange={(_, valueNumber) => handleChangeWeight(valueNumber, criterion.id)}
                                         >
                                             <NumberInputField/>

@@ -46,9 +46,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                 .integer("The count of linear segments must be a whole number!"),
             weight: Yup.number()
                 .required("Weight is required!")
-                .max(30, "The maximum value is 30")
-                .min(1, "The minimum value is 1")
-                .integer("The weight must a whole number!")
+                .min(0, "The minimum value is 0")
         }),
         onSubmit: (values, _) => {
             // update criterion
@@ -238,7 +236,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                                 </FormLabel>
                                 <HStack>
                                     <Button
-                                        isDisabled={formik.values.weight <= 1}
+                                        isDisabled={formik.values.weight - 1 <= 0.0}
                                         onClick={() => handleChangeWeight(-1)}
                                     >-</Button>
                                     <Input
@@ -247,9 +245,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                                         type={'number'}
                                         {...formik.getFieldProps("weight")}
                                     />
-
                                     <Button
-                                        isDisabled={formik.values.weight >= 30}
                                         onClick={() => handleChangeWeight(1)}
                                     >+</Button>
                                 </HStack>
