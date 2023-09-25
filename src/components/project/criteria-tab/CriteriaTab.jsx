@@ -16,6 +16,7 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
             name: "Criterion name",
             gain: true,
             linear_segments: 0,
+            weight: 1,
         }])
 
         // set alternatives
@@ -52,7 +53,6 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
 
     return (
         <>
-
             {/*DESKTOP*/}
             <Show above={'lg'}>
                 <CriteriaTabDesktop criteria={criteria}
