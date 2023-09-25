@@ -272,9 +272,13 @@ const ProjectTabs = (props) => {
                             />
                         </TabPanel>
                     }
-                    <TabPanel p={1} py={2}>
-                        <ResultsTab/>
-                    </TabPanel>
+                    {hasLoadedAlternatives &&
+                        <TabPanel p={1} py={2}>
+                            <ResultsTab
+                                alternatives={alternatives}
+                            />
+                        </TabPanel>
+                    }
                 </TabPanels>
             </Tabs>
             <Box

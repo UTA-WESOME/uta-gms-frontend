@@ -1,67 +1,33 @@
-import { ArcherContainer, ArcherElement } from "react-archer";
+import { Box, Heading, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 
 
-const rootStyle = { display: 'flex', justifyContent: 'center' };
-const rowStyle = { margin: '200px 0', display: 'flex', justifyContent: 'space-between' };
-const boxStyle = { padding: '10px', border: '1px solid black' };
-
-
-const ResultsTab = () => {
+const ResultsTab = ({ alternatives }) => {
     return (
-        <div style={{ height: '500px', margin: '50px' }}>
-            <ArcherContainer strokeColor="red">
-                <div style={rootStyle}>
-                    <ArcherElement
-                        id="root"
-                        relations={[
-                            {
-                                targetId: 'element2',
-                                targetAnchor: 'top',
-                                sourceAnchor: 'bottom',
-                                style: { strokeColor: 'teal' },
-                            },
-                        ]}
-                    >
-                        <div style={boxStyle}>Root</div>
-                    </ArcherElement>
-                </div>
-
-                <div style={rowStyle}>
-                    <ArcherElement
-                        id="element2"
-                        relations={[
-                            {
-                                targetId: 'element3',
-                                targetAnchor: 'left',
-                                sourceAnchor: 'right',
-                                style: { strokeColor: 'blue', strokeWidth: 1 },
-                                label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
-                            },
-                        ]}
-                    >
-                        <div style={boxStyle}>Element 2</div>
-                    </ArcherElement>
-
-                    <ArcherElement id="element3">
-                        <div style={boxStyle}>Element 3</div>
-                    </ArcherElement>
-
-                    <ArcherElement
-                        id="element4"
-                        relations={[
-                            {
-                                targetId: 'root',
-                                targetAnchor: 'right',
-                                sourceAnchor: 'left',
-                                label: 'Arrow 3',
-                            },
-                        ]}
-                    >
-                        <div style={boxStyle}>Element 4</div>
-                    </ArcherElement>
-                </div>
-            </ArcherContainer>
-        </div>
+        <Box textAlign={'center'} mx={'30%'}>
+            <Heading>Result ranking</Heading><br/>
+            <TableContainer>
+                <Table variant='striped' size={'sm'}>
+                    <TableCaption>Results of the UTA-GMS method</TableCaption>
+                    <Thead>
+                        <Tr>
+                            <Th>position</Th>
+                            <Th>name</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {alternatives
+                            .filter(alternative => alternative.ranking !== 0)
+                            .sort((x, y) => x.ranking > y.ranking ? 1 : x.ranking < y.ranking ? -1 : 0)
+                            .map((alternative, index) => (
+                            <Tr>
+                                <Td>{alternative.ranking}</Td>
+                                <Td>{alternative.name}</Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </TableContainer>
+        </Box>
     )
 }
 
