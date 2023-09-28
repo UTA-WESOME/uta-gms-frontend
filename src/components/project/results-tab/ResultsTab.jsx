@@ -3,8 +3,8 @@ import { Box, Heading, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead
 
 const ResultsTab = ({ alternatives }) => {
     return (
-        <Box textAlign={'center'} mx={'30%'}>
-            <Heading>Result ranking</Heading><br/>
+        <Box textAlign={'center'} mx={{base: '1%', sm: '10%', lg: '18%', '2xl': '25%'}} mt={'10px'}>
+            <Heading size={{base: 'md', md: 'xl', xl: '2xl'}}>Result ranking</Heading><br/>
             <TableContainer>
                 <Table variant='striped' size={'sm'}>
                     <TableCaption>Results of the UTA-GMS method</TableCaption>
