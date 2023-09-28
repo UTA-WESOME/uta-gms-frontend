@@ -19,7 +19,7 @@ const ResultsTab = ({ alternatives }) => {
                             .filter(alternative => alternative.ranking !== 0)
                             .sort((x, y) => x.ranking > y.ranking ? 1 : x.ranking < y.ranking ? -1 : 0)
                             .map((alternative, index) => (
-                            <Tr>
+                            <Tr key={index}>
                                 <Td>{alternative.ranking}</Td>
                                 <Td>{alternative.name}</Td>
                             </Tr>

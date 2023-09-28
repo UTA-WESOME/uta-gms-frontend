@@ -64,7 +64,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
 
     return (
         <TableContainer pb={2}>
-            <Table style={{ borderCollapse: 'separate', borderSpacing: "0" }}>
+            <Table style={{ borderCollapse: 'separate', borderSpacing: "0" }} size={'sm'}>
                 <Thead>
                     <Tr>
                         <Th
