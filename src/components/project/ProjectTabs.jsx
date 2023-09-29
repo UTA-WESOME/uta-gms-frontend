@@ -252,6 +252,7 @@ const ProjectTabs = (props) => {
                 setAlternatives([]);
                 getProjectData();
                 toastSuccess();
+                setTabIndex(3);
             })
         }).catch(err => {
             console.log(err);
@@ -266,7 +267,10 @@ const ProjectTabs = (props) => {
             borderRadius={'lg'}
             p={5}
         >
-            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}
+            <Tabs variant='soft-rounded'
+                  colorScheme='teal'
+                  isFitted={isScreenMobile}
+                  index={tabIndex}
                   onChange={(index) => {
                       setTabIndex(index);
                   }}>
