@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
-import ImportPopover from "../import/ImportPopover.jsx";
+import ImportModal from "../import/ImportModal.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -274,7 +274,7 @@ const ProjectTabs = (props) => {
                 textAlign={'right'}
                 mt={tabIndex === 2 ? 3 : 0}
             >
-                <ImportPopover marTop={4} marBottom={4} marLeft={4} marRight={4} full={true} />
+                <ImportModal marTop={4} marBottom={4} marLeft={4} marRight={4} full={true} />
                 {!saveClicked ?
                     <Button
                         colorScheme={'teal'}
