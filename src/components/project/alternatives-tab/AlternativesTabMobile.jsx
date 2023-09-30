@@ -114,14 +114,6 @@ const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlt
                 New alternative
             </Button>
 
-            <Button
-                mt={4}
-                colorScheme={'teal'}
-                leftIcon={<BiSolidFileImport />}>
-                Import from file
-            </Button>
-
-
             <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior={'inside'}>
                 <ModalOverlay />
                 <FormikProvider value={formik}>

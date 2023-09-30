@@ -164,12 +164,6 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                     New alternative
                 </Button>
 
-                <Button
-                    my={4}
-                    colorScheme={'teal'}
-                    leftIcon={<BiSolidFileImport />}>
-                    Import from file
-                </Button>
             </ButtonGroup>
 
         </TableContainer>

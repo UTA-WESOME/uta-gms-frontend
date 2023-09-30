@@ -166,10 +166,6 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
             <Button mx={6} my={4} colorScheme={'teal'} onClick={addCriterion} variant='outline'>
                 New criterion
             </Button>
-
-            <Button my={4} colorScheme={'teal'} leftIcon={<BiSolidFileImport />}>
-                Import from file
-            </Button>
         </>
     )
 }

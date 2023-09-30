@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
+import ImportPopover from "../import/ImportPopover.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -215,9 +216,9 @@ const ProjectTabs = (props) => {
             p={5}
         >
             <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}
-                  onChange={(index) => {
-                      setTabIndex(index);
-                  }}>
+                onChange={(index) => {
+                    setTabIndex(index);
+                }}>
                 <TabList mx={'15px'}>
                     {isScreenMobile ?
                         <>
@@ -273,6 +274,7 @@ const ProjectTabs = (props) => {
                 textAlign={'right'}
                 mt={tabIndex === 2 ? 3 : 0}
             >
+                <ImportPopover marTop={4} marBottom={4} marLeft={4} marRight={4} full={true} />
                 {!saveClicked ?
                     <Button
                         colorScheme={'teal'}

@@ -107,14 +107,6 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                                     mt={2}
                                     onClick={handleReset}
                                 >Reset</Button>
-                                <Button
-                                    ml={5}
-                                    mt={2}
-                                    mr={5}
-                                    colorScheme={'teal'}
-                                    leftIcon={<BiSolidFileImport />}>
-                                    Import from file
-                                </Button>
                             </ButtonGroup>
                         </Box>
                     </Flex>
@@ -154,14 +146,6 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
                         ml={1}
                         onClick={handleReset}
                     >Reset</Button>
-                    <CustomTooltip label={"Import from file"} openDelay={200}>
-                        <IconButton
-                            ml={1}
-                            mr={1}
-                            colorScheme={'teal'}
-                            icon={<BiSolidFileImport />}>
-                        </IconButton>
-                    </CustomTooltip>
                 </ButtonGroup>
             </Show>
 

@@ -114,11 +114,6 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                 New criterion
             </Button>
 
-            <Button mt={4} colorScheme={'teal'} leftIcon={<BiSolidFileImport />}>
-                Import from file
-            </Button>
-
-
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay/>
                 <ModalContent
