@@ -8,7 +8,7 @@ import {
     TabList,
     TabPanel,
     TabPanels,
-    Tabs, Text,
+    Tabs,
     useMediaQuery,
     useToast
 } from "@chakra-ui/react";
@@ -330,7 +330,7 @@ const ProjectTabs = (props) => {
             h={'full'}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            p={{base: 2, sm: 5}}
+            p={{ base: 2, sm: 5 }}
         >
             <Tabs variant='soft-rounded'
                   colorScheme='teal'
@@ -339,7 +339,7 @@ const ProjectTabs = (props) => {
                   onChange={(index) => {
                       setTabIndex(index);
                   }}>
-                <TabList mx={{base: 0, sm: '15px'}}>
+                <TabList mx={{ base: 0, sm: '15px' }}>
                     {isScreenMobile ?
                         <>
                             <Tab fontSize={'15px'}>
