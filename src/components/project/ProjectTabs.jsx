@@ -84,7 +84,7 @@ const ProjectTabs = (props) => {
     const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
     const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
     const [hasLoadedPreferenceIntensities, setHasLoadedPreferenceIntensities] = useState(false);
-    const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
+    const [isScreenMobile] = useMediaQuery('(max-width: 628px)');
     const [saveClicked, setSaveClicked] = useState(false);
     const navigate = useNavigate();
     const toast = useToast();
@@ -330,7 +330,7 @@ const ProjectTabs = (props) => {
             h={'full'}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            p={5}
+            p={{base: 2, sm: 5}}
         >
             <Tabs variant='soft-rounded'
                   colorScheme='teal'
@@ -339,7 +339,7 @@ const ProjectTabs = (props) => {
                   onChange={(index) => {
                       setTabIndex(index);
                   }}>
-                <TabList mx={'15px'}>
+                <TabList mx={{base: 0, sm: '15px'}}>
                     {isScreenMobile ?
                         <>
                             <Tab fontSize={'15px'}>

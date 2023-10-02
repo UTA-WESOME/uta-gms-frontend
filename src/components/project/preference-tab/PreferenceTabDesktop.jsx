@@ -19,12 +19,10 @@ const PreferenceTabDesktop = ({
                                   setPreferenceIntensities,
                                   alternatives,
                                   criteria,
+                                  alternativesNumbers,
                                   addPreferenceIntensity,
                                   deletePreferenceIntensity
                               }) => {
-
-
-    const alternativesNumbers = [1, 2, 3, 4];
 
     const handleChangeAlternative = (preferenceId, alternativeNumber, alternativeId) => {
         setPreferenceIntensities(pPreferenceIntensities => {
