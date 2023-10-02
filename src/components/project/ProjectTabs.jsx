@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    ButtonGroup,
     Icon,
     Spinner,
     Tab,
@@ -13,12 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
+import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
+import ResultsTab from "./results-tab/ResultsTab.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -38,9 +40,7 @@ const ProjectTabs = (props) => {
     const navigate = useNavigate();
     const toast = useToast();
 
-
-    useEffect(() => {
-
+    const getProjectData = () => {
         // get criteria
         fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
             method: "GET",
@@ -68,7 +68,6 @@ const ProjectTabs = (props) => {
             }
             return response.json();
         }).then(data => {
-
             if (data.length === 0) {
                 setHasLoadedAlternatives(true);
             } else {
@@ -93,9 +92,8 @@ const ProjectTabs = (props) => {
                                     ...alternative,
                                     performances: data
                                 }]
-                            } else {
-                                return pAlternatives;
                             }
+                            return pAlternatives;
                         });
 
                         waitingArray[index] = false;
@@ -105,6 +103,7 @@ const ProjectTabs = (props) => {
                                 alternatives.sort((x, y) => (x.name > y.name) ? 1 : ((x.name < y.name) ? -1 : 0))
                             )
                             setHasLoadedAlternatives(true);
+                            setSaveClicked(false);
                         }
 
                     })
@@ -114,13 +113,19 @@ const ProjectTabs = (props) => {
         }).catch(err => {
             console.log(err);
         })
+    }
+
+
+    useEffect(() => {
+
+        getProjectData();
 
     }, [])
 
-    const toastSuccess = () => {
+    const toastSuccess = (description) => {
         toast({
-            title: "Saved!",
-            description: `Settings saved!`,
+            title: "Success!",
+            description: description,
             status: 'success',
             duration: 5000,
             isClosable: true,
@@ -138,41 +143,40 @@ const ProjectTabs = (props) => {
         setSaveClicked(false);
     }
 
-    const submitData = () => {
-
+    const validateData = () => {
         setSaveClicked(true);
 
         // check if there are any criteria
         if (criteria.length === 0) {
             toastError("No criteria!");
-            return;
+            return false;
         }
 
         // check if all criteria have a name
         const criteriaCheckName = criteria.some(criterion => criterion.name === "");
         if (criteriaCheckName) {
             toastError("There is at least one criterion without a name!", 6000);
-            return;
+            return false;
         }
 
         // check if all linear_segments are filled
         const criteriaCheckLinearSegments = criteria.some(criterion => isNaN(criterion.linear_segments))
         if (criteriaCheckLinearSegments) {
             toastError("There is at least one criterion with an empty linear segments value!", 6000);
-            return;
+            return false;
         }
 
         // check if there are any alternatives
         if (alternatives.length === 0) {
             toastError("No alternatives!");
-            return;
+            return false;
         }
 
         // check if all alternatives have a name
         const alternativesCheckName = alternatives.some(alternative => alternative.name === "");
         if (alternativesCheckName) {
             toastError("There is at least one alternative without a name!", 6000);
-            return;
+            return false;
         }
 
         // check if all performances are filled
@@ -181,9 +185,16 @@ const ProjectTabs = (props) => {
         )
         if (alternativesCheckPerformances) {
             toastError("There is at least one alternative with an empty performance!");
-            return;
+            return false;
         }
 
+        return true;
+    }
+
+    const submitData = () => {
+        if (!validateData()) {
+            return;
+        }
         fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
             method: 'PATCH',
             credentials: 'include',
@@ -197,13 +208,55 @@ const ProjectTabs = (props) => {
                 toastError('Sorry, some unexpected error occurred')
                 throw new Error('Error updating data')
             } else {
-                toastSuccess();
+                toastSuccess("Project settings saved.");
                 navigate('/projects');
             }
         }).catch(err => {
             console.log(err);
         })
+    }
 
+    const submitDataAndRun = () => {
+        if (!validateData()) {
+            return;
+        }
+
+        // update data
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                criteria: criteria,
+                alternatives: alternatives,
+            })
+        }).then(response => {
+            if (!response.ok) {
+                toastError('Sorry, some unexpected error occurred');
+                throw new Error('Error updating data');
+            }
+
+            // get results
+            fetch(`http://localhost:8080/api/projects/${props.id}/results`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+            }).then(response => {
+                if (!response.ok) {
+                    toastError('Sorry, some unexpected error occurred');
+                    throw new Error('Error getting results');
+                }
+                setHasLoadedCriteria(false);
+                setHasLoadedAlternatives(false);
+                setCriteria([]);
+                setAlternatives([]);
+                getProjectData();
+                toastSuccess();
+                setTabIndex(3);
+            })
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     return (
@@ -214,21 +267,27 @@ const ProjectTabs = (props) => {
             borderRadius={'lg'}
             p={5}
         >
-            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}
+            <Tabs variant='soft-rounded'
+                  colorScheme='teal'
+                  isFitted={isScreenMobile}
+                  index={tabIndex}
                   onChange={(index) => {
                       setTabIndex(index);
                   }}>
                 <TabList mx={'15px'}>
                     {isScreenMobile ?
                         <>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaArrowTrendUp}></Icon>
                             </Tab>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaList}></Icon>
                             </Tab>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaBalanceScaleLeft}></Icon>
+                            </Tab>
+                            <Tab fontSize={'20px'} isDisabled={alternatives.some(alt => alt.ranking === 0)}>
+                                <Icon as={FaRegCheckCircle}></Icon>
                             </Tab>
                         </>
                         :
@@ -236,6 +295,7 @@ const ProjectTabs = (props) => {
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
                             <Tab>Ranking</Tab>
+                            <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
                         </>
                     }
 
@@ -267,6 +327,13 @@ const ProjectTabs = (props) => {
                             />
                         </TabPanel>
                     }
+                    {hasLoadedAlternatives &&
+                        <TabPanel p={1} py={2}>
+                            <ResultsTab
+                                alternatives={alternatives}
+                            />
+                        </TabPanel>
+                    }
                 </TabPanels>
             </Tabs>
             <Box
@@ -274,10 +341,16 @@ const ProjectTabs = (props) => {
                 mt={tabIndex === 2 ? 3 : 0}
             >
                 {!saveClicked ?
-                    <Button
-                        colorScheme={'teal'}
-                        onClick={submitData}
-                    >Save</Button>
+                    <ButtonGroup>
+                        <Button
+                            colorScheme={'teal'}
+                            onClick={submitData}
+                        >Save</Button>
+                        <Button
+                            colorScheme={'orange'}
+                            onClick={submitDataAndRun}
+                        >Save & run</Button>
+                    </ButtonGroup>
                     :
                     <Spinner
                         color={'teal'}

@@ -80,7 +80,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
     return (
         <>
             <TableContainer>
-                <Table>
+                <Table size={'sm'}>
                     <Thead>
                         <Tr>
                             <Th>
