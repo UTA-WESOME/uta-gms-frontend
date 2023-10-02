@@ -79,7 +79,6 @@ const ProjectTabs = (props) => {
     // ]
     const [preferenceIntensities, setPreferenceIntensities] = useState([]);
 
-
     const [tabIndex, setTabIndex] = useState(0);
     const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
     const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
@@ -267,6 +266,7 @@ const ProjectTabs = (props) => {
             body: JSON.stringify({
                 criteria: criteria,
                 alternatives: alternatives,
+                preference_intensities: preferenceIntensities,
             })
         }).then(response => {
             if (!response.ok) {
@@ -294,6 +294,7 @@ const ProjectTabs = (props) => {
             body: JSON.stringify({
                 criteria: criteria,
                 alternatives: alternatives,
+                preference_intensities: preferenceIntensities,
             })
         }).then(response => {
             if (!response.ok) {
