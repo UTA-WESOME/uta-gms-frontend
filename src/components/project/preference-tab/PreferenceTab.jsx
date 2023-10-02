@@ -40,17 +40,21 @@ const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, altern
         }])
     }
 
+    const deletePreferenceIntensity = (id) => {
+        setPreferenceIntensities(pPreferenceIntensities => pPreferenceIntensities.filter(item => item.id !== id));
+    }
+
     return (
         <>
             {/*DESKTOP*/}
             <Show above={'lg'}>
-                {JSON.stringify(preferenceIntensities)}
                 <PreferenceTabDesktop
                     alternatives={alternatives}
                     criteria={criteria}
                     preferenceIntensities={preferenceIntensities}
                     setPreferenceIntensities={setPreferenceIntensities}
                     addPreferenceIntensity={addPreferenceIntensity}
+                    deletePreferenceIntensity={deletePreferenceIntensity}
                 />
             </Show>
 

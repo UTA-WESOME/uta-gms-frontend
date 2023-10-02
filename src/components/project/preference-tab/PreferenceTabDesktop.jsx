@@ -1,11 +1,26 @@
-import { Button, Select, Spacer, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+    Button,
+    IconButton,
+    Select,
+    Spacer,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr
+} from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const PreferenceTabDesktop = ({
                                   preferenceIntensities,
                                   setPreferenceIntensities,
                                   alternatives,
                                   criteria,
-                                  addPreferenceIntensity
+                                  addPreferenceIntensity,
+                                  deletePreferenceIntensity
                               }) => {
 
 
@@ -41,7 +56,7 @@ const PreferenceTabDesktop = ({
                         <Tr>
                             <>
                                 {alternativesNumbers.map(alternativeNumber => (
-                                    <Th>
+                                    <Th key={alternativeNumber}>
                                         <Text>Alternative {alternativeNumber}</Text>
                                     </Th>
                                 ))}
@@ -49,25 +64,28 @@ const PreferenceTabDesktop = ({
                             <Th>
                                 <Text>Criterion</Text>
                             </Th>
+                            <Th/>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {preferenceIntensities.map((preferenceIntensity, index) => (
                             <Tr key={index}>
-                                {alternativesNumbers.map(alternativeNumber => (
-                                    <Td key={alternativeNumber}>
-                                        <Select
-                                            value={preferenceIntensity[`alternative_${alternativeNumber}`]}
-                                            onChange={(event) => handleChangeAlternative(preferenceIntensity.id, alternativeNumber, parseInt(event.target.value))}
-                                        >
-                                            {alternatives.map(alternative => (
-                                                <option value={alternative.id}
-                                                        key={alternative.id}>{alternative.name}</option>
-                                            ))}
-                                        </Select>
-                                        {alternativeNumber !== 4 && <Spacer/>}
-                                    </Td>
-                                ))}
+                                <>
+                                    {alternativesNumbers.map(alternativeNumber => (
+                                        <Td key={alternativeNumber}>
+                                            <Select
+                                                value={preferenceIntensity[`alternative_${alternativeNumber}`]}
+                                                onChange={(event) => handleChangeAlternative(preferenceIntensity.id, alternativeNumber, parseInt(event.target.value))}
+                                            >
+                                                {alternatives.map(alternative => (
+                                                    <option value={alternative.id}
+                                                            key={alternative.id}>{alternative.name}</option>
+                                                ))}
+                                            </Select>
+                                            {alternativeNumber !== 4 && <Spacer/>}
+                                        </Td>
+                                    ))}
+                                </>
                                 <Td>
                                     <Select
                                         value={preferenceIntensity.criterion !== null ? preferenceIntensity.criterion : 0}
@@ -78,6 +96,14 @@ const PreferenceTabDesktop = ({
                                             <option value={criterion.id} key={criterion.id}>{criterion.name}</option>
                                         ))}
                                     </Select>
+                                </Td>
+                                <Td textAlign={'right'}>
+                                    <IconButton
+                                        color={'red.300'}
+                                        aria-label={'delete-preference-intensity'}
+                                        icon={<DeleteIcon/>}
+                                        onClick={() => deletePreferenceIntensity(preferenceIntensity.id)}
+                                    />
                                 </Td>
                             </Tr>
                         ))}
