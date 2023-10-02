@@ -1,6 +1,12 @@
-import { Select, Spacer, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Button, Select, Spacer, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 
-const PreferenceTabDesktop = ({ preferenceIntensities, setPreferenceIntensities, alternatives, criteria }) => {
+const PreferenceTabDesktop = ({
+                                  preferenceIntensities,
+                                  setPreferenceIntensities,
+                                  alternatives,
+                                  criteria,
+                                  addPreferenceIntensity
+                              }) => {
 
 
     const alternativesNumbers = [1, 2, 3, 4];
@@ -78,6 +84,10 @@ const PreferenceTabDesktop = ({ preferenceIntensities, setPreferenceIntensities,
                     </Tbody>
                 </Table>
             </TableContainer>
+
+            <Button mx={6} my={4} colorScheme={'teal'} onClick={addPreferenceIntensity} variant='outline'>
+                New preference
+            </Button>
         </>
     )
 }
