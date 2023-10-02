@@ -115,7 +115,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                     <HStack>
                                         <FormControl isInvalid={alternative.name.length === 0}>
                                             <Input
-                                                defaultValue={alternative.name}
+                                                value={alternative.name}
                                                 onChange={(event) => handleChangeName(event, alternative.id)}
                                             />
                                         </FormControl>

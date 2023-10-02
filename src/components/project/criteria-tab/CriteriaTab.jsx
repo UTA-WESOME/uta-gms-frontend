@@ -3,7 +3,7 @@ import CriteriaTabMobile from "./CriteriaTabMobile.jsx";
 import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
 
 
-const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
+const CriteriaTab = ({ criteria, setCriteria, setAlternatives, setPreferenceIntensities }) => {
 
     const addCriterion = () => {
         // get max criteria id
@@ -49,6 +49,9 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives }) => {
                 }
             })
         })
+
+        // set preferences
+        setPreferenceIntensities(pPreferenceIntensities => pPreferenceIntensities.filter(item => item.criterion !== id));
     }
 
     return (

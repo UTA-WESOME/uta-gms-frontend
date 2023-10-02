@@ -377,6 +377,7 @@ const ProjectTabs = (props) => {
                                 criteria={criteria}
                                 setCriteria={setCriteria}
                                 setAlternatives={setAlternatives}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
                         }
                     </TabPanel>
@@ -386,6 +387,7 @@ const ProjectTabs = (props) => {
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
                                 criteria={criteria}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
                         }
                     </TabPanel>
