@@ -396,7 +396,7 @@ const ProjectTabs = (props) => {
                             />
                         }
                     </TabPanel>
-                    <TabPanel p={1} py={2}>
+                    <TabPanel>
                         {hasLoadedPreferenceIntensities &&
                             <PreferenceTab
                                 alternatives={alternatives}
