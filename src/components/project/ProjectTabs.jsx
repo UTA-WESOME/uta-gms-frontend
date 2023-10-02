@@ -318,7 +318,7 @@ const ProjectTabs = (props) => {
                 setAlternatives([]);
                 getProjectData();
                 toastSuccess();
-                setTabIndex(3);
+                setTabIndex(4);
             })
         }).catch(err => {
             console.log(err);
