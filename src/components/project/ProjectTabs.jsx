@@ -21,6 +21,7 @@ import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import ResultsTab from "./results-tab/ResultsTab.jsx";
+import PreferenceTab from "./preference-tab/PreferenceTab.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -397,7 +398,12 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoadedPreferenceIntensities &&
-                            <Text>{JSON.stringify(preferenceIntensities)}</Text>
+                            <PreferenceTab
+                                alternatives={alternatives}
+                                criteria={criteria}
+                                preferenceIntensities={preferenceIntensities}
+                                setPreferenceIntensities={setPreferenceIntensities}
+                            />
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>
