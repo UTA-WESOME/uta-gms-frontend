@@ -1,5 +1,5 @@
 import {
-    Button,
+    Button, Icon,
     IconButton,
     Select,
     Spacer,
@@ -13,6 +13,7 @@ import {
     Tr
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { FaGreaterThan, FaMinus } from "react-icons/fa";
 
 const PreferenceTabDesktop = ({
                                   preferenceIntensities,
@@ -54,12 +55,15 @@ const PreferenceTabDesktop = ({
                         <Tr>
                             <>
                                 {alternativesNumbers.map(alternativeNumber => (
-                                    <Th key={alternativeNumber}>
-                                        <Text>Alternative {alternativeNumber}</Text>
-                                    </Th>
+                                    <>
+                                        <Th key={alternativeNumber}>
+                                            <Text>Alternative {alternativeNumber}</Text>
+                                        </Th>
+                                        {alternativeNumber !== 4 && <Th/>}
+                                    </>
                                 ))}
                             </>
-                            <Th>
+                            <Th borderLeftWidth={'1px'}>
                                 <Text>Criterion</Text>
                             </Th>
                             <Th/>
@@ -70,21 +74,32 @@ const PreferenceTabDesktop = ({
                             <Tr key={index}>
                                 <>
                                     {alternativesNumbers.map(alternativeNumber => (
-                                        <Td key={alternativeNumber}>
-                                            <Select
-                                                value={preferenceIntensity[`alternative_${alternativeNumber}`]}
-                                                onChange={(event) => handleChangeAlternative(preferenceIntensity.id, alternativeNumber, parseInt(event.target.value))}
-                                            >
-                                                {alternatives.map(alternative => (
-                                                    <option value={alternative.id}
-                                                            key={alternative.id}>{alternative.name}</option>
-                                                ))}
-                                            </Select>
-                                            {alternativeNumber !== 4 && <Spacer/>}
-                                        </Td>
+                                        <>
+                                            <Td key={alternativeNumber}>
+                                                <Select
+                                                    value={preferenceIntensity[`alternative_${alternativeNumber}`]}
+                                                    onChange={(event) => handleChangeAlternative(preferenceIntensity.id, alternativeNumber, parseInt(event.target.value))}
+                                                >
+                                                    {alternatives.map(alternative => (
+                                                        <option value={alternative.id}
+                                                                key={alternative.id}>{alternative.name}</option>
+                                                    ))}
+                                                </Select>
+                                            </Td>
+                                            {(alternativeNumber === 1 || alternativeNumber === 3) &&
+                                                <Td textAlign={'center'}>
+                                                    <Icon as={FaMinus}/>
+                                                </Td>
+                                            }
+                                            {alternativeNumber === 2 &&
+                                                <Td textAlign={'center'}>
+                                                    <Icon as={FaGreaterThan}/>
+                                                </Td>
+                                            }
+                                        </>
                                     ))}
                                 </>
-                                <Td>
+                                <Td borderLeftWidth={'1px'}>
                                     <Select
                                         value={preferenceIntensity.criterion !== null ? preferenceIntensity.criterion : 0}
                                         onChange={(event) => handleChangeCriterion(preferenceIntensity.id, parseInt(event.target.value))}
