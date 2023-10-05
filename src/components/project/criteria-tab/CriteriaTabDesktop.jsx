@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
+import debounce from 'lodash/debounce';
 
 const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriterion }) => {
 
@@ -35,24 +36,22 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
         });
     }
 
-    const handleChangeName = (event, id) => {
+    const handleChangeName = debounce((event, id) => {
         let newName = event.target.value;
         if (newName.length <= 64) {
-            setCriteria(previousCriteria => {
-                return previousCriteria.map(criterion => {
-                    if (criterion.id === id) {
-                        return { ...criterion, name: newName };
-                    }
-                    return criterion;
-                });
-            });
+            setCriteria(previousCriteria => previousCriteria.map(criterion => {
+                if (criterion.id === id) {
+                    return { ...criterion, name: newName };
+                }
+                return criterion;
+            }));
         } else {
             // length of the criterion name is too long, might need a refactor in the future
             // maybe some kind of message to the user about this problem
             let criterion = criteria.filter(criterion => criterion.id === id)[0];
             event.target.value = criterion.name;
         }
-    }
+    }, 50);
 
     const handleChangeLinearSegments = (valueNumber, id) => {
         setCriteria(previousCriteria => {
@@ -131,7 +130,8 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <Td>
                                         <FormControl isInvalid={criterion.name.length === 0}>
                                             <Input
-                                                value={criterion.name}
+                                                key={criterion.id}
+                                                defaultValue={criterion.name}
                                                 onChange={(event) => handleChangeName(event, criterion.id)}
                                             />
                                         </FormControl>
@@ -155,7 +155,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <Td>
                                         <NumberInput
                                             isInvalid={isNaN(criterion.linear_segments)}
-                                            defaultValue={criterion.linear_segments}
+                                            value={criterion.linear_segments}
                                             min={0}
                                             max={30}
                                             precision={0}
@@ -171,7 +171,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <Td>
                                         <NumberInput
                                             isInvalid={isNaN(criterion.weight)}
-                                            defaultValue={criterion.weight}
+                                            value={criterion.weight}
                                             min={0}
                                             step={criterion.weight >= 1.0 ? 1 : 0.05}
                                             onChange={(_, valueNumber) => handleChangeWeight(valueNumber, criterion.id)}
