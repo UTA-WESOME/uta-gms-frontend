@@ -1,10 +1,10 @@
 import {
     Button,
     ButtonGroup,
-    Code,
     Flex,
     FormControl,
     FormLabel,
+    Heading,
     HStack,
     IconButton,
     Modal,
@@ -118,8 +118,11 @@ const PreferenceTabMobile = ({
                     <ModalCloseButton/>
                     <ModalBody textAlign={'center'}>
                         <VStack spacing={"15px"}>
-                            <Code colorScheme={'teal'}
-                                  children={"Alternative A - Alternative B > Alternative C - Alternative D"}/>
+                            <Heading colorScheme={'teal'}
+                                     size={'xl'}
+                            >
+                                A - B > C - D
+                            </Heading>
                             {c.alternatives.map(alternativeConst => (
                                 <FormControl key={alternativeConst.number}>
                                     <FormLabel fontSize={'sm'}>Alternative {alternativeConst.letter}</FormLabel>
