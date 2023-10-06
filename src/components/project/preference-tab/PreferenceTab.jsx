@@ -27,16 +27,18 @@ const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, altern
         let maxId = Math.max(...preferenceIntensities.map(item => item.id));
         maxId = maxId === -Infinity ? 0 : maxId;
 
-        // get min alternatives id
-        let minAltId = Math.min(...alternatives.map(item => item.id));
+        // get first alternative
+        // we can be sure that there is at least one alternative because of the if statement
+        // at the beginning of the function
+        let firstAltId = alternatives[0].id
 
         // set preference intensity
         setPreferenceIntensities(pPreferenceIntensities => [...pPreferenceIntensities, {
             id: maxId + 1,
-            alternative_1: minAltId,
-            alternative_2: minAltId,
-            alternative_3: minAltId,
-            alternative_4: minAltId,
+            alternative_1: firstAltId,
+            alternative_2: firstAltId,
+            alternative_3: firstAltId,
+            alternative_4: firstAltId,
             criterion: null
         }])
     }
