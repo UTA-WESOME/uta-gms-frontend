@@ -21,13 +21,13 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import * as c from './constants.js';
 
 const PreferenceTabMobile = ({
                                  preferenceIntensities,
                                  setPreferenceIntensities,
                                  alternatives,
                                  criteria,
-                                 alternativesNumbers,
                                  addPreferenceIntensity,
                                  deletePreferenceIntensity
                              }) => {
@@ -117,12 +117,12 @@ const PreferenceTabMobile = ({
                     <ModalCloseButton/>
                     <ModalBody textAlign={'center'}>
                         <VStack spacing={"15px"}>
-                            {alternativesNumbers.map(alternativeNumber => (
-                                <FormControl key={alternativeNumber}>
-                                    <FormLabel fontSize={'sm'}>Alternative {alternativeNumber}</FormLabel>
+                            {c.alternatives.map(alternativeConst => (
+                                <FormControl key={alternativeConst.number}>
+                                    <FormLabel fontSize={'sm'}>Alternative {alternativeConst.letter}</FormLabel>
                                     <Select
-                                        value={currentPreferenceIntensity[`alternative_${alternativeNumber}`]}
-                                        onChange={(event) => handleChangeAlternative(alternativeNumber, parseInt(event.target.value))}
+                                        value={currentPreferenceIntensity[`alternative_${alternativeConst.number}`]}
+                                        onChange={(event) => handleChangeAlternative(alternativeConst.number, parseInt(event.target.value))}
                                     >
                                         {alternatives.map(alternative => (
                                             <option value={alternative.id}

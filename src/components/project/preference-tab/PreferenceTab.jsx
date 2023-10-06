@@ -5,8 +5,7 @@ import PreferenceTabMobile from "./PreferenceTabMobile.jsx";
 const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, alternatives, criteria }) => {
 
     const toast = useToast();
-    const toastId = "toast-project-preference-tab-add"
-    const alternativesNumbers = [1, 2, 3, 4];
+    const toastId = "toast-project-preference-tab-add";
 
     const addPreferenceIntensity = () => {
 
@@ -55,7 +54,6 @@ const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, altern
                     criteria={criteria}
                     preferenceIntensities={preferenceIntensities}
                     setPreferenceIntensities={setPreferenceIntensities}
-                    alternativesNumbers={alternativesNumbers}
                     addPreferenceIntensity={addPreferenceIntensity}
                     deletePreferenceIntensity={deletePreferenceIntensity}
                 />
@@ -68,7 +66,6 @@ const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, altern
                     criteria={criteria}
                     preferenceIntensities={preferenceIntensities}
                     setPreferenceIntensities={setPreferenceIntensities}
-                    alternativesNumbers={alternativesNumbers}
                     addPreferenceIntensity={addPreferenceIntensity}
                     deletePreferenceIntensity={deletePreferenceIntensity}
                 />

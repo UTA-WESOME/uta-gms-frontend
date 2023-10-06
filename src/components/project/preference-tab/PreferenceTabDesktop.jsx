@@ -1,8 +1,8 @@
 import {
-    Button, Icon,
+    Button,
+    Icon,
     IconButton,
     Select,
-    Spacer,
     Table,
     TableContainer,
     Tbody,
@@ -14,13 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { FaGreaterThan, FaMinus } from "react-icons/fa";
+import * as c from './constants.js';
 
 const PreferenceTabDesktop = ({
                                   preferenceIntensities,
                                   setPreferenceIntensities,
                                   alternatives,
                                   criteria,
-                                  alternativesNumbers,
                                   addPreferenceIntensity,
                                   deletePreferenceIntensity
                               }) => {
@@ -54,12 +54,12 @@ const PreferenceTabDesktop = ({
                     <Thead>
                         <Tr>
                             <>
-                                {alternativesNumbers.map(alternativeNumber => (
+                                {c.alternatives.map(alternative => (
                                     <>
-                                        <Th key={alternativeNumber}>
-                                            <Text>Alternative {alternativeNumber}</Text>
+                                        <Th key={alternative.number}>
+                                            <Text>Alternative {alternative.letter}</Text>
                                         </Th>
-                                        {alternativeNumber !== 4 && <Th/>}
+                                        {alternative.number !== 4 && <Th/>}
                                     </>
                                 ))}
                             </>
@@ -73,12 +73,12 @@ const PreferenceTabDesktop = ({
                         {preferenceIntensities.map((preferenceIntensity, index) => (
                             <Tr key={index}>
                                 <>
-                                    {alternativesNumbers.map(alternativeNumber => (
+                                    {c.alternatives.map(alternativeConst => (
                                         <>
-                                            <Td key={alternativeNumber}>
+                                            <Td key={alternativeConst.number}>
                                                 <Select
-                                                    value={preferenceIntensity[`alternative_${alternativeNumber}`]}
-                                                    onChange={(event) => handleChangeAlternative(preferenceIntensity.id, alternativeNumber, parseInt(event.target.value))}
+                                                    value={preferenceIntensity[`alternative_${alternativeConst.number}`]}
+                                                    onChange={(event) => handleChangeAlternative(preferenceIntensity.id, alternativeConst.number, parseInt(event.target.value))}
                                                 >
                                                     {alternatives.map(alternative => (
                                                         <option value={alternative.id}
@@ -86,12 +86,12 @@ const PreferenceTabDesktop = ({
                                                     ))}
                                                 </Select>
                                             </Td>
-                                            {(alternativeNumber === 1 || alternativeNumber === 3) &&
+                                            {(alternativeConst.number === 1 || alternativeConst.number === 3) &&
                                                 <Td textAlign={'center'}>
                                                     <Icon as={FaMinus}/>
                                                 </Td>
                                             }
-                                            {alternativeNumber === 2 &&
+                                            {alternativeConst.number === 2 &&
                                                 <Td textAlign={'center'}>
                                                     <Icon as={FaGreaterThan}/>
                                                 </Td>
