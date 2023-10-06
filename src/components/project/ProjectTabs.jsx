@@ -80,100 +80,27 @@ const ProjectTabs = (props) => {
     const [preferenceIntensities, setPreferenceIntensities] = useState([]);
 
     const [tabIndex, setTabIndex] = useState(0);
-    const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
-    const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
-    const [hasLoadedPreferenceIntensities, setHasLoadedPreferenceIntensities] = useState(false);
+    const [hasLoaded, setHasLoaded] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 628px)');
     const [saveClicked, setSaveClicked] = useState(false);
     const navigate = useNavigate();
     const toast = useToast();
 
     const getProjectData = () => {
-        // get criteria
-        fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
-            method: "GET",
-            credentials: "include"
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("error getting criteria");
-            }
-            return response.json();
-        }).then(data => {
-            setCriteria(data);
-            setHasLoadedCriteria(true);
-        }).catch(err => {
-            console.log(err);
-        })
-
-
-        // get alternatives
-        fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
-            method: 'GET',
-            credentials: 'include',
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("error getting alternatives");
-            }
-            return response.json();
-        }).then(data => {
-            if (data.length === 0) {
-                setHasLoadedAlternatives(true);
-            } else {
-                let waitingArray = data.map(() => true);
-                data.forEach((alternative, index) => {
-
-                    fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
-                        method: 'GET',
-                        credentials: 'include',
-                    }).then(response => {
-                        if (!response.ok) {
-                            throw new Error("error getting performances");
-                        }
-                        return response.json();
-                    }).then(data => {
-
-                        // insert alternative with its performances
-                        setAlternatives(pAlternatives => {
-                            const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
-                            if (!foundAlternative) {
-                                return [...pAlternatives, {
-                                    ...alternative,
-                                    performances: data
-                                }]
-                            }
-                            return pAlternatives;
-                        });
-
-                        waitingArray[index] = false;
-
-                        if (waitingArray.every(item => item === false)) {
-                            setAlternatives(alternatives =>
-                                alternatives.sort((x, y) => (x.name > y.name) ? 1 : ((x.name < y.name) ? -1 : 0))
-                            )
-                            setHasLoadedAlternatives(true);
-                            setSaveClicked(false);
-                        }
-
-                    })
-
-                })
-            }
-        }).catch(err => {
-            console.log(err);
-        })
-
-        // get preferenceIntensities
-        fetch(`http://localhost:8080/api/projects/${props.id}/preference_intensities`, {
+        // get data
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
             method: 'GET',
             credentials: 'include'
         }).then(response => {
             if (!response.ok) {
-                throw new Error("error getting preference intensities");
+                throw new Error("error getting project in batch");
             }
             return response.json();
         }).then(data => {
-            setPreferenceIntensities(data);
-            setHasLoadedPreferenceIntensities(true);
+            setCriteria(data.criteria);
+            setAlternatives(data.alternatives);
+            setPreferenceIntensities(data.preference_intensities);
+            setHasLoaded(true);
         }).catch(err => {
             console.log(err);
         })
@@ -312,10 +239,13 @@ const ProjectTabs = (props) => {
                     toastError('Sorry, some unexpected error occurred');
                     throw new Error('Error getting results');
                 }
-                setHasLoadedCriteria(false);
-                setHasLoadedAlternatives(false);
+
+                setHasLoaded(false);
+                setSaveClicked(false);
+
                 setCriteria([]);
                 setAlternatives([]);
+
                 getProjectData();
                 toastSuccess();
                 setTabIndex(4);
@@ -372,7 +302,7 @@ const ProjectTabs = (props) => {
                 </TabList>
                 <TabPanels>
                     <TabPanel>
-                        {hasLoadedCriteria &&
+                        {hasLoaded &&
                             <CriteriaTab
                                 criteria={criteria}
                                 setCriteria={setCriteria}
@@ -382,7 +312,7 @@ const ProjectTabs = (props) => {
                         }
                     </TabPanel>
                     <TabPanel>
-                        {hasLoadedAlternatives &&
+                        {hasLoaded &&
                             <AlternativesTab
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
@@ -392,7 +322,7 @@ const ProjectTabs = (props) => {
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>
-                        {hasLoadedAlternatives &&
+                        {hasLoaded &&
                             <RankingTab
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
@@ -400,7 +330,7 @@ const ProjectTabs = (props) => {
                         }
                     </TabPanel>
                     <TabPanel>
-                        {hasLoadedPreferenceIntensities &&
+                        {hasLoaded &&
                             <PreferenceTab
                                 alternatives={alternatives}
                                 criteria={criteria}
@@ -410,7 +340,7 @@ const ProjectTabs = (props) => {
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>
-                        {hasLoadedAlternatives &&
+                        {hasLoaded &&
                             <ResultsTab
                                 alternatives={alternatives}
                             />
