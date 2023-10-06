@@ -2,7 +2,7 @@ import { Show } from "@chakra-ui/react";
 import AlternativesTabMobile from "./AlternativesTabMobile.jsx";
 import AlternativesTabDesktop from "./AlternativesTabDesktop.jsx";
 
-const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
+const AlternativesTab = ({ alternatives, setAlternatives, criteria, setPreferenceIntensities }) => {
 
     const addAlternative = () => {
         // get max alternative id
@@ -25,7 +25,18 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
     }
 
     const deleteAlternative = (id) => {
-        setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id))
+        setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id));
+
+        setPreferenceIntensities(pPreferenceIntensities =>
+            pPreferenceIntensities.filter(item =>
+                (
+                    item.alternative_1 !== id &&
+                    item.alternative_2 !== id &&
+                    item.alternative_3 !== id &&
+                    item.alternative_4 !== id
+                )
+            )
+        )
     }
 
     return (

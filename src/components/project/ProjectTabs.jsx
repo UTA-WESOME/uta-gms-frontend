@@ -14,28 +14,76 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
+import { FaBalanceScaleLeft, FaGreaterThan, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import ResultsTab from "./results-tab/ResultsTab.jsx";
+import PreferenceTab from "./preference-tab/PreferenceTab.jsx";
 
 
 const ProjectTabs = (props) => {
 
-    // criteria and previousCriteria will be compared in submitData
     // criteria holds active data that the user changes
+    //    [
+    //         {
+    //             "id": integer,
+    //             "name": string,
+    //             "gain": boolean,
+    //             "linear_segments": integer,
+    //             "created_at": datetime,  # optional
+    //             "updated_at": datetime,  # optional
+    //         },
+    //         ...
+    //     ]
     const [criteria, setCriteria] = useState([]);
 
-    // alternatives holds active data that the user changes
+    // alternatives holds active data about alternatives and their performances
+    //  [
+    //      {
+    //          "id": integer,
+    //          "name": string,
+    //          "reference_ranking": integer,
+    //          "ranking": integer,
+    //          "created_at": datetime,  # optional
+    //          "updated_at": datetime,  # optional
+    //          "performances": [
+    //              {
+    //                  "id": integer,  # optional
+    //                  "value": decimal,
+    //                  "created_at": datetime,  # optional
+    //                  "updated_at": datetime,  # optional
+    //                  "criterion": integer,  # corresponding criterion id
+    //              },
+    //              ...
+    //          ]
+    //      },
+    //      ...
+    //  ]
     const [alternatives, setAlternatives] = useState([]);
+
+    // preferenceIntensities holds active data about preference intensities
+    // [
+    //     {
+    //         id: integer,
+    //         project_id: integer,
+    //         alternative_1_id: integer,
+    //         alternative_2_id: integer,
+    //         alternative_3_id: integer,
+    //         alternative_4_id: integer,
+    //         criterion_id: integer,
+    //     },
+    //     ...
+    // ]
+    const [preferenceIntensities, setPreferenceIntensities] = useState([]);
 
     const [tabIndex, setTabIndex] = useState(0);
     const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
     const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
-    const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
+    const [hasLoadedPreferenceIntensities, setHasLoadedPreferenceIntensities] = useState(false);
+    const [isScreenMobile] = useMediaQuery('(max-width: 628px)');
     const [saveClicked, setSaveClicked] = useState(false);
     const navigate = useNavigate();
     const toast = useToast();
@@ -110,6 +158,22 @@ const ProjectTabs = (props) => {
 
                 })
             }
+        }).catch(err => {
+            console.log(err);
+        })
+
+        // get preferenceIntensities
+        fetch(`http://localhost:8080/api/projects/${props.id}/preference_intensities`, {
+            method: 'GET',
+            credentials: 'include'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting preference intensities");
+            }
+            return response.json();
+        }).then(data => {
+            setPreferenceIntensities(data);
+            setHasLoadedPreferenceIntensities(true);
         }).catch(err => {
             console.log(err);
         })
@@ -202,6 +266,7 @@ const ProjectTabs = (props) => {
             body: JSON.stringify({
                 criteria: criteria,
                 alternatives: alternatives,
+                preference_intensities: preferenceIntensities,
             })
         }).then(response => {
             if (!response.ok) {
@@ -229,6 +294,7 @@ const ProjectTabs = (props) => {
             body: JSON.stringify({
                 criteria: criteria,
                 alternatives: alternatives,
+                preference_intensities: preferenceIntensities,
             })
         }).then(response => {
             if (!response.ok) {
@@ -252,7 +318,7 @@ const ProjectTabs = (props) => {
                 setAlternatives([]);
                 getProjectData();
                 toastSuccess();
-                setTabIndex(3);
+                setTabIndex(4);
             })
         }).catch(err => {
             console.log(err);
@@ -265,7 +331,7 @@ const ProjectTabs = (props) => {
             h={'full'}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            p={5}
+            p={{ base: 2, sm: 5 }}
         >
             <Tabs variant='soft-rounded'
                   colorScheme='teal'
@@ -274,7 +340,7 @@ const ProjectTabs = (props) => {
                   onChange={(index) => {
                       setTabIndex(index);
                   }}>
-                <TabList mx={'15px'}>
+                <TabList mx={{ base: 0, sm: '15px' }}>
                     {isScreenMobile ?
                         <>
                             <Tab fontSize={'15px'}>
@@ -286,6 +352,9 @@ const ProjectTabs = (props) => {
                             <Tab fontSize={'15px'}>
                                 <Icon as={FaBalanceScaleLeft}></Icon>
                             </Tab>
+                            <Tab fontSize={'15px'}>
+                                <Icon as={FaGreaterThan}></Icon>
+                            </Tab>
                             <Tab fontSize={'20px'} isDisabled={alternatives.some(alt => alt.ranking === 0)}>
                                 <Icon as={FaRegCheckCircle}></Icon>
                             </Tab>
@@ -295,45 +364,58 @@ const ProjectTabs = (props) => {
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
                             <Tab>Ranking</Tab>
+                            <Tab>Preferences</Tab>
                             <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
                         </>
                     }
 
                 </TabList>
                 <TabPanels>
-                    {hasLoadedCriteria &&
-                        <TabPanel>
+                    <TabPanel>
+                        {hasLoadedCriteria &&
                             <CriteriaTab
                                 criteria={criteria}
                                 setCriteria={setCriteria}
                                 setAlternatives={setAlternatives}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
-                        </TabPanel>
-                    }
-                    {hasLoadedAlternatives &&
-                        <TabPanel>
+                        }
+                    </TabPanel>
+                    <TabPanel>
+                        {hasLoadedAlternatives &&
                             <AlternativesTab
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
                                 criteria={criteria}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
-                        </TabPanel>
-                    }
-                    {hasLoadedAlternatives &&
-                        <TabPanel p={1} py={2}>
+                        }
+                    </TabPanel>
+                    <TabPanel p={1} py={2}>
+                        {hasLoadedAlternatives &&
                             <RankingTab
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
                             />
-                        </TabPanel>
-                    }
-                    {hasLoadedAlternatives &&
-                        <TabPanel p={1} py={2}>
+                        }
+                    </TabPanel>
+                    <TabPanel>
+                        {hasLoadedPreferenceIntensities &&
+                            <PreferenceTab
+                                alternatives={alternatives}
+                                criteria={criteria}
+                                preferenceIntensities={preferenceIntensities}
+                                setPreferenceIntensities={setPreferenceIntensities}
+                            />
+                        }
+                    </TabPanel>
+                    <TabPanel p={1} py={2}>
+                        {hasLoadedAlternatives &&
                             <ResultsTab
                                 alternatives={alternatives}
                             />
-                        </TabPanel>
-                    }
+                        }
+                    </TabPanel>
                 </TabPanels>
             </Tabs>
             <Box
