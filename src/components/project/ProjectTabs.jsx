@@ -274,7 +274,7 @@ const ProjectTabs = (props) => {
                 textAlign={'right'}
                 mt={tabIndex === 2 ? 3 : 0}
             >
-                <ImportModal marTop={4} marBottom={4} marLeft={4} marRight={4} full={true} />
+                <ImportModal projectId={props.id} margTop={4} margBottom={4} margLeft={4} margRight={4} full={true} maxFilesNumber={3}/>
                 {!saveClicked ?
                     <Button
                         colorScheme={'teal'}
