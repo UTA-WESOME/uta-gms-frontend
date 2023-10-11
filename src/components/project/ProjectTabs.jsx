@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     ButtonGroup,
+    Divider,
     Icon,
     Spinner,
     Tab,
@@ -20,8 +21,8 @@ import { useNavigate } from "react-router-dom";
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
-import ResultsTab from "./results-tab/ResultsTab.jsx";
 import PreferenceTab from "./preference-tab/PreferenceTab.jsx";
+import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -270,7 +271,7 @@ const ProjectTabs = (props) => {
                   onChange={(index) => {
                       setTabIndex(index);
                   }}>
-                <TabList mx={{ base: 0, sm: '15px' }}>
+                <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                     {isScreenMobile ?
                         <>
                             <Tab fontSize={'15px'}>
@@ -300,6 +301,8 @@ const ProjectTabs = (props) => {
                     }
 
                 </TabList>
+
+                <Divider/>
                 <TabPanels>
                     <TabPanel>
                         {hasLoaded &&
@@ -341,9 +344,7 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <ResultsTab
-                                alternatives={alternatives}
-                            />
+                            <ResultsTabs alternatives={alternatives}/>
                         }
                     </TabPanel>
                 </TabPanels>
