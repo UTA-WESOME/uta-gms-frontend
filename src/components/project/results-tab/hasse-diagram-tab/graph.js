@@ -68,6 +68,45 @@ function calculateNodeLevels(graph) {
     return ranks;
 }
 
+function findAndRemoveCycles(graph) {
+    const cycles = [];
+    const graphCopy = { ...graph };
+    const vertices = Object.keys(graph);
+
+    for (const vertex of vertices) {
+        const neighbors = Object.keys(graph[vertex]);
+        for (const neighbor of neighbors) {
+            // Check if there's a reciprocal edge (cycle of length 2).
+            if (graph[neighbor][vertex] && graph[vertex][neighbor]) {
+                // Add information about the cycle to the cycles array.
+                cycles.push([vertex, neighbor]);
+
+                // Remove reciprocal edges from the graph.
+                graphCopy[vertex][neighbor] = false;
+                graphCopy[neighbor][vertex] = false;
+            }
+        }
+    }
+
+    const concatenatedCycles = [];
+    for (let i = 0; i < cycles.length; i++) {
+        let concatenated = false;
+        for (let j = 0; j < concatenatedCycles.length; j++) {
+            if (cycles[i].some(node => concatenatedCycles[j].includes(node))) {
+                // Combine cycles[i] and concatenatedCycles[j] with unique values.
+                concatenatedCycles[j] = [...new Set([...cycles[i], ...concatenatedCycles[j]])];
+                concatenated = true;
+                break;
+            }
+        }
+        if (!concatenated) {
+            concatenatedCycles.push([...cycles[i]]);
+        }
+    }
+
+    return [concatenatedCycles, graphCopy];
+}
+
 function jsonToObjectWithConnections(graph) {
     const vertices = Object.keys(graph);
     const objectWithConnections = {};
@@ -86,34 +125,21 @@ function jsonToObjectWithConnections(graph) {
     return objectWithConnections;
 }
 
-function createDotString(graph, ranks, bgcolor, nodeBgColor) {
+function createDotString(graph, ranks, indifferences, bgcolor, nodeBgColor) {
     const vertexToId = {};
     const clusterMap = {};
-    let dotString = `
-    digraph {
-        graph [bgcolor="${bgcolor}"]
-        node [style=filled]
-    `;
+    let dotString = `digraph {
+    compound=true;
+    graph [bgcolor="${bgcolor}"]
+    node [style=filled]\n`;
     let nodeId = 1;
 
     // create nodes for each vertex
     for (const vertex of Object.keys(graph)) {
         const nodeIdStr = `node${nodeId}`;
         vertexToId[vertex] = nodeIdStr;
-        dotString += `    ${nodeIdStr} [label="${vertex}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt"]\n`;
+        dotString += `    ${nodeIdStr} [label="${vertex}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
         nodeId++;
-    }
-
-    // create edges between vertices using vertexToId mapping
-    for (const source of Object.keys(graph)) {
-        const sourceId = vertexToId[source];
-        const targets = graph[source];
-        for (const target of Object.keys(targets)) {
-            if (targets[target]) {
-                const targetId = vertexToId[target];
-                dotString += `    ${sourceId} -> ${targetId} [arrowhead=vee color="#4FD1C5"]\n`;
-            }
-        }
     }
 
     // group vertices with the same rank into clusters
@@ -124,13 +150,54 @@ function createDotString(graph, ranks, bgcolor, nodeBgColor) {
         }
         clusterMap[rank].push(vertex);
     }
+    const localIndifferences = [...indifferences];
     for (const rank of Object.keys(clusterMap)) {
         const vertices = clusterMap[rank];
         dotString += `    subgraph cluster_${rank} {
-      rank="same";
-      ${vertices.map((vertex) => vertexToId[vertex]).join(";")};
-      peripheries=0
-    }\n`;
+      rank="same";\n`;
+        // inserting indifferences
+        for (let i = 0; i < vertices.length; i++) {
+            let indifferenceWithVertex = localIndifferences.find(arr => arr.includes(vertices[i]));
+            let indifferenceIndex = indifferences.findIndex(arr => arr === indifferenceWithVertex);
+            if (indifferenceIndex !== -1) {
+                // vertex is in some indifference, we have to insert the indifference with its nodes
+                dotString += `      subgraph cluster_indifference_${indifferenceIndex} {
+        color="${nodeBgColor}"
+        borderRadius="10px"
+        style="rounded"
+        ${indifferenceWithVertex.map((vertex) => vertexToId[vertex]).join(";")};
+        }\n`;
+                // we have to remove the indifference from localIndifferences, so it won't be inserted again
+                localIndifferences.splice(indifferenceIndex, 1);
+            }
+        }
+        // inserting vertices
+        dotString += `      ${vertices.map((vertex) => vertexToId[vertex]).join(";")};
+      peripheries=0;
+      }\n`
+    }
+
+    // create edges between vertices using vertexToId mapping
+    for (const source of Object.keys(graph)) {
+        // check if the source is in an indifference
+        let indifferenceIndexSource = indifferences.findIndex(arr => arr === indifferences.find(arr => arr.includes(source)));
+        const sourceId = vertexToId[source];
+        const targets = graph[source];
+        for (const target of Object.keys(targets)) {
+            if (targets[target]) {
+                const targetId = vertexToId[target];
+                // check if the target is in an indifference
+                let indifferenceIndexTarget = indifferences.findIndex(arr => arr === indifferences.find(arr => arr.includes(target)));
+                dotString += `    ${sourceId} -> ${targetId} [arrowhead=vee color="#4FD1C5"`;
+                if (indifferenceIndexSource !== -1) {
+                    dotString += ` ltail=cluster_indifference_${indifferenceIndexSource}`;
+                }
+                if (indifferenceIndexTarget !== -1) {
+                    dotString += ` lhead=cluster_indifference_${indifferenceIndexTarget}`;
+                }
+                dotString += `]\n`;
+            }
+        }
     }
 
     dotString += `}`;
@@ -138,11 +205,30 @@ function createDotString(graph, ranks, bgcolor, nodeBgColor) {
 }
 
 export function generateDotString(graph, bgColor, nodeBgColor) {
+
     // transform JSON graph to graphObject
     let graphObject = jsonToObjectWithConnections(graph);
+
+    // remove indifferences
+    let [indifferences, graphObjectWithoutCycles] = findAndRemoveCycles(graphObject);
+
     // perform transitive reduction on the graphObject
-    graphObject = transitiveReduction(graphObject);
+    graphObject = transitiveReduction(graphObjectWithoutCycles);
+
     // calculate node levels to get ranks
-    const ranks = calculateNodeLevels(graphObject);
-    return createDotString(graphObject, ranks, bgColor, nodeBgColor);
+    const ranks = calculateNodeLevels(graphObjectWithoutCycles);
+    return createDotString(graphObject, ranks, indifferences, bgColor, nodeBgColor);
 }
+
+const jsonGraph = {
+    'A': ['B', 'I'],
+    'B': ['A', 'D', 'F', 'H', 'K'],
+    'C': ['F'],
+    'D': ['H'],
+    'F': ['H'],
+    'H': [],
+    'I': ['J'],
+    'J': ['I'],
+    'K': []
+};
+console.log(generateDotString(jsonGraph, "#1A202C", "#F7FAFC"));

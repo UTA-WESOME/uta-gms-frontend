@@ -9,7 +9,8 @@ const Graphviz = ({ dot, className }) => {
     useEffect(() => {
         graphviz(`#${id}`, {
             zoom: false,
-        }).renderDot(dot);
+        })
+            .renderDot(dot);
     }, [dot]);
 
     return (
