@@ -64,7 +64,6 @@ function calculateNodeLevels(graph) {
             }
         }
     }
-
     return ranks;
 }
 
@@ -142,6 +141,18 @@ function createDotString(graph, ranks, indifferences, bgcolor, nodeBgColor) {
         nodeId++;
     }
 
+    // adjust ranks to indifferences
+    for(const vertex of Object.keys(ranks)) {
+        let indifferenceWithVertex = indifferences.find(arr => arr.includes(vertex));
+        if(indifferenceWithVertex) {
+            let indifferenceRanks = indifferenceWithVertex.map(v => ranks[v]);
+            const maxRank = Math.max(...indifferenceRanks);
+            indifferenceWithVertex.forEach(v => {
+                ranks[v] = maxRank;
+            });
+        }
+    }
+
     // group vertices with the same rank into clusters
     for (const vertex of Object.keys(ranks)) {
         const rank = ranks[vertex];
@@ -158,13 +169,14 @@ function createDotString(graph, ranks, indifferences, bgcolor, nodeBgColor) {
         // inserting indifferences
         for (let i = 0; i < vertices.length; i++) {
             let indifferenceWithVertex = localIndifferences.find(arr => arr.includes(vertices[i]));
-            let indifferenceIndex = indifferences.findIndex(arr => arr === indifferenceWithVertex);
+            let indifferenceIndex = localIndifferences.findIndex(arr => arr === indifferenceWithVertex);
             if (indifferenceIndex !== -1) {
+
                 // vertex is in some indifference, we have to insert the indifference with its nodes
-                dotString += `      subgraph cluster_indifference_${indifferenceIndex} {
-        color="${nodeBgColor}"
-        borderRadius="10px"
-        style="rounded"
+                dotString += `      subgraph cluster_indifference_${indifferences.findIndex(arr => arr === indifferenceWithVertex)} {
+        color="${nodeBgColor}";
+        borderRadius="10px";
+        style="rounded";
         ${indifferenceWithVertex.map((vertex) => vertexToId[vertex]).join(";")};
         }\n`;
                 // we have to remove the indifference from localIndifferences, so it won't be inserted again
@@ -180,20 +192,35 @@ function createDotString(graph, ranks, indifferences, bgcolor, nodeBgColor) {
     // create edges between vertices using vertexToId mapping
     for (const source of Object.keys(graph)) {
         // check if the source is in an indifference
-        let indifferenceIndexSource = indifferences.findIndex(arr => arr === indifferences.find(arr => arr.includes(source)));
+        let indifferenceWithSource =  indifferences.find(arr => arr.includes(source));
+        let indifferenceIndexSource = indifferences.findIndex(arr => arr === indifferenceWithSource);
         const sourceId = vertexToId[source];
         const targets = graph[source];
         for (const target of Object.keys(targets)) {
             if (targets[target]) {
                 const targetId = vertexToId[target];
                 // check if the target is in an indifference
-                let indifferenceIndexTarget = indifferences.findIndex(arr => arr === indifferences.find(arr => arr.includes(target)));
+                let indifferenceWithTarget = indifferences.find(arr => arr.includes(target));
+                let indifferenceIndexTarget = indifferences.findIndex(arr => arr === indifferenceWithTarget);
                 dotString += `    ${sourceId} -> ${targetId} [arrowhead=vee color="#4FD1C5"`;
                 if (indifferenceIndexSource !== -1) {
                     dotString += ` ltail=cluster_indifference_${indifferenceIndexSource}`;
+                    indifferenceWithSource.forEach(v => {
+                        graph[v][target] = false;
+                    });
                 }
                 if (indifferenceIndexTarget !== -1) {
                     dotString += ` lhead=cluster_indifference_${indifferenceIndexTarget}`;
+                    indifferenceWithTarget.forEach(v => {
+                        graph[source][v] = false;
+                    })
+                }
+                if(indifferenceIndexSource !== -1 && indifferenceIndexTarget !== -1) {
+                    indifferenceWithSource.forEach(s => {
+                        indifferenceWithTarget.forEach(t => {
+                            graph[s][t] = false;
+                        })
+                    })
                 }
                 dotString += `]\n`;
             }
@@ -220,15 +247,3 @@ export function generateDotString(graph, bgColor, nodeBgColor) {
     return createDotString(graphObject, ranks, indifferences, bgColor, nodeBgColor);
 }
 
-const jsonGraph = {
-    'A': ['B', 'I'],
-    'B': ['A', 'D', 'F', 'H', 'K'],
-    'C': ['F'],
-    'D': ['H'],
-    'F': ['H'],
-    'H': [],
-    'I': ['J'],
-    'J': ['I'],
-    'K': []
-};
-console.log(generateDotString(jsonGraph, "#1A202C", "#F7FAFC"));

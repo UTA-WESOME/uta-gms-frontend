@@ -8,15 +8,18 @@ import { WarningIcon } from "@chakra-ui/icons";
 const HasseDiagramTab = ({ alternatives }) => {
 
     const jsonGraph = {
-        'A': ['B', 'I'],
-        'B': ['A', 'D', 'F', 'H', 'K'],
-        'C': ['F'],
-        'D': ['H'],
-        'F': ['H'],
+        'A': ['K', 'F'],
+        'B': [],
+        'C': ['J'],
+        'D': ['G', 'B', 'H', 'F', 'K'],
+        'E': [],
+        'F': ['E', 'J'],
+        'G': ['D'],
         'H': [],
-        'I': ['J'],
-        'J': ['I'],
-        'K': []
+        'I': ['B'],
+        'J': [],
+        'K': ['C'],
+        'L': ['J'],
     };
 
     const bgColor = useColorModeValue("#FFFFFF", "#1A202C")
@@ -37,60 +40,6 @@ const HasseDiagramTab = ({ alternatives }) => {
             </Heading>
             <Graphviz
                 dot={generateDotString(jsonGraph, bgColor, nodeBgColor)}
-//                 dot={`digraph {
-//                 compound=true;
-//     graph [bgcolor="#1A202C"]
-//     node [style=filled]
-//     node1 [label="A" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     node2 [label="B" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     node3 [label="C" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     node4 [label="D" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     node5 [label="F" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     node6 [label="H" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     node7 [label="I" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     node8 [label="J" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     node9 [label="K" color="#F7FAFC" fontname="Segoe UI" fontsize="15 pt" ]
-//     subgraph cluster_1 {
-//       rank="same";
-//       subgraph cluster_indifference_0 {
-//         color="#F7FAFC"
-//         borderRadius="10px"
-//         style="rounded"
-//         node1;node2;
-//         }
-//       subgraph cluster_indifference_1 {
-//         color="#F7FAFC"
-//         borderRadius="10px"
-//         style="rounded"
-//         node7;node8;
-//         }
-//       node1;node2;node3;node8;
-//       peripheries=0;
-//       }
-//     subgraph cluster_2 {
-//       rank="same";
-//       subgraph cluster_indifference_1 {
-//         color="#F7FAFC"
-//         borderRadius="10px"
-//         style="rounded"
-//         node7;node8;
-//         }
-//       node4;node5;node7;node9;
-//       peripheries=0;
-//       }
-//     subgraph cluster_3 {
-//       rank="same";
-//       node6;
-//       peripheries=0;
-//       }
-//     node1 -> node7 [arrowhead=vee color="#4FD1C5" ltail=cluster_indifference_0 lhead=cluster_indifference_1]
-//     node2 -> node4 [arrowhead=vee color="#4FD1C5" ltail=cluster_indifference_0]
-//     node2 -> node5 [arrowhead=vee color="#4FD1C5" ltail=cluster_indifference_0]
-//     node2 -> node9 [arrowhead=vee color="#4FD1C5" ltail=cluster_indifference_0]
-//     node3 -> node5 [arrowhead=vee color="#4FD1C5"]
-//     node4 -> node6 [arrowhead=vee color="#4FD1C5"]
-//     node5 -> node6 [arrowhead=vee color="#4FD1C5"]
-// }`}
             />
 
         </Box>
