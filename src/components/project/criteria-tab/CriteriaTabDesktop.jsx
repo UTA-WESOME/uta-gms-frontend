@@ -22,6 +22,7 @@ import {
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
 import { BiSolidFileImport, } from "react-icons/bi";
+import debounce from 'lodash/debounce';
 
 const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriterion }) => {
 
@@ -36,41 +37,50 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
         });
     }
 
-    const handleChangeName = (event, id) => {
+    const handleChangeName = debounce((event, id) => {
         let newName = event.target.value;
         if (newName.length <= 64) {
-            setCriteria(previousCriteria => {
-                return previousCriteria.map(criterion => {
-                    if (criterion.id === id) {
-                        return { ...criterion, name: newName };
-                    }
-                    return criterion;
-                });
-            });
+            setCriteria(previousCriteria => previousCriteria.map(criterion => {
+                if (criterion.id === id) {
+                    return { ...criterion, name: newName };
+                }
+                return criterion;
+            }));
         } else {
             // length of the criterion name is too long, might need a refactor in the future
             // maybe some kind of message to the user about this problem
             let criterion = criteria.filter(criterion => criterion.id === id)[0];
             event.target.value = criterion.name;
         }
-    }
+    }, 50);
 
-    const handleChangeLinearSegments = (valueString, id) => {
+    const handleChangeLinearSegments = (valueNumber, id) => {
         setCriteria(previousCriteria => {
             return previousCriteria.map(criterion => {
                 if (criterion.id === id) {
-                    return { ...criterion, linear_segments: parseInt(valueString) };
+                    return { ...criterion, linear_segments: valueNumber };
                 }
                 return criterion;
             });
         });
     }
 
+    const handleChangeWeight = (valueNumber, id) => {
+        setCriteria(previousCriteria => {
+            return previousCriteria.map(criterion => {
+                if (criterion.id === id) {
+                    return { ...criterion, weight: valueNumber };
+                }
+                return criterion;
+            })
+        })
+    }
+
 
     return (
         <>
             <TableContainer>
-                <Table>
+                <Table size={'sm'}>
                     <Thead>
                         <Tr>
                             <Th>
@@ -101,7 +111,17 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     </CustomTooltip>
                                 </HStack>
                             </Th>
-                            <Th />
+                            <Th>
+                                <HStack>
+                                    <Text>Weight</Text>
+                                    <CustomTooltip
+                                        label={"Choose the weight of the criterion."}
+                                        openDelay={200}>
+                                        <InfoIcon/>
+                                    </CustomTooltip>
+                                </HStack>
+                            </Th>
+                            <Th/>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -111,7 +131,8 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <Td>
                                         <FormControl isInvalid={criterion.name.length === 0}>
                                             <Input
-                                                value={criterion.name}
+                                                key={criterion.id}
+                                                defaultValue={criterion.name}
                                                 onChange={(event) => handleChangeName(event, criterion.id)}
                                             />
                                         </FormControl>
@@ -135,11 +156,26 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <Td>
                                         <NumberInput
                                             isInvalid={isNaN(criterion.linear_segments)}
-                                            defaultValue={criterion.linear_segments}
+                                            value={criterion.linear_segments}
                                             min={0}
                                             max={30}
                                             precision={0}
-                                            onChange={(valueString) => handleChangeLinearSegments(valueString, criterion.id)}
+                                            onChange={(_, valueNumber) => handleChangeLinearSegments(valueNumber, criterion.id)}
+                                        >
+                                            <NumberInputField/>
+                                            <NumberInputStepper>
+                                                <NumberIncrementStepper/>
+                                                <NumberDecrementStepper/>
+                                            </NumberInputStepper>
+                                        </NumberInput>
+                                    </Td>
+                                    <Td>
+                                        <NumberInput
+                                            isInvalid={isNaN(criterion.weight)}
+                                            value={criterion.weight}
+                                            min={0}
+                                            step={criterion.weight >= 1.0 ? 1 : 0.05}
+                                            onChange={(_, valueNumber) => handleChangeWeight(valueNumber, criterion.id)}
                                         >
                                             <NumberInputField />
                                             <NumberInputStepper>

@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    ButtonGroup,
     Icon,
     Spinner,
     Tab,
@@ -13,115 +14,110 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { FaBalanceScaleLeft, FaList } from "react-icons/fa";
+import { FaBalanceScaleLeft, FaGreaterThan, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import ImportModal from "../import/ImportModal.jsx";
+import ResultsTab from "./results-tab/ResultsTab.jsx";
+import PreferenceTab from "./preference-tab/PreferenceTab.jsx";
 
 
 const ProjectTabs = (props) => {
 
-    // criteria and previousCriteria will be compared in submitData
     // criteria holds active data that the user changes
+    //    [
+    //         {
+    //             "id": integer,
+    //             "name": string,
+    //             "gain": boolean,
+    //             "linear_segments": integer,
+    //             "created_at": datetime,  # optional
+    //             "updated_at": datetime,  # optional
+    //         },
+    //         ...
+    //     ]
     const [criteria, setCriteria] = useState([]);
 
-    // alternatives holds active data that the user changes
+    // alternatives holds active data about alternatives and their performances
+    //  [
+    //      {
+    //          "id": integer,
+    //          "name": string,
+    //          "reference_ranking": integer,
+    //          "ranking": integer,
+    //          "created_at": datetime,  # optional
+    //          "updated_at": datetime,  # optional
+    //          "performances": [
+    //              {
+    //                  "id": integer,  # optional
+    //                  "value": decimal,
+    //                  "created_at": datetime,  # optional
+    //                  "updated_at": datetime,  # optional
+    //                  "criterion": integer,  # corresponding criterion id
+    //              },
+    //              ...
+    //          ]
+    //      },
+    //      ...
+    //  ]
     const [alternatives, setAlternatives] = useState([]);
 
+    // preferenceIntensities holds active data about preference intensities
+    // [
+    //     {
+    //         id: integer,
+    //         project_id: integer,
+    //         alternative_1_id: integer,
+    //         alternative_2_id: integer,
+    //         alternative_3_id: integer,
+    //         alternative_4_id: integer,
+    //         criterion_id: integer,
+    //     },
+    //     ...
+    // ]
+    const [preferenceIntensities, setPreferenceIntensities] = useState([]);
+
     const [tabIndex, setTabIndex] = useState(0);
-    const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
-    const [hasLoadedAlternatives, setHasLoadedAlternatives] = useState(false);
-    const [isScreenMobile] = useMediaQuery('(max-width: 460px)');
+    const [hasLoaded, setHasLoaded] = useState(false);
+    const [isScreenMobile] = useMediaQuery('(max-width: 628px)');
     const [saveClicked, setSaveClicked] = useState(false);
     const navigate = useNavigate();
     const toast = useToast();
 
+    const getProjectData = () => {
+        // get data
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+            method: 'GET',
+            credentials: 'include'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("error getting project in batch");
+            }
+            return response.json();
+        }).then(data => {
+            setCriteria(data.criteria);
+            setAlternatives(data.alternatives);
+            setPreferenceIntensities(data.preference_intensities);
+            setHasLoaded(true);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
 
     useEffect(() => {
 
-        // get criteria
-        fetch(`http://localhost:8080/api/projects/${props.id}/criteria/`, {
-            method: "GET",
-            credentials: "include"
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("error getting criteria");
-            }
-            return response.json();
-        }).then(data => {
-            setCriteria(data);
-            setHasLoadedCriteria(true);
-        }).catch(err => {
-            console.log(err);
-        })
-
-
-        // get alternatives
-        fetch(`http://localhost:8080/api/projects/${props.id}/alternatives/`, {
-            method: 'GET',
-            credentials: 'include',
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("error getting alternatives");
-            }
-            return response.json();
-        }).then(data => {
-
-            if (data.length === 0) {
-                setHasLoadedAlternatives(true);
-            } else {
-                let waitingArray = data.map(() => true);
-                data.forEach((alternative, index) => {
-
-                    fetch(`http://localhost:8080/api/alternatives/${alternative.id}/performances/`, {
-                        method: 'GET',
-                        credentials: 'include',
-                    }).then(response => {
-                        if (!response.ok) {
-                            throw new Error("error getting performances");
-                        }
-                        return response.json();
-                    }).then(data => {
-
-                        // insert alternative with its performances
-                        setAlternatives(pAlternatives => {
-                            const foundAlternative = pAlternatives.find(alt => alt.id === alternative.id);
-                            if (!foundAlternative) {
-                                return [...pAlternatives, {
-                                    ...alternative,
-                                    performances: data
-                                }]
-                            } else {
-                                return pAlternatives;
-                            }
-                        });
-
-                        waitingArray[index] = false;
-
-                        if (waitingArray.every(item => item === false)) {
-                            setAlternatives(alternatives =>
-                                alternatives.sort((x, y) => (x.name > y.name) ? 1 : ((x.name < y.name) ? -1 : 0))
-                            )
-                            setHasLoadedAlternatives(true);
-                        }
-
-                    })
-
-                })
-            }
-        }).catch(err => {
-            console.log(err);
-        })
+        getProjectData();
 
     }, [])
 
-    const toastSuccess = () => {
+    const toastSuccess = (description) => {
         toast({
-            title: "Saved!",
-            description: `Settings saved!`,
+            title: "Success!",
+            description: description,
             status: 'success',
             duration: 5000,
             isClosable: true,
@@ -139,41 +135,40 @@ const ProjectTabs = (props) => {
         setSaveClicked(false);
     }
 
-    const submitData = () => {
-
+    const validateData = () => {
         setSaveClicked(true);
 
         // check if there are any criteria
         if (criteria.length === 0) {
             toastError("No criteria!");
-            return;
+            return false;
         }
 
         // check if all criteria have a name
         const criteriaCheckName = criteria.some(criterion => criterion.name === "");
         if (criteriaCheckName) {
             toastError("There is at least one criterion without a name!", 6000);
-            return;
+            return false;
         }
 
         // check if all linear_segments are filled
         const criteriaCheckLinearSegments = criteria.some(criterion => isNaN(criterion.linear_segments))
         if (criteriaCheckLinearSegments) {
             toastError("There is at least one criterion with an empty linear segments value!", 6000);
-            return;
+            return false;
         }
 
         // check if there are any alternatives
         if (alternatives.length === 0) {
             toastError("No alternatives!");
-            return;
+            return false;
         }
 
         // check if all alternatives have a name
         const alternativesCheckName = alternatives.some(alternative => alternative.name === "");
         if (alternativesCheckName) {
             toastError("There is at least one alternative without a name!", 6000);
-            return;
+            return false;
         }
 
         // check if all performances are filled
@@ -182,9 +177,16 @@ const ProjectTabs = (props) => {
         )
         if (alternativesCheckPerformances) {
             toastError("There is at least one alternative with an empty performance!");
-            return;
+            return false;
         }
 
+        return true;
+    }
+
+    const submitData = () => {
+        if (!validateData()) {
+            return;
+        }
         fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
             method: 'PATCH',
             credentials: 'include',
@@ -192,19 +194,66 @@ const ProjectTabs = (props) => {
             body: JSON.stringify({
                 criteria: criteria,
                 alternatives: alternatives,
+                preference_intensities: preferenceIntensities,
             })
         }).then(response => {
             if (!response.ok) {
                 toastError('Sorry, some unexpected error occurred')
                 throw new Error('Error updating data')
             } else {
-                toastSuccess();
+                toastSuccess("Project settings saved.");
                 navigate('/projects');
             }
         }).catch(err => {
             console.log(err);
         })
+    }
 
+    const submitDataAndRun = () => {
+        if (!validateData()) {
+            return;
+        }
+
+        // update data
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                criteria: criteria,
+                alternatives: alternatives,
+                preference_intensities: preferenceIntensities,
+            })
+        }).then(response => {
+            if (!response.ok) {
+                toastError('Sorry, some unexpected error occurred');
+                throw new Error('Error updating data');
+            }
+
+            // get results
+            fetch(`http://localhost:8080/api/projects/${props.id}/results`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+            }).then(response => {
+                if (!response.ok) {
+                    toastError('Sorry, some unexpected error occurred');
+                    throw new Error('Error getting results');
+                }
+
+                setHasLoaded(false);
+                setSaveClicked(false);
+
+                setCriteria([]);
+                setAlternatives([]);
+
+                getProjectData();
+                toastSuccess();
+                setTabIndex(4);
+            })
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     return (
@@ -213,23 +262,32 @@ const ProjectTabs = (props) => {
             h={'full'}
             borderWidth={'1px'}
             borderRadius={'lg'}
-            p={5}
+            p={{ base: 2, sm: 5 }}
         >
-            <Tabs variant='soft-rounded' colorScheme='teal' isFitted={isScreenMobile}
-                onChange={(index) => {
-                    setTabIndex(index);
-                }}>
-                <TabList mx={'15px'}>
+            <Tabs variant='soft-rounded'
+                  colorScheme='teal'
+                  isFitted={isScreenMobile}
+                  index={tabIndex}
+                  onChange={(index) => {
+                      setTabIndex(index);
+                  }}>
+                <TabList mx={{ base: 0, sm: '15px' }}>
                     {isScreenMobile ?
                         <>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaArrowTrendUp}></Icon>
                             </Tab>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaList}></Icon>
                             </Tab>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaBalanceScaleLeft}></Icon>
+                            </Tab>
+                            <Tab fontSize={'15px'}>
+                                <Icon as={FaGreaterThan}></Icon>
+                            </Tab>
+                            <Tab fontSize={'20px'} isDisabled={alternatives.some(alt => alt.ranking === 0)}>
+                                <Icon as={FaRegCheckCircle}></Icon>
                             </Tab>
                         </>
                         :
@@ -237,37 +295,58 @@ const ProjectTabs = (props) => {
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
                             <Tab>Ranking</Tab>
+                            <Tab>Preferences</Tab>
+                            <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
                         </>
                     }
 
                 </TabList>
                 <TabPanels>
-                    {hasLoadedCriteria &&
-                        <TabPanel>
+                    <TabPanel>
+                        {hasLoaded &&
                             <CriteriaTab
                                 criteria={criteria}
                                 setCriteria={setCriteria}
                                 setAlternatives={setAlternatives}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
-                        </TabPanel>
-                    }
-                    {hasLoadedAlternatives &&
-                        <TabPanel>
+                        }
+                    </TabPanel>
+                    <TabPanel>
+                        {hasLoaded &&
                             <AlternativesTab
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
                                 criteria={criteria}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
-                        </TabPanel>
-                    }
-                    {hasLoadedAlternatives &&
-                        <TabPanel p={1} py={2}>
+                        }
+                    </TabPanel>
+                    <TabPanel p={1} py={2}>
+                        {hasLoaded &&
                             <RankingTab
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
                             />
-                        </TabPanel>
-                    }
+                        }
+                    </TabPanel>
+                    <TabPanel>
+                        {hasLoaded &&
+                            <PreferenceTab
+                                alternatives={alternatives}
+                                criteria={criteria}
+                                preferenceIntensities={preferenceIntensities}
+                                setPreferenceIntensities={setPreferenceIntensities}
+                            />
+                        }
+                    </TabPanel>
+                    <TabPanel p={1} py={2}>
+                        {hasLoaded &&
+                            <ResultsTab
+                                alternatives={alternatives}
+                            />
+                        }
+                    </TabPanel>
                 </TabPanels>
             </Tabs>
             <Box
@@ -276,10 +355,16 @@ const ProjectTabs = (props) => {
             >
                 <ImportModal projectId={props.id} margTop={4} margBottom={4} margLeft={4} margRight={4} full={true} maxFilesNumber={3}/>
                 {!saveClicked ?
-                    <Button
-                        colorScheme={'teal'}
-                        onClick={submitData}
-                    >Save</Button>
+                    <ButtonGroup>
+                        <Button
+                            colorScheme={'teal'}
+                            onClick={submitData}
+                        >Save</Button>
+                        <Button
+                            colorScheme={'orange'}
+                            onClick={submitDataAndRun}
+                        >Save & run</Button>
+                    </ButtonGroup>
                     :
                     <Spinner
                         color={'teal'}

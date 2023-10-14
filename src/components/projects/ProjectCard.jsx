@@ -32,7 +32,7 @@ import { BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash, } from "react-icons/bi";
 import CustomTooltip from "../CustomTooltip";
 
 
-const ProjectCard = ({ id, name, description }) => {
+const ProjectCard = ({ id, name, createdAt, description }) => {
 
     const navigate = useNavigate();
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
@@ -109,7 +109,7 @@ const ProjectCard = ({ id, name, description }) => {
                         color={useColorModeValue('gray.700', 'gray.100')}
                         paddingTop={'2'}
                         paddingBottom={'10'}>
-                        6.08.2023
+                        {new Date(createdAt).toISOString().split('T')[0].split('-').reverse().join('.')}
                     </Text>
                     <Spacer />
 
