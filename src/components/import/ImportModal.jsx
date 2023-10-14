@@ -5,7 +5,6 @@ import {
     HStack,
     Icon,
     IconButton,
-    Input,
     List,
     ListIcon,
     ListItem,
@@ -13,15 +12,13 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Progress,
+    Spinner,
     Text,
     useColorModeValue,
     useDisclosure,
     useToast,
-    VStack,
 } from '@chakra-ui/react';
 import { BiCheckCircle, BiSolidFileImport, BiTrash } from "react-icons/bi";
 import { useCallback, useState } from 'react';
@@ -35,8 +32,7 @@ const ImportModal = (props) => {
 
     const maxFiles = 1;
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
-    const [progress, setProgress] = useState({ started: false, pc: 0 });
-    const [msg, setMsg] = useState(null);
+    const [uploading, setUploading] = useState(false);
     const [files, setFiles] = useState([]);
     const toast = useToast();
     const toastId = "toast-import";
@@ -90,31 +86,23 @@ const ImportModal = (props) => {
     })
 
     const removeFile = name => {
-        console.log(`${name} is being removed`);
         setFiles(files => files.filter(file => file.name !== name))
     }
 
     function handleUpload() {
         for (let i = 0; i < files.length; i++) {
-            console.log(files[i].name);
             uploadFile(files[i]);
         }
     }
 
     function uploadFile(fileToUpload) {
         if (!fileToUpload) {
-            console.log("No file selected");
             return;
         }
 
         const formData = new FormData();
         formData.append('file', fileToUpload);
-        console.log(props.projectId);
-
-        setMsg("Uploading...");
-        setProgress(prevState => {
-            return { ...prevState, started: true }
-        })
+        setUploading(true);
         fetch(`http://localhost:8080/api/${props.projectId}/upload/`, {
             method: 'POST',
             credentials: 'include',
@@ -127,13 +115,22 @@ const ImportModal = (props) => {
                 return response.json();
             })
             .then((data) => {
-                setMsg("Upload succesful");
-                console.log('File uploaded successfully:', data);
+                setUploading(false);
                 onCloseInfo();
+                window.location.reload();
             })
             .catch((error) => {
-                setMsg("Upload failed");
-                console.error('There was a problem with the fetch operation:', error);
+                if (!toast.isActive(toastId)) {
+                    toast({
+                        id: toastId,
+                        title: 'Error!',
+                        description: `Error while uploading a file: ${error}`,
+                        status: 'error',
+                        duration: 7000,
+                        isClosable: true,
+                    });
+                }
+                setUploading(false);
             });
     }
 
@@ -166,7 +163,7 @@ const ImportModal = (props) => {
                         <>
                             Upload files
                             <CustomTooltip
-                                label={"You can upload a .csv file or a group of .xmcda files. [Optionally there should be info about the format of the files contents]"}
+                                label={"You can upload a .csv file or a group of .xmcda files. [TODO: Optionally there should be info about the format of the files contents]"}
                                 openDelay={200} >
                                 <InfoIcon minH={'4'} minW={'4'} ml={2} mb={1} />
                             </CustomTooltip>
@@ -181,6 +178,7 @@ const ImportModal = (props) => {
                                 borderRadius={'md'}
                                 borderColor={'teal'}
                                 padding={'4'}
+                                mb={6}
                                 _hover={{ bg: 'teal.500', color: 'white', cursor: 'pointer' }} >
                                 <div {...getRootProps()}>
                                     <input {...getInputProps()} />
@@ -200,7 +198,7 @@ const ImportModal = (props) => {
 
 
                             {files.length != 0
-                                ? <Box mt={10}>
+                                ? <Box mb={6}>
                                     <Heading size={'md'}>
                                         Accepted files:
                                     </Heading>
@@ -227,36 +225,26 @@ const ImportModal = (props) => {
                                 : <span>&nbsp;&nbsp;</span>}
                         </form>
                         <Button
-                            height={'8'}
+                            height={'12'}
                             width={'full'}
                             alignSelf={'end'}
                             size={'md'}
-                            mt={10}
-                            onClick={handleUpload}>
-                            Upload
+                            mb={6}
+                            onClick={handleUpload}
+                            disabled={uploading} >
+                            {uploading ? (
+                                <>
+                                    Uploading...
+                                    <Spinner
+                                        color={'teal'}
+                                        ml={2}
+                                    />
+                                </>
+                            ) : (
+                                'Upload Files'
+                            )}
                         </Button>
-                        {progress.started ? <Progress
-                            height='2'
-                            width='full'
-                            colorScheme={'teal'}
-                            borderRadius={6}
-                            max={'100'}
-                            mt={5}
-                            value={progress.pc} />
-                            : <span>&nbsp;&nbsp;</span>}
-
                     </ModalBody>
-
-                    <ModalFooter>
-                        <Button
-                            colorScheme={useColorModeValue('white.500', 'black.800')}
-                            bg={useColorModeValue('teal.500', 'teal.200')}
-                            _hover={{ bg: useColorModeValue('teal.200', 'teal.500') }}
-                            mr={3}
-                            onClick={onCloseInfo}>
-                            Close
-                        </Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
