@@ -32,7 +32,7 @@ function transitiveReduction(graph) {
     return graph;
 }
 
-function calculateNodeLevels(graph) {
+function calculateNodeLevels(graph, indifferences) {
     const vertices = Object.keys(graph);
     const ranks = Object.fromEntries(vertices.map(vertex => [vertex, 1]));
 
@@ -64,6 +64,19 @@ function calculateNodeLevels(graph) {
             }
         }
     }
+
+    // adjust ranks to indifferences
+    for(const vertex of Object.keys(ranks)) {
+        let indifferenceWithVertex = indifferences.find(arr => arr.includes(vertex));
+        if(indifferenceWithVertex) {
+            let indifferenceRanks = indifferenceWithVertex.map(v => ranks[v]);
+            const maxRank = Math.max(...indifferenceRanks);
+            indifferenceWithVertex.forEach(v => {
+                ranks[v] = maxRank;
+            });
+        }
+    }
+
     return ranks;
 }
 
@@ -139,18 +152,6 @@ function createDotString(graph, ranks, indifferences, bgcolor, nodeBgColor) {
         vertexToId[vertex] = nodeIdStr;
         dotString += `    ${nodeIdStr} [label="${vertex}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
         nodeId++;
-    }
-
-    // adjust ranks to indifferences
-    for(const vertex of Object.keys(ranks)) {
-        let indifferenceWithVertex = indifferences.find(arr => arr.includes(vertex));
-        if(indifferenceWithVertex) {
-            let indifferenceRanks = indifferenceWithVertex.map(v => ranks[v]);
-            const maxRank = Math.max(...indifferenceRanks);
-            indifferenceWithVertex.forEach(v => {
-                ranks[v] = maxRank;
-            });
-        }
     }
 
     // group vertices with the same rank into clusters
@@ -243,7 +244,7 @@ export function generateDotString(graph, bgColor, nodeBgColor) {
     graphObject = transitiveReduction(graphObjectWithoutCycles);
 
     // calculate node levels to get ranks
-    const ranks = calculateNodeLevels(graphObjectWithoutCycles);
+    const ranks = calculateNodeLevels(graphObjectWithoutCycles, indifferences);
     return createDotString(graphObject, ranks, indifferences, bgColor, nodeBgColor);
 }
 
