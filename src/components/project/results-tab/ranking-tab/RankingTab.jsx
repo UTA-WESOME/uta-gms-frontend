@@ -1,12 +1,12 @@
 import { Box, Heading, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import CustomTooltip from "../../../CustomTooltip.jsx";
 import { WarningIcon } from "@chakra-ui/icons";
-import CustomTooltip from "../../CustomTooltip.jsx";
 
-
-const ResultsTab = ({ alternatives }) => {
+const RankingTab = ({ alternatives }) => {
     return (
+
         <Box textAlign={'center'} mx={{ base: '1%', sm: '10%', lg: '18%', '2xl': '25%' }} mt={'10px'}>
-            <Heading size={{ base: 'md', md: 'xl', xl: '2xl' }} mb={3}>
+            <Heading size={{ base: 'md', md: 'xl'}} mb={3}>
                 Result ranking
                 {alternatives.some(alt => alt.ranking === 0) &&
                     <CustomTooltip
@@ -44,4 +44,4 @@ const ResultsTab = ({ alternatives }) => {
     )
 }
 
-export default ResultsTab;
+export default RankingTab;
