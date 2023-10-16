@@ -15,6 +15,7 @@ import {
 import { DeleteIcon } from "@chakra-ui/icons";
 import { FaGreaterThan, FaMinus } from "react-icons/fa";
 import * as c from './constants.js';
+import { Fragment } from "react";
 
 const PreferenceTabDesktop = ({
                                   preferenceIntensities,
@@ -55,12 +56,12 @@ const PreferenceTabDesktop = ({
                         <Tr>
                             <>
                                 {c.alternatives.map(alternative => (
-                                    <>
-                                        <Th key={alternative.number}>
+                                    <Fragment key={alternative.number}>
+                                        <Th>
                                             <Text>Alternative {alternative.letter}</Text>
                                         </Th>
                                         {alternative.number !== 4 && <Th/>}
-                                    </>
+                                    </Fragment>
                                 ))}
                             </>
                             <Th borderLeftWidth={'1px'}>
@@ -74,8 +75,8 @@ const PreferenceTabDesktop = ({
                             <Tr key={index}>
                                 <>
                                     {c.alternatives.map(alternativeConst => (
-                                        <>
-                                            <Td key={alternativeConst.number}>
+                                        <Fragment key={alternativeConst.number}>
+                                            <Td>
                                                 <Select
                                                     value={preferenceIntensity[`alternative_${alternativeConst.number}`]}
                                                     onChange={(event) => handleChangeAlternative(preferenceIntensity.id, alternativeConst.number, parseInt(event.target.value))}
@@ -96,7 +97,7 @@ const PreferenceTabDesktop = ({
                                                     <Icon as={FaGreaterThan}/>
                                                 </Td>
                                             }
-                                        </>
+                                        </Fragment>
                                     ))}
                                 </>
                                 <Td borderLeftWidth={'1px'}>

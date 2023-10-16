@@ -121,7 +121,7 @@ const PreferenceTabMobile = ({
                             <Heading colorScheme={'teal'}
                                      size={'xl'}
                             >
-                                A - B > C - D
+                                A - B &gt; C - D
                             </Heading>
                             {c.alternatives.map(alternativeConst => (
                                 <FormControl key={alternativeConst.number}>

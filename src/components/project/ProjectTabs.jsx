@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     ButtonGroup,
+    Divider,
     Icon,
     Spinner,
     Tab,
@@ -20,12 +21,11 @@ import { useNavigate } from "react-router-dom";
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
-import ResultsTab from "./results-tab/ResultsTab.jsx";
 import PreferenceTab from "./preference-tab/PreferenceTab.jsx";
+import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 
 
 const ProjectTabs = (props) => {
-
     // criteria holds active data that the user changes
     //    [
     //         {
@@ -79,6 +79,8 @@ const ProjectTabs = (props) => {
     // ]
     const [preferenceIntensities, setPreferenceIntensities] = useState([]);
 
+    const [hasseGraph, setHasseGraph] = useState({});
+
     const [tabIndex, setTabIndex] = useState(0);
     const [hasLoaded, setHasLoaded] = useState(false);
     const [isScreenMobile] = useMediaQuery('(max-width: 628px)');
@@ -86,7 +88,7 @@ const ProjectTabs = (props) => {
     const navigate = useNavigate();
     const toast = useToast();
 
-    const getProjectData = () => {
+    useEffect(() => {
         // get data
         fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
             method: 'GET',
@@ -100,17 +102,11 @@ const ProjectTabs = (props) => {
             setCriteria(data.criteria);
             setAlternatives(data.alternatives);
             setPreferenceIntensities(data.preference_intensities);
+            setHasseGraph(data.hasse_graph);
             setHasLoaded(true);
         }).catch(err => {
             console.log(err);
         })
-    }
-
-
-    useEffect(() => {
-
-        getProjectData();
-
     }, [])
 
     const toastSuccess = (description) => {
@@ -135,7 +131,6 @@ const ProjectTabs = (props) => {
     }
 
     const validateData = () => {
-        setSaveClicked(true);
 
         // check if there are any criteria
         if (criteria.length === 0) {
@@ -186,6 +181,7 @@ const ProjectTabs = (props) => {
         if (!validateData()) {
             return;
         }
+        setSaveClicked(true);
         fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
             method: 'PATCH',
             credentials: 'include',
@@ -197,8 +193,8 @@ const ProjectTabs = (props) => {
             })
         }).then(response => {
             if (!response.ok) {
-                toastError('Sorry, some unexpected error occurred')
-                throw new Error('Error updating data')
+                toastError('Sorry, some unexpected error occurred');
+                throw new Error('Error updating data');
             } else {
                 toastSuccess("Project settings saved.");
                 navigate('/projects');
@@ -212,6 +208,8 @@ const ProjectTabs = (props) => {
         if (!validateData()) {
             return;
         }
+
+        setSaveClicked(true);
 
         // update data
         fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
@@ -239,17 +237,18 @@ const ProjectTabs = (props) => {
                     toastError('Sorry, some unexpected error occurred');
                     throw new Error('Error getting results');
                 }
-
-                setHasLoaded(false);
+                return response.json();
+            }).then(data => {
+                setCriteria(data.criteria);
+                setAlternatives(data.alternatives);
+                setPreferenceIntensities(data.preference_intensities);
+                setHasseGraph(data.hasse_graph);
                 setSaveClicked(false);
-
-                setCriteria([]);
-                setAlternatives([]);
-
-                getProjectData();
                 toastSuccess();
                 setTabIndex(4);
             })
+
+
         }).catch(err => {
             console.log(err);
         })
@@ -270,7 +269,7 @@ const ProjectTabs = (props) => {
                   onChange={(index) => {
                       setTabIndex(index);
                   }}>
-                <TabList mx={{ base: 0, sm: '15px' }}>
+                <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                     {isScreenMobile ?
                         <>
                             <Tab fontSize={'15px'}>
@@ -300,6 +299,8 @@ const ProjectTabs = (props) => {
                     }
 
                 </TabList>
+
+                <Divider/>
                 <TabPanels>
                     <TabPanel>
                         {hasLoaded &&
@@ -341,8 +342,9 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <ResultsTab
+                            <ResultsTabs
                                 alternatives={alternatives}
+                                hasseGraph={hasseGraph}
                             />
                         }
                     </TabPanel>
