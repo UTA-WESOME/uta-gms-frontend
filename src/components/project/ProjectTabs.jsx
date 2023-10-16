@@ -353,9 +353,9 @@ const ProjectTabs = (props) => {
                 textAlign={'right'}
                 mt={tabIndex === 2 ? 3 : 0}
             >
-                <ImportModal projectId={props.id} margTop={4} margBottom={4} margLeft={4} margRight={4} full={true} maxFilesNumber={3}/>
                 {!saveClicked ?
                     <ButtonGroup>
+                        <ImportModal projectId={props.id} full={true} maxFilesNumber={3}/>
                         <Button
                             colorScheme={'teal'}
                             onClick={submitData}
