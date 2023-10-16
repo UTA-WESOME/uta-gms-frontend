@@ -3,8 +3,14 @@ import {
     FormControl,
     HStack,
     IconButton,
-    Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper,
-    Table, TableContainer,
+    Input,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    Table,
+    TableContainer,
     Tbody,
     Td,
     Text,
@@ -15,13 +21,14 @@ import {
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
+import debounce from "lodash/debounce";
 
 const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAlternative, deleteAlternative }) => {
 
 
     const colorMode = useColorModeValue('white', 'gray.800');
 
-    const handleChangeName = (event, id) => {
+    const handleChangeName = debounce((event, id) => {
         let newName = event.target.value;
         if (newName.length <= 64) {
             setAlternatives(pAlternatives => {
@@ -37,7 +44,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
             let alternative = alternatives.filter(alternative => alternative.id === id)[0];
             event.target.value = alternative.name;
         }
-    }
+    }, 50);
 
     const handleChangePerformance = (valueNumber, alternativeId, criterionId) => {
         setAlternatives(pAlternatives => {
@@ -64,7 +71,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
 
     return (
         <TableContainer pb={2}>
-            <Table style={{ borderCollapse: 'separate', borderSpacing: "0" }}>
+            <Table style={{ borderCollapse: 'separate', borderSpacing: "0" }} size={'sm'}>
                 <Thead>
                     <Tr>
                         <Th
@@ -115,6 +122,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                     <HStack>
                                         <FormControl isInvalid={alternative.name.length === 0}>
                                             <Input
+                                                key={alternative.id}
                                                 defaultValue={alternative.name}
                                                 onChange={(event) => handleChangeName(event, alternative.id)}
                                             />

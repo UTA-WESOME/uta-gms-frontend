@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -21,7 +21,6 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Show,
     Spacer,
     Text,
     useBoolean,
@@ -33,7 +32,7 @@ import { BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash, } from "react-icons/bi";
 import CustomTooltip from "../CustomTooltip";
 
 
-const ProjectCard = ({ id, name, description }) => {
+const ProjectCard = ({ id, name, createdAt, description }) => {
 
     const navigate = useNavigate();
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
@@ -99,20 +98,20 @@ const ProjectCard = ({ id, name, description }) => {
                         textAlign={'start'}
                         paddingBottom={2}>
                         {/*TODO: might need refactor*/}
-                        <LinkOverlay  onClick={() => navigate(`/projects/${id}`)} href={`#`}>
+                        <LinkOverlay onClick={() => navigate(`/projects/${id}`)} href={`#`}>
                             <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
                                 {name}
                             </Text>
                         </LinkOverlay>
                     </Heading>
                     <Text fontSize={'md'}
-                        lineHeight={'110%'}
-                        color={useColorModeValue('gray.700', 'gray.100')}
-                        paddingTop={'2'}
-                        paddingBottom={'10'}>
-                        6.08.2023
+                          lineHeight={'110%'}
+                          color={useColorModeValue('gray.700', 'gray.100')}
+                          paddingTop={'2'}
+                          paddingBottom={'10'}>
+                        {new Date(createdAt).toISOString().split('T')[0].split('-').reverse().join('.')}
                     </Text>
-                    <Spacer />
+                    <Spacer/>
 
                     <Text
                         as={'div'}
@@ -121,7 +120,7 @@ const ProjectCard = ({ id, name, description }) => {
                         lineHeight={'110%'}
                         color={useColorModeValue('gray.400', 'gray.400')}
                         paddingBottom={'2'}
-                        mx={'auto'} >
+                        mx={'auto'}>
                         {hoveredFlag ? "Click to open project" : <span>&nbsp;&nbsp;</span>}
                     </Text>
 
@@ -141,7 +140,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 background={'transparent'}
                                 borderRadius={'full'}
                                 icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
-                                    color={useColorModeValue('blue.500', 'blue.200')} />}
+                                            color={useColorModeValue('blue.500', 'blue.200')}/>}
                                 onClick={onOpenInfo}
                             />
                         </CustomTooltip>
@@ -152,7 +151,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 background={'transparent'}
                                 borderRadius={'full'}
                                 icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
-                                    color={useColorModeValue('green.500', 'green.200')} />}
+                                            color={useColorModeValue('green.500', 'green.200')}/>}
                                 onClick={shareProject}
                             />
                         </CustomTooltip>
@@ -163,7 +162,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 background={'transparent'}
                                 borderRadius={'full'}
                                 icon={<Icon as={BiEditAlt} minH={'7'} minW={'7'}
-                                    color={useColorModeValue('yellow.500', 'yellow.200')} />}
+                                            color={useColorModeValue('yellow.500', 'yellow.200')}/>}
                                 onClick={() => navigate(`/projects/${id}/edit`)}
                             />
                         </CustomTooltip>
@@ -174,7 +173,7 @@ const ProjectCard = ({ id, name, description }) => {
                                 background={'transparent'}
                                 borderRadius={'full'}
                                 icon={<Icon as={BiTrash} minH={'7'} minW={'7'}
-                                    color={useColorModeValue('red.500', 'red.200')} />}
+                                            color={useColorModeValue('red.500', 'red.200')}/>}
                                 onClick={onOpenDelete}
                             />
                         </CustomTooltip>
@@ -212,10 +211,10 @@ const ProjectCard = ({ id, name, description }) => {
             </AlertDialog>
 
             <Modal isOpen={isOpenInfo} onClose={onCloseInfo}>
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>Project description</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody>
                         {description}
                     </ModalBody>
