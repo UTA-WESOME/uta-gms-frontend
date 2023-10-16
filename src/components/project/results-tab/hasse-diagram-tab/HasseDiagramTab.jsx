@@ -5,46 +5,7 @@ import CustomTooltip from "../../../CustomTooltip.jsx";
 import { WarningIcon } from "@chakra-ui/icons";
 
 
-const HasseDiagramTab = ({ alternatives }) => {
-
-    const jsonGraph = {
-        "47": [
-            '52',
-            '57'
-        ],
-        "48": [
-            '74'
-        ],
-        "49": [
-            '74',
-            '56'
-        ],
-        "50": [
-            '53'
-        ],
-        "51": [
-            '74'
-        ],
-        "52": [
-            '56',
-            '51'
-        ],
-        "53": [
-            '57',
-            '52',
-            '50',
-            '54',
-            '48'
-        ],
-        "55": [
-            '48'
-        ],
-        "57": [
-            '49'
-        ],
-        '56': [],
-        '74': [],
-    };
+const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
 
     const bgColor = useColorModeValue("#FFFFFF", "#1A202C")
     const nodeBgColor = useColorModeValue("#E2E8F0", "#F7FAFC")
@@ -63,7 +24,7 @@ const HasseDiagramTab = ({ alternatives }) => {
                 }
             </Heading>
             <Graphviz
-                dot={generateDotString(jsonGraph, bgColor, nodeBgColor)}
+                dot={generateDotString(hasseGraph, alternatives, bgColor, nodeBgColor)}
             />
 
         </Box>

@@ -1,3 +1,33 @@
+function jsonToObjectWithConnections(graph) {
+    const vertices = Object.keys(graph);
+    const objectWithConnections = {};
+
+    for (const vertex of vertices) {
+        const neighbors = graph[vertex];
+        const connections = {};
+
+        for (const v of vertices) {
+            connections[v] = neighbors.includes(v);
+        }
+
+        objectWithConnections[vertex] = connections;
+    }
+
+    return objectWithConnections;
+}
+
+function stringifyChildrenNodes(graph) {
+    const stringified = {};
+
+    for (const key in graph) {
+        if (graph.hasOwnProperty(key)) {
+            stringified[key] = graph[key].map(String);
+        }
+    }
+
+    return stringified;
+}
+
 function transitiveReduction(graph) {
     const vertices = Object.keys(graph);
 
@@ -80,16 +110,16 @@ function calculateNodeLevels(graph, indifferences) {
     return ranks;
 }
 
-function findAndRemoveCycles(graph) {
+function findAndRemoveCycles(graphObject) {
     const cycles = [];
-    const graphCopy = { ...graph };
-    const vertices = Object.keys(graph);
+    const graphCopy = { ...graphObject };
+    const vertices = Object.keys(graphObject);
 
     for (const vertex of vertices) {
-        const neighbors = Object.keys(graph[vertex]);
+        const neighbors = Object.keys(graphObject[vertex]);
         for (const neighbor of neighbors) {
             // Check if there's a reciprocal edge (cycle of length 2).
-            if (graph[neighbor][vertex] && graph[vertex][neighbor]) {
+            if (graphObject[neighbor][vertex] && graphObject[vertex][neighbor]) {
                 // Add information about the cycle to the cycles array.
                 cycles.push([vertex, neighbor]);
 
@@ -119,25 +149,7 @@ function findAndRemoveCycles(graph) {
     return [concatenatedCycles, graphCopy];
 }
 
-function jsonToObjectWithConnections(graph) {
-    const vertices = Object.keys(graph);
-    const objectWithConnections = {};
-
-    for (const vertex of vertices) {
-        const neighbors = graph[vertex];
-        const connections = {};
-
-        for (const v of vertices) {
-            connections[v] = neighbors.includes(v);
-        }
-
-        objectWithConnections[vertex] = connections;
-    }
-
-    return objectWithConnections;
-}
-
-function createDotString(graph, ranks, indifferences, bgcolor, nodeBgColor) {
+function createDotString(graph, ranks, indifferences, alternatives, bgcolor, nodeBgColor) {
     const vertexToId = {};
     const clusterMap = {};
     let dotString = `digraph {
@@ -150,7 +162,7 @@ function createDotString(graph, ranks, indifferences, bgcolor, nodeBgColor) {
     for (const vertex of Object.keys(graph)) {
         const nodeIdStr = `node${nodeId}`;
         vertexToId[vertex] = nodeIdStr;
-        dotString += `    ${nodeIdStr} [label="${vertex}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
+        dotString += `    ${nodeIdStr} [label="${alternatives.find(alt => alt.id.toString() === vertex).name}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
         nodeId++;
     }
 
@@ -232,7 +244,10 @@ function createDotString(graph, ranks, indifferences, bgcolor, nodeBgColor) {
     return dotString;
 }
 
-export function generateDotString(graph, bgColor, nodeBgColor) {
+export function generateDotString(graph, alternatives, bgColor, nodeBgColor) {
+
+    // stringify children nodes
+    graph = stringifyChildrenNodes(graph);
 
     // transform JSON graph to graphObject
     let graphObject = jsonToObjectWithConnections(graph);
@@ -245,6 +260,5 @@ export function generateDotString(graph, bgColor, nodeBgColor) {
 
     // calculate node levels to get ranks
     const ranks = calculateNodeLevels(graphObjectWithoutCycles, indifferences);
-    return createDotString(graphObject, ranks, indifferences, bgColor, nodeBgColor);
+    return createDotString(graphObject, ranks, indifferences, alternatives, bgColor, nodeBgColor);
 }
-
