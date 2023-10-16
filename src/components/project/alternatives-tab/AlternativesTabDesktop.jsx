@@ -1,6 +1,5 @@
 import {
     Button,
-    ButtonGroup,
     FormControl,
     HStack,
     IconButton,
@@ -16,15 +15,13 @@ import {
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
-import { BiSolidFileImport, } from "react-icons/bi";
-import debounce from "lodash/debounce";
 
 const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAlternative, deleteAlternative }) => {
 
 
     const colorMode = useColorModeValue('white', 'gray.800');
 
-    const handleChangeName = debounce((event, id) => {
+    const handleChangeName = (event, id) => {
         let newName = event.target.value;
         if (newName.length <= 64) {
             setAlternatives(pAlternatives => {
@@ -40,7 +37,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
             let alternative = alternatives.filter(alternative => alternative.id === id)[0];
             event.target.value = alternative.name;
         }
-    }, 50);
+    }
 
     const handleChangePerformance = (valueNumber, alternativeId, criterionId) => {
         setAlternatives(pAlternatives => {
@@ -67,7 +64,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
 
     return (
         <TableContainer pb={2}>
-            <Table style={{ borderCollapse: 'separate', borderSpacing: "0" }} size={'sm'}>
+            <Table style={{ borderCollapse: 'separate', borderSpacing: "0" }}>
                 <Thead>
                     <Tr>
                         <Th
@@ -79,7 +76,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                             <HStack>
                                 <Text>Name</Text>
                                 <CustomTooltip label={"Alternative name"} openDelay={200}>
-                                    <InfoIcon />
+                                    <InfoIcon/>
                                 </CustomTooltip>
                             </HStack>
                         </Th>
@@ -94,7 +91,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                             label={criterion.gain ? "Gain" : "Cost"}
                                             openDelay={200}
                                         >
-                                            <InfoIcon />
+                                            <InfoIcon/>
                                         </CustomTooltip>
                                     </HStack>
                                 </Th>
@@ -118,7 +115,6 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                     <HStack>
                                         <FormControl isInvalid={alternative.name.length === 0}>
                                             <Input
-                                                key={alternative.id}
                                                 defaultValue={alternative.name}
                                                 onChange={(event) => handleChangeName(event, alternative.id)}
                                             />
@@ -127,7 +123,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                         <IconButton
                                             color={'red.300'}
                                             aria-label={'delete-alternative'}
-                                            icon={<DeleteIcon />}
+                                            icon={<DeleteIcon/>}
                                             onClick={() => deleteAlternative(alternative.id)}
                                         />
                                     </HStack>
@@ -141,10 +137,10 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                                 defaultValue={performance.value}
                                                 onChange={(_, valueNumber) => handleChangePerformance(valueNumber, alternative.id, criterion.id)}
                                             >
-                                                <NumberInputField />
+                                                <NumberInputField/>
                                                 <NumberInputStepper>
-                                                    <NumberIncrementStepper />
-                                                    <NumberDecrementStepper />
+                                                    <NumberIncrementStepper/>
+                                                    <NumberDecrementStepper/>
                                                 </NumberInputStepper>
                                             </NumberInput>
                                         </Td>
@@ -156,18 +152,16 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                 </Tbody>
             </Table>
 
-            <ButtonGroup position={'sticky'} left={6}>
-                <Button
-                    my={4}
-                    mr={6}
-                    colorScheme={'teal'}
-                    onClick={addAlternative}
-                    variant='outline' >
-                    New alternative
-                </Button>
-
-            </ButtonGroup>
-
+            <Button
+                my={4}
+                colorScheme={'teal'}
+                onClick={addAlternative}
+                variant='outline'
+                position={'sticky'}
+                left={6}
+            >
+                New alternative
+            </Button>
         </TableContainer>
     )
 

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -21,6 +21,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Show,
     Spacer,
     Text,
     useBoolean,
@@ -32,7 +33,7 @@ import { BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash, } from "react-icons/bi";
 import CustomTooltip from "../CustomTooltip";
 
 
-const ProjectCard = ({ id, name, createdAt, description }) => {
+const ProjectCard = ({ id, name, description }) => {
 
     const navigate = useNavigate();
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
@@ -109,7 +110,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                         color={useColorModeValue('gray.700', 'gray.100')}
                         paddingTop={'2'}
                         paddingBottom={'10'}>
-                        {new Date(createdAt).toISOString().split('T')[0].split('-').reverse().join('.')}
+                        6.08.2023
                     </Text>
                     <Spacer />
 
