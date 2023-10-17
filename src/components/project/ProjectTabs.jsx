@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
+import ImportModal from "../import/ImportModal.jsx";
 import PreferenceTab from "./preference-tab/PreferenceTab.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 
@@ -356,6 +357,7 @@ const ProjectTabs = (props) => {
             >
                 {!saveClicked ?
                     <ButtonGroup>
+                        <ImportModal projectId={props.id} full={true} maxFilesNumber={3}/>
                         <Button
                             colorScheme={'teal'}
                             onClick={submitData}
