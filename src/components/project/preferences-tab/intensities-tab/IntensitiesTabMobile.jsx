@@ -24,7 +24,7 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import * as c from './constants.js';
 
-const PreferenceTabMobile = ({
+const IntensitiesTabMobile = ({
                                  preferenceIntensities,
                                  setPreferenceIntensities,
                                  alternatives,
@@ -167,4 +167,4 @@ const PreferenceTabMobile = ({
 
 }
 
-export default PreferenceTabMobile;
+export default IntensitiesTabMobile;

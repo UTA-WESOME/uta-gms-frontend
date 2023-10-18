@@ -20,9 +20,8 @@ import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
-import RankingTab from "./ranking-tab/RankingTab.jsx";
-import PreferenceTab from "./preference-tab/PreferenceTab.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
+import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 
 
 const ProjectTabs = (props) => {
@@ -292,7 +291,6 @@ const ProjectTabs = (props) => {
                         <>
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
-                            <Tab>Ranking</Tab>
                             <Tab>Preferences</Tab>
                             <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
                         </>
@@ -324,16 +322,9 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <RankingTab
+                            <PreferencesTabs
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
-                            />
-                        }
-                    </TabPanel>
-                    <TabPanel>
-                        {hasLoaded &&
-                            <PreferenceTab
-                                alternatives={alternatives}
                                 criteria={criteria}
                                 preferenceIntensities={preferenceIntensities}
                                 setPreferenceIntensities={setPreferenceIntensities}

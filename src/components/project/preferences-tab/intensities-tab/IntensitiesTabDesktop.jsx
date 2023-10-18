@@ -17,7 +17,7 @@ import { FaGreaterThan, FaMinus } from "react-icons/fa";
 import * as c from './constants.js';
 import { Fragment } from "react";
 
-const PreferenceTabDesktop = ({
+const IntensitiesTabDesktop = ({
                                   preferenceIntensities,
                                   setPreferenceIntensities,
                                   alternatives,
@@ -132,4 +132,4 @@ const PreferenceTabDesktop = ({
     )
 }
 
-export default PreferenceTabDesktop;
+export default IntensitiesTabDesktop;

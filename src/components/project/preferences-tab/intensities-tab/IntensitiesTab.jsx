@@ -1,8 +1,8 @@
 import { Show, useToast } from "@chakra-ui/react";
-import PreferenceTabDesktop from "./PreferenceTabDesktop.jsx";
-import PreferenceTabMobile from "./PreferenceTabMobile.jsx";
+import IntensitiesTabDesktop from "./IntensitiesTabDesktop.jsx";
+import IntensitiesTabMobile from "./IntensitiesTabMobile.jsx";
 
-const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, alternatives, criteria }) => {
+const IntensitiesTab = ({ preferenceIntensities, setPreferenceIntensities, alternatives, criteria }) => {
 
     const toast = useToast();
     const toastId = "toast-project-preference-tab-add";
@@ -51,7 +51,7 @@ const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, altern
         <>
             {/*DESKTOP*/}
             <Show above={'lg'}>
-                <PreferenceTabDesktop
+                <IntensitiesTabDesktop
                     alternatives={alternatives}
                     criteria={criteria}
                     preferenceIntensities={preferenceIntensities}
@@ -63,7 +63,7 @@ const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, altern
 
             {/*MOBILE*/}
             <Show below={'991px'}>
-                <PreferenceTabMobile
+                <IntensitiesTabMobile
                     alternatives={alternatives}
                     criteria={criteria}
                     preferenceIntensities={preferenceIntensities}
@@ -77,4 +77,4 @@ const PreferenceTab = ({ preferenceIntensities, setPreferenceIntensities, altern
 
 }
 
-export default PreferenceTab;
+export default IntensitiesTab;
