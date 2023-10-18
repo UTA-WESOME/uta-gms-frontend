@@ -126,7 +126,7 @@ const IntensitiesTabDesktop = ({
             </TableContainer>
 
             <Button mx={6} my={4} colorScheme={'teal'} onClick={addPreferenceIntensity} variant='outline'>
-                New preference
+                New intensity
             </Button>
         </>
     )

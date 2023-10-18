@@ -11,7 +11,8 @@ import {
     useDisclosure,
     VStack
 } from "@chakra-ui/react";
-import RankingTab from "./ranking-tab/RankingTab.jsx";
+import ReferenceRanking from "./ranking-tab/ReferenceRanking.jsx";
+import PairwiseComparisons from "./pairwise/PairwiseComparisons.jsx";
 
 const ComparisonsTab = ({ alternatives, setAlternatives }) => {
 
@@ -36,13 +37,15 @@ const ComparisonsTab = ({ alternatives, setAlternatives }) => {
             </VStack>
 
             {!isPairwise ?
-                <RankingTab
+                <ReferenceRanking
                     alternatives={alternatives}
                     setAlternatives={setAlternatives}
                 />
                 :
-                <Text>Pairwise comparisons!</Text>
-
+                <PairwiseComparisons
+                    alternatives={alternatives}
+                    setAlternatives={setAlternatives}
+                />
             }
 
             <AlertDialog

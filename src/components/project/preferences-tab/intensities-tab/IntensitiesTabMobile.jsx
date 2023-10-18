@@ -82,10 +82,10 @@ const IntensitiesTabMobile = ({
                         p={2}
                         key={index}
                     >
-                        <Text isTruncated>Preference {index + 1}</Text>
+                        <Text isTruncated>Intensity {index + 1}</Text>
                         <Spacer/>
                         <IconButton
-                            aria-label={'edit-preference'}
+                            aria-label={'edit-preference-intensity'}
                             icon={<EditIcon/>}
                             onClick={() => {
                                 setCurrentPreferenceIntensity(preferenceIntensity);
@@ -104,7 +104,7 @@ const IntensitiesTabMobile = ({
             </Flex>
 
             <Button my={4} colorScheme={'teal'} onClick={addPreferenceIntensity} variant='outline'>
-                New preference
+                New intensity
             </Button>
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -114,7 +114,7 @@ const IntensitiesTabMobile = ({
                     as={"form"}
                     onSubmit={submitData}
                 >
-                    <ModalHeader>Edit preference</ModalHeader>
+                    <ModalHeader>Edit intensity</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody textAlign={'center'}>
                         <VStack spacing={"15px"}>
