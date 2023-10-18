@@ -14,6 +14,7 @@ import {
     useToast
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { string } from "yup";
 
 const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
 
@@ -52,17 +53,43 @@ const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
         let firstAltId = alternatives[0].id
 
         setPairwiseComparisons(pPairwiseComparisons => [...pPairwiseComparisons, {
-            id: maxId,
-            alternatives_1: firstAltId,
+            id: maxId + 1,
+            alternative_1: firstAltId,
             alternative_2: firstAltId,
             type: 'preference'
         }])
     }
 
+    const deletePairwiseComparison = (id) => {
+        setPairwiseComparisons(p => p.filter(item => item.id !== id));
+    }
+
+    const handleChangeAlternative = (comparisonId, alternativeNumber, alternativeId) => {
+        setPairwiseComparisons(pPairwiseComparisons => {
+            return pPairwiseComparisons.map(pc => {
+                if (pc.id === comparisonId) {
+                    return { ...pc, [`alternative_${alternativeNumber}`]: alternativeId };
+                }
+                return pc;
+            })
+        })
+    }
+
+    const handleChangeType = (comparisonId, newType) => {
+        setPairwiseComparisons(pPairwiseComparisons => {
+            return pPairwiseComparisons.map(pc => {
+                if (pc.id === comparisonId) {
+                    return { ...pc, type: newType };
+                }
+                return pc;
+            })
+        })
+    }
+
 
     return (
         <>
-            <TableContainer px={{ base: '0%', sm: '1%', md: '20%' }} pt={2}>
+            <TableContainer px={{ base: '0%', md: '4%', xl: '10%', '2xl': '20%' }} pt={4}>
                 <Table size={'sm'}>
                     <Thead>
                         <Tr>
@@ -85,7 +112,9 @@ const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
                             <Tr key={index}>
                                 <Td>
                                     <Select
-                                        value={pairwiseComparisons[`alternative_1`]}
+                                        value={pairwiseComparisons.alternative_1}
+                                        onChange={(event) =>
+                                            handleChangeAlternative(pairwiseComparison.id, 1, parseInt(event.target.value))}
                                     >
                                         {alternatives.map(alternative => (
                                             <option value={alternative.id} key={alternative.id}>
@@ -96,16 +125,18 @@ const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
                                 </Td>
                                 <Td>
                                     <Select
-                                        value={pairwiseComparisons[`type`]}
-
+                                        value={pairwiseComparisons.type}
+                                        onChange={(event) => handleChangeType(pairwiseComparison.id, event.target.value)}
                                     >
-                                        <option key={'preference'}>&gt;</option>
-                                        <option key={'indifference'}>=</option>
+                                        <option value={'preference'}>&gt;</option>
+                                        <option value={'indifference'}>=</option>
                                     </Select>
                                 </Td>
                                 <Td>
                                     <Select
-                                        value={pairwiseComparisons[`alternative_1`]}
+                                        value={pairwiseComparisons.alternative_2}
+                                        onChange={(event) =>
+                                            handleChangeAlternative(pairwiseComparison.id, 2, parseInt(event.target.value))}
                                     >
                                         {alternatives.map(alternative => (
                                             <option value={alternative.id} key={alternative.id}>
@@ -114,12 +145,12 @@ const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
                                         ))}
                                     </Select>
                                 </Td>
-                                <Td textAlign={'right'}>
+                                <Td textAlign={'center'} maxWidth={'45px'} minWidth={'45px'}>
                                     <IconButton
                                         color={'red.300'}
                                         aria-label={'delete-preference-intensity'}
                                         icon={<DeleteIcon/>}
-                                        // onClick={() => deletePreferenceIntensity(preferenceIntensity.id)}
+                                        onClick={() => deletePairwiseComparison(pairwiseComparison.id)}
                                     />
                                 </Td>
                             </Tr>
