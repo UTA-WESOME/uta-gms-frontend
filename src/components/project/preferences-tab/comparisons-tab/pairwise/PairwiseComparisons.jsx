@@ -1,8 +1,24 @@
 import { useState } from "react";
-import { IconButton, Select, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+    Button,
+    IconButton,
+    Select,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+    useToast
+} from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
+
+    const toast = useToast();
+    const toastId = "toast-project-pairwise-comparisons-add"
 
     const [pairwiseComparisons, setPairwiseComparisons] = useState([
         {
@@ -12,6 +28,37 @@ const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
             type: 'preference'
         }
     ]);
+
+    const addPairwiseComparison = () => {
+        if (alternatives.length === 0) {
+            if (!toast.isActive(toastId)) {
+                toast({
+                    id: toastId,
+                    title: 'Warning!',
+                    description: "You need to add alternatives first.",
+                    status: 'warning',
+                    duration: 6000,
+                    isClosable: true,
+                })
+            }
+            return;
+        }
+
+        // get max pairwise comparison id
+        let maxId = Math.max(...pairwiseComparisons.map(item => item.id));
+        maxId = maxId === -Infinity ? 0 : maxId;
+        // get first alternative
+        // we can be sure that there is at least one alternative because of the if statement at the beginning of the function
+        let firstAltId = alternatives[0].id
+
+        setPairwiseComparisons(pPairwiseComparisons => [...pPairwiseComparisons, {
+            id: maxId,
+            alternatives_1: firstAltId,
+            alternative_2: firstAltId,
+            type: 'preference'
+        }])
+    }
+
 
     return (
         <>
@@ -79,7 +126,12 @@ const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
                         ))}
                     </Tbody>
                 </Table>
+
+                <Button mx={4} my={4} colorScheme={'teal'} onClick={addPairwiseComparison} variant='outline'>
+                    New comparison
+                </Button>
             </TableContainer>
+
         </>
     )
 
