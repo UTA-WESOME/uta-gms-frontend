@@ -1,5 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
+import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
 
 const PreferencesTabs = ({
                              alternatives,
@@ -19,8 +20,11 @@ const PreferencesTabs = ({
                 <Tab>Max-Min</Tab>
             </TabList>
             <TabPanels>
-                <TabPanel p={1} py={5}>
-                    <Text>Ranking and Pairwise!</Text>
+                <TabPanel p={1}>
+                    <ComparisonsTab
+                        alternatives={alternatives}
+                        setAlternatives={setAlternatives}
+                    />
                 </TabPanel>
                 <TabPanel p={1} py={5}>
                     <IntensitiesTab
