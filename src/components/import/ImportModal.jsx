@@ -148,8 +148,6 @@ const ImportModal = (props) => {
                     Import from file
                 </Button>
                 : <IconButton
-                    ml={1}
-                    mr={1}
                     colorScheme={'teal'}
                     icon={<BiSolidFileImport />}
                     onClick={onOpenInfo} >
