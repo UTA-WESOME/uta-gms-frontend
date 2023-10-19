@@ -23,7 +23,7 @@ const PreferencesTabs = ({
               px={{ base: 1, sm: 5 }}
               isFitted={isScreenMobile}
         >
-            <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
+            <TabList mb={2}>
                 {isScreenMobile ?
                     <>
                         <Tab fontSize={'15px'}>

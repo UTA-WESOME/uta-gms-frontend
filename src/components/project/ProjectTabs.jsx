@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { FaBalanceScaleLeft, FaGreaterThan, FaList, FaRegCheckCircle } from "react-icons/fa";
+import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
