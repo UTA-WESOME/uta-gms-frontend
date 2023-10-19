@@ -103,7 +103,7 @@ const ImportModal = (props) => {
         const formData = new FormData();
         formData.append('file', fileToUpload);
         setUploading(true);
-        fetch(`http://localhost:8080/api/${props.projectId}/upload/`, {
+        fetch(`http://localhost:8080/api/projects/${props.projectId}/upload/`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -136,7 +136,7 @@ const ImportModal = (props) => {
 
     return (
         <>
-            {props.full
+            {props.desktop
                 ? <Button
                     mt={props.margTop}
                     mb={props.margBottom}
@@ -148,8 +148,6 @@ const ImportModal = (props) => {
                     Import from file
                 </Button>
                 : <IconButton
-                    ml={1}
-                    mr={1}
                     colorScheme={'teal'}
                     icon={<BiSolidFileImport />}
                     onClick={onOpenInfo} >
@@ -158,7 +156,7 @@ const ImportModal = (props) => {
 
             <Modal isOpen={isOpenInfo} onClose={onCloseInfo}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent margin={10}>
                     <ModalHeader>
                         <>
                             Upload files
