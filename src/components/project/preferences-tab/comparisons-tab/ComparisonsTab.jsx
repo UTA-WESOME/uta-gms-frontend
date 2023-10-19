@@ -7,11 +7,16 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     Button,
+    Heading,
+    Highlight,
+    HStack,
+    IconButton,
     useDisclosure,
     VStack
 } from "@chakra-ui/react";
 import ReferenceRanking from "./ranking-tab/ReferenceRanking.jsx";
 import PairwiseComparisons from "./pairwise/PairwiseComparisons.jsx";
+import CustomTooltip from "../../../CustomTooltip.jsx";
 
 const ComparisonsTab = ({
                             alternatives,
@@ -33,12 +38,17 @@ const ComparisonsTab = ({
     return (
         <>
             <VStack>
-                <Button
-                    colorScheme={'teal'} variant='outline'
-                    onClick={onOpen}
+                <CustomTooltip
+                    label={`Click to change to ${pairwiseMode ? 'Reference ranking' : 'Pairwise comparisons' }`}
+                    openDelay={10}
                 >
-                    Change to {pairwiseMode ? 'reference ranking' : 'pairwise comparisons'}
-                </Button>
+                    <Button
+                        colorScheme={'teal'}
+                        onClick={onOpen}
+                    >
+                        {pairwiseMode ?  'Pairwise comparisons' : 'Reference ranking'}
+                    </Button>
+                </CustomTooltip>
             </VStack>
 
             {!pairwiseMode ?
@@ -62,13 +72,13 @@ const ComparisonsTab = ({
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            Change to {pairwiseMode ? 'reference ranking' : 'pairwise comparisons'}?
+                            Change to {pairwiseMode ? 'Reference ranking' : 'Pairwise comparisons'}?
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
                             Are you sure? Changing
-                            to {pairwiseMode ? 'reference ranking' : 'pairwise comparisons'} means
-                            your project will not use the {pairwiseMode ? 'pairwise comparisons' : 'reference ranking'}.
+                            to {pairwiseMode ? 'Reference ranking' : 'Pairwise comparisons'} means
+                            your project will not use the {pairwiseMode ? 'Pairwise comparisons' : 'Reference ranking'}.
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
