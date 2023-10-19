@@ -103,7 +103,7 @@ const ImportModal = (props) => {
         const formData = new FormData();
         formData.append('file', fileToUpload);
         setUploading(true);
-        fetch(`http://localhost:8080/api/${props.projectId}/upload/`, {
+        fetch(`http://localhost:8080/api/projects/${props.projectId}/upload/`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
