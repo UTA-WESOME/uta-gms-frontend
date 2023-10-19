@@ -15,16 +15,14 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { FaBalanceScaleLeft, FaGreaterThan, FaList, FaRegCheckCircle } from "react-icons/fa";
+import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
-import RankingTab from "./ranking-tab/RankingTab.jsx";
-import ImportModal from "../import/ImportModal.jsx";
-import PreferenceTab from "./preference-tab/PreferenceTab.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
-
+import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
+import ImportModal from "../import/ImportModal.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data that the user changes
@@ -69,18 +67,30 @@ const ProjectTabs = (props) => {
     // [
     //     {
     //         id: integer,
-    //         project_id: integer,
-    //         alternative_1_id: integer,
-    //         alternative_2_id: integer,
-    //         alternative_3_id: integer,
-    //         alternative_4_id: integer,
-    //         criterion_id: integer,
+    //         alternative_1: integer,
+    //         alternative_2: integer,
+    //         alternative_3: integer,
+    //         alternative_4: integer,
+    //         criterion: integer,
     //     },
     //     ...
     // ]
     const [preferenceIntensities, setPreferenceIntensities] = useState([]);
 
+    // pairwiseComparisons holds active data about pairwise comparisons between alternatives
+    // [
+    //     {
+    //         id: integer,
+    //         type: ("preference", "indifference"),
+    //         alternative_1: integer,
+    //         alternative_2: integer,
+    //     },
+    //     ...
+    // ]
+    const [pairwiseComparisons, setPairwiseComparisons] = useState([]);
+
     const [hasseGraph, setHasseGraph] = useState({});
+    const [pairwiseMode, setPairwiseMode] = useState(false);
 
     const [tabIndex, setTabIndex] = useState(0);
     const [hasLoaded, setHasLoaded] = useState(false);
@@ -103,7 +113,9 @@ const ProjectTabs = (props) => {
             setCriteria(data.criteria);
             setAlternatives(data.alternatives);
             setPreferenceIntensities(data.preference_intensities);
+            setPairwiseComparisons(data.pairwise_comparisons);
             setHasseGraph(data.hasse_graph);
+            setPairwiseMode(data.pairwise_mode);
             setHasLoaded(true);
         }).catch(err => {
             console.log(err);
@@ -188,9 +200,11 @@ const ProjectTabs = (props) => {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                pairwise_mode: pairwiseMode,
                 criteria: criteria,
                 alternatives: alternatives,
                 preference_intensities: preferenceIntensities,
+                pairwise_comparisons: pairwiseComparisons,
             })
         }).then(response => {
             if (!response.ok) {
@@ -218,9 +232,11 @@ const ProjectTabs = (props) => {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                pairwise_mode: pairwiseMode,
                 criteria: criteria,
                 alternatives: alternatives,
                 preference_intensities: preferenceIntensities,
+                pairwise_comparisons: pairwiseComparisons,
             })
         }).then(response => {
             if (!response.ok) {
@@ -243,12 +259,13 @@ const ProjectTabs = (props) => {
                 setCriteria(data.criteria);
                 setAlternatives(data.alternatives);
                 setPreferenceIntensities(data.preference_intensities);
+                setPairwiseComparisons(data.pairwise_comparisons);
                 setHasseGraph(data.hasse_graph);
+                setPairwiseMode(data.pairwise_mode);
                 setSaveClicked(false);
                 toastSuccess();
                 setTabIndex(4);
             })
-
 
         }).catch(err => {
             console.log(err);
@@ -282,9 +299,6 @@ const ProjectTabs = (props) => {
                             <Tab fontSize={'15px'}>
                                 <Icon as={FaBalanceScaleLeft}></Icon>
                             </Tab>
-                            <Tab fontSize={'15px'}>
-                                <Icon as={FaGreaterThan}></Icon>
-                            </Tab>
                             <Tab fontSize={'20px'} isDisabled={alternatives.some(alt => alt.ranking === 0)}>
                                 <Icon as={FaRegCheckCircle}></Icon>
                             </Tab>
@@ -293,12 +307,10 @@ const ProjectTabs = (props) => {
                         <>
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
-                            <Tab>Ranking</Tab>
                             <Tab>Preferences</Tab>
                             <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
                         </>
                     }
-
                 </TabList>
 
                 <Divider/>
@@ -325,19 +337,16 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <RankingTab
+                            <PreferencesTabs
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
-                            />
-                        }
-                    </TabPanel>
-                    <TabPanel>
-                        {hasLoaded &&
-                            <PreferenceTab
-                                alternatives={alternatives}
                                 criteria={criteria}
                                 preferenceIntensities={preferenceIntensities}
                                 setPreferenceIntensities={setPreferenceIntensities}
+                                pairwiseComparisons={pairwiseComparisons}
+                                setPairwiseComparisons={setPairwiseComparisons}
+                                pairwiseMode={pairwiseMode}
+                                setPairwiseMode={setPairwiseMode}
                             />
                         }
                     </TabPanel>

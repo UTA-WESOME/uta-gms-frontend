@@ -24,7 +24,7 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import * as c from './constants.js';
 
-const PreferenceTabMobile = ({
+const IntensitiesTabMobile = ({
                                  preferenceIntensities,
                                  setPreferenceIntensities,
                                  alternatives,
@@ -82,20 +82,19 @@ const PreferenceTabMobile = ({
                         p={2}
                         key={index}
                     >
-                        <Text isTruncated>Preference {index + 1}</Text>
+                        <Text isTruncated>Intensity {index + 1}</Text>
                         <Spacer/>
                         <IconButton
-                            aria-label={'edit-preference'}
+                            aria-label={'edit-preference-intensity'}
                             icon={<EditIcon/>}
                             onClick={() => {
                                 setCurrentPreferenceIntensity(preferenceIntensity);
                                 onOpen();
                             }}
-                        >
-                        </IconButton>
+                        />
                         <IconButton
                             color={'red.300'}
-                            aria-label={'delete-criterion'}
+                            aria-label={'delete-preference-intensity'}
                             icon={<DeleteIcon/>}
                             onClick={() => deletePreferenceIntensity(preferenceIntensity.id)}
                         />
@@ -104,7 +103,7 @@ const PreferenceTabMobile = ({
             </Flex>
 
             <Button my={4} colorScheme={'teal'} onClick={addPreferenceIntensity} variant='outline'>
-                New preference
+                New intensity
             </Button>
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -114,7 +113,7 @@ const PreferenceTabMobile = ({
                     as={"form"}
                     onSubmit={submitData}
                 >
-                    <ModalHeader>Edit preference</ModalHeader>
+                    <ModalHeader>Edit intensity</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody textAlign={'center'}>
                         <VStack spacing={"15px"}>
@@ -150,15 +149,13 @@ const PreferenceTabMobile = ({
                                 </Select>
                             </FormControl>
                         </VStack>
-
-                        <ModalFooter px={0}>
-                            <ButtonGroup pt={"1rem"}>
-                                <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
-                                <Button onClick={onClose}>Back</Button>
-                            </ButtonGroup>
-                        </ModalFooter>
-
                     </ModalBody>
+                    <ModalFooter>
+                        <ButtonGroup pt={"1rem"}>
+                            <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
+                            <Button onClick={onClose}>Back</Button>
+                        </ButtonGroup>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
 
@@ -167,4 +164,4 @@ const PreferenceTabMobile = ({
 
 }
 
-export default PreferenceTabMobile;
+export default IntensitiesTabMobile;

@@ -6,7 +6,7 @@ import RankMobile from "./mobile/RankMobile.jsx";
 import { DndContext } from "@dnd-kit/core";
 import AlternativeMobile from "./mobile/AlternativeMobile.jsx";
 
-const RankingTab = ({ alternatives, setAlternatives }) => {
+const ReferenceRanking = ({ alternatives, setAlternatives }) => {
 
     const [ranks, setRanks] = useState(() => {
         const ranksInAlternatives = alternatives
@@ -56,7 +56,6 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
 
             {/*DESKTOP*/}
             <Show above={'1000px'}>
-
                 <DndContext onDragEnd={handleDragEnd}>
                     <Flex justify={'center'} mx={{ base: '5%', xl: '8%' }}>
                         {/*ALTERNATIVES BOX*/}
@@ -151,4 +150,4 @@ const RankingTab = ({ alternatives, setAlternatives }) => {
     )
 }
 
-export default RankingTab;
+export default ReferenceRanking;

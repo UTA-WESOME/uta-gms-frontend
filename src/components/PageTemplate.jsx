@@ -1,8 +1,4 @@
-import {
-    Center,
-    Heading,
-    VStack,
-} from '@chakra-ui/react';
+import { Center, Heading, VStack, } from '@chakra-ui/react';
 
 
 const PageTemplate = (props) => {
@@ -15,7 +11,7 @@ const PageTemplate = (props) => {
                 spacing={'1rem'}>
                 <Heading
                     fontWeight={600}
-                    fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
+                    fontSize={{ base: '3xl', sm: '4xl', md: '5xl' }}
                     lineHeight={'90%'}
                     textAlign={'center'}
                     py={{ base: 10, md: 10 }}>
