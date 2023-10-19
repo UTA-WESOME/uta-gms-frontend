@@ -136,7 +136,7 @@ const ImportModal = (props) => {
 
     return (
         <>
-            {props.full
+            {props.desktop
                 ? <Button
                     mt={props.margTop}
                     mb={props.margBottom}
@@ -158,7 +158,7 @@ const ImportModal = (props) => {
 
             <Modal isOpen={isOpenInfo} onClose={onCloseInfo}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent margin={10}>
                     <ModalHeader>
                         <>
                             Upload files

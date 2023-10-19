@@ -357,7 +357,7 @@ const ProjectTabs = (props) => {
             >
                 {!saveClicked ?
                     <ButtonGroup>
-                        <ImportModal projectId={props.id} full={true} maxFilesNumber={3}/>
+                        <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
                         <Button
                             colorScheme={'teal'}
                             onClick={submitData}
