@@ -91,11 +91,10 @@ const IntensitiesTabMobile = ({
                                 setCurrentPreferenceIntensity(preferenceIntensity);
                                 onOpen();
                             }}
-                        >
-                        </IconButton>
+                        />
                         <IconButton
                             color={'red.300'}
-                            aria-label={'delete-criterion'}
+                            aria-label={'delete-preference-intensity'}
                             icon={<DeleteIcon/>}
                             onClick={() => deletePreferenceIntensity(preferenceIntensity.id)}
                         />
@@ -150,15 +149,13 @@ const IntensitiesTabMobile = ({
                                 </Select>
                             </FormControl>
                         </VStack>
-
-                        <ModalFooter px={0}>
-                            <ButtonGroup pt={"1rem"}>
-                                <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
-                                <Button onClick={onClose}>Back</Button>
-                            </ButtonGroup>
-                        </ModalFooter>
-
                     </ModalBody>
+                    <ModalFooter>
+                        <ButtonGroup pt={"1rem"}>
+                            <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
+                            <Button onClick={onClose}>Back</Button>
+                        </ButtonGroup>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
 

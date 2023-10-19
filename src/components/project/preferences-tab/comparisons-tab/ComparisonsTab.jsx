@@ -7,16 +7,13 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     Button,
-    Heading,
-    Highlight,
-    HStack,
-    IconButton,
     useDisclosure,
     VStack
 } from "@chakra-ui/react";
 import ReferenceRanking from "./ranking-tab/ReferenceRanking.jsx";
 import PairwiseComparisons from "./pairwise/PairwiseComparisons.jsx";
 import CustomTooltip from "../../../CustomTooltip.jsx";
+import { HiOutlineSwitchVertical } from "react-icons/hi";
 
 const ComparisonsTab = ({
                             alternatives,
@@ -39,14 +36,15 @@ const ComparisonsTab = ({
         <>
             <VStack>
                 <CustomTooltip
-                    label={`Click to change to ${pairwiseMode ? 'Reference ranking' : 'Pairwise comparisons' }`}
+                    label={`Click to change to ${pairwiseMode ? 'Reference ranking' : 'Pairwise comparisons'}`}
                     openDelay={10}
                 >
                     <Button
                         colorScheme={'teal'}
                         onClick={onOpen}
+                        rightIcon={<HiOutlineSwitchVertical/>}
                     >
-                        {pairwiseMode ?  'Pairwise comparisons' : 'Reference ranking'}
+                        {pairwiseMode ? 'Pairwise comparisons' : 'Reference ranking'}
                     </Button>
                 </CustomTooltip>
             </VStack>
