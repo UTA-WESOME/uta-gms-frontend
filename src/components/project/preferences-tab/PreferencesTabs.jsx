@@ -1,6 +1,9 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useMediaQuery } from "@chakra-ui/react";
 import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
 import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
+import { IoFlash } from "react-icons/io5";
+import { FaBalanceScaleLeft } from "react-icons/fa";
+import { MdOutlineExpand } from "react-icons/md";
 
 const PreferencesTabs = ({
                              alternatives,
@@ -13,18 +16,35 @@ const PreferencesTabs = ({
                              pairwiseMode,
                              setPairwiseMode
                          }) => {
+    const [isScreenMobile] = useMediaQuery('(max-width: 628px)');
     return (
         <Tabs variant={'soft-rounded'}
               colorScheme={'teal'}
               px={{ base: 1, sm: 5 }}
+              isFitted={isScreenMobile}
         >
-            <TabList>
-                <Tab>Comparisons</Tab>
-                <Tab>Intensities</Tab>
-                <Tab>Max-Min</Tab>
+            <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
+                {isScreenMobile ?
+                    <>
+                        <Tab fontSize={'15px'}>
+                            <Icon as={FaBalanceScaleLeft}></Icon>
+                        </Tab>
+                        <Tab fontSize={'15px'}>
+                            <Icon as={IoFlash}></Icon>
+                        </Tab>
+                        <Tab fontSize={'15px'}>
+                            <Icon as={MdOutlineExpand}></Icon>
+                        </Tab>
+                    </> :
+                    <>
+                        <Tab>Comparisons</Tab>
+                        <Tab>Intensities</Tab>
+                        <Tab>Max-Min</Tab>
+                    </>
+                }
             </TabList>
             <TabPanels>
-                <TabPanel p={1}>
+                <TabPanel p={1} py={3}>
                     <ComparisonsTab
                         alternatives={alternatives}
                         setAlternatives={setAlternatives}

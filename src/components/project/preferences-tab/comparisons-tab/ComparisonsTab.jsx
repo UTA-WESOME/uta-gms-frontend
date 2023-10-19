@@ -68,7 +68,7 @@ const ComparisonsTab = ({
                 onClose={onClose}
             >
                 <AlertDialogOverlay>
-                    <AlertDialogContent>
+                    <AlertDialogContent mx={'15px'}>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
                             Change to {pairwiseMode ? 'Reference ranking' : 'Pairwise comparisons'}?
                         </AlertDialogHeader>

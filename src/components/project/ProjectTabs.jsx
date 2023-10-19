@@ -299,9 +299,6 @@ const ProjectTabs = (props) => {
                             <Tab fontSize={'15px'}>
                                 <Icon as={FaBalanceScaleLeft}></Icon>
                             </Tab>
-                            <Tab fontSize={'15px'}>
-                                <Icon as={FaGreaterThan}></Icon>
-                            </Tab>
                             <Tab fontSize={'20px'} isDisabled={alternatives.some(alt => alt.ranking === 0)}>
                                 <Icon as={FaRegCheckCircle}></Icon>
                             </Tab>
@@ -314,7 +311,6 @@ const ProjectTabs = (props) => {
                             <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
                         </>
                     }
-
                 </TabList>
 
                 <Divider/>
