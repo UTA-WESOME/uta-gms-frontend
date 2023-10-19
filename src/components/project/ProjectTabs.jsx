@@ -22,7 +22,7 @@ import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
-
+import ImportModal from "../import/ImportModal.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data that the user changes
@@ -366,6 +366,7 @@ const ProjectTabs = (props) => {
             >
                 {!saveClicked ?
                     <ButtonGroup>
+                        <ImportModal projectId={props.id} full={true} maxFilesNumber={3}/>
                         <Button
                             colorScheme={'teal'}
                             onClick={submitData}
