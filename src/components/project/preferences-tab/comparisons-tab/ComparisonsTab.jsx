@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -7,21 +7,26 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     Button,
-    Text,
     useDisclosure,
     VStack
 } from "@chakra-ui/react";
 import ReferenceRanking from "./ranking-tab/ReferenceRanking.jsx";
 import PairwiseComparisons from "./pairwise/PairwiseComparisons.jsx";
 
-const ComparisonsTab = ({ alternatives, setAlternatives }) => {
+const ComparisonsTab = ({
+                            alternatives,
+                            setAlternatives,
+                            pairwiseComparisons,
+                            setPairwiseComparisons,
+                            pairwiseMode,
+                            setPairwiseMode
+                        }) => {
 
-    const [isPairwise, setIsPairwise] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
 
     const handleChangePairwise = () => {
-        setIsPairwise(!isPairwise);
+        setPairwiseMode(!pairwiseMode);
         onClose();
     }
 
@@ -32,11 +37,11 @@ const ComparisonsTab = ({ alternatives, setAlternatives }) => {
                     colorScheme={'teal'} variant='outline'
                     onClick={onOpen}
                 >
-                    Change to {isPairwise ? 'reference ranking' : 'pairwise comparisons'}
+                    Change to {pairwiseMode ? 'reference ranking' : 'pairwise comparisons'}
                 </Button>
             </VStack>
 
-            {!isPairwise ?
+            {!pairwiseMode ?
                 <ReferenceRanking
                     alternatives={alternatives}
                     setAlternatives={setAlternatives}
@@ -44,7 +49,8 @@ const ComparisonsTab = ({ alternatives, setAlternatives }) => {
                 :
                 <PairwiseComparisons
                     alternatives={alternatives}
-                    setAlternatives={setAlternatives}
+                    pairwiseComparisons={pairwiseComparisons}
+                    setPairwiseComparisons={setPairwiseComparisons}
                 />
             }
 
@@ -56,12 +62,13 @@ const ComparisonsTab = ({ alternatives, setAlternatives }) => {
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            Change to {isPairwise ? 'reference ranking' : 'pairwise comparisons'}?
+                            Change to {pairwiseMode ? 'reference ranking' : 'pairwise comparisons'}?
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
-                            Are you sure? Changing to {isPairwise ? 'reference ranking' : 'pairwise comparisons'} means
-                            your project will not use the {isPairwise ? 'pairwise comparisons' : 'reference ranking'}.
+                            Are you sure? Changing
+                            to {pairwiseMode ? 'reference ranking' : 'pairwise comparisons'} means
+                            your project will not use the {pairwiseMode ? 'pairwise comparisons' : 'reference ranking'}.
                         </AlertDialogBody>
 
                         <AlertDialogFooter>

@@ -14,21 +14,11 @@ import {
     useToast
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { string } from "yup";
 
-const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
+const PairwiseComparisons = ({ alternatives, pairwiseComparisons, setPairwiseComparisons }) => {
 
     const toast = useToast();
     const toastId = "toast-project-pairwise-comparisons-add"
-
-    const [pairwiseComparisons, setPairwiseComparisons] = useState([
-        {
-            id: 1,
-            alternative_1: 165,
-            alternative_2: 168,
-            type: 'preference'
-        }
-    ]);
 
     const addPairwiseComparison = () => {
         if (alternatives.length === 0) {
@@ -112,7 +102,7 @@ const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
                             <Tr key={index}>
                                 <Td>
                                     <Select
-                                        value={pairwiseComparisons.alternative_1}
+                                        value={pairwiseComparison.alternative_1}
                                         onChange={(event) =>
                                             handleChangeAlternative(pairwiseComparison.id, 1, parseInt(event.target.value))}
                                     >
@@ -125,16 +115,16 @@ const PairwiseComparisons = ({ alternatives, setAlternatives }) => {
                                 </Td>
                                 <Td>
                                     <Select
-                                        value={pairwiseComparisons.type}
+                                        value={pairwiseComparison.type}
                                         onChange={(event) => handleChangeType(pairwiseComparison.id, event.target.value)}
                                     >
-                                        <option value={'preference'}>&gt;</option>
-                                        <option value={'indifference'}>=</option>
+                                        <option value={'preference'} key={'preference'}>&gt;</option>
+                                        <option value={'indifference'} key={'indifference'}>=</option>
                                     </Select>
                                 </Td>
                                 <Td>
                                     <Select
-                                        value={pairwiseComparisons.alternative_2}
+                                        value={pairwiseComparison.alternative_2}
                                         onChange={(event) =>
                                             handleChangeAlternative(pairwiseComparison.id, 2, parseInt(event.target.value))}
                                     >

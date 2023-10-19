@@ -7,7 +7,11 @@ const PreferencesTabs = ({
                              setAlternatives,
                              criteria,
                              preferenceIntensities,
-                             setPreferenceIntensities
+                             setPreferenceIntensities,
+                             pairwiseComparisons,
+                             setPairwiseComparisons,
+                             pairwiseMode,
+                             setPairwiseMode
                          }) => {
     return (
         <Tabs variant={'soft-rounded'}
@@ -24,6 +28,10 @@ const PreferencesTabs = ({
                     <ComparisonsTab
                         alternatives={alternatives}
                         setAlternatives={setAlternatives}
+                        pairwiseComparisons={pairwiseComparisons}
+                        setPairwiseComparisons={setPairwiseComparisons}
+                        pairwiseMode={pairwiseMode}
+                        setPairwiseMode={setPairwiseMode}
                     />
                 </TabPanel>
                 <TabPanel p={1} py={5}>

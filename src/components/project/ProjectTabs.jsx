@@ -67,18 +67,30 @@ const ProjectTabs = (props) => {
     // [
     //     {
     //         id: integer,
-    //         project_id: integer,
-    //         alternative_1_id: integer,
-    //         alternative_2_id: integer,
-    //         alternative_3_id: integer,
-    //         alternative_4_id: integer,
-    //         criterion_id: integer,
+    //         alternative_1: integer,
+    //         alternative_2: integer,
+    //         alternative_3: integer,
+    //         alternative_4: integer,
+    //         criterion: integer,
     //     },
     //     ...
     // ]
     const [preferenceIntensities, setPreferenceIntensities] = useState([]);
 
+    // pairwiseComparisons holds active data about pairwise comparisons between alternatives
+    // [
+    //     {
+    //         id: integer,
+    //         type: ("preference", "indifference"),
+    //         alternative_1: integer,
+    //         alternative_2: integer,
+    //     },
+    //     ...
+    // ]
+    const [pairwiseComparisons, setPairwiseComparisons] = useState([]);
+
     const [hasseGraph, setHasseGraph] = useState({});
+    const [pairwiseMode, setPairwiseMode] = useState(false);
 
     const [tabIndex, setTabIndex] = useState(0);
     const [hasLoaded, setHasLoaded] = useState(false);
@@ -101,7 +113,9 @@ const ProjectTabs = (props) => {
             setCriteria(data.criteria);
             setAlternatives(data.alternatives);
             setPreferenceIntensities(data.preference_intensities);
+            setPairwiseComparisons(data.pairwise_comparisons);
             setHasseGraph(data.hasse_graph);
+            setPairwiseMode(data.pairwise_mode);
             setHasLoaded(true);
         }).catch(err => {
             console.log(err);
@@ -186,9 +200,11 @@ const ProjectTabs = (props) => {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                pairwise_mode: pairwiseMode,
                 criteria: criteria,
                 alternatives: alternatives,
                 preference_intensities: preferenceIntensities,
+                pairwise_comparisons: pairwiseComparisons,
             })
         }).then(response => {
             if (!response.ok) {
@@ -216,9 +232,11 @@ const ProjectTabs = (props) => {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                pairwise_mode: pairwiseMode,
                 criteria: criteria,
                 alternatives: alternatives,
                 preference_intensities: preferenceIntensities,
+                pairwise_comparisons: pairwiseComparisons,
             })
         }).then(response => {
             if (!response.ok) {
@@ -241,12 +259,13 @@ const ProjectTabs = (props) => {
                 setCriteria(data.criteria);
                 setAlternatives(data.alternatives);
                 setPreferenceIntensities(data.preference_intensities);
+                setPairwiseComparisons(data.pairwise_comparisons);
                 setHasseGraph(data.hasse_graph);
+                setPairwiseMode(data.pairwise_mode);
                 setSaveClicked(false);
                 toastSuccess();
                 setTabIndex(4);
             })
-
 
         }).catch(err => {
             console.log(err);
@@ -328,6 +347,10 @@ const ProjectTabs = (props) => {
                                 criteria={criteria}
                                 preferenceIntensities={preferenceIntensities}
                                 setPreferenceIntensities={setPreferenceIntensities}
+                                pairwiseComparisons={pairwiseComparisons}
+                                setPairwiseComparisons={setPairwiseComparisons}
+                                pairwiseMode={pairwiseMode}
+                                setPairwiseMode={setPairwiseMode}
                             />
                         }
                     </TabPanel>
