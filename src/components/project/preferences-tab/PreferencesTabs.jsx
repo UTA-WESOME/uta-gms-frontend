@@ -2,7 +2,7 @@ import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useMediaQuery } fr
 import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
 import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
 import { IoFlash } from "react-icons/io5";
-import { FaBalanceScaleLeft } from "react-icons/fa";
+import { FaGreaterThan } from "react-icons/fa";
 import { MdOutlineExpand } from "react-icons/md";
 
 const PreferencesTabs = ({
@@ -27,7 +27,7 @@ const PreferencesTabs = ({
                 {isScreenMobile ?
                     <>
                         <Tab fontSize={'15px'}>
-                            <Icon as={FaBalanceScaleLeft}></Icon>
+                            <Icon as={FaGreaterThan}></Icon>
                         </Tab>
                         <Tab fontSize={'15px'}>
                             <Icon as={IoFlash}></Icon>
