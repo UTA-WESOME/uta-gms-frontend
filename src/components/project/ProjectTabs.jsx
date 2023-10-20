@@ -46,6 +46,8 @@ const ProjectTabs = (props) => {
     //          "name": string,
     //          "reference_ranking": integer,
     //          "ranking": integer,
+    //          "highest_position": integer,
+    //          "lowest_position: integer,
     //          "created_at": datetime,  # optional
     //          "updated_at": datetime,  # optional
     //          "performances": [
@@ -351,12 +353,12 @@ const ProjectTabs = (props) => {
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>
-                        {hasLoaded &&
-                            <ResultsTabs
-                                alternatives={alternatives}
-                                hasseGraph={hasseGraph}
-                            />
-                        }
+                        {/*{hasLoaded &&*/}
+                        {/*    <ResultsTabs*/}
+                        {/*        alternatives={alternatives}*/}
+                        {/*        hasseGraph={hasseGraph}*/}
+                        {/*    />*/}
+                        {/*}*/}
                     </TabPanel>
                 </TabPanels>
             </Tabs>

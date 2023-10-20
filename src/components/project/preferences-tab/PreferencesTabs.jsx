@@ -4,6 +4,7 @@ import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
 import { IoFlash } from "react-icons/io5";
 import { FaGreaterThan } from "react-icons/fa";
 import { MdOutlineExpand } from "react-icons/md";
+import MaxMinTab from "./maxmin-tab/MaxMinTab.jsx";
 
 const PreferencesTabs = ({
                              alternatives,
@@ -63,7 +64,10 @@ const PreferencesTabs = ({
                     />
                 </TabPanel>
                 <TabPanel p={1} py={5}>
-                    <Text>Not implemented yet!</Text>
+                    <MaxMinTab
+                        alternatives={alternatives}
+                        setAlternatives={setAlternatives}
+                    />
                 </TabPanel>
             </TabPanels>
         </Tabs>
