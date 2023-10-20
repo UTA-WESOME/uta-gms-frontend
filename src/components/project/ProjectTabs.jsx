@@ -189,6 +189,13 @@ const ProjectTabs = (props) => {
             return false;
         }
 
+        // check if all pairwise comparisons have different alternatives
+        const pairwiseComparisonsCheck = pairwiseComparisons.some(pc =>  pc.alternative_1 === pc.alternative_2)
+        if(pairwiseComparisonsCheck) {
+            toastError("There is at least one pairwise comparison with identical alternatives.");
+            return false;
+        }
+
         return true;
     }
 
@@ -267,7 +274,7 @@ const ProjectTabs = (props) => {
                 setPairwiseMode(data.pairwise_mode);
                 setSaveClicked(false);
                 toastSuccess();
-                setTabIndex(4);
+                setTabIndex(3);
             })
 
         }).catch(err => {
