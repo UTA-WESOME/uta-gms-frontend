@@ -351,12 +351,12 @@ const ProjectTabs = (props) => {
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>
-                        {hasLoaded &&
-                            <ResultsTabs
-                                alternatives={alternatives}
-                                hasseGraph={hasseGraph}
-                            />
-                        }
+                        {/*{hasLoaded &&*/}
+                        {/*    <ResultsTabs*/}
+                        {/*        alternatives={alternatives}*/}
+                        {/*        hasseGraph={hasseGraph}*/}
+                        {/*    />*/}
+                        {/*}*/}
                     </TabPanel>
                 </TabPanels>
             </Tabs>
