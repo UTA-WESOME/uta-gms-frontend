@@ -190,8 +190,8 @@ const ProjectTabs = (props) => {
         }
 
         // check if all pairwise comparisons have different alternatives
-        const pairwiseComparisonsCheck = pairwiseComparisons.some(pc =>  pc.alternative_1 === pc.alternative_2)
-        if(pairwiseComparisonsCheck) {
+        const pairwiseComparisonsCheck = pairwiseComparisons.some(pc => pc.alternative_1 === pc.alternative_2)
+        if (pairwiseComparisonsCheck) {
             toastError("There is at least one pairwise comparison with identical alternatives.");
             return false;
         }

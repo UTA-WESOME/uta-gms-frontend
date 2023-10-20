@@ -3,7 +3,6 @@ import Graphviz from "./Graphviz.jsx";
 import { generateDotString } from "./graph.js";
 import CustomTooltip from "../../../CustomTooltip.jsx";
 import { WarningIcon } from "@chakra-ui/icons";
-import { useMemo } from "react";
 
 
 const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
@@ -13,7 +12,7 @@ const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
 
     return (
         <Box textAlign={'center'} mx={{ base: '1%', sm: '10%', lg: '18%', '2xl': '25%' }} mt={'10px'}>
-            <Heading size={{base: 'md', md: 'xl'}} mb={3}>
+            <Heading size={{ base: 'md', md: 'xl' }} mb={3}>
                 Hasse diagram
                 {alternatives.current.some(alt => alt.ranking === 0) &&
                     <CustomTooltip

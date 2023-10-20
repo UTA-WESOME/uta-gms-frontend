@@ -73,7 +73,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                 <HStack>
                                     <Text>Name</Text>
                                     <CustomTooltip label={"Criterion name"} openDelay={200}>
-                                        <InfoIcon />
+                                        <InfoIcon/>
                                     </CustomTooltip>
                                 </HStack>
                             </Th>
@@ -83,7 +83,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <CustomTooltip
                                         label={"Gain means that high values of a given alternative on this criterion will result in a higher position of the alternative in the final ranking. Loss means that low values of an alternative on this criterion will result in a higher position of the alternative in the final ranking."}
                                         openDelay={200}>
-                                        <InfoIcon />
+                                        <InfoIcon/>
                                     </CustomTooltip>
                                 </HStack>
                             </Th>
@@ -93,7 +93,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <CustomTooltip
                                         label={"Choose how many linear segments the criterion should have. To select the general function, choose 0."}
                                         openDelay={200}>
-                                        <InfoIcon />
+                                        <InfoIcon/>
                                     </CustomTooltip>
                                 </HStack>
                             </Th>
@@ -151,7 +151,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                         <IconButton
                                             color={'red.300'}
                                             aria-label={'delete-criterion'}
-                                            icon={<DeleteIcon />}
+                                            icon={<DeleteIcon/>}
                                             onClick={() => deleteCriterion(criterion.id)}
                                         />
                                     </Td>
