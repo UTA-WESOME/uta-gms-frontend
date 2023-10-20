@@ -143,7 +143,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                                 key={`${alternative.id}-${criterion.id}`}
                                                 isInvalid={isNaN(performance.value)}
                                                 defaultValue={performance.value}
-                                                onBlur={(event) => handleChangePerformance(parseInt(event.target.value), alternative.id, criterion.id)}
+                                                onBlur={(event) => handleChangePerformance(parseFloat(event.target.value), alternative.id, criterion.id)}
                                             >
                                                 <NumberInputField/>
                                                 <NumberInputStepper>
