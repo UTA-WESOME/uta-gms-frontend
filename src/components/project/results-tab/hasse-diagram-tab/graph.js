@@ -162,7 +162,7 @@ function createDotString(graph, ranks, indifferences, alternatives, bgcolor, nod
     for (const vertex of Object.keys(graph)) {
         const nodeIdStr = `node${nodeId}`;
         vertexToId[vertex] = nodeIdStr;
-        dotString += `    ${nodeIdStr} [label="${alternatives.find(alt => alt.id.toString() === vertex).name}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
+        dotString += `    ${nodeIdStr} [label="${alternatives.current.find(alt => alt.id.toString() === vertex).name}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
         nodeId++;
     }
 
