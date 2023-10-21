@@ -14,7 +14,7 @@ import {
     Tr
 } from "@chakra-ui/react";
 
-const MaxMinTabDesktop = ({ alternatives, setAlternatives }) => {
+const BestWorstTabDesktop = ({ alternatives, setAlternatives }) => {
 
     const handleChangeUpperBound = (valueNumber, alternativeId) => {
         setAlternatives(pAlternatives => pAlternatives.map(alternative => {
@@ -103,4 +103,4 @@ const MaxMinTabDesktop = ({ alternatives, setAlternatives }) => {
     )
 }
 
-export default MaxMinTabDesktop;
+export default BestWorstTabDesktop;

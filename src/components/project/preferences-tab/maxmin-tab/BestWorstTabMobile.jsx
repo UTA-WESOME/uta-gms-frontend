@@ -26,7 +26,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const MaxMinTabMobile = ({ alternatives, setAlternatives }) => {
+const BestWorstTabMobile = ({ alternatives, setAlternatives }) => {
 
     const toastId = "toast-max-min-mobile";
     const toast = useToast();
@@ -179,4 +179,4 @@ const MaxMinTabMobile = ({ alternatives, setAlternatives }) => {
     )
 }
 
-export default MaxMinTabMobile;
+export default BestWorstTabMobile;

@@ -1,21 +1,21 @@
-import MaxMinTabDesktop from "./MaxMinTabDesktop.jsx";
+import BestWorstTabDesktop from "./BestWorstTabDesktop.jsx";
 import { Show } from "@chakra-ui/react";
-import MaxMinTabMobile from "./MaxMinTabMobile.jsx";
+import BestWorstTabMobile from "./BestWorstTabMobile.jsx";
 
-const MaxMinTab = ({ alternatives, setAlternatives }) => {
+const BestWorstTab = ({ alternatives, setAlternatives }) => {
 
 
     return (
         <>
             <Show above={'lg'}>
-                <MaxMinTabDesktop
+                <BestWorstTabDesktop
                     alternatives={alternatives}
                     setAlternatives={setAlternatives}
                 />
             </Show>
 
             <Show below={'991px'}>
-                <MaxMinTabMobile
+                <BestWorstTabMobile
                     alternatives={alternatives}
                     setAlternatives={setAlternatives}
                 />
@@ -25,4 +25,4 @@ const MaxMinTab = ({ alternatives, setAlternatives }) => {
     )
 }
 
-export default MaxMinTab;
+export default BestWorstTab;
