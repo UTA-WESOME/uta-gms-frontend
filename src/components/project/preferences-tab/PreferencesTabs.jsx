@@ -40,7 +40,7 @@ const PreferencesTabs = ({
                     <>
                         <Tab>Comparisons</Tab>
                         <Tab>Intensities</Tab>
-                        <Tab>Max-Min</Tab>
+                        <Tab>Best-Worst</Tab>
                     </>
                 }
             </TabList>
