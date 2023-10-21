@@ -33,8 +33,8 @@ const BestWorstTabMobile = ({ alternatives, setAlternatives }) => {
     const formik = useFormik({
         initialValues: { id: 0, name: "", best_position: "", worst_position: "" },
         validationSchema: Yup.object({
-            best_position: Yup.number().min(1).max(alternatives.length).integer("Highest position must be a whole number!").nullable(),
-            worst_position: Yup.number().min(1).max(alternatives.length).integer("Lowest position must be a whole number!").nullable()
+            best_position: Yup.number().min(1).max(alternatives.length).integer("Best position must be a whole number!").nullable(),
+            worst_position: Yup.number().min(1).max(alternatives.length).integer("Worst position must be a whole number!").nullable()
         }),
         onSubmit: (values, _) => {
             if (values.best_position > values.worst_position) {
@@ -42,7 +42,7 @@ const BestWorstTabMobile = ({ alternatives, setAlternatives }) => {
                     toast({
                         id: toastId,
                         title: 'Warning!',
-                        description: "The highest position is greater than the lowest position",
+                        description: "Best position is greater than the worst position",
                         status: 'warning',
                         duration: 5000,
                         isClosable: true,
