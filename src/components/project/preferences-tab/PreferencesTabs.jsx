@@ -1,9 +1,10 @@
-import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useMediaQuery } from "@chakra-ui/react";
+import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
 import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
 import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
 import { IoFlash } from "react-icons/io5";
 import { FaGreaterThan } from "react-icons/fa";
 import { MdOutlineExpand } from "react-icons/md";
+import BestWorstTab from "./maxmin-tab/BestWorstTab.jsx";
 
 const PreferencesTabs = ({
                              alternatives,
@@ -39,7 +40,7 @@ const PreferencesTabs = ({
                     <>
                         <Tab>Comparisons</Tab>
                         <Tab>Intensities</Tab>
-                        <Tab>Max-Min</Tab>
+                        <Tab>Best-Worst</Tab>
                     </>
                 }
             </TabList>
@@ -63,7 +64,10 @@ const PreferencesTabs = ({
                     />
                 </TabPanel>
                 <TabPanel p={1} py={5}>
-                    <Text>Not implemented yet!</Text>
+                    <BestWorstTab
+                        alternatives={alternatives}
+                        setAlternatives={setAlternatives}
+                    />
                 </TabPanel>
             </TabPanels>
         </Tabs>
