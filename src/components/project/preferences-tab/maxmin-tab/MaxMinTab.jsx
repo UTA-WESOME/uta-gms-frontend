@@ -13,11 +13,10 @@ import {
     Thead,
     Tr
 } from "@chakra-ui/react";
-import debounce from "lodash/debounce";
 
 const MaxMinTab = ({ alternatives, setAlternatives }) => {
 
-    const handleChangeUpperBound = debounce((valueNumber, alternativeId) => {
+    const handleChangeUpperBound = (valueNumber, alternativeId) => {
         setAlternatives(pAlternatives => pAlternatives.map(alternative => {
             if (alternative.id === alternativeId)
                 return {
@@ -26,9 +25,9 @@ const MaxMinTab = ({ alternatives, setAlternatives }) => {
                 }
             return alternative;
         }))
-    }, 50)
+    }
 
-    const handleChangeLowerBound = debounce((valueNumber, alternativeId) => {
+    const handleChangeLowerBound = (valueNumber, alternativeId) => {
         setAlternatives(pAlternatives => pAlternatives.map(alternative => {
             if (alternative.id === alternativeId)
                 return {
@@ -37,12 +36,11 @@ const MaxMinTab = ({ alternatives, setAlternatives }) => {
                 }
             return alternative;
         }))
-    }, 50)
+    }
 
 
     return (
         <>
-            {JSON.stringify(alternatives.map(a => ({ name: a.name, h: a.highest_position, l: a.lowest_position })))}
             <TableContainer px={{ base: '0%', md: '4%', xl: '12%' }} pt={2}>
                 <Table size={'sm'}>
                     <Thead>
@@ -68,7 +66,7 @@ const MaxMinTab = ({ alternatives, setAlternatives }) => {
                                         defaultValue={alternative.highest_position !== null ? alternative.highest_position : ""}
                                         min={1}
                                         max={alternatives.length}
-                                        onChange={(_, valueNumber) => handleChangeUpperBound(valueNumber, alternative.id)}
+                                        onBlur={(event) => handleChangeUpperBound(parseInt(event.target.value), alternative.id)}
                                     >
                                         <NumberInputField/>
                                         <NumberInputStepper>
@@ -87,7 +85,7 @@ const MaxMinTab = ({ alternatives, setAlternatives }) => {
                                         defaultValue={alternative.lowest_position !== null ? alternative.lowest_position : ""}
                                         min={1}
                                         max={alternatives.length}
-                                        onChange={(_, valueNumber) => handleChangeLowerBound(valueNumber, alternative.id)}
+                                        onBlur={(event) => handleChangeLowerBound(parseInt(event.target.value), alternative.id)}
                                     >
                                         <NumberInputField/>
                                         <NumberInputStepper>
