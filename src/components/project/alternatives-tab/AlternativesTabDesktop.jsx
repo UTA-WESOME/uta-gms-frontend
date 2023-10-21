@@ -21,14 +21,13 @@ import {
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
-import debounce from "lodash/debounce";
 
 const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAlternative, deleteAlternative }) => {
 
 
     const colorMode = useColorModeValue('white', 'gray.800');
 
-    const handleChangeName = debounce((event, id) => {
+    const handleChangeName = (event, id) => {
         let newName = event.target.value;
         if (newName.length <= 64) {
             setAlternatives(pAlternatives => {
@@ -44,7 +43,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
             let alternative = alternatives.filter(alternative => alternative.id === id)[0];
             event.target.value = alternative.name;
         }
-    }, 50);
+    }
 
     const handleChangePerformance = (valueNumber, alternativeId, criterionId) => {
         setAlternatives(pAlternatives => {
@@ -124,7 +123,7 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                             <Input
                                                 key={alternative.id}
                                                 defaultValue={alternative.name}
-                                                onChange={(event) => handleChangeName(event, alternative.id)}
+                                                onBlur={(event) => handleChangeName(event, alternative.id)}
                                             />
                                         </FormControl>
 
@@ -141,9 +140,10 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                                     return (
                                         <Td zIndex={1} minW={'175px'} key={index}>
                                             <NumberInput
+                                                key={`${alternative.id}-${criterion.id}`}
                                                 isInvalid={isNaN(performance.value)}
                                                 defaultValue={performance.value}
-                                                onChange={(_, valueNumber) => handleChangePerformance(valueNumber, alternative.id, criterion.id)}
+                                                onBlur={(event) => handleChangePerformance(parseFloat(event.target.value), alternative.id, criterion.id)}
                                             >
                                                 <NumberInputField/>
                                                 <NumberInputStepper>

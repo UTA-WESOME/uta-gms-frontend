@@ -7,14 +7,14 @@ import { WarningIcon } from "@chakra-ui/icons";
 
 const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
 
-    const bgColor = useColorModeValue("#FFFFFF", "#1A202C")
-    const nodeBgColor = useColorModeValue("#E2E8F0", "#F7FAFC")
+    const bgColor = useColorModeValue("#FFFFFF", "#1A202C");
+    const nodeBgColor = useColorModeValue("#E2E8F0", "#F7FAFC");
 
     return (
         <Box textAlign={'center'} mx={{ base: '1%', sm: '10%', lg: '18%', '2xl': '25%' }} mt={'10px'}>
-            <Heading size={{base: 'md', md: 'xl'}} mb={3}>
+            <Heading size={{ base: 'md', md: 'xl' }} mb={3}>
                 Hasse diagram
-                {alternatives.some(alt => alt.ranking === 0) &&
+                {alternatives.current.some(alt => alt.ranking === 0) &&
                     <CustomTooltip
                         label={'Click "Save & run" button to update ranking!'}
                         openDelay={200}>

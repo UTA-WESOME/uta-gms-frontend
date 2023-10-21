@@ -13,7 +13,7 @@ import {
     useMediaQuery,
     useToast
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -62,6 +62,7 @@ const ProjectTabs = (props) => {
     //      ...
     //  ]
     const [alternatives, setAlternatives] = useState([]);
+    const alternativesRef = useRef([]);
 
     // preferenceIntensities holds active data about preference intensities
     // [
@@ -112,6 +113,7 @@ const ProjectTabs = (props) => {
         }).then(data => {
             setCriteria(data.criteria);
             setAlternatives(data.alternatives);
+            alternativesRef.current = data.alternatives;
             setPreferenceIntensities(data.preference_intensities);
             setPairwiseComparisons(data.pairwise_comparisons);
             setHasseGraph(data.hasse_graph);
@@ -187,6 +189,13 @@ const ProjectTabs = (props) => {
             return false;
         }
 
+        // check if all pairwise comparisons have different alternatives
+        const pairwiseComparisonsCheck = pairwiseComparisons.some(pc => pc.alternative_1 === pc.alternative_2)
+        if (pairwiseComparisonsCheck) {
+            toastError("There is at least one pairwise comparison with identical alternatives.");
+            return false;
+        }
+
         return true;
     }
 
@@ -258,13 +267,14 @@ const ProjectTabs = (props) => {
             }).then(data => {
                 setCriteria(data.criteria);
                 setAlternatives(data.alternatives);
+                alternativesRef.current = data.alternatives;
                 setPreferenceIntensities(data.preference_intensities);
                 setPairwiseComparisons(data.pairwise_comparisons);
                 setHasseGraph(data.hasse_graph);
                 setPairwiseMode(data.pairwise_mode);
                 setSaveClicked(false);
                 toastSuccess();
-                setTabIndex(4);
+                setTabIndex(3);
             })
 
         }).catch(err => {
@@ -353,7 +363,7 @@ const ProjectTabs = (props) => {
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
                             <ResultsTabs
-                                alternatives={alternatives}
+                                alternatives={alternativesRef}
                                 hasseGraph={hasseGraph}
                             />
                         }

@@ -21,8 +21,6 @@ import {
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
-import { BiSolidFileImport, } from "react-icons/bi";
-import debounce from 'lodash/debounce';
 
 const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriterion }) => {
 
@@ -37,7 +35,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
         });
     }
 
-    const handleChangeName = debounce((event, id) => {
+    const handleChangeName = (event, id) => {
         let newName = event.target.value;
         if (newName.length <= 64) {
             setCriteria(previousCriteria => previousCriteria.map(criterion => {
@@ -52,7 +50,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
             let criterion = criteria.filter(criterion => criterion.id === id)[0];
             event.target.value = criterion.name;
         }
-    }, 50);
+    }
 
     const handleChangeLinearSegments = (valueNumber, id) => {
         setCriteria(previousCriteria => {
@@ -65,18 +63,6 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
         });
     }
 
-    const handleChangeWeight = (valueNumber, id) => {
-        setCriteria(previousCriteria => {
-            return previousCriteria.map(criterion => {
-                if (criterion.id === id) {
-                    return { ...criterion, weight: valueNumber };
-                }
-                return criterion;
-            })
-        })
-    }
-
-
     return (
         <>
             <TableContainer>
@@ -87,7 +73,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                 <HStack>
                                     <Text>Name</Text>
                                     <CustomTooltip label={"Criterion name"} openDelay={200}>
-                                        <InfoIcon />
+                                        <InfoIcon/>
                                     </CustomTooltip>
                                 </HStack>
                             </Th>
@@ -97,7 +83,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <CustomTooltip
                                         label={"Gain means that high values of a given alternative on this criterion will result in a higher position of the alternative in the final ranking. Loss means that low values of an alternative on this criterion will result in a higher position of the alternative in the final ranking."}
                                         openDelay={200}>
-                                        <InfoIcon />
+                                        <InfoIcon/>
                                     </CustomTooltip>
                                 </HStack>
                             </Th>
@@ -106,16 +92,6 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <Text>Linear segments</Text>
                                     <CustomTooltip
                                         label={"Choose how many linear segments the criterion should have. To select the general function, choose 0."}
-                                        openDelay={200}>
-                                        <InfoIcon />
-                                    </CustomTooltip>
-                                </HStack>
-                            </Th>
-                            <Th>
-                                <HStack>
-                                    <Text>Weight</Text>
-                                    <CustomTooltip
-                                        label={"Choose the weight of the criterion."}
                                         openDelay={200}>
                                         <InfoIcon/>
                                     </CustomTooltip>
@@ -133,7 +109,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                             <Input
                                                 key={criterion.id}
                                                 defaultValue={criterion.name}
-                                                onChange={(event) => handleChangeName(event, criterion.id)}
+                                                onBlur={(event) => handleChangeName(event, criterion.id)}
                                             />
                                         </FormControl>
                                     </Td>
@@ -143,6 +119,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                                 Cost
                                             </Text>
                                             <Switch
+                                                key={criterion.id}
                                                 colorschemechecked={'teal'}
                                                 colorschemeunchecked={'red'}
                                                 defaultChecked={criterion.gain}
@@ -155,12 +132,13 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     </Td>
                                     <Td>
                                         <NumberInput
+                                            key={criterion.id}
                                             isInvalid={isNaN(criterion.linear_segments)}
-                                            value={criterion.linear_segments}
+                                            defaultValue={criterion.linear_segments}
                                             min={0}
                                             max={30}
                                             precision={0}
-                                            onChange={(_, valueNumber) => handleChangeLinearSegments(valueNumber, criterion.id)}
+                                            onBlur={(event) => handleChangeLinearSegments(parseInt(event.target.value), criterion.id)}
                                         >
                                             <NumberInputField/>
                                             <NumberInputStepper>
@@ -169,26 +147,11 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </Td>
-                                    <Td>
-                                        <NumberInput
-                                            isInvalid={isNaN(criterion.weight)}
-                                            value={criterion.weight}
-                                            min={0}
-                                            step={criterion.weight >= 1.0 ? 1 : 0.05}
-                                            onChange={(_, valueNumber) => handleChangeWeight(valueNumber, criterion.id)}
-                                        >
-                                            <NumberInputField />
-                                            <NumberInputStepper>
-                                                <NumberIncrementStepper />
-                                                <NumberDecrementStepper />
-                                            </NumberInputStepper>
-                                        </NumberInput>
-                                    </Td>
-                                    <Td textAlign={'right'}>
+                                    <Td textAlign={'center'} maxWidth={'45px'} minWidth={'45px'}>
                                         <IconButton
                                             color={'red.300'}
                                             aria-label={'delete-criterion'}
-                                            icon={<DeleteIcon />}
+                                            icon={<DeleteIcon/>}
                                             onClick={() => deleteCriterion(criterion.id)}
                                         />
                                     </Td>
