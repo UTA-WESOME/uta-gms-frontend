@@ -25,6 +25,7 @@ const RankingTab = ({ alternatives }) => {
                         <Tr>
                             <Th>position</Th>
                             <Th>name</Th>
+                            <Th>value</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -36,6 +37,7 @@ const RankingTab = ({ alternatives }) => {
                                 <Tr key={index}>
                                     <Td>{alternative.ranking}</Td>
                                     <Td>{alternative.name}</Td>
+                                    <Td>{alternative.ranking_value}</Td>
                                 </Tr>
                             ))}
                     </Tbody>
