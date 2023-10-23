@@ -54,7 +54,7 @@ const Projects = () => {
         <>
             {hasLoaded &&
              <PageTemplate title='Your Projects'>
-                <ProjectsContainer projects={projects}/>
+                <ProjectsContainer projects={projects} setProjects={setProjects}/>
             </PageTemplate>
             }
         </>

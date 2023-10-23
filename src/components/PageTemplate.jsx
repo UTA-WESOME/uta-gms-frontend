@@ -1,14 +1,15 @@
-import { Center, Heading, VStack, } from '@chakra-ui/react';
+import { Center, Flex, Heading, } from '@chakra-ui/react';
 
 
 const PageTemplate = (props) => {
     return (
         <Center>
-            <VStack
+            <Flex
+                direction={'column'}
                 w={{ base: '80%', sm: '90%', md: '75%', lg: '85%', xl: '75%' }}
                 marginBottom={'10'}
                 justify={'center'}
-                spacing={'1rem'}>
+            >
                 <Heading
                     fontWeight={600}
                     fontSize={{ base: '3xl', sm: '4xl', md: '5xl' }}
@@ -18,7 +19,7 @@ const PageTemplate = (props) => {
                     {props.title}
                 </Heading>
                 {props.children}
-            </VStack>
+            </Flex>
         </Center>
     );
 };
