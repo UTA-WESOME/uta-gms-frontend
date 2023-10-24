@@ -81,7 +81,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                 <HStack>
                                     <Text>Type</Text>
                                     <CustomTooltip
-                                        label={"Gain means that high values of a given alternative on this criterion will result in a higher position of the alternative in the final ranking. Loss means that low values of an alternative on this criterion will result in a higher position of the alternative in the final ranking."}
+                                        label={"Gain means that high values of a given alternative on this criterion will result in a higher position of the alternative in the final ranking. Cost means that low values of an alternative on this criterion will result in a higher position of the alternative in the final ranking."}
                                         openDelay={200}>
                                         <InfoIcon/>
                                     </CustomTooltip>
