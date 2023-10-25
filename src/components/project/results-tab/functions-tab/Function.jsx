@@ -8,8 +8,8 @@ const Function = ({ criterion }) => {
     const [isLargerThan420] = useMediaQuery('(min-width: 420px)');
     return (
         <LineChart
-            width={isLargerThan1030 ? 700 : isLargerThan550 ? 500 : isLargerThan420 ? 350 : 250}
-            height={300}
+            width={isLargerThan1030 ? 800 : isLargerThan550 ? 500 : isLargerThan420 ? 350 : 250}
+            height={isLargerThan420 ? 300 : 225}
             data={criterion.criterion_function_points}
             margin={{
                 top: 5,
