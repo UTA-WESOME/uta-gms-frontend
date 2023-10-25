@@ -1,6 +1,7 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import HasseDiagramTab from "./hasse-diagram-tab/HasseDiagramTab.jsx";
+import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
 
 const ResultsTabs = ({ alternatives, hasseGraph }) => {
     return (
@@ -12,6 +13,7 @@ const ResultsTabs = ({ alternatives, hasseGraph }) => {
                 <TabList>
                     <Tab>Hasse diagram</Tab>
                     <Tab>Ranking</Tab>
+                    <Tab>Functions</Tab>
                 </TabList>
                 <TabPanels>
                     <TabPanel p={1} py={2}>
@@ -24,6 +26,9 @@ const ResultsTabs = ({ alternatives, hasseGraph }) => {
                         <RankingTab
                             alternatives={alternatives}
                         />
+                    </TabPanel>
+                    <TabPanel>
+                        <FunctionsTab/>
                     </TabPanel>
                 </TabPanels>
             </Tabs>
