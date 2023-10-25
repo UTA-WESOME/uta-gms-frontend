@@ -1,6 +1,7 @@
 import {
     Button,
     ButtonGroup,
+    Center,
     Flex,
     FormControl,
     FormLabel,
@@ -74,7 +75,11 @@ const IntensitiesTabMobile = ({
         <>
             <Flex
                 direction={'column'}
-                spacing={4}>
+                spacing={4}
+            >
+                <Center>
+                    <Heading size={'lg'} mb={2}>Intensities</Heading>
+                </Center>
                 {preferenceIntensities.map((preferenceIntensity, index) => (
                     <HStack
                         borderTopWidth={'1px'}

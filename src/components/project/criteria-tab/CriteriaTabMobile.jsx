@@ -1,10 +1,12 @@
 import {
     Button,
     ButtonGroup,
+    Center,
     Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
+    Heading,
     HStack,
     IconButton,
     Input,
@@ -86,6 +88,10 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                 direction={'column'}
                 spacing={4}
             >
+                <Center>
+                    <Heading size={'lg'} mb={2}>Criteria</Heading>
+                </Center>
+
                 {criteria.map((criterion, index) => {
                     return (
                         <HStack

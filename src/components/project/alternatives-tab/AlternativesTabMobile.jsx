@@ -1,10 +1,12 @@
 import {
     Button,
     ButtonGroup,
+    Center,
     Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
+    Heading,
     HStack,
     IconButton,
     Input,
@@ -73,6 +75,9 @@ const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlt
                 direction={'column'}
                 spacing={4}
             >
+                <Center>
+                    <Heading size={'lg'} mb={2}>Alternatives</Heading>
+                </Center>
                 {alternatives.map((alternative, index) => {
                     return (
                         <HStack
