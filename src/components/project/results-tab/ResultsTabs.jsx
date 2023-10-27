@@ -6,7 +6,7 @@ import { FaRankingStar } from "react-icons/fa6";
 import { BsDiagram2Fill } from "react-icons/bs";
 import { TbMathFunction } from "react-icons/tb";
 
-const ResultsTabs = ({ alternatives, hasseGraph }) => {
+const ResultsTabs = ({ alternatives, criteria, hasseGraph }) => {
 
     const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
 
@@ -50,7 +50,9 @@ const ResultsTabs = ({ alternatives, hasseGraph }) => {
                         />
                     </TabPanel>
                     <TabPanel>
-                        <FunctionsTab/>
+                        <FunctionsTab
+                            criteria={criteria}
+                        />
                     </TabPanel>
                 </TabPanels>
             </Tabs>

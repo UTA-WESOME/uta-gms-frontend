@@ -14,7 +14,7 @@ const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
         <Box textAlign={'center'} mx={{ base: '0%', lg: '18%', '2xl': '25%' }} mt={'10px'}>
             <Heading size={{ base: 'md', md: 'xl' }} mb={3}>
                 Hasse diagram
-                {alternatives.current.some(alt => alt.ranking === 0) &&
+                {alternatives.some(alt => alt.ranking === 0) &&
                     <CustomTooltip
                         label={'Click "Save & run" button to update ranking!'}
                         openDelay={200}>

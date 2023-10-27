@@ -38,6 +38,7 @@ const ProjectTabs = (props) => {
     //         ...
     //     ]
     const [criteria, setCriteria] = useState([]);
+    const criteriaRef = useRef([]);
 
     // alternatives holds active data about alternatives and their performances
     //  [
@@ -112,6 +113,7 @@ const ProjectTabs = (props) => {
             return response.json();
         }).then(data => {
             setCriteria(data.criteria);
+            criteriaRef.current = data.criteria;
             setAlternatives(data.alternatives);
             alternativesRef.current = data.alternatives;
             setPreferenceIntensities(data.preference_intensities);
@@ -273,6 +275,7 @@ const ProjectTabs = (props) => {
                 return response.json();
             }).then(data => {
                 setCriteria(data.criteria);
+                criteriaRef.current = data.criteria;
                 setAlternatives(data.alternatives);
                 alternativesRef.current = data.alternatives;
                 setPreferenceIntensities(data.preference_intensities);
@@ -370,7 +373,8 @@ const ProjectTabs = (props) => {
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
                             <ResultsTabs
-                                alternatives={alternativesRef}
+                                alternatives={alternativesRef.current}
+                                criteria={criteriaRef.current}
                                 hasseGraph={hasseGraph}
                             />
                         }

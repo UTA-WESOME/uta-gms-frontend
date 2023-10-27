@@ -8,7 +8,7 @@ const RankingTab = ({ alternatives }) => {
         <Box textAlign={'center'} mx={{ base: '1%', sm: '10%', lg: '18%', '2xl': '25%' }} mt={'10px'}>
             <Heading size={{ base: 'md', md: 'xl' }} mb={2}>
                 Result ranking
-                {alternatives.current.some(alt => alt.ranking === 0) &&
+                {alternatives.some(alt => alt.ranking === 0) &&
                     <CustomTooltip
                         label={'Click "Save & run" button to update ranking!'}
                         openDelay={200}>
@@ -30,7 +30,6 @@ const RankingTab = ({ alternatives }) => {
                     </Thead>
                     <Tbody>
                         {alternatives
-                            .current
                             .filter(alternative => alternative.ranking !== 0)
                             .sort((x, y) => x.ranking > y.ranking ? 1 : x.ranking < y.ranking ? -1 : 0)
                             .map((alternative, index) => (
