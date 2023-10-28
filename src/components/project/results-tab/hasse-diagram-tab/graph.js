@@ -96,9 +96,9 @@ function calculateNodeLevels(graph, indifferences) {
     }
 
     // adjust ranks to indifferences
-    for(const vertex of Object.keys(ranks)) {
+    for (const vertex of Object.keys(ranks)) {
         let indifferenceWithVertex = indifferences.find(arr => arr.includes(vertex));
-        if(indifferenceWithVertex) {
+        if (indifferenceWithVertex) {
             let indifferenceRanks = indifferenceWithVertex.map(v => ranks[v]);
             const maxRank = Math.max(...indifferenceRanks);
             indifferenceWithVertex.forEach(v => {
@@ -162,7 +162,7 @@ function createDotString(graph, ranks, indifferences, alternatives, bgcolor, nod
     for (const vertex of Object.keys(graph)) {
         const nodeIdStr = `node${nodeId}`;
         vertexToId[vertex] = nodeIdStr;
-        dotString += `    ${nodeIdStr} [label="${alternatives.current.find(alt => alt.id.toString() === vertex).name}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
+        dotString += `    ${nodeIdStr} [label="${alternatives.find(alt => alt.id.toString() === vertex).name}" color="${nodeBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
         nodeId++;
     }
 
@@ -205,7 +205,7 @@ function createDotString(graph, ranks, indifferences, alternatives, bgcolor, nod
     // create edges between vertices using vertexToId mapping
     for (const source of Object.keys(graph)) {
         // check if the source is in an indifference
-        let indifferenceWithSource =  indifferences.find(arr => arr.includes(source));
+        let indifferenceWithSource = indifferences.find(arr => arr.includes(source));
         let indifferenceIndexSource = indifferences.findIndex(arr => arr === indifferenceWithSource);
         const sourceId = vertexToId[source];
         const targets = graph[source];
@@ -228,7 +228,7 @@ function createDotString(graph, ranks, indifferences, alternatives, bgcolor, nod
                         graph[source][v] = false;
                     })
                 }
-                if(indifferenceIndexSource !== -1 && indifferenceIndexTarget !== -1) {
+                if (indifferenceIndexSource !== -1 && indifferenceIndexTarget !== -1) {
                     indifferenceWithSource.forEach(s => {
                         indifferenceWithTarget.forEach(t => {
                             graph[s][t] = false;
