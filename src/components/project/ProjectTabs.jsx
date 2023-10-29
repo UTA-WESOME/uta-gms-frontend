@@ -199,7 +199,11 @@ const ProjectTabs = (props) => {
         }
 
         // check if all best-worst positions are correct - best is higher than worst
-        const maxMinPositionsCheck = alternatives.some(alternative => alternative.best_position > alternative.worst_position)
+        const maxMinPositionsCheck = alternatives.some(alternative => (
+            alternative.best_position > alternative.worst_position &&
+            alternative.best_position !== null &&
+            alternative.worst_position !== null
+        ));
         if (maxMinPositionsCheck) {
             toastError("There is at least one incorrect Best-Worst preference");
             return false;

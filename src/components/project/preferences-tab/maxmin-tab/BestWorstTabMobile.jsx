@@ -37,7 +37,7 @@ const BestWorstTabMobile = ({ alternatives, setAlternatives }) => {
             worst_position: Yup.number().min(1).max(alternatives.length).integer("Worst position must be a whole number!").nullable()
         }),
         onSubmit: (values, _) => {
-            if (values.best_position > values.worst_position) {
+            if (values.best_position > values.worst_position && values.best_position !== "" && values.worst_position !== "") {
                 if (!toast.isActive(toastId)) {
                     toast({
                         id: toastId,
@@ -101,8 +101,8 @@ const BestWorstTabMobile = ({ alternatives, setAlternatives }) => {
                                 formik.setValues({
                                     id: alternative.id,
                                     name: alternative.name,
-                                    best_position: alternative.best_position,
-                                    worst_position: alternative.worst_position
+                                    best_position: alternative.best_position !== null ? alternative.best_position : "",
+                                    worst_position: alternative.worst_position !== null ? alternative.worst_position : ""
                                 });
                                 formik.setErrors({});
                                 onOpen();
