@@ -49,15 +49,34 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
 
     const [activeCategories, setActiveCategories] = useState(categories);
 
-    const handleChangeName = (categoryId, newName) => {
-        setActiveCategories(activeCategories.map(cat => {
-            if (cat.id === categoryId)
-                return {
-                    ...cat,
-                    name: newName,
-                };
-            return cat;
-        }))
+    const addCategory = () => {
+        let maxId = Math.max(...activeCategories.map(i => i.id));
+        maxId = maxId === -Infinity ? 0 : maxId;
+
+        setActiveCategories([...activeCategories, {
+            id: maxId + 1,
+            name: `Category ${maxId + 1}`,
+            color: 'teal.400',
+            active: true
+        }])
+    }
+
+
+    const handleChangeName = (event, categoryId) => {
+        let newName = event.target.value;
+        if (newName.length <= 15) {
+            setActiveCategories(activeCategories.map(cat => {
+                if (cat.id === categoryId)
+                    return {
+                        ...cat,
+                        name: newName,
+                    };
+                return cat;
+            }))
+        } else {
+            let category = categories.find(cat => cat.id === categoryId)
+            event.target.value = category.name;
+        }
     }
 
     const handleChangeColor = (categoryId, color) => {
@@ -83,9 +102,9 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior={'inside'}>
             <ModalOverlay/>
-            <ModalContent mx={'15px'}>
+            <ModalContent mx={'15px'} maxH={'600px'}>
                 <ModalHeader>Categories</ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody>
@@ -93,25 +112,25 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
                         <Table size={'sm'}>
                             <Thead>
                                 <Tr>
-                                    <Th>Name</Th>
-                                    <Th>Color</Th>
-                                    <Th>Active</Th>
-                                    <Th>Actions</Th>
+                                    <Th borderColor={'white.700'}>Name</Th>
+                                    <Th borderColor={'white.700'}>Color</Th>
+                                    <Th borderColor={'white.700'}>Active</Th>
+                                    <Th borderColor={'white.700'}>Actions</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
                                 {activeCategories.map((category, index) => (
                                     <Tr key={index}>
-                                        <Td>
+                                        <Td borderColor={'gray'}>
                                             <FormControl isInvalid={category.name.length === 0}>
                                                 <Input
                                                     key={category.id}
                                                     defaultValue={category.name}
-                                                    onBlur={(event) => handleChangeName(category.id, event.target.value)}
+                                                    onBlur={(event) => handleChangeName(event, category.id)}
                                                 />
                                             </FormControl>
                                         </Td>
-                                        <Td textAlign={'center'}>
+                                        <Td textAlign={'center'} borderColor={'gray'}>
                                             <Popover>
                                                 <PopoverTrigger>
                                                     <IconButton
@@ -157,7 +176,7 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
                                                 </PopoverContent>
                                             </Popover>
                                         </Td>
-                                        <Td textAlign={'center'}>
+                                        <Td textAlign={'center'} borderColor={'gray'}>
                                             <Switch
                                                 key={category.id}
                                                 colorScheme={'teal'}
@@ -165,7 +184,7 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
                                                 onChange={() => handleChangeType(category.id)}
                                             />
                                         </Td>
-                                        <Td textAlign={'center'}>
+                                        <Td textAlign={'center'} borderColor={'gray'}>
                                             <IconButton
                                                 color={'red.300'}
                                                 aria-label={'delete-category'}
@@ -178,6 +197,9 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
                             </Tbody>
                         </Table>
                     </TableContainer>
+                    <Button mx={4} mt={4} colorScheme={'teal'} onClick={addCategory} variant='outline'>
+                        New category
+                    </Button>
                 </ModalBody>
                 <ModalFooter>
                     <ButtonGroup pt={"1rem"}>

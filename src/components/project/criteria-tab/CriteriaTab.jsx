@@ -105,7 +105,6 @@ const CriteriaTab = ({
                     Categories
                 </Button>
             </ButtonGroup>
-
         </>
     )
 }
