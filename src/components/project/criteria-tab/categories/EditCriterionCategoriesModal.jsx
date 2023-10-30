@@ -10,7 +10,7 @@ import {
     Text
 } from "@chakra-ui/react";
 
-const EditCriterionModal = ({ isOpen, onClose, categories, criterion }) => {
+const EditCriterionCategoriesModal = ({ isOpen, onClose, categories, criterion }) => {
 
     const handleCheck = (event, categoryId) => {
 
@@ -62,4 +62,4 @@ const EditCriterionModal = ({ isOpen, onClose, categories, criterion }) => {
     }
 }
 
-export default EditCriterionModal;
+export default EditCriterionCategoriesModal;

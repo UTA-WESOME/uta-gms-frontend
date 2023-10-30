@@ -17,7 +17,8 @@ import {
     Text,
     Th,
     Thead,
-    Tr
+    Tr,
+    useMediaQuery
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
@@ -31,6 +32,8 @@ const CriteriaTabDesktop = ({
                                 onOpenEditCriterion
                             }) => {
 
+
+    const [showCategories] = useMediaQuery('(min-width: 1150px)');
 
     const handleChangeType = (event, id) => {
         setCriteria(previousCriteria => {
@@ -73,7 +76,6 @@ const CriteriaTabDesktop = ({
 
     return (
         <>
-            {JSON.stringify(categories)}
             <TableContainer>
                 <Table size={'sm'}>
                     <Thead>
@@ -167,15 +169,31 @@ const CriteriaTabDesktop = ({
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </Td>
-                                    <Td minW={'200px'}>
-                                        {criterion.criterion_categories.map((cc, index) => {
-                                            let category = categories.find(cat => cat.id === cc.category)
-                                            return (
-                                                <Tag bgColor={category.color} key={index}>{category.name}</Tag>
-                                            )
-                                        })}
+                                    <Td>
+                                        {showCategories ?
+                                            <>
+                                                {criterion.criterion_categories.map((cc, index) => {
+                                                    if (index < 3) {
+                                                        let category = categories.find(cat => cat.id === cc.category)
+                                                        return (
+                                                            <>
+                                                                <Tag bgColor={category.color} key={index}
+                                                                     m={1}>{category.name}</Tag>
+                                                                {index % 2 === 1 && <br/>}
+                                                            </>
+                                                        )
+                                                    }
+                                                })}
+                                                {criterion.criterion_categories.length >= 3 &&
+                                                    <Tag m={1}>{criterion.criterion_categories.length - 3}+</Tag>
+                                                }
+                                            </>
+                                            :
+                                            <Tag>{criterion.criterion_categories.length} categories</Tag>
+                                        }
+
                                     </Td>
-                                    <Td textAlign={'center'} borderLeftWidth={'1px'} maxW={'100px'}>
+                                    <Td textAlign={'center'} borderLeftWidth={'1px'}>
                                         <IconButton
                                             mx={1}
                                             color={'yellow.300'}

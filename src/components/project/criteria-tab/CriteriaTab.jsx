@@ -3,7 +3,7 @@ import CriteriaTabMobile from "./CriteriaTabMobile.jsx";
 import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
 import CategoriesPanel from "./categories/CategoriesPanel.jsx";
 import { useState } from "react";
-import EditCriterionModal from "./EditCriterionModal.jsx";
+import EditCriterionCategoriesModal from "./categories/EditCriterionCategoriesModal.jsx";
 
 
 const CriteriaTab = ({
@@ -104,7 +104,7 @@ const CriteriaTab = ({
             />
 
             {/*EDIT CRITERION CATEGORIES MODAL*/}
-            <EditCriterionModal
+            <EditCriterionCategoriesModal
                 isOpen={isOpenEditCriterion}
                 onClose={onCloseEditCriterion}
                 categories={categories}
