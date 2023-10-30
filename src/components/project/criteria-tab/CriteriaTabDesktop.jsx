@@ -183,8 +183,15 @@ const CriteriaTabDesktop = ({
                                                             </>
                                                         )
                                                     }
+                                                    if (index === 3 && criterion.criterion_categories.length === 4) {
+                                                        let category = categories.find(cat => cat.id === cc.category)
+                                                        return (
+                                                            <Tag bgColor={category.color} key={index}
+                                                                 m={1}>{category.name}</Tag>
+                                                        )
+                                                    }
                                                 })}
-                                                {criterion.criterion_categories.length >= 3 &&
+                                                {criterion.criterion_categories.length > 4 &&
                                                     <Tag m={1}>{criterion.criterion_categories.length - 3}+</Tag>
                                                 }
                                             </>
