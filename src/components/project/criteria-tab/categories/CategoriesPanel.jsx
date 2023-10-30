@@ -33,7 +33,7 @@ import { MdColorLens } from "react-icons/md";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 const colors = [
-    "teal.700",
+    "teal.500",
     "red.500",
     "green.500",
     "blue.500",
@@ -241,8 +241,8 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories, setCriter
                 </ModalBody>
                 <ModalFooter>
                     <ButtonGroup pt={"1rem"}>
-                        <Button onClick={exit}>Back</Button>
                         <Button colorScheme={"teal"} onClick={save}>Confirm</Button>
+                        <Button onClick={exit}>Back</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>

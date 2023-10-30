@@ -2,6 +2,8 @@ import { Button, ButtonGroup, Show, useDisclosure } from "@chakra-ui/react";
 import CriteriaTabMobile from "./CriteriaTabMobile.jsx";
 import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
 import CategoriesPanel from "./categories/CategoriesPanel.jsx";
+import { useState } from "react";
+import EditCriterionModal from "./EditCriterionModal.jsx";
 
 
 const CriteriaTab = ({
@@ -15,6 +17,8 @@ const CriteriaTab = ({
 
 
     const { isOpen: isOpenCategories, onOpen: onOpenCategories, onClose: onCloseCategories } = useDisclosure();
+    const { isOpen: isOpenEditCriterion, onOpen: onOpenEditCriterion, onClose: onCloseEditCriterion } = useDisclosure();
+    const [currentEditCriterionId, setCurrentEditCriterionId] = useState(0);
 
     const addCriterion = () => {
         // get max criteria id
@@ -76,6 +80,8 @@ const CriteriaTab = ({
                     categories={categories}
                     setCategories={setCategories}
                     deleteCriterion={deleteCriterion}
+                    setCurrentEditCriterionId={setCurrentEditCriterionId}
+                    onOpenEditCriterion={onOpenEditCriterion}
                 />
             </Show>
 
@@ -94,6 +100,15 @@ const CriteriaTab = ({
                 onClose={onCloseCategories}
                 categories={categories}
                 setCategories={setCategories}
+                setCriteria={setCriteria}
+            />
+
+            {/*EDIT CRITERION CATEGORIES MODAL*/}
+            <EditCriterionModal
+                isOpen={isOpenEditCriterion}
+                onClose={onCloseEditCriterion}
+                categories={categories}
+                criterion={criteria.find(c => c.id === currentEditCriterionId)}
                 setCriteria={setCriteria}
             />
 

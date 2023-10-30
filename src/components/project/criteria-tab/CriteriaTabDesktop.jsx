@@ -20,9 +20,17 @@ import {
     Tr
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
-import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 
-const CriteriaTabDesktop = ({ criteria, setCriteria, categories, deleteCriterion }) => {
+const CriteriaTabDesktop = ({
+                                criteria,
+                                setCriteria,
+                                categories,
+                                deleteCriterion,
+                                setCurrentEditCriterionId,
+                                onOpenEditCriterion
+                            }) => {
+
 
     const handleChangeType = (event, id) => {
         setCriteria(previousCriteria => {
@@ -65,8 +73,8 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, categories, deleteCriterion
 
     return (
         <>
+            {JSON.stringify(categories)}
             <TableContainer>
-                {JSON.stringify(categories)}
                 <Table size={'sm'}>
                     <Thead>
                         <Tr>
@@ -159,7 +167,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, categories, deleteCriterion
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </Td>
-                                    <Td>
+                                    <Td minW={'200px'}>
                                         {criterion.criterion_categories.map((cc, index) => {
                                             let category = categories.find(cat => cat.id === cc.category)
                                             return (
@@ -167,7 +175,17 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, categories, deleteCriterion
                                             )
                                         })}
                                     </Td>
-                                    <Td textAlign={'center'} borderLeftWidth={'1px'}>
+                                    <Td textAlign={'center'} borderLeftWidth={'1px'} maxW={'100px'}>
+                                        <IconButton
+                                            mx={1}
+                                            color={'yellow.300'}
+                                            aria-label={'edit-criterion'}
+                                            icon={<EditIcon/>}
+                                            onClick={() => {
+                                                setCurrentEditCriterionId(criterion.id);
+                                                onOpenEditCriterion();
+                                            }}
+                                        />
                                         <IconButton
                                             color={'red.300'}
                                             aria-label={'delete-criterion'}
@@ -181,7 +199,6 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, categories, deleteCriterion
                     </Tbody>
                 </Table>
             </TableContainer>
-
         </>
     )
 }
