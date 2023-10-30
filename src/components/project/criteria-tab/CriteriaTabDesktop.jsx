@@ -1,5 +1,6 @@
 import {
     Button,
+    ButtonGroup,
     FormControl,
     HStack,
     IconButton,
@@ -12,6 +13,7 @@ import {
     Switch,
     Table,
     TableContainer,
+    Tag,
     Tbody,
     Td,
     Text,
@@ -22,7 +24,7 @@ import {
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
 
-const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriterion }) => {
+const CriteriaTabDesktop = ({ criteria, setCriteria, categories, setCategories, addCriterion, deleteCriterion }) => {
 
     const handleChangeType = (event, id) => {
         setCriteria(previousCriteria => {
@@ -66,6 +68,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
     return (
         <>
             <TableContainer>
+                {JSON.stringify(categories)}
                 <Table size={'sm'}>
                     <Thead>
                         <Tr>
@@ -93,6 +96,17 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     <CustomTooltip
                                         label={"Choose how many linear segments the criterion should have. To select the general function, choose 0."}
                                         openDelay={200}>
+                                        <InfoIcon/>
+                                    </CustomTooltip>
+                                </HStack>
+                            </Th>
+                            <Th>
+                                <HStack>
+                                    <Text>Categories</Text>
+                                    <CustomTooltip
+                                        label={"Categories to which the criterion belongs"}
+                                        openDelay={200}
+                                    >
                                         <InfoIcon/>
                                     </CustomTooltip>
                                 </HStack>
@@ -147,7 +161,15 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </Td>
-                                    <Td textAlign={'center'} maxWidth={'45px'} minWidth={'45px'}>
+                                    <Td>
+                                        {criterion.criterion_categories.map((cc, index) => {
+                                            let category = categories.find(cat => cat.id === cc.category)
+                                            return (
+                                                <Tag colorScheme={category.color} key={index}>{category.name}</Tag>
+                                            )
+                                        })}
+                                    </Td>
+                                    <Td textAlign={'center'} borderLeftWidth={'1px'}>
                                         <IconButton
                                             color={'red.300'}
                                             aria-label={'delete-criterion'}
@@ -162,9 +184,13 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                 </Table>
             </TableContainer>
 
-            <Button mx={6} my={4} colorScheme={'teal'} onClick={addCriterion} variant='outline'>
-                New criterion
-            </Button>
+            <ButtonGroup mx={4} my={4}>
+                <Button colorScheme={'teal'} onClick={addCriterion} variant='outline'>
+                    New criterion
+                </Button>
+                <Button colorScheme={'orange'} variant={'outline'}>Categories</Button>
+
+            </ButtonGroup>
         </>
     )
 }

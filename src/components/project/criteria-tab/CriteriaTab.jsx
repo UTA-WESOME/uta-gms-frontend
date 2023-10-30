@@ -3,7 +3,7 @@ import CriteriaTabMobile from "./CriteriaTabMobile.jsx";
 import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
 
 
-const CriteriaTab = ({ criteria, setCriteria, setAlternatives, setPreferenceIntensities }) => {
+const CriteriaTab = ({ criteria, setCriteria, categories, setCategories, setAlternatives, setPreferenceIntensities }) => {
 
     const addCriterion = () => {
         // get max criteria id
@@ -60,6 +60,8 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives, setPreferenceInte
             <Show above={'lg'}>
                 <CriteriaTabDesktop criteria={criteria}
                                     setCriteria={setCriteria}
+                                    categories={categories}
+                                    setCategories={setCategories}
                                     addCriterion={addCriterion}
                                     deleteCriterion={deleteCriterion}/>
             </Show>
