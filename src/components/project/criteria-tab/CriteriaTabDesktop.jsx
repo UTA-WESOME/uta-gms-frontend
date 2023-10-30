@@ -163,7 +163,7 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, categories, deleteCriterion
                                         {criterion.criterion_categories.map((cc, index) => {
                                             let category = categories.find(cat => cat.id === cc.category)
                                             return (
-                                                <Tag colorScheme={category.color} key={index}>{category.name}</Tag>
+                                                <Tag bgColor={category.color} key={index}>{category.name}</Tag>
                                             )
                                         })}
                                     </Td>

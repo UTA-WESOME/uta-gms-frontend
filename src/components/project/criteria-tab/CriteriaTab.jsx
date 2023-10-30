@@ -94,6 +94,7 @@ const CriteriaTab = ({
                 onClose={onCloseCategories}
                 categories={categories}
                 setCategories={setCategories}
+                setCriteria={setCriteria}
             />
 
             {/*BUTTONS*/}

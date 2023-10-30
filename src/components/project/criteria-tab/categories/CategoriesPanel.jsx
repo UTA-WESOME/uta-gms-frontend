@@ -6,7 +6,6 @@ import {
     Input,
     Modal,
     ModalBody,
-    ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalHeader,
@@ -26,7 +25,8 @@ import {
     Td,
     Th,
     Thead,
-    Tr
+    Tr,
+    useToast
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { MdColorLens } from "react-icons/md";
@@ -45,9 +45,45 @@ const colors = [
     "teal.400"
 ];
 
-const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
+const CategoriesPanel = ({ isOpen, onClose, categories, setCategories, setCriteria }) => {
 
     const [activeCategories, setActiveCategories] = useState(categories);
+    const toast = useToast();
+
+    const save = () => {
+        // validate data
+        const categoriesCheckName = activeCategories.some(cat => cat.name === "");
+        if (categoriesCheckName) {
+            toast({
+                title: "Error!",
+                description: "There is at least one criterion without a name!",
+                status: 'error',
+                duration: 5000,
+                isClosable: true
+            });
+            return;
+        }
+
+        // set categories to activeCategories
+        setCategories(activeCategories);
+
+        // update criteria - leave only those ccs that have a corresponding category
+        setCriteria(pCriteria => pCriteria.map(criterion => {
+            return {
+                ...criterion,
+                criterion_categories: criterion.criterion_categories.filter(cc => {
+                    return activeCategories.some(activeCategory => activeCategory.id === cc.category);
+                })
+            }
+        }))
+
+        onClose();
+    }
+
+    const exit = () => {
+        setActiveCategories(categories);
+        onClose();
+    }
 
     const addCategory = () => {
         let maxId = Math.max(...activeCategories.map(i => i.id));
@@ -55,12 +91,15 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
 
         setActiveCategories([...activeCategories, {
             id: maxId + 1,
-            name: `Category ${maxId + 1}`,
+            name: `Category ${activeCategories.length + 1}`,
             color: 'teal.400',
             active: true
         }])
     }
 
+    const deleteCategory = (categoryId) => {
+        setActiveCategories(activeCategories.filter(item => item.id !== categoryId));
+    }
 
     const handleChangeName = (event, categoryId) => {
         let newName = event.target.value;
@@ -102,11 +141,10 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior={'inside'}>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior={'inside'} closeOnOverlayClick={false}>
             <ModalOverlay/>
             <ModalContent mx={'15px'} maxH={'600px'}>
                 <ModalHeader>Categories</ModalHeader>
-                <ModalCloseButton/>
                 <ModalBody>
                     <TableContainer>
                         <Table size={'sm'}>
@@ -189,7 +227,7 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
                                                 color={'red.300'}
                                                 aria-label={'delete-category'}
                                                 icon={<DeleteIcon/>}
-                                                // onClick={() => deleteCategory(category.id)}
+                                                onClick={() => deleteCategory(category.id)}
                                             />
                                         </Td>
                                     </Tr>
@@ -203,8 +241,8 @@ const CategoriesPanel = ({ isOpen, onClose, categories, setCategories }) => {
                 </ModalBody>
                 <ModalFooter>
                     <ButtonGroup pt={"1rem"}>
-                        <Button onClick={onClose}>Back</Button>
-                        <Button colorScheme={"teal"} type={"submit"}>Confirm</Button>
+                        <Button onClick={exit}>Back</Button>
+                        <Button colorScheme={"teal"} onClick={save}>Confirm</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
