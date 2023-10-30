@@ -24,7 +24,7 @@ import {
 import CustomTooltip from "../../CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
 
-const CriteriaTabDesktop = ({ criteria, setCriteria, categories, setCategories, addCriterion, deleteCriterion }) => {
+const CriteriaTabDesktop = ({ criteria, setCriteria, categories, deleteCriterion }) => {
 
     const handleChangeType = (event, id) => {
         setCriteria(previousCriteria => {
@@ -184,13 +184,6 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, categories, setCategories, 
                 </Table>
             </TableContainer>
 
-            <ButtonGroup mx={4} my={4}>
-                <Button colorScheme={'teal'} onClick={addCriterion} variant='outline'>
-                    New criterion
-                </Button>
-                <Button colorScheme={'orange'} variant={'outline'}>Categories</Button>
-
-            </ButtonGroup>
         </>
     )
 }
