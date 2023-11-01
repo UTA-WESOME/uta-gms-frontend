@@ -298,8 +298,13 @@ const ProjectTabs = (props) => {
                 headers: { 'Content-Type': 'application/json' },
             }).then(response => {
                 if (!response.ok) {
-                    toastError('Sorry, some unexpected error occurred');
-                    throw new Error('Error getting results');
+                    return response.json().then(data => {
+                        if(response.status === 400)
+                            toastError(data.details);
+                        else
+                            toastError('Sorry, some unexpected error occurred');
+                        throw new Error('Error getting results');
+                    })
                 }
                 return response.json();
             }).then(data => {
