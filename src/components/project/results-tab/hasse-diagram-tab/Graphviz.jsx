@@ -7,10 +7,7 @@ const getId = () => `graphviz${counter++}`;
 const Graphviz = ({ dot, className }) => {
     const id = useMemo(getId, []);
     useEffect(() => {
-        graphviz(`#${id}`, {
-            zoom: false,
-        })
-            .renderDot(dot);
+        graphviz(`#${id}`, {}).renderDot(dot);
     }, [dot]);
 
     return (
@@ -18,6 +15,8 @@ const Graphviz = ({ dot, className }) => {
             className={className}
             id={id}
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            borderWidth={'1px'}
+            borderRadius={5}
         />
     )
 

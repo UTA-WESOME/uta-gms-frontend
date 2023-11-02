@@ -32,7 +32,7 @@ import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterion }) => {
+const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -122,11 +122,6 @@ const CriteriaTabMobile = ({ criteria, setCriteria, addCriterion, deleteCriterio
                 })
                 }
             </Flex>
-
-            <Button my={4} colorScheme={'teal'} onClick={addCriterion} variant='outline'>
-                New criterion
-            </Button>
-
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay/>

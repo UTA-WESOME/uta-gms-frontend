@@ -1,9 +1,24 @@
-import { Show } from "@chakra-ui/react";
+import { Button, ButtonGroup, Show, useDisclosure } from "@chakra-ui/react";
 import CriteriaTabMobile from "./CriteriaTabMobile.jsx";
 import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
+import CategoriesPanel from "./categories/CategoriesPanel.jsx";
+import { useState } from "react";
+import EditCriterionCategoriesModal from "./categories/EditCriterionCategoriesModal.jsx";
 
 
-const CriteriaTab = ({ criteria, setCriteria, setAlternatives, setPreferenceIntensities }) => {
+const CriteriaTab = ({
+                         criteria,
+                         setCriteria,
+                         categories,
+                         setCategories,
+                         setAlternatives,
+                         setPreferenceIntensities
+                     }) => {
+
+
+    const { isOpen: isOpenCategories, onOpen: onOpenCategories, onClose: onCloseCategories } = useDisclosure();
+    const { isOpen: isOpenEditCriterion, onOpen: onOpenEditCriterion, onClose: onCloseEditCriterion } = useDisclosure();
+    const [currentEditCriterionId, setCurrentEditCriterionId] = useState(0);
 
     const addCriterion = () => {
         // get max criteria id
@@ -16,6 +31,7 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives, setPreferenceInte
             name: "Criterion name",
             gain: true,
             linear_segments: 0,
+            criterion_categories: [],
             weight: 1,
         }])
 
@@ -58,21 +74,53 @@ const CriteriaTab = ({ criteria, setCriteria, setAlternatives, setPreferenceInte
         <>
             {/*DESKTOP*/}
             <Show above={'lg'}>
-                <CriteriaTabDesktop criteria={criteria}
-                                    setCriteria={setCriteria}
-                                    addCriterion={addCriterion}
-                                    deleteCriterion={deleteCriterion}/>
+                <CriteriaTabDesktop
+                    criteria={criteria}
+                    setCriteria={setCriteria}
+                    categories={categories}
+                    setCategories={setCategories}
+                    deleteCriterion={deleteCriterion}
+                    setCurrentEditCriterionId={setCurrentEditCriterionId}
+                    onOpenEditCriterion={onOpenEditCriterion}
+                />
             </Show>
 
             {/*MOBILE*/}
             {/*TODO: change 991px to const, can't be 'md' because mobile and desktop are both seen then*/}
             <Show below={'991px'}>
-                <CriteriaTabMobile criteria={criteria}
-                                   setCriteria={setCriteria}
-                                   addCriterion={addCriterion}
-                                   deleteCriterion={deleteCriterion}/>
+                <CriteriaTabMobile
+                    criteria={criteria}
+                    setCriteria={setCriteria}
+                    deleteCriterion={deleteCriterion}/>
             </Show>
 
+            {/*CATEGORIES PANEL*/}
+            <CategoriesPanel
+                isOpen={isOpenCategories}
+                onClose={onCloseCategories}
+                categories={categories}
+                setCategories={setCategories}
+                setCriteria={setCriteria}
+            />
+
+            {/*EDIT CRITERION CATEGORIES MODAL*/}
+            <EditCriterionCategoriesModal
+                isOpen={isOpenEditCriterion}
+                onClose={onCloseEditCriterion}
+                categories={categories}
+                criterion={criteria.find(c => c.id === currentEditCriterionId)}
+                setCriteria={setCriteria}
+            />
+
+            {/*BUTTONS*/}
+            <ButtonGroup mx={4} my={4}>
+                <Button colorScheme={'teal'} onClick={addCriterion} variant='outline'>
+                    New criterion
+                </Button>
+                <Button colorScheme={'orange'} onClick={onOpenCategories} variant={'outline'}>
+                    Categories
+                </Button>
+            </ButtonGroup>
         </>
     )
 }

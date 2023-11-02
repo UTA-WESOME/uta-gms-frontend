@@ -25,20 +25,42 @@ import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 import ImportModal from "../import/ImportModal.jsx";
 
 const ProjectTabs = (props) => {
-    // criteria holds active data that the user changes
-    //    [
-    //         {
-    //             "id": integer,
-    //             "name": string,
-    //             "gain": boolean,
-    //             "linear_segments": integer,
-    //             "created_at": datetime,  # optional
-    //             "updated_at": datetime,  # optional
-    //         },
-    //         ...
-    //     ]
+    // criteria holds active data about criteria, criterion function, criterion categories
+    //  [
+    //      {
+    //          "id": integer,
+    //          "name": string,
+    //          "gain": boolean,
+    //          "linear_segments": integer,
+    //          "criterion_categories": [
+    //              {
+    //                  "id": integer,
+    //                  "created_at": datetime,
+    //                  "updated_at": datetime,
+    //                  "category": integer
+    //              },
+    //              ...
+    //          ],
+    //          "criterion_function_points": [
+    //              {
+    //              "id": integer,
+    //              "ordinate": float,
+    //              "abscissa": float,
+    //              "created_at": datetime,
+    //              "updated_at": datetime
+    //          },
+    //          ...
+    //      ],
+    //      "created_at": datetime,  # optional
+    //      "updated_at": datetime,  # optional
+    //  },
+    //  ...
+    // ]
     const [criteria, setCriteria] = useState([]);
     const criteriaRef = useRef([]);
+
+    // categories holds active data about categories in the project
+    const [categories, setCategories] = useState([]);
 
     // alternatives holds active data about alternatives and their performances
     //  [
@@ -114,6 +136,7 @@ const ProjectTabs = (props) => {
         }).then(data => {
             setCriteria(data.criteria);
             criteriaRef.current = data.criteria;
+            setCategories(data.categories);
             setAlternatives(data.alternatives);
             alternativesRef.current = data.alternatives;
             setPreferenceIntensities(data.preference_intensities);
@@ -224,6 +247,7 @@ const ProjectTabs = (props) => {
             body: JSON.stringify({
                 pairwise_mode: pairwiseMode,
                 criteria: criteria,
+                categories: categories,
                 alternatives: alternatives,
                 preference_intensities: preferenceIntensities,
                 pairwise_comparisons: pairwiseComparisons,
@@ -256,6 +280,7 @@ const ProjectTabs = (props) => {
             body: JSON.stringify({
                 pairwise_mode: pairwiseMode,
                 criteria: criteria,
+                categories: categories,
                 alternatives: alternatives,
                 preference_intensities: preferenceIntensities,
                 pairwise_comparisons: pairwiseComparisons,
@@ -272,14 +297,25 @@ const ProjectTabs = (props) => {
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
             }).then(response => {
-                if (!response.ok) {
-                    toastError('Sorry, some unexpected error occurred');
-                    throw new Error('Error getting results');
+                    if (!response.ok) {
+                        if (response.status === 400) {
+                            return response.json().then(data => {
+                                    toastError(data.details);
+                                    throw new Error('Error getting results');
+                                }
+                            )
+                        } else {
+                            toastError('Sorry, some unexpected error occurred');
+                            throw new Error('Error getting results');
+
+                        }
+                    }
+                    return response.json();
                 }
-                return response.json();
-            }).then(data => {
+            ).then(data => {
                 setCriteria(data.criteria);
                 criteriaRef.current = data.criteria;
+                setCategories(data.categories);
                 setAlternatives(data.alternatives);
                 alternativesRef.current = data.alternatives;
                 setPreferenceIntensities(data.preference_intensities);
@@ -344,6 +380,8 @@ const ProjectTabs = (props) => {
                             <CriteriaTab
                                 criteria={criteria}
                                 setCriteria={setCriteria}
+                                categories={categories}
+                                setCategories={setCategories}
                                 setAlternatives={setAlternatives}
                                 setPreferenceIntensities={setPreferenceIntensities}
                             />

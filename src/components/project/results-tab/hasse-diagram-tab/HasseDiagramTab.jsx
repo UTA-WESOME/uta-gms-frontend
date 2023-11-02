@@ -1,4 +1,4 @@
-import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
+import { Box, Heading, Highlight, useColorModeValue, Text } from "@chakra-ui/react";
 import Graphviz from "./Graphviz.jsx";
 import { generateDotString } from "./graph.js";
 import CustomTooltip from "../../../CustomTooltip.jsx";
@@ -23,9 +23,19 @@ const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
                     </CustomTooltip>
                 }
             </Heading>
-            <Graphviz
-                dot={generateDotString(hasseGraph, alternatives, bgColor, nodeBgColor)}
-            />
+            {Object.keys(hasseGraph).length === 0 ?
+                <Text p={5} fontSize={'lg'}>
+                    <Highlight
+                        fontSize={'lg'}
+                        query={'Save & run'}
+                        styles={{ px: '3', py: '2', rounded: 'md', bg: 'orange.200' }}
+                    >Click Save & run button</Highlight>
+                </Text>
+                :
+                <Graphviz
+                    dot={generateDotString(hasseGraph, alternatives, bgColor, nodeBgColor)}
+                />
+            }
 
         </Box>
     )

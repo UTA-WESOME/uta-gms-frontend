@@ -1,5 +1,4 @@
 import {
-    Button,
     FormControl,
     HStack,
     IconButton,
@@ -12,17 +11,29 @@ import {
     Switch,
     Table,
     TableContainer,
+    Tag,
     Tbody,
     Td,
     Text,
     Th,
     Thead,
-    Tr
+    Tr,
+    useMediaQuery
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
-import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 
-const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriterion }) => {
+const CriteriaTabDesktop = ({
+                                criteria,
+                                setCriteria,
+                                categories,
+                                deleteCriterion,
+                                setCurrentEditCriterionId,
+                                onOpenEditCriterion
+                            }) => {
+
+
+    const [showCategories] = useMediaQuery('(min-width: 1150px)');
 
     const handleChangeType = (event, id) => {
         setCriteria(previousCriteria => {
@@ -97,6 +108,17 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                     </CustomTooltip>
                                 </HStack>
                             </Th>
+                            <Th>
+                                <HStack>
+                                    <Text>Categories</Text>
+                                    <CustomTooltip
+                                        label={"Categories to which the criterion belongs"}
+                                        openDelay={200}
+                                    >
+                                        <InfoIcon/>
+                                    </CustomTooltip>
+                                </HStack>
+                            </Th>
                             <Th/>
                         </Tr>
                     </Thead>
@@ -147,7 +169,48 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </Td>
-                                    <Td textAlign={'center'} maxWidth={'45px'} minWidth={'45px'}>
+                                    <Td>
+                                        {showCategories ?
+                                            <>
+                                                {criterion.criterion_categories.map((cc, index) => {
+                                                    if (index < 3) {
+                                                        let category = categories.find(cat => cat.id === cc.category)
+                                                        return (
+                                                            <>
+                                                                <Tag bgColor={category.color} key={index}
+                                                                     m={1}>{category.name}</Tag>
+                                                                {index % 2 === 1 && <br/>}
+                                                            </>
+                                                        )
+                                                    }
+                                                    if (index === 3 && criterion.criterion_categories.length === 4) {
+                                                        let category = categories.find(cat => cat.id === cc.category)
+                                                        return (
+                                                            <Tag bgColor={category.color} key={index}
+                                                                 m={1}>{category.name}</Tag>
+                                                        )
+                                                    }
+                                                })}
+                                                {criterion.criterion_categories.length > 4 &&
+                                                    <Tag m={1}>{criterion.criterion_categories.length - 3}+</Tag>
+                                                }
+                                            </>
+                                            :
+                                            <Tag>{criterion.criterion_categories.length} categories</Tag>
+                                        }
+
+                                    </Td>
+                                    <Td textAlign={'center'} borderLeftWidth={'1px'}>
+                                        <IconButton
+                                            mx={1}
+                                            color={'yellow.300'}
+                                            aria-label={'edit-criterion'}
+                                            icon={<EditIcon/>}
+                                            onClick={() => {
+                                                setCurrentEditCriterionId(criterion.id);
+                                                onOpenEditCriterion();
+                                            }}
+                                        />
                                         <IconButton
                                             color={'red.300'}
                                             aria-label={'delete-criterion'}
@@ -161,10 +224,6 @@ const CriteriaTabDesktop = ({ criteria, setCriteria, addCriterion, deleteCriteri
                     </Tbody>
                 </Table>
             </TableContainer>
-
-            <Button mx={6} my={4} colorScheme={'teal'} onClick={addCriterion} variant='outline'>
-                New criterion
-            </Button>
         </>
     )
 }
