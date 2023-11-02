@@ -20,7 +20,6 @@ import {
     useColorModeValue,
     useDisclosure,
     useToast,
-    VStack,
 } from '@chakra-ui/react';
 import { BiCheckCircle, BiSolidFileImport, BiTrash } from "react-icons/bi";
 import { useCallback, useState } from 'react';
@@ -121,15 +120,6 @@ const ImportModal = (props) => {
         }
     }, [xmlFiles])
 
-    // const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    //     onDrop,
-    //     accept: {
-    //         'text/csv': ['.csv'],
-    //         'text/xml': ['.xml'],
-    //     },
-    //     maxSize: 1024 * 1000
-    // })
-
     const {
         getRootProps: getCsvRootProps,
         getInputProps: getCsvInputProps,
@@ -154,10 +144,6 @@ const ImportModal = (props) => {
         maxSize: 1024 * 1000,
     });
 
-    // const removeFile = name => {
-    //     setFiles(csvFiles => csvFiles.filter(file => file.name !== name))
-    // }
-
     const removeFile = (name, isCsv) => {
         if (isCsv) {
             setCsvFiles((csvFiles) => csvFiles.filter((file) => file.name !== name));
@@ -165,12 +151,6 @@ const ImportModal = (props) => {
             setXmlFiles((xmlFiles) => xmlFiles.filter((file) => file.name !== name));
         }
     };
-
-    // function handleUpload() {
-    //     for (let i = 0; i < csvFiles.length; i++) {
-    //         uploadFile(csvFiles[i]);
-    //     }
-    // }
 
     function handleUpload() {
         if (!uploadXml) {
@@ -222,46 +202,6 @@ const ImportModal = (props) => {
                 setUploading(false);
             });
     }
-
-
-    // function uploadCsvFile(fileToUpload) {
-    //     if (!fileToUpload) {
-    //         return;
-    //     }
-
-    //     const formData = new FormData();
-    //     formData.append('file', fileToUpload);
-    //     setUploading(true);
-    //     fetch(`http://localhost:8080/api/projects/${props.projectId}/upload/`, {
-    //         method: 'POST',
-    //         credentials: 'include',
-    //         body: formData,
-    //     })
-    //         .then((response) => {
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then((data) => {
-    //             setUploading(false);
-    //             onCloseInfo();
-    //             window.location.reload();
-    //         })
-    //         .catch((error) => {
-    //             if (!toast.isActive(toastId)) {
-    //                 toast({
-    //                     id: toastId,
-    //                     title: 'Error!',
-    //                     description: `Error while uploading a file: ${error}`,
-    //                     status: 'error',
-    //                     duration: 7000,
-    //                     isClosable: true,
-    //                 });
-    //             }
-    //             setUploading(false);
-    //         });
-    // }
 
     return (
         <>
