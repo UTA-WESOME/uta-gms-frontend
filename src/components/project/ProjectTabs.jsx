@@ -297,17 +297,22 @@ const ProjectTabs = (props) => {
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
             }).then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        if(response.status === 400)
-                            toastError(data.details);
-                        else
+                    if (!response.ok) {
+                        if (response.status === 400) {
+                            return response.json().then(data => {
+                                    toastError(data.details);
+                                    throw new Error('Error getting results');
+                                }
+                            )
+                        } else {
                             toastError('Sorry, some unexpected error occurred');
-                        throw new Error('Error getting results');
-                    })
+                            throw new Error('Error getting results');
+
+                        }
+                    }
+                    return response.json();
                 }
-                return response.json();
-            }).then(data => {
+            ).then(data => {
                 setCriteria(data.criteria);
                 criteriaRef.current = data.criteria;
                 setCategories(data.categories);
