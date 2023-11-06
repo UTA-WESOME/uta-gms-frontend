@@ -23,7 +23,7 @@ const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
                     </CustomTooltip>
                 }
             </Heading>
-            {Object.keys(hasseGraph).length === 0 ?
+            {hasseGraph !== null && Object.keys(hasseGraph).length === 0 ?
                 <Text p={5} fontSize={'lg'}>
                     <Highlight
                         fontSize={'lg'}
