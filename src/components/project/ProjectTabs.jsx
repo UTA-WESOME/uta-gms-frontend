@@ -20,10 +20,8 @@ import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
-import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
-import ResultsTabs from "./results-tab/ResultsTabs.jsx";
-import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 import ImportModal from "../import/ImportModal.jsx";
+import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria
@@ -368,13 +366,11 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel>
                         {hasLoaded &&
-                            <Text>Alternatives Tab</Text>
-                            // <AlternativesTab
-                            //     alternatives={alternatives}
-                            //     setAlternatives={setAlternatives}
-                            //     criteria={criteria}
-                            //     setPreferenceIntensities={setPreferenceIntensities}
-                            // />
+                            <AlternativesTab
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                                criteria={criteria}
+                            />
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>

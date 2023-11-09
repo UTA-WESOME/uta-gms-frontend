@@ -11,17 +11,15 @@ import {
     Switch,
     Table,
     TableContainer,
-    Tag,
     Tbody,
     Td,
     Text,
     Th,
     Thead,
-    Tr,
-    useMediaQuery
+    Tr
 } from "@chakra-ui/react";
 import CustomTooltip from "../../CustomTooltip.jsx";
-import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
+import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
 
 const CriteriaTabDesktop = ({
                                 criteria,

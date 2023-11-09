@@ -1,9 +1,6 @@
-import { Button, ButtonGroup, Show, useDisclosure } from "@chakra-ui/react";
+import { Button, ButtonGroup, Show } from "@chakra-ui/react";
 import CriteriaTabMobile from "./CriteriaTabMobile.jsx";
 import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
-import CategoriesPanel from "../categories-tab/categories/CategoriesPanel.jsx";
-import { useState } from "react";
-import EditCriterionCategoriesModal from "../categories-tab/categories/EditCriterionCategoriesModal.jsx";
 
 
 const CriteriaTab = ({
