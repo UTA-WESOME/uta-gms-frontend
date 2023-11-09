@@ -10,6 +10,7 @@ import {
     TabPanel,
     TabPanels,
     Tabs,
+    Text,
     useMediaQuery,
     useToast
 } from "@chakra-ui/react";
@@ -25,41 +26,57 @@ import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 import ImportModal from "../import/ImportModal.jsx";
 
 const ProjectTabs = (props) => {
-    // criteria holds active data about criteria, criterion function, criterion categories
+    // criteria holds active data about criteria
     //  [
     //      {
     //          "id": integer,
     //          "name": string,
     //          "gain": boolean,
-    //          "linear_segments": integer,
-    //          "criterion_categories": [
-    //              {
-    //                  "id": integer,
-    //                  "created_at": datetime,
-    //                  "updated_at": datetime,
-    //                  "category": integer
-    //              },
-    //              ...
-    //          ],
-    //          "criterion_function_points": [
-    //              {
-    //              "id": integer,
-    //              "ordinate": float,
-    //              "abscissa": float,
-    //              "created_at": datetime,
-    //              "updated_at": datetime
-    //          },
-    //          ...
-    //      ],
-    //      "created_at": datetime,  # optional
-    //      "updated_at": datetime,  # optional
-    //  },
-    //  ...
+    //          "linear_segments": integer
+    //      },
+    //      ...
     // ]
     const [criteria, setCriteria] = useState([]);
     const criteriaRef = useRef([]);
 
     // categories holds active data about categories in the project
+    // [
+    //     {
+    //         "id": integer,
+    //         "name": string,
+    //         "color": string,
+    //         "active": boolean,
+    //         "diagram": JSON,
+    //         "parent": integer,
+    //         "project": integer,
+    //         "criterion_categories": [
+    //             {
+    //                 "id": integer,
+    //                 "criterion": integer,
+    //             },
+    //             ...
+    //         ],
+    //         "function_points": [
+    //
+    //         ],
+    //         "preference_intensities": [
+    //
+    //         ],
+    //         "pairwise_comparisons": [
+    //
+    //         ],
+    //         "rankings": [
+    //
+    //         ],
+    //         "percentages": [
+    //
+    //         ],
+    //         "acceptability_indices": [
+    //
+    //         ]
+    //     },
+    //     ...
+    // ]
     const [categories, setCategories] = useState([]);
 
     // alternatives holds active data about alternatives and their performances
@@ -69,8 +86,6 @@ const ProjectTabs = (props) => {
     //          "name": string,
     //          "reference_ranking": integer,
     //          "ranking": integer,
-    //          "created_at": datetime,  # optional
-    //          "updated_at": datetime,  # optional
     //          "performances": [
     //              {
     //                  "id": integer,  # optional
@@ -87,33 +102,6 @@ const ProjectTabs = (props) => {
     const [alternatives, setAlternatives] = useState([]);
     const alternativesRef = useRef([]);
 
-    // preferenceIntensities holds active data about preference intensities
-    // [
-    //     {
-    //         id: integer,
-    //         alternative_1: integer,
-    //         alternative_2: integer,
-    //         alternative_3: integer,
-    //         alternative_4: integer,
-    //         criterion: integer,
-    //     },
-    //     ...
-    // ]
-    const [preferenceIntensities, setPreferenceIntensities] = useState([]);
-
-    // pairwiseComparisons holds active data about pairwise comparisons between alternatives
-    // [
-    //     {
-    //         id: integer,
-    //         type: ("preference", "indifference"),
-    //         alternative_1: integer,
-    //         alternative_2: integer,
-    //     },
-    //     ...
-    // ]
-    const [pairwiseComparisons, setPairwiseComparisons] = useState([]);
-
-    const [hasseGraph, setHasseGraph] = useState({});
     const [pairwiseMode, setPairwiseMode] = useState(false);
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -139,9 +127,6 @@ const ProjectTabs = (props) => {
             setCategories(data.categories);
             setAlternatives(data.alternatives);
             alternativesRef.current = data.alternatives;
-            setPreferenceIntensities(data.preference_intensities);
-            setPairwiseComparisons(data.pairwise_comparisons);
-            setHasseGraph(data.hasse_graph);
             setPairwiseMode(data.pairwise_mode);
             setHasLoaded(true);
         }).catch(err => {
@@ -215,22 +200,23 @@ const ProjectTabs = (props) => {
         }
 
         // check if all pairwise comparisons have different alternatives
-        const pairwiseComparisonsCheck = pairwiseComparisons.some(pc => pc.alternative_1 === pc.alternative_2)
+        const pairwiseComparisonsCheck = categories.some(c => c.pairwiseComparisons.some(pc => pc.alternative_1 === pc.alternative_2))
         if (pairwiseComparisonsCheck && pairwiseMode) {
             toastError("There is at least one pairwise comparison with identical alternatives.");
             return false;
         }
 
         // check if all best-worst positions are correct - best is higher than worst
-        const maxMinPositionsCheck = alternatives.some(alternative => (
-            alternative.best_position > alternative.worst_position &&
-            alternative.best_position !== null &&
-            alternative.worst_position !== null
-        ));
-        if (maxMinPositionsCheck) {
-            toastError("There is at least one incorrect Best-Worst preference");
-            return false;
-        }
+        // TODO
+        // const maxMinPositionsCheck = alternatives.some(alternative => (
+        //     alternative.best_position > alternative.worst_position &&
+        //     alternative.best_position !== null &&
+        //     alternative.worst_position !== null
+        // ));
+        // if (maxMinPositionsCheck) {
+        //     toastError("There is at least one incorrect Best-Worst preference");
+        //     return false;
+        // }
 
         return true;
     }
@@ -248,9 +234,7 @@ const ProjectTabs = (props) => {
                 pairwise_mode: pairwiseMode,
                 criteria: criteria,
                 categories: categories,
-                alternatives: alternatives,
-                preference_intensities: preferenceIntensities,
-                pairwise_comparisons: pairwiseComparisons,
+                alternatives: alternatives
             })
         }).then(response => {
             if (!response.ok) {
@@ -281,9 +265,7 @@ const ProjectTabs = (props) => {
                 pairwise_mode: pairwiseMode,
                 criteria: criteria,
                 categories: categories,
-                alternatives: alternatives,
-                preference_intensities: preferenceIntensities,
-                pairwise_comparisons: pairwiseComparisons,
+                alternatives: alternatives
             })
         }).then(response => {
             if (!response.ok) {
@@ -318,9 +300,6 @@ const ProjectTabs = (props) => {
                 setCategories(data.categories);
                 setAlternatives(data.alternatives);
                 alternativesRef.current = data.alternatives;
-                setPreferenceIntensities(data.preference_intensities);
-                setPairwiseComparisons(data.pairwise_comparisons);
-                setHasseGraph(data.hasse_graph);
                 setPairwiseMode(data.pairwise_mode);
                 setSaveClicked(false);
                 toastSuccess();
@@ -367,6 +346,7 @@ const ProjectTabs = (props) => {
                         <>
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
+                            <Tab>Categories</Tab>
                             <Tab>Preferences</Tab>
                             <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
                         </>
@@ -383,42 +363,49 @@ const ProjectTabs = (props) => {
                                 categories={categories}
                                 setCategories={setCategories}
                                 setAlternatives={setAlternatives}
-                                setPreferenceIntensities={setPreferenceIntensities}
                             />
                         }
                     </TabPanel>
                     <TabPanel>
                         {hasLoaded &&
-                            <AlternativesTab
-                                alternatives={alternatives}
-                                setAlternatives={setAlternatives}
-                                criteria={criteria}
-                                setPreferenceIntensities={setPreferenceIntensities}
-                            />
+                            <Text>Alternatives Tab</Text>
+                            // <AlternativesTab
+                            //     alternatives={alternatives}
+                            //     setAlternatives={setAlternatives}
+                            //     criteria={criteria}
+                            //     setPreferenceIntensities={setPreferenceIntensities}
+                            // />
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <PreferencesTabs
-                                alternatives={alternatives}
-                                setAlternatives={setAlternatives}
-                                criteria={criteria}
-                                preferenceIntensities={preferenceIntensities}
-                                setPreferenceIntensities={setPreferenceIntensities}
-                                pairwiseComparisons={pairwiseComparisons}
-                                setPairwiseComparisons={setPairwiseComparisons}
-                                pairwiseMode={pairwiseMode}
-                                setPairwiseMode={setPairwiseMode}
-                            />
+                            <Text>Categories Tab</Text>
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <ResultsTabs
-                                alternatives={alternativesRef.current}
-                                criteria={criteriaRef.current}
-                                hasseGraph={hasseGraph}
-                            />
+                            <Text>Preferences Tab</Text>
+                            // <PreferencesTabs
+                            //     alternatives={alternatives}
+                            //     setAlternatives={setAlternatives}
+                            //     criteria={criteria}
+                            //     preferenceIntensities={preferenceIntensities}
+                            //     setPreferenceIntensities={setPreferenceIntensities}
+                            //     pairwiseComparisons={pairwiseComparisons}
+                            //     setPairwiseComparisons={setPairwiseComparisons}
+                            //     pairwiseMode={pairwiseMode}
+                            //     setPairwiseMode={setPairwiseMode}
+                            // />
+                        }
+                    </TabPanel>
+                    <TabPanel p={1} py={2}>
+                        {hasLoaded &&
+                            <Text>Results Tab</Text>
+                            // <ResultsTabs
+                            //     alternatives={alternativesRef.current}
+                            //     criteria={criteriaRef.current}
+                            //     hasseGraph={hasseGraph}
+                            // />
                         }
                     </TabPanel>
                 </TabPanels>
