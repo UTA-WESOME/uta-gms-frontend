@@ -112,7 +112,7 @@ const CategoriesPanel = ({ categories, setCategories }) => {
     return (
         <>
             <Center>
-                <Heading size={'lg'} my={3}>Categories</Heading>
+                <Heading size={'lg'} my={4}>Categories</Heading>
             </Center>
             <TableContainer>
                 <Table size={'sm'}>
@@ -135,7 +135,7 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                                             value={category.parent}
                                             onChange={(event) => handleChangeParent(category.id, parseInt(event.target.value))}
                                         >
-                                            {categories.filter(cat => cat.id !== category.id).map(cat => (
+                                            {categories.filter(cat => cat.id !== category.id).filter(cat => cat.parent !== category.id).map(cat => (
                                                 <option value={cat.id} key={cat.id}>{cat.name}</option>
                                             ))}
                                         </Select>
@@ -210,9 +210,12 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                                         value={formik.values.parent}
                                         {...formik.getFieldProps("parent")}
                                     >
-                                        {categories.filter(cat => cat.id !== formik.values.id).map(cat => (
-                                            <option value={cat.id} key={cat.id}>{cat.name}</option>
-                                        ))}
+                                        {categories
+                                            .filter(cat => cat.id !== formik.values.id)
+                                            .filter(cat => cat.parent !== formik.values.id)
+                                            .map(cat => (
+                                                <option value={cat.id} key={cat.id}>{cat.name}</option>
+                                            ))}
                                     </Select>
                                 </FormControl>
                             }
@@ -251,7 +254,7 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} type={"submit"}>Confirm</Button>
+                        <Button colorScheme='teal' mr={3} type={"submit"}>Confirm</Button>
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>

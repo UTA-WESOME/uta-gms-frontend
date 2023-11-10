@@ -8,8 +8,8 @@ import {
     PopoverContent,
     PopoverTrigger,
     Text,
-    VStack,
     useColorModeValue,
+    VStack,
 } from '@chakra-ui/react';
 import { BiSolidUser, BiSolidUserCircle, BiUser, } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
@@ -33,18 +33,19 @@ const UserInfo = (props) => {
 
 
     return (
-        <Popover placement='bottom-start' arrowSize={'20'} offset={[0, 16]} >
-            {({ isOpen, onClose }) => (
+        <Popover placement='bottom-start' arrowSize={'20'} offset={[0, 16]}>
+            {({ isOpen, _ }) => (
                 <>
                     <PopoverTrigger>
                         <IconButton
+                            aria-label={'user-icon'}
                             fontSize={'sm'}
                             fontWeight={400}
                             icon={<Icon as={isOpen ? BiSolidUser : BiUser} minH={'7'} minW={'7'}
-                                color={useColorModeValue('teal.500', 'teal.200')} />} />
+                                        color={useColorModeValue('teal.500', 'teal.200')}/>}/>
                     </PopoverTrigger>
                     <PopoverContent>
-                        <PopoverArrow borderRadius={'4px'} />
+                        <PopoverArrow borderRadius={'4px'}/>
                         <PopoverBody>
                             <VStack
                                 justify={'center'}
@@ -54,9 +55,9 @@ const UserInfo = (props) => {
                                 </Text>
 
                                 <Icon as={BiSolidUserCircle} minH={32} minW={32}
-                                    color={useColorModeValue('teal.500', 'teal.200')} />
+                                      color={useColorModeValue('teal.500', 'teal.200')}/>
 
-                                <Text fontSize={'24px'}textAlign="center" lineHeight={'50%'}>
+                                <Text fontSize={'24px'} textAlign="center" lineHeight={'50%'}>
                                     {props.userEmail}
                                 </Text>
 
@@ -68,7 +69,7 @@ const UserInfo = (props) => {
                                     onClick={() => {
                                         logout();
                                         navigate("/");
-                                    }} >
+                                    }}>
                                     Logout
                                 </Button>
                             </VStack>
@@ -77,7 +78,7 @@ const UserInfo = (props) => {
                 </>
             )
             }
-        </Popover >
+        </Popover>
     )
 };
 export default UserInfo;

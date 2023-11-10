@@ -1,9 +1,13 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, useColorModeValue } from "@chakra-ui/react";
 import CategoriesPanel from "./panel/CategoriesPanel.jsx";
+import Graphviz from "../../utils/Graphviz.jsx";
+import { generateHierarchyDotString } from "./hierarchy/graph.js";
 
 const CategoriesTab = ({ categories, setCategories }) => {
 
 
+    const bgColor = useColorModeValue("#FFFFFF", "#1A202C");
+    const nodeBgColor = useColorModeValue("#E2E8F0", "#F7FAFC");
     return (
         <Flex
             w={'full'}
@@ -24,10 +28,13 @@ const CategoriesTab = ({ categories, setCategories }) => {
                 w={'65%'}
                 m={3}
                 mt={4}
-                borderWidth={'1px'}
-                borderRadius={5}
             >
-                Graph here
+                <Center>
+                    <Heading size={'lg'} my={4}>Hierarchy</Heading>
+                </Center>
+                <Graphviz
+                    dot={generateHierarchyDotString(categories, bgColor, nodeBgColor)}
+                />
             </Box>
         </Flex>
     )
