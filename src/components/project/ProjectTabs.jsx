@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import ImportModal from "../import/ImportModal.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
+import CategoriesTab from "./categories-tab/CategoriesTab.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria
@@ -373,7 +374,9 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <Text>Categories Tab</Text>
+                            <CategoriesTab
+                                categories={categories}
+                            />
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>

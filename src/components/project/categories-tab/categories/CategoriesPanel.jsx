@@ -1,36 +1,19 @@
 import {
     Button,
-    ButtonGroup,
-    FormControl,
+    Center,
+    Heading,
     IconButton,
-    Input,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Popover,
-    PopoverArrow,
-    PopoverBody,
-    PopoverCloseButton,
-    PopoverContent,
-    PopoverHeader,
-    PopoverTrigger,
-    SimpleGrid,
-    Switch,
+    Select,
     Table,
     TableContainer,
     Tbody,
     Td,
+    Text,
     Th,
     Thead,
-    Tr,
-    useToast
+    Tr
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { MdColorLens } from "react-icons/md";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 const colors = [
     "teal.500",
@@ -45,208 +28,205 @@ const colors = [
     "teal.400"
 ];
 
-const CategoriesPanel = ({ isOpen, onClose, categories, setCategories, setCriteria }) => {
+const CategoriesPanel = ({ categories }) => {
 
-    const [activeCategories, setActiveCategories] = useState(categories);
-    const toast = useToast();
+    // const addCategory = () => {
+    //     let maxId = Math.max(...activeCategories.map(i => i.id));
+    //     maxId = maxId === -Infinity ? 0 : maxId;
+    //
+    //     setActiveCategories([...activeCategories, {
+    //         id: maxId + 1,
+    //         name: `Category ${activeCategories.length + 1}`,
+    //         color: 'teal.400',
+    //         active: true
+    //     }])
+    // }
+    //
+    // const deleteCategory = (categoryId) => {
+    //     setActiveCategories(activeCategories.filter(item => item.id !== categoryId));
+    // }
 
-    const save = () => {
-        // validate data
-        const categoriesCheckName = activeCategories.some(cat => cat.name === "");
-        if (categoriesCheckName) {
-            toast({
-                title: "Error!",
-                description: "There is at least one criterion without a name!",
-                status: 'error',
-                duration: 5000,
-                isClosable: true
-            });
-            return;
-        }
+    // const handleChangeName = (event, categoryId) => {
+    //     let newName = event.target.value;
+    //     if (newName.length <= 15) {
+    //         setActiveCategories(activeCategories.map(cat => {
+    //             if (cat.id === categoryId)
+    //                 return {
+    //                     ...cat,
+    //                     name: newName,
+    //                 };
+    //             return cat;
+    //         }))
+    //     } else {
+    //         let category = categories.find(cat => cat.id === categoryId)
+    //         event.target.value = category.name;
+    //     }
+    // }
+    //
+    // const handleChangeColor = (categoryId, color) => {
+    //     setActiveCategories(activeCategories.map(cat => {
+    //         if (cat.id === categoryId)
+    //             return {
+    //                 ...cat,
+    //                 color: color
+    //             };
+    //         return cat;
+    //     }))
+    // }
+    //
+    // const handleChangeType = (categoryId) => {
+    //     setActiveCategories(activeCategories.map(cat => {
+    //         if (cat.id === categoryId)
+    //             return {
+    //                 ...cat,
+    //                 active: !cat.active,
+    //             };
+    //         return cat;
+    //     }))
+    // }
 
-        // set categories to activeCategories
-        setCategories(activeCategories);
+    const handleChangeParent = (categoryId, newParentId) => {
 
-        // update criteria - leave only those ccs that have a corresponding category
-        setCriteria(pCriteria => pCriteria.map(criterion => {
-            return {
-                ...criterion,
-                criterion_categories: criterion.criterion_categories.filter(cc => {
-                    return activeCategories.some(activeCategory => activeCategory.id === cc.category);
-                })
-            }
-        }))
-
-        onClose();
     }
 
-    const exit = () => {
-        setActiveCategories(categories);
-        onClose();
-    }
-
-    const addCategory = () => {
-        let maxId = Math.max(...activeCategories.map(i => i.id));
-        maxId = maxId === -Infinity ? 0 : maxId;
-
-        setActiveCategories([...activeCategories, {
-            id: maxId + 1,
-            name: `Category ${activeCategories.length + 1}`,
-            color: 'teal.400',
-            active: true
-        }])
-    }
-
-    const deleteCategory = (categoryId) => {
-        setActiveCategories(activeCategories.filter(item => item.id !== categoryId));
-    }
-
-    const handleChangeName = (event, categoryId) => {
-        let newName = event.target.value;
-        if (newName.length <= 15) {
-            setActiveCategories(activeCategories.map(cat => {
-                if (cat.id === categoryId)
-                    return {
-                        ...cat,
-                        name: newName,
-                    };
-                return cat;
-            }))
-        } else {
-            let category = categories.find(cat => cat.id === categoryId)
-            event.target.value = category.name;
-        }
-    }
-
-    const handleChangeColor = (categoryId, color) => {
-        setActiveCategories(activeCategories.map(cat => {
-            if (cat.id === categoryId)
-                return {
-                    ...cat,
-                    color: color
-                };
-            return cat;
-        }))
-    }
-
-    const handleChangeType = (categoryId) => {
-        setActiveCategories(activeCategories.map(cat => {
-            if (cat.id === categoryId)
-                return {
-                    ...cat,
-                    active: !cat.active,
-                };
-            return cat;
-        }))
-    }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior={'inside'} closeOnOverlayClick={false}>
-            <ModalOverlay/>
-            <ModalContent mx={'15px'} maxH={'600px'}>
-                <ModalHeader>Categories</ModalHeader>
-                <ModalBody>
-                    <TableContainer>
-                        <Table size={'sm'}>
-                            <Thead>
-                                <Tr>
-                                    <Th borderColor={'white.700'}>Name</Th>
-                                    <Th borderColor={'white.700'}>Color</Th>
-                                    <Th borderColor={'white.700'}>Active</Th>
-                                    <Th borderColor={'white.700'}>Actions</Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {activeCategories.map((category, index) => (
-                                    <Tr key={index}>
-                                        <Td borderColor={'gray'}>
-                                            <FormControl isInvalid={category.name.length === 0}>
-                                                <Input
-                                                    key={category.id}
-                                                    defaultValue={category.name}
-                                                    onBlur={(event) => handleChangeName(event, category.id)}
-                                                />
-                                            </FormControl>
-                                        </Td>
-                                        <Td textAlign={'center'} borderColor={'gray'}>
-                                            <Popover>
-                                                <PopoverTrigger>
-                                                    <IconButton
-                                                        aria-label={'color-button'}
-                                                        color={'white'}
-                                                        bgColor={category.color}
-                                                        _hover={{ bgColor: category.color }}
-                                                        icon={<MdColorLens/>}
-                                                    />
-                                                </PopoverTrigger>
-                                                <PopoverContent width={'170px'}>
-                                                    <PopoverArrow bg={category.color}/>
-                                                    <PopoverCloseButton color={'white'}/>
-                                                    <PopoverHeader
-                                                        height="35px"
-                                                        backgroundColor={category.color}
-                                                        borderTopLeftRadius={5}
-                                                        borderTopRightRadius={5}
-                                                        color="white"
-                                                    />
-                                                    <PopoverBody my={1}>
-                                                        <SimpleGrid columns={5} spacing={2}>
-                                                            <>
-                                                                {colors.map((c) => (
-                                                                    <Button
-                                                                        key={c}
-                                                                        aria-label={c}
-                                                                        background={c}
-                                                                        height="22px"
-                                                                        width="22px"
-                                                                        padding={0}
-                                                                        minWidth="unset"
-                                                                        borderRadius={3}
-                                                                        _hover={{ background: c }}
-                                                                        onClick={() => {
-                                                                            handleChangeColor(category.id, c);
-                                                                        }}
-                                                                    />
-                                                                ))}
-                                                            </>
-                                                        </SimpleGrid>
-                                                    </PopoverBody>
-                                                </PopoverContent>
-                                            </Popover>
-                                        </Td>
-                                        <Td textAlign={'center'} borderColor={'gray'}>
-                                            <Switch
-                                                key={category.id}
-                                                colorScheme={'teal'}
-                                                defaultChecked={category.active}
-                                                onChange={() => handleChangeType(category.id)}
-                                            />
-                                        </Td>
-                                        <Td textAlign={'center'} borderColor={'gray'}>
-                                            <IconButton
-                                                color={'red.300'}
-                                                aria-label={'delete-category'}
-                                                icon={<DeleteIcon/>}
-                                                onClick={() => deleteCategory(category.id)}
-                                            />
-                                        </Td>
-                                    </Tr>
-                                ))}
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
-                    <Button mx={4} mt={4} colorScheme={'teal'} onClick={addCategory} variant='outline'>
-                        New category
-                    </Button>
-                </ModalBody>
-                <ModalFooter>
-                    <ButtonGroup pt={"1rem"}>
-                        <Button colorScheme={"teal"} onClick={save}>Confirm</Button>
-                        <Button onClick={exit}>Back</Button>
-                    </ButtonGroup>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+        <>
+            <Center>
+                <Heading size={'lg'} my={3}>Categories</Heading>
+            </Center>
+            <TableContainer>
+                <Table size={'sm'}>
+                    <Thead>
+                        <Tr>
+                            <Th>Name</Th>
+                            <Th>Parent</Th>
+                            <Th>Actions</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {categories.map((category, index) => (
+                            <Tr key={index}>
+                                <Td>
+                                    <Text fontSize={'md'}>{category.name}</Text>
+                                </Td>
+                                <Td>
+                                    {index !== 0 &&
+                                        <Select
+                                            value={category.parent}
+                                            onChange={(event) => handleChangeParent(category.id, parseInt(event.target.value))}
+                                        >
+                                            {categories.filter(cat => cat.id !== category.id).map(cat => (
+                                                <option value={cat.id} key={cat.id}>{cat.name}</option>
+                                            ))}
+                                        </Select>
+                                    }
+                                </Td>
+                                <Td w={'min-content'}>
+                                    <IconButton
+                                        mr={1}
+                                        color={'orange.300'}
+                                        aria-label={'edit-category'}
+                                        icon={<EditIcon/>}
+                                    />
+                                    {index !== 0 &&
+                                        <IconButton
+                                            ml={1}
+                                            color={'red.300'}
+                                            aria-label={'delete-category'}
+                                            icon={<DeleteIcon/>}
+                                            // onClick={() => deleteCategory(category.id)}
+                                        />
+                                    }
+                                </Td>
+                            </Tr>
+                        ))}
+
+
+                        {/*{categories.map((category, index) => (*/}
+                        {/*    <Tr key={index}>*/}
+                        {/*        <Td maxW={'150px'}>*/}
+                        {/*            <FormControl isInvalid={category.name.length === 0}>*/}
+                        {/*                <Input*/}
+                        {/*                    key={category.id}*/}
+                        {/*                    defaultValue={category.name}*/}
+                        {/*                    // onBlur={(event) => handleChangeName(event, category.id)}*/}
+                        {/*                />*/}
+                        {/*            </FormControl>*/}
+                        {/*        </Td>*/}
+                        {/*        <Td>*/}
+                        {/*            <Popover>*/}
+                        {/*                <PopoverTrigger>*/}
+                        {/*                    <IconButton*/}
+                        {/*                        aria-label={'color-button'}*/}
+                        {/*                        color={'white'}*/}
+                        {/*                        bgColor={category.color}*/}
+                        {/*                        _hover={{ bgColor: category.color }}*/}
+                        {/*                        icon={<MdColorLens/>}*/}
+                        {/*                    />*/}
+                        {/*                </PopoverTrigger>*/}
+                        {/*                <PopoverContent width={'170px'}>*/}
+                        {/*                    <PopoverArrow bg={category.color}/>*/}
+                        {/*                    <PopoverCloseButton color={'white'}/>*/}
+                        {/*                    <PopoverHeader*/}
+                        {/*                        height="35px"*/}
+                        {/*                        backgroundColor={category.color}*/}
+                        {/*                        borderTopLeftRadius={5}*/}
+                        {/*                        borderTopRightRadius={5}*/}
+                        {/*                        color="white"*/}
+                        {/*                    />*/}
+                        {/*                    <PopoverBody my={1}>*/}
+                        {/*                        <SimpleGrid columns={5} spacing={2}>*/}
+                        {/*                            <>*/}
+                        {/*                                {colors.map((c) => (*/}
+                        {/*                                    <Button*/}
+                        {/*                                        key={c}*/}
+                        {/*                                        aria-label={c}*/}
+                        {/*                                        background={c}*/}
+                        {/*                                        height="22px"*/}
+                        {/*                                        width="22px"*/}
+                        {/*                                        padding={0}*/}
+                        {/*                                        minWidth="unset"*/}
+                        {/*                                        borderRadius={3}*/}
+                        {/*                                        _hover={{ background: c }}*/}
+                        {/*                                        onClick={() => {*/}
+                        {/*                                            // handleChangeColor(category.id, c);*/}
+                        {/*                                        }}*/}
+                        {/*                                    />*/}
+                        {/*                                ))}*/}
+                        {/*                            </>*/}
+                        {/*                        </SimpleGrid>*/}
+                        {/*                    </PopoverBody>*/}
+                        {/*                </PopoverContent>*/}
+                        {/*            </Popover>*/}
+                        {/*        </Td>*/}
+                        {/*        <Td>*/}
+                        {/*            <Switch*/}
+                        {/*                key={category.id}*/}
+                        {/*                colorScheme={'teal'}*/}
+                        {/*                defaultChecked={category.active}*/}
+                        {/*                // onChange={() => handleChangeType(category.id)}*/}
+                        {/*            />*/}
+                        {/*        </Td>*/}
+                        {/*        <Td>*/}
+                        {/*            <IconButton*/}
+                        {/*                color={'red.300'}*/}
+                        {/*                aria-label={'delete-category'}*/}
+                        {/*                icon={<DeleteIcon/>}*/}
+                        {/*                // onClick={() => deleteCategory(category.id)}*/}
+                        {/*            />*/}
+                        {/*        </Td>*/}
+                        {/*    </Tr>*/}
+                        {/*))}*/}
+                    </Tbody>
+                </Table>
+                <Button mt={4} colorScheme={'teal'} variant='outline'>
+                    New category
+                </Button>
+            </TableContainer>
+
+        </>
+
     )
 }
 
