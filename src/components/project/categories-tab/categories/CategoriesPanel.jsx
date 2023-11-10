@@ -28,23 +28,7 @@ const colors = [
     "teal.400"
 ];
 
-const CategoriesPanel = ({ categories }) => {
-
-    // const addCategory = () => {
-    //     let maxId = Math.max(...activeCategories.map(i => i.id));
-    //     maxId = maxId === -Infinity ? 0 : maxId;
-    //
-    //     setActiveCategories([...activeCategories, {
-    //         id: maxId + 1,
-    //         name: `Category ${activeCategories.length + 1}`,
-    //         color: 'teal.400',
-    //         active: true
-    //     }])
-    // }
-    //
-    // const deleteCategory = (categoryId) => {
-    //     setActiveCategories(activeCategories.filter(item => item.id !== categoryId));
-    // }
+const CategoriesPanel = ({ categories, setCategories }) => {
 
     // const handleChangeName = (event, categoryId) => {
     //     let newName = event.target.value;
@@ -85,8 +69,54 @@ const CategoriesPanel = ({ categories }) => {
     //     }))
     // }
 
-    const handleChangeParent = (categoryId, newParentId) => {
+    const addCategory = () => {
+        let maxId = Math.max(...categories.map(i => i.id));
+        maxId = maxId === -Infinity ? 0 : maxId;
 
+        let generalId = Math.min(...categories.map(i => i.id));
+
+        setCategories([...categories, {
+            id: maxId + 1,
+            name: `Category`,
+            color: 'teal.400',
+            active: true,
+            diagram: {},
+            parent: generalId,
+            criterion_categories: [],
+            function_points: [],
+            preference_intensities: [],
+            pairwise_comparisons: [],
+            rankings: [],
+            percentages: [],
+            acceptability_indices: []
+        }])
+    }
+
+    const deleteCategory = (categoryId) => {
+        // delete the category from categories
+        setCategories(categories);
+
+        let generalId = Math.min(...categories.map(i => i.id));
+        // update its children
+        setCategories(categories.filter(item => item.id !== categoryId).map(category => {
+            if (category.parent === categoryId)
+                return {
+                    ...category,
+                    parent: generalId
+                }
+            return category;
+        }))
+    }
+
+    const handleChangeParent = (categoryId, newParentId) => {
+        setCategories(categories.map(category => {
+            if (category.id === categoryId)
+                return {
+                    ...category,
+                    parent: newParentId,
+                }
+            return category
+        }))
     }
 
 
@@ -135,7 +165,7 @@ const CategoriesPanel = ({ categories }) => {
                                             color={'red.300'}
                                             aria-label={'delete-category'}
                                             icon={<DeleteIcon/>}
-                                            // onClick={() => deleteCategory(category.id)}
+                                            onClick={() => deleteCategory(category.id)}
                                         />
                                     }
                                 </Td>
@@ -220,7 +250,7 @@ const CategoriesPanel = ({ categories }) => {
                         {/*))}*/}
                     </Tbody>
                 </Table>
-                <Button mt={4} colorScheme={'teal'} variant='outline'>
+                <Button mt={4} colorScheme={'teal'} onClick={addCategory} variant='outline'>
                     New category
                 </Button>
             </TableContainer>

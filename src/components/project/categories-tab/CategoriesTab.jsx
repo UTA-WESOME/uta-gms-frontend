@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import CategoriesPanel from "./categories/CategoriesPanel.jsx";
 
-const CategoriesTab = ({ categories }) => {
+const CategoriesTab = ({ categories, setCategories }) => {
 
 
     return (
@@ -17,6 +17,7 @@ const CategoriesTab = ({ categories }) => {
             >
                 <CategoriesPanel
                     categories={categories}
+                    setCategories={setCategories}
                 />
             </Box>
             <Box

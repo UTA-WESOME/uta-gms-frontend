@@ -376,6 +376,7 @@ const ProjectTabs = (props) => {
                         {hasLoaded &&
                             <CategoriesTab
                                 categories={categories}
+                                setCategories={setCategories}
                             />
                         }
                     </TabPanel>
