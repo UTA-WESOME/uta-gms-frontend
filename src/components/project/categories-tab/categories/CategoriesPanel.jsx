@@ -1,9 +1,22 @@
 import {
     Button,
     Center,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
     Heading,
+    HStack,
     IconButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Select,
+    Switch,
     Table,
     TableContainer,
     Tbody,
@@ -11,69 +24,45 @@ import {
     Text,
     Th,
     Thead,
-    Tr
+    Tr,
+    useDisclosure,
+    VStack
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-
-const colors = [
-    "teal.500",
-    "red.500",
-    "green.500",
-    "blue.500",
-    "tomato",
-    "yellow.500",
-    "orange.700",
-    "purple.500",
-    "pink.500",
-    "teal.400"
-];
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import ColorPicker from "./ColorPicker.jsx";
 
 const CategoriesPanel = ({ categories, setCategories }) => {
 
-    // const handleChangeName = (event, categoryId) => {
-    //     let newName = event.target.value;
-    //     if (newName.length <= 15) {
-    //         setActiveCategories(activeCategories.map(cat => {
-    //             if (cat.id === categoryId)
-    //                 return {
-    //                     ...cat,
-    //                     name: newName,
-    //                 };
-    //             return cat;
-    //         }))
-    //     } else {
-    //         let category = categories.find(cat => cat.id === categoryId)
-    //         event.target.value = category.name;
-    //     }
-    // }
-    //
-    // const handleChangeColor = (categoryId, color) => {
-    //     setActiveCategories(activeCategories.map(cat => {
-    //         if (cat.id === categoryId)
-    //             return {
-    //                 ...cat,
-    //                 color: color
-    //             };
-    //         return cat;
-    //     }))
-    // }
-    //
-    // const handleChangeType = (categoryId) => {
-    //     setActiveCategories(activeCategories.map(cat => {
-    //         if (cat.id === categoryId)
-    //             return {
-    //                 ...cat,
-    //                 active: !cat.active,
-    //             };
-    //         return cat;
-    //     }))
-    // }
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    let generalId = Math.min(...categories.map(i => i.id));
+    const formik = useFormik({
+        initialValues: { id: 0, name: "", color: "teal.500", active: true, parent: generalId },
+        validationSchema: Yup.object({
+            name: Yup.string().required("Category name is required!").max(15, "Category name too long!"),
+            color: Yup.string(),
+            active: Yup.boolean()
+        }),
+        onSubmit: (values, _) => {
+            setCategories(categories.map(category => {
+                if (category.id === values.id)
+                    return {
+                        ...category,
+                        name: values.name,
+                        color: values.color,
+                        active: values.active,
+                        parent: values.parent
+                    }
+                return category;
+            }))
+            onClose();
+        }
+    })
 
     const addCategory = () => {
         let maxId = Math.max(...categories.map(i => i.id));
         maxId = maxId === -Infinity ? 0 : maxId;
-
-        let generalId = Math.min(...categories.map(i => i.id));
 
         setCategories([...categories, {
             id: maxId + 1,
@@ -158,6 +147,17 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                                         color={'orange.300'}
                                         aria-label={'edit-category'}
                                         icon={<EditIcon/>}
+                                        onClick={() => {
+                                            formik.setValues({
+                                                id: category.id,
+                                                name: category.name,
+                                                color: category.color,
+                                                active: category.active,
+                                                parent: category.parent
+                                            });
+                                            formik.setErrors({});
+                                            onOpen();
+                                        }}
                                     />
                                     {index !== 0 &&
                                         <IconButton
@@ -171,83 +171,6 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                                 </Td>
                             </Tr>
                         ))}
-
-
-                        {/*{categories.map((category, index) => (*/}
-                        {/*    <Tr key={index}>*/}
-                        {/*        <Td maxW={'150px'}>*/}
-                        {/*            <FormControl isInvalid={category.name.length === 0}>*/}
-                        {/*                <Input*/}
-                        {/*                    key={category.id}*/}
-                        {/*                    defaultValue={category.name}*/}
-                        {/*                    // onBlur={(event) => handleChangeName(event, category.id)}*/}
-                        {/*                />*/}
-                        {/*            </FormControl>*/}
-                        {/*        </Td>*/}
-                        {/*        <Td>*/}
-                        {/*            <Popover>*/}
-                        {/*                <PopoverTrigger>*/}
-                        {/*                    <IconButton*/}
-                        {/*                        aria-label={'color-button'}*/}
-                        {/*                        color={'white'}*/}
-                        {/*                        bgColor={category.color}*/}
-                        {/*                        _hover={{ bgColor: category.color }}*/}
-                        {/*                        icon={<MdColorLens/>}*/}
-                        {/*                    />*/}
-                        {/*                </PopoverTrigger>*/}
-                        {/*                <PopoverContent width={'170px'}>*/}
-                        {/*                    <PopoverArrow bg={category.color}/>*/}
-                        {/*                    <PopoverCloseButton color={'white'}/>*/}
-                        {/*                    <PopoverHeader*/}
-                        {/*                        height="35px"*/}
-                        {/*                        backgroundColor={category.color}*/}
-                        {/*                        borderTopLeftRadius={5}*/}
-                        {/*                        borderTopRightRadius={5}*/}
-                        {/*                        color="white"*/}
-                        {/*                    />*/}
-                        {/*                    <PopoverBody my={1}>*/}
-                        {/*                        <SimpleGrid columns={5} spacing={2}>*/}
-                        {/*                            <>*/}
-                        {/*                                {colors.map((c) => (*/}
-                        {/*                                    <Button*/}
-                        {/*                                        key={c}*/}
-                        {/*                                        aria-label={c}*/}
-                        {/*                                        background={c}*/}
-                        {/*                                        height="22px"*/}
-                        {/*                                        width="22px"*/}
-                        {/*                                        padding={0}*/}
-                        {/*                                        minWidth="unset"*/}
-                        {/*                                        borderRadius={3}*/}
-                        {/*                                        _hover={{ background: c }}*/}
-                        {/*                                        onClick={() => {*/}
-                        {/*                                            // handleChangeColor(category.id, c);*/}
-                        {/*                                        }}*/}
-                        {/*                                    />*/}
-                        {/*                                ))}*/}
-                        {/*                            </>*/}
-                        {/*                        </SimpleGrid>*/}
-                        {/*                    </PopoverBody>*/}
-                        {/*                </PopoverContent>*/}
-                        {/*            </Popover>*/}
-                        {/*        </Td>*/}
-                        {/*        <Td>*/}
-                        {/*            <Switch*/}
-                        {/*                key={category.id}*/}
-                        {/*                colorScheme={'teal'}*/}
-                        {/*                defaultChecked={category.active}*/}
-                        {/*                // onChange={() => handleChangeType(category.id)}*/}
-                        {/*            />*/}
-                        {/*        </Td>*/}
-                        {/*        <Td>*/}
-                        {/*            <IconButton*/}
-                        {/*                color={'red.300'}*/}
-                        {/*                aria-label={'delete-category'}*/}
-                        {/*                icon={<DeleteIcon/>}*/}
-                        {/*                // onClick={() => deleteCategory(category.id)}*/}
-                        {/*            />*/}
-                        {/*        </Td>*/}
-                        {/*    </Tr>*/}
-                        {/*))}*/}
                     </Tbody>
                 </Table>
                 <Button mt={4} colorScheme={'teal'} onClick={addCategory} variant='outline'>
@@ -255,6 +178,84 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                 </Button>
             </TableContainer>
 
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+            >
+                <ModalOverlay/>
+                <ModalContent
+                    mx={'15px'}
+                    as={'form'}
+                    onSubmit={formik.handleSubmit}
+                >
+                    <ModalHeader>Edit category</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody textAlign={'center'}>
+                        <VStack spacing={'15px'}>
+                            <FormControl isInvalid={formik.errors.name && formik.touched.name}>
+                                <FormLabel fontSize={'sm'}>Name</FormLabel>
+                                <Input
+                                    name={"name"}
+                                    autoComplete={"off"}
+                                    {...formik.getFieldProps("name")}
+                                />
+                                <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+                            </FormControl>
+
+                            {/*PARENT*/}
+                            {formik.values.id !== generalId &&
+                                <FormControl>
+                                    <FormLabel fontSize={'sm'}>Parent</FormLabel>
+                                    <Select
+                                        value={formik.values.parent}
+                                        {...formik.getFieldProps("parent")}
+                                    >
+                                        {categories.filter(cat => cat.id !== formik.values.id).map(cat => (
+                                            <option value={cat.id} key={cat.id}>{cat.name}</option>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
+
+                            {/*ACTIVE*/}
+                            <FormControl>
+                                <FormLabel fontSize={'sm'}>
+                                    <Text>Active</Text>
+                                </FormLabel>
+                                <HStack>
+                                    <Switch
+                                        name={'active'}
+                                        isChecked={formik.values.active}
+                                        colorScheme={'teal'}
+                                        {...formik.getFieldProps("active")}
+                                    />
+                                </HStack>
+                            </FormControl>
+
+                            {/*COLOR PICKER*/}
+                            <FormControl>
+                                <FormLabel fontSize={'sm'}>
+                                    <Text>Color</Text>
+                                </FormLabel>
+                                <HStack>
+                                    <ColorPicker
+                                        pickedColor={formik.values.color}
+                                        pickFunction={(color) => {
+                                            formik.setFieldValue("color", color);
+                                        }}
+                                    />
+                                </HStack>
+                            </FormControl>
+
+                        </VStack>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='blue' mr={3} type={"submit"}>Confirm</Button>
+                        <Button onClick={onClose}>Cancel</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </>
 
     )

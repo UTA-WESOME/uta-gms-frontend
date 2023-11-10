@@ -11,7 +11,7 @@ const CategoriesTab = ({ categories, setCategories }) => {
             justify={'space-evenly'}
         >
             <Box
-                w={'30%'}
+                w={'35%'}
                 m={3}
                 mt={4}
             >
@@ -21,7 +21,7 @@ const CategoriesTab = ({ categories, setCategories }) => {
                 />
             </Box>
             <Box
-                w={'70%'}
+                w={'65%'}
                 m={3}
                 mt={4}
                 borderWidth={'1px'}
