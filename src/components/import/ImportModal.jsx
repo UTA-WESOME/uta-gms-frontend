@@ -153,7 +153,7 @@ const ImportModal = (props) => {
     };
 
     function handleUpload() {
-        if (!uploadXml) {
+        if (uploadXml) {
             uploadFiles(xmlFiles)
         }
         else {
@@ -241,7 +241,7 @@ const ImportModal = (props) => {
 
                         <HStack mb={'8'}>
                             <Text color={uploadXml ? 'gray' : 'teal.300'}>
-                                XMCDA
+                                CSV
                             </Text>
                             <Switch
                                 colorschemechecked={'teal'}
@@ -250,11 +250,11 @@ const ImportModal = (props) => {
                                 onChange={() => setUploadXml(!uploadXml)}
                             />
                             <Text color={uploadXml ? 'teal.300' : 'gray'}>
-                                CSV
+                                XMCDA
                             </Text>
                         </HStack>
 
-                        {uploadXml ?
+                        {!uploadXml ?
                             // Upload csv
                             <form>
                                 <Box
