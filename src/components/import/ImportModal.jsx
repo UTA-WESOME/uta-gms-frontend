@@ -179,11 +179,13 @@ const ImportModal = (props) => {
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    return response.json().then((data) => {
+                        throw new Error(data.message);
+                    });
                 }
                 return response.json();
             })
-            .then((data) => {
+            .then(() => {
                 setUploading(false);
                 onCloseInfo();
                 window.location.reload();
@@ -217,6 +219,7 @@ const ImportModal = (props) => {
                     Import from file
                 </Button>
                 : <IconButton
+                    aria-label={'Import file'}
                     colorScheme={'teal'}
                     icon={<BiSolidFileImport />}
                     onClick={onOpenInfo} >
@@ -281,7 +284,7 @@ const ImportModal = (props) => {
                                 </Box>
 
 
-                                {csvFiles.length != 0
+                                {csvFiles.length !== 0
                                     ? <Box mb={6}>
                                         <Heading size={'md'}>
                                             Accepted files:
@@ -334,7 +337,7 @@ const ImportModal = (props) => {
                                     </div>
                                 </Box>
 
-                                {xmlFiles.length != 0
+                                {xmlFiles.length !== 0
                                     ? <Box mb={6}>
                                         <Heading size={'md'}>
                                             Accepted files:
