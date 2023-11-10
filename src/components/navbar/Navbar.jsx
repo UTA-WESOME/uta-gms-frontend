@@ -19,7 +19,7 @@ import { useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, } from '@chakra-ui/icons';
 import ToggleColorMode from "./ToggleColorMode.jsx";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "./utils/useLocalStorage.jsx";
+import { useLocalStorage } from "../utils/useLocalStorage.jsx";
 import UserInfo from './UserInfo.jsx';
 
 export default function Navbar(props) {

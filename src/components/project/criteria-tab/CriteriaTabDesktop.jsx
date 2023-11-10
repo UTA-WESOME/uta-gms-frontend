@@ -18,7 +18,7 @@ import {
     Thead,
     Tr
 } from "@chakra-ui/react";
-import CustomTooltip from "../../CustomTooltip.jsx";
+import CustomTooltip from "../../utils/CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
 
 const CriteriaTabDesktop = ({

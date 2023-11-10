@@ -1,5 +1,5 @@
 import {Outlet, useNavigate} from "react-router-dom";
-import Navbar from "./components/Navbar.jsx";
+import Navbar from "./components/navbar/Navbar.jsx";
 import {useCallback, useEffect, useState} from "react";
 import {useLocalStorage} from "./components/utils/useLocalStorage.jsx";
 

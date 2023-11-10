@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import CategoriesPanel from "./categories/CategoriesPanel.jsx";
+import CategoriesPanel from "./panel/CategoriesPanel.jsx";
 
 const CategoriesTab = ({ categories, setCategories }) => {
 

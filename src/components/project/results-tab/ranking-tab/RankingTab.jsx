@@ -1,5 +1,5 @@
 import { Box, Divider, Heading, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import CustomTooltip from "../../../CustomTooltip.jsx";
+import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { WarningIcon } from "@chakra-ui/icons";
 
 const RankingTab = ({ alternatives }) => {

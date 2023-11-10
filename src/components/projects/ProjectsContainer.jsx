@@ -29,7 +29,7 @@ import { BiLeftArrow, BiRightArrow, BiSearchAlt, BiSortDown, } from "react-icons
 
 import ProjectCard from "./ProjectCard";
 import AddProjectCard from "./AddProjectCard";
-import CustomTooltip from "../CustomTooltip";
+import CustomTooltip from "../utils/CustomTooltip.jsx";
 
 
 const ProjectsContainer = ({ projects, setProjects }) => {

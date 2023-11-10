@@ -4,7 +4,7 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { BiSolidPlusCircle } from "react-icons/bi";
-import CustomTooltip from '../CustomTooltip';
+import CustomTooltip from '../utils/CustomTooltip.jsx';
 
 
 const AddProjectCard = () => {

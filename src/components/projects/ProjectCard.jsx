@@ -29,7 +29,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash, } from "react-icons/bi";
-import CustomTooltip from "../CustomTooltip";
+import CustomTooltip from "../utils/CustomTooltip.jsx";
 
 
 const ProjectCard = ({ id, name, createdAt, description }) => {

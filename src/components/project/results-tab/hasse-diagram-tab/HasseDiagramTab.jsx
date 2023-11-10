@@ -1,7 +1,7 @@
 import { Box, Heading, Highlight, useColorModeValue, Text } from "@chakra-ui/react";
-import Graphviz from "./Graphviz.jsx";
+import Graphviz from "../../../utils/Graphviz.jsx";
 import { generateDotString } from "./graph.js";
-import CustomTooltip from "../../../CustomTooltip.jsx";
+import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { WarningIcon } from "@chakra-ui/icons";
 
 

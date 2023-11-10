@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { BiSolidUser, BiSolidUserCircle, BiUser, } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "./utils/useLocalStorage.jsx";
+import { useLocalStorage } from "../utils/useLocalStorage.jsx";
 
 
 const UserInfo = (props) => {

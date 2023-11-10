@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import ReferenceRanking from "./ranking-tab/ReferenceRanking.jsx";
 import PairwiseComparisons from "./pairwise/PairwiseComparisons.jsx";
-import CustomTooltip from "../../../CustomTooltip.jsx";
+import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { HiOutlineSwitchVertical } from "react-icons/hi";
 
 const ComparisonsTab = ({
