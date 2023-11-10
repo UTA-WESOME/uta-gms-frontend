@@ -6,8 +6,6 @@ import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
 const CriteriaTab = ({
                          criteria,
                          setCriteria,
-                         categories,
-                         setCategories,
                          setAlternatives
                      }) => {
 
@@ -65,8 +63,6 @@ const CriteriaTab = ({
                 <CriteriaTabDesktop
                     criteria={criteria}
                     setCriteria={setCriteria}
-                    categories={categories}
-                    setCategories={setCategories}
                     deleteCriterion={deleteCriterion}
                 />
             </Show>

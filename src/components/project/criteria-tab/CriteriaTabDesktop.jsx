@@ -24,7 +24,6 @@ import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
 const CriteriaTabDesktop = ({
                                 criteria,
                                 setCriteria,
-                                categories,
                                 deleteCriterion
                             }) => {
 

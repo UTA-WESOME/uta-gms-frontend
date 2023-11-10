@@ -358,8 +358,6 @@ const ProjectTabs = (props) => {
                             <CriteriaTab
                                 criteria={criteria}
                                 setCriteria={setCriteria}
-                                categories={categories}
-                                setCategories={setCategories}
                                 setAlternatives={setAlternatives}
                             />
                         }
