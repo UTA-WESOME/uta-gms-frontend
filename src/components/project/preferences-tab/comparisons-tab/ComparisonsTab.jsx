@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -7,12 +7,16 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     Button,
-    useDisclosure,
-    VStack
+    ButtonGroup,
+    Center,
+    FormControl,
+    FormLabel,
+    HStack,
+    Select,
+    useDisclosure
 } from "@chakra-ui/react";
 import ReferenceRanking from "./ranking-tab/ReferenceRanking.jsx";
 import PairwiseComparisons from "./pairwise/PairwiseComparisons.jsx";
-import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { HiOutlineSwitchVertical } from "react-icons/hi";
 
 const ComparisonsTab = ({
@@ -26,6 +30,7 @@ const ComparisonsTab = ({
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
+    const [currentCategoryId, setCurrentCategoryId] = useState(Math.min(...categories.map(c => c.id)));
 
     const handleChangePairwise = () => {
         setPairwiseMode(!pairwiseMode);
@@ -34,26 +39,40 @@ const ComparisonsTab = ({
 
     return (
         <>
-            <VStack>
-                <CustomTooltip
-                    label={`Click to change to ${pairwiseMode ? 'Reference ranking' : 'Pairwise comparisons'}`}
-                    openDelay={10}
-                >
-                    <Button
-                        colorScheme={'teal'}
-                        onClick={onOpen}
-                        rightIcon={<HiOutlineSwitchVertical/>}
-                    >
-                        {pairwiseMode ? 'Pairwise comparisons' : 'Reference ranking'}
-                    </Button>
-                </CustomTooltip>
-            </VStack>
+            <Center>
+                <HStack spacing={4}>
+                    <FormControl>
+                        <FormLabel>Comparisons type</FormLabel>
+                        <Button
+                            minW={'min-content'}
+                            colorScheme={'teal'}
+                            onClick={onOpen}
+                            rightIcon={<HiOutlineSwitchVertical/>}
+                        >
+                            {pairwiseMode ? 'Pairwise comparisons' : 'Reference ranking'}
+                        </Button>
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Category</FormLabel>
+                        <Select
+                            minW={'200px'}
+                            value={currentCategoryId}
+                            onChange={(event) => setCurrentCategoryId(parseInt(event.target.value))}
+                        >
+                            {categories.map(category => (
+                                <option value={category.id} key={category.id}>{category.name}</option>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </HStack>
+            </Center>
 
             {!pairwiseMode ?
                 <ReferenceRanking
                     alternatives={alternatives}
                     setAlternatives={setAlternatives}
                     categories={categories}
+                    currentCategoryId={currentCategoryId}
                 />
                 :
                 <PairwiseComparisons
@@ -81,12 +100,14 @@ const ComparisonsTab = ({
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
-                                Cancel
-                            </Button>
-                            <Button colorScheme={'teal'} onClick={handleChangePairwise} ml={3}>
-                                Change
-                            </Button>
+                            <ButtonGroup>
+                                <Button colorScheme={'teal'} onClick={handleChangePairwise}>
+                                    Change
+                                </Button>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                    Cancel
+                                </Button>
+                            </ButtonGroup>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>

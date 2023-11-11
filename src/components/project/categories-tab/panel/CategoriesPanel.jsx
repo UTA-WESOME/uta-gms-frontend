@@ -33,7 +33,6 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import ColorPicker from "./ColorPicker.jsx";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { useState } from "react";

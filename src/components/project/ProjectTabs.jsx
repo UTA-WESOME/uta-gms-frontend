@@ -337,6 +337,7 @@ const ProjectTabs = (props) => {
             borderRadius={'lg'}
             p={{ base: 2, sm: 5 }}
         >
+            {JSON.stringify(categories.map(cat => ({ id: cat.id, r: cat.rankings })))}
             <Tabs variant='soft-rounded'
                   colorScheme='teal'
                   isFitted={isScreenMobile}
