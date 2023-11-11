@@ -23,6 +23,7 @@ import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import ImportModal from "../import/ImportModal.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import CategoryTab from "./categories-tab/CategoryTab.jsx";
+import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria
@@ -387,6 +388,7 @@ const ProjectTabs = (props) => {
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
                                 criteria={criteria}
+                                setCategories={setCategories}
                             />
                         }
                     </TabPanel>
@@ -401,18 +403,15 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <Text>Preferences Tab</Text>
-                            // <PreferencesTabs
-                            //     alternatives={alternatives}
-                            //     setAlternatives={setAlternatives}
-                            //     criteria={criteria}
-                            //     preferenceIntensities={preferenceIntensities}
-                            //     setPreferenceIntensities={setPreferenceIntensities}
-                            //     pairwiseComparisons={pairwiseComparisons}
-                            //     setPairwiseComparisons={setPairwiseComparisons}
-                            //     pairwiseMode={pairwiseMode}
-                            //     setPairwiseMode={setPairwiseMode}
-                            // />
+                            <PreferencesTabs
+                                alternatives={alternatives}
+                                setAlternatives={setAlternatives}
+                                criteria={criteria}
+                                categories={categories}
+                                setCategories={setCategories}
+                                pairwiseMode={pairwiseMode}
+                                setPairwiseMode={setPairwiseMode}
+                            />
                         }
                     </TabPanel>
                     <TabPanel p={1} py={2}>

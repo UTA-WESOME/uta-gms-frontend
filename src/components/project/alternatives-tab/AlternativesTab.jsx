@@ -2,14 +2,15 @@ import { Button, ButtonGroup, Show } from "@chakra-ui/react";
 import AlternativesTabMobile from "./AlternativesTabMobile.jsx";
 import AlternativesTabDesktop from "./AlternativesTabDesktop.jsx";
 
-const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
+const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategories }) => {
 
     const addAlternative = () => {
         // get max alternative id
         let maxId = Math.max(...alternatives.map(item => item.id));
         maxId = maxId === -Infinity ? 0 : maxId;
 
-        setAlternatives(pAlternatives => [...pAlternatives,
+        // update alternatives
+        setAlternatives([...alternatives,
             {
                 id: maxId + 1,
                 name: "Alternative name",
@@ -21,11 +22,34 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                         criterion: item.id
                     }
                 })
-            }])
+            }
+        ])
+
+        // update rankings in categories
+        setCategories(pCategories => pCategories.map(category => {
+            return {
+                ...category,
+                rankings: [...category.rankings, {
+                    reference_ranking: 0,
+                    ranking: 0,
+                    alternative: maxId + 1
+                }]
+            }
+        }))
+
     }
 
     const deleteAlternative = (id) => {
+        // update alternatives
         setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id));
+
+        // update rankings in categories
+        setCategories(pCategories => pCategories.map(category => {
+            return {
+                ...category,
+                rankings: category.rankings.filter(r => r.alternative !== id)
+            }
+        }))
     }
 
     return (

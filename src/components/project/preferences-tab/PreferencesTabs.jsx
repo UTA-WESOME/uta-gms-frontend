@@ -1,19 +1,13 @@
 import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
-import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
 import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
-import { IoFlash } from "react-icons/io5";
 import { FaGreaterThan } from "react-icons/fa";
-import { MdOutlineExpand } from "react-icons/md";
-import BestWorstTab from "./maxmin-tab/BestWorstTab.jsx";
 
 const PreferencesTabs = ({
                              alternatives,
                              setAlternatives,
                              criteria,
-                             preferenceIntensities,
-                             setPreferenceIntensities,
-                             pairwiseComparisons,
-                             setPairwiseComparisons,
+                             categories,
+                             setCategories,
                              pairwiseMode,
                              setPairwiseMode
                          }) => {
@@ -30,17 +24,17 @@ const PreferencesTabs = ({
                         <Tab fontSize={'15px'}>
                             <Icon as={FaGreaterThan}></Icon>
                         </Tab>
-                        <Tab fontSize={'15px'}>
-                            <Icon as={IoFlash}></Icon>
-                        </Tab>
-                        <Tab fontSize={'15px'}>
-                            <Icon as={MdOutlineExpand}></Icon>
-                        </Tab>
+                        {/*<Tab fontSize={'15px'}>*/}
+                        {/*    <Icon as={IoFlash}></Icon>*/}
+                        {/*</Tab>*/}
+                        {/*<Tab fontSize={'15px'}>*/}
+                        {/*    <Icon as={MdOutlineExpand}></Icon>*/}
+                        {/*</Tab>*/}
                     </> :
                     <>
                         <Tab>Comparisons</Tab>
-                        <Tab>Intensities</Tab>
-                        <Tab>Best-Worst</Tab>
+                        {/*<Tab>Intensities</Tab>*/}
+                        {/*<Tab>Best-Worst</Tab>*/}
                     </>
                 }
             </TabList>
@@ -49,26 +43,26 @@ const PreferencesTabs = ({
                     <ComparisonsTab
                         alternatives={alternatives}
                         setAlternatives={setAlternatives}
-                        pairwiseComparisons={pairwiseComparisons}
-                        setPairwiseComparisons={setPairwiseComparisons}
+                        categories={categories}
+                        setCategories={setCategories}
                         pairwiseMode={pairwiseMode}
                         setPairwiseMode={setPairwiseMode}
                     />
                 </TabPanel>
-                <TabPanel p={1} py={5}>
-                    <IntensitiesTab
-                        preferenceIntensities={preferenceIntensities}
-                        setPreferenceIntensities={setPreferenceIntensities}
-                        alternatives={alternatives}
-                        criteria={criteria}
-                    />
-                </TabPanel>
-                <TabPanel p={1} py={5}>
-                    <BestWorstTab
-                        alternatives={alternatives}
-                        setAlternatives={setAlternatives}
-                    />
-                </TabPanel>
+                {/*<TabPanel p={1} py={5}>*/}
+                {/*    <IntensitiesTab*/}
+                {/*        preferenceIntensities={preferenceIntensities}*/}
+                {/*        setPreferenceIntensities={setPreferenceIntensities}*/}
+                {/*        alternatives={alternatives}*/}
+                {/*        criteria={criteria}*/}
+                {/*    />*/}
+                {/*</TabPanel>*/}
+                {/*<TabPanel p={1} py={5}>*/}
+                {/*    <BestWorstTab*/}
+                {/*        alternatives={alternatives}*/}
+                {/*        setAlternatives={setAlternatives}*/}
+                {/*    />*/}
+                {/*</TabPanel>*/}
             </TabPanels>
         </Tabs>
     )

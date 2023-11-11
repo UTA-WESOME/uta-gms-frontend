@@ -6,7 +6,7 @@ import RankMobile from "./mobile/RankMobile.jsx";
 import { DndContext } from "@dnd-kit/core";
 import AlternativeMobile from "./mobile/AlternativeMobile.jsx";
 
-const ReferenceRanking = ({ alternatives, setAlternatives }) => {
+const ReferenceRanking = ({ alternatives, setAlternatives, categories }) => {
 
     const [ranks, setRanks] = useState(() => {
         const ranksInAlternatives = alternatives

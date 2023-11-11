@@ -18,8 +18,8 @@ import { HiOutlineSwitchVertical } from "react-icons/hi";
 const ComparisonsTab = ({
                             alternatives,
                             setAlternatives,
-                            pairwiseComparisons,
-                            setPairwiseComparisons,
+                            categories,
+                            setCategories,
                             pairwiseMode,
                             setPairwiseMode
                         }) => {
@@ -53,6 +53,7 @@ const ComparisonsTab = ({
                 <ReferenceRanking
                     alternatives={alternatives}
                     setAlternatives={setAlternatives}
+                    categories={categories}
                 />
                 :
                 <PairwiseComparisons
