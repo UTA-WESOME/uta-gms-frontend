@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import ImportModal from "../import/ImportModal.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
-import CategoriesTab from "./categories-tab/CategoriesTab.jsx";
+import CategoryTab from "./categories-tab/CategoryTab.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria
@@ -345,7 +345,7 @@ const ProjectTabs = (props) => {
                         <>
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
-                            <Tab>Categories</Tab>
+                            <Tab>Hierarchy</Tab>
                             <Tab>Preferences</Tab>
                             <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
                         </>
@@ -374,7 +374,8 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <CategoriesTab
+                            <CategoryTab
+                                criteria={criteria}
                                 categories={categories}
                                 setCategories={setCategories}
                             />

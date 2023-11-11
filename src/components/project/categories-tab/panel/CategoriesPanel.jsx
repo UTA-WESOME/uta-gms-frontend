@@ -1,6 +1,8 @@
 import {
     Button,
     Center,
+    Checkbox,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -32,11 +34,15 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ColorPicker from "./ColorPicker.jsx";
+import { FaArrowTrendUp } from "react-icons/fa6";
+import CustomTooltip from "../../../utils/CustomTooltip.jsx";
+import { useState } from "react";
 
-const CategoriesPanel = ({ categories, setCategories }) => {
+const CategoriesPanel = ({ criteria, categories, setCategories }) => {
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
     let generalId = Math.min(...categories.map(i => i.id));
+    // EDIT BUTTON
+    const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
     const formik = useFormik({
         initialValues: { id: 0, name: "", color: "teal.500", active: true, parent: generalId },
         validationSchema: Yup.object({
@@ -56,9 +62,12 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                     }
                 return category;
             }))
-            onClose();
+            onCloseEdit();
         }
     })
+    // CRITERIA BUTTON
+    const { isOpen: isOpenCriteria, onOpen: onOpenCriteria, onClose: onCloseCriteria } = useDisclosure();
+    const [currentCategory, setCurrentCategory] = useState(null);
 
     const addCategory = () => {
         let maxId = Math.max(...categories.map(i => i.id));
@@ -108,6 +117,30 @@ const CategoriesPanel = ({ categories, setCategories }) => {
         }))
     }
 
+    const handleCheck = (event, criterionId) => {
+        if (event.target.checked) {
+            setCategories(categories.map(category => {
+                if (category.id === currentCategory.id)
+                    return {
+                        ...category,
+                        criterion_categories: [...category.criterion_categories, { criterion: criterionId }]
+                    };
+                return category;
+            }))
+        } else {
+            setCategories(categories.map(category => {
+                if (category.id === currentCategory.id) {
+                    return {
+                        ...category,
+                        criterion_categories: category.criterion_categories.filter(item => item.criterion !== criterionId)
+                    };
+                } else {
+                    return category;
+                }
+            }));
+        }
+    }
+
 
     return (
         <>
@@ -142,31 +175,46 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                                     }
                                 </Td>
                                 <Td w={'min-content'}>
-                                    <IconButton
-                                        mr={1}
-                                        color={'orange.300'}
-                                        aria-label={'edit-category'}
-                                        icon={<EditIcon/>}
-                                        onClick={() => {
-                                            formik.setValues({
-                                                id: category.id,
-                                                name: category.name,
-                                                color: category.color,
-                                                active: category.active,
-                                                parent: category.parent
-                                            });
-                                            formik.setErrors({});
-                                            onOpen();
-                                        }}
-                                    />
-                                    {index !== 0 &&
+                                    <CustomTooltip label={'Edit'}>
                                         <IconButton
-                                            ml={1}
-                                            color={'red.300'}
-                                            aria-label={'delete-category'}
-                                            icon={<DeleteIcon/>}
-                                            onClick={() => deleteCategory(category.id)}
+                                            mr={1}
+                                            color={'orange.300'}
+                                            aria-label={'edit-category'}
+                                            icon={<EditIcon/>}
+                                            onClick={() => {
+                                                formik.setValues({
+                                                    id: category.id,
+                                                    name: category.name,
+                                                    color: category.color,
+                                                    active: category.active,
+                                                    parent: category.parent
+                                                });
+                                                formik.setErrors({});
+                                                onOpenEdit();
+                                            }}
                                         />
+                                    </CustomTooltip>
+                                    <CustomTooltip label={'Criteria'}>
+                                        <IconButton
+                                            mr={1}
+                                            color={'teal.300'}
+                                            aria-label={'edit-criterion-categories'}
+                                            icon={<FaArrowTrendUp/>}
+                                            onClick={() => {
+                                                setCurrentCategory(category);
+                                                onOpenCriteria();
+                                            }}
+                                        />
+                                    </CustomTooltip>
+                                    {index !== 0 &&
+                                        <CustomTooltip label={'Delete'}>
+                                            <IconButton
+                                                color={'red.300'}
+                                                aria-label={'delete-category'}
+                                                icon={<DeleteIcon/>}
+                                                onClick={() => deleteCategory(category.id)}
+                                            />
+                                        </CustomTooltip>
                                     }
                                 </Td>
                             </Tr>
@@ -178,9 +226,10 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                 </Button>
             </TableContainer>
 
+            {/*EDIT MODAL*/}
             <Modal
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isOpenEdit}
+                onClose={onCloseEdit}
             >
                 <ModalOverlay/>
                 <ModalContent
@@ -249,18 +298,44 @@ const CategoriesPanel = ({ categories, setCategories }) => {
                                     />
                                 </HStack>
                             </FormControl>
-
                         </VStack>
                     </ModalBody>
 
                     <ModalFooter>
                         <Button colorScheme='teal' mr={3} type={"submit"}>Confirm</Button>
-                        <Button onClick={onClose}>Cancel</Button>
+                        <Button onClick={onCloseEdit}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-        </>
 
+            {/*CRITERIA MODAL*/}
+            <Modal isOpen={isOpenCriteria} onClose={onCloseCriteria}>
+                <ModalOverlay/>
+                <ModalContent mx={'15px'} pb={5}>
+                    <ModalHeader>Assign criteria</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody>
+                        {currentCategory !== null &&
+                            <Flex spacing={"15px"} direction={'column'}>
+                                {criteria.map((criterion, index) => (
+                                    <Checkbox
+                                        key={index}
+                                        my={1}
+                                        color={criterion.color}
+                                        colorScheme={'teal'}
+                                        onChange={(event) => handleCheck(event, criterion.id)}
+                                        defaultChecked={currentCategory.criterion_categories.some(cc => cc.criterion === criterion.id)}
+                                    >
+                                        <Text fontWeight={'bold'}>{criterion.name}</Text>
+                                    </Checkbox>
+                                ))}
+                            </Flex>
+                        }
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+        </>
     )
 }
 
