@@ -100,7 +100,9 @@ const CriteriaTabDesktop = ({
                                     </CustomTooltip>
                                 </HStack>
                             </Th>
-                            <Th/>
+                            <Th>
+                                Actions
+                            </Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -150,7 +152,7 @@ const CriteriaTabDesktop = ({
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </Td>
-                                    <Td textAlign={'center'} borderLeftWidth={'1px'}>
+                                    <Td>
                                         <IconButton
                                             color={'red.300'}
                                             aria-label={'delete-criterion'}

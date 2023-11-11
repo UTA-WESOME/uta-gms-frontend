@@ -1,4 +1,4 @@
-import { Show } from "@chakra-ui/react";
+import { Button, ButtonGroup, Show } from "@chakra-ui/react";
 import AlternativesTabMobile from "./AlternativesTabMobile.jsx";
 import AlternativesTabDesktop from "./AlternativesTabDesktop.jsx";
 
@@ -36,7 +36,6 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                 <AlternativesTabDesktop alternatives={alternatives}
                                         setAlternatives={setAlternatives}
                                         criteria={criteria}
-                                        addAlternative={addAlternative}
                                         deleteAlternative={deleteAlternative}/>
             </Show>
 
@@ -45,9 +44,15 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria }) => {
                 <AlternativesTabMobile alternatives={alternatives}
                                        setAlternatives={setAlternatives}
                                        criteria={criteria}
-                                       addAlternative={addAlternative}
                                        deleteAlternative={deleteAlternative}/>
             </Show>
+
+            {/*BUTTONS*/}
+            <ButtonGroup mx={4} my={4}>
+                <Button colorScheme={'teal'} onClick={addAlternative} variant='outline'>
+                    New alternative
+                </Button>
+            </ButtonGroup>
 
         </>
 

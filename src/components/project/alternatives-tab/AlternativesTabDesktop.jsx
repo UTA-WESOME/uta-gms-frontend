@@ -1,5 +1,4 @@
 import {
-    Button,
     FormControl,
     HStack,
     IconButton,
@@ -22,7 +21,7 @@ import {
 import CustomTooltip from "../../utils/CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
 
-const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAlternative, deleteAlternative }) => {
+const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, deleteAlternative }) => {
 
 
     const colorMode = useColorModeValue('white', 'gray.800');
@@ -159,17 +158,6 @@ const AlternativesTabDesktop = ({ alternatives, setAlternatives, criteria, addAl
                     })}
                 </Tbody>
             </Table>
-
-            <Button
-                my={4}
-                colorScheme={'teal'}
-                onClick={addAlternative}
-                variant='outline'
-                position={'sticky'}
-                left={6}
-            >
-                New alternative
-            </Button>
         </TableContainer>
     )
 

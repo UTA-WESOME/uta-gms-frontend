@@ -26,7 +26,7 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { FieldArray, FormikProvider, getIn, useFormik } from "formik";
 import * as Yup from "yup";
 
-const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlternative, deleteAlternative }) => {
+const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, deleteAlternative }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -108,16 +108,6 @@ const AlternativesTabMobile = ({ alternatives, setAlternatives, criteria, addAlt
                     )
                 })}
             </Flex>
-
-            <Button
-                my={4}
-                colorScheme={'teal'}
-                onClick={addAlternative}
-                variant='outline'
-            >
-                New alternative
-            </Button>
-
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior={'inside'}>
                 <ModalOverlay/>
