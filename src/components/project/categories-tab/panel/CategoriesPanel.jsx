@@ -285,19 +285,21 @@ const CategoriesPanel = ({ criteria, categories, setCategories }) => {
                             </FormControl>
 
                             {/*COLOR PICKER*/}
-                            <FormControl>
-                                <FormLabel fontSize={'sm'}>
-                                    <Text>Color</Text>
-                                </FormLabel>
-                                <HStack>
-                                    <ColorPicker
-                                        pickedColor={formik.values.color}
-                                        pickFunction={(color) => {
-                                            formik.setFieldValue("color", color);
-                                        }}
-                                    />
-                                </HStack>
-                            </FormControl>
+                            {/*For now commented, because there is no need to use the color since we are drawing a tree,*/}
+                            {/*I'll leave the option hidden - we may use it in the future*/}
+                            {/*<FormControl>*/}
+                            {/*    <FormLabel fontSize={'sm'}>*/}
+                            {/*        <Text>Color</Text>*/}
+                            {/*    </FormLabel>*/}
+                            {/*    <HStack>*/}
+                            {/*        <ColorPicker*/}
+                            {/*            pickedColor={formik.values.color}*/}
+                            {/*            pickFunction={(color) => {*/}
+                            {/*                formik.setFieldValue("color", color);*/}
+                            {/*            }}*/}
+                            {/*        />*/}
+                            {/*    </HStack>*/}
+                            {/*</FormControl>*/}
                         </VStack>
                     </ModalBody>
 

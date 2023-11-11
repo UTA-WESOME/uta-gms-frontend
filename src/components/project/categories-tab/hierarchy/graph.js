@@ -1,4 +1,4 @@
-export function generateHierarchyDotString(categories, criteria, bgColor, categoryBgColor, criterionBgColor) {
+export function generateHierarchyDotString(categories, criteria, bgColor, categoryBgColor) {
     let dotString = `digraph {
     compound=true;
     graph [bgcolor="${bgColor}"]
@@ -11,7 +11,7 @@ export function generateHierarchyDotString(categories, criteria, bgColor, catego
 
     // create criteria nodes
     for (const criterion of criteria) {
-        dotString += `    criterion${criterion.id} [label="${criterion.name}" color="${criterionBgColor}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
+        dotString += `    criterion${criterion.id} [label="${criterion.name}" color="${criterion.gain ? "#81E6D9" : "#F56565"}" fontname="Segoe UI" fontsize="15 pt" ]\n`;
     }
 
     // create edges

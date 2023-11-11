@@ -7,7 +7,6 @@ const CategoryTab = ({ criteria, categories, setCategories }) => {
 
     const bgColor = useColorModeValue("#FFFFFF", "#1A202C");
     const categoryBgColor = useColorModeValue("#E2E8F0", "#F7FAFC");
-    const criterionBgColor = useColorModeValue("#38B2AC", "#81E6D9")
     return (
         <Flex
             w={'full'}
@@ -37,7 +36,7 @@ const CategoryTab = ({ criteria, categories, setCategories }) => {
                     <Heading size={'lg'} my={4}>Hierarchy</Heading>
                 </Center>
                 <Graphviz
-                    dot={generateHierarchyDotString(categories, criteria, bgColor, categoryBgColor, criterionBgColor)}
+                    dot={generateHierarchyDotString(categories, criteria, bgColor, categoryBgColor)}
                 />
             </Box>
         </Flex>
