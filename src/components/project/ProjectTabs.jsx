@@ -159,6 +159,7 @@ const ProjectTabs = (props) => {
         // check if there are any criteria
         if (criteria.length === 0) {
             toastError("No criteria!");
+            setTabIndex(0);
             return false;
         }
 
@@ -166,6 +167,7 @@ const ProjectTabs = (props) => {
         const criteriaCheckName = criteria.some(criterion => criterion.name === "");
         if (criteriaCheckName) {
             toastError("There is at least one criterion without a name!", 6000);
+            setTabIndex(0);
             return false;
         }
 
@@ -179,6 +181,7 @@ const ProjectTabs = (props) => {
         // check if there are any alternatives
         if (alternatives.length === 0) {
             toastError("No alternatives!");
+            setTabIndex(1);
             return false;
         }
 
@@ -186,6 +189,7 @@ const ProjectTabs = (props) => {
         const alternativesCheckName = alternatives.some(alternative => alternative.name === "");
         if (alternativesCheckName) {
             toastError("There is at least one alternative without a name!", 6000);
+            setTabIndex(1);
             return false;
         }
 
@@ -195,15 +199,29 @@ const ProjectTabs = (props) => {
         )
         if (alternativesCheckPerformances) {
             toastError("There is at least one alternative with an empty performance!");
+            setTabIndex(1);
+            return false;
+        }
+
+        // check if there is at least one criterion that does not have a category
+        const criteriaCheckCategories = criteria.some(criterion =>
+            !categories.some(category =>
+                category.criterion_categories.some(i => i.criterion === criterion.id)
+            )
+        )
+        if (criteriaCheckCategories) {
+            toastError("There is at least one criterion not assigned to a category!");
+            setTabIndex(2);
             return false;
         }
 
         // check if all pairwise comparisons have different alternatives
-        const pairwiseComparisonsCheck = categories.some(c => c.pairwiseComparisons.some(pc => pc.alternative_1 === pc.alternative_2))
-        if (pairwiseComparisonsCheck && pairwiseMode) {
-            toastError("There is at least one pairwise comparison with identical alternatives.");
-            return false;
-        }
+        // TODO
+        // const pairwiseComparisonsCheck = categories.some(c => c.pairwiseComparisons.some(pc => pc.alternative_1 === pc.alternative_2))
+        // if (pairwiseComparisonsCheck && pairwiseMode) {
+        //     toastError("There is at least one pairwise comparison with identical alternatives.");
+        //     return false;
+        // }
 
         // check if all best-worst positions are correct - best is higher than worst
         // TODO
