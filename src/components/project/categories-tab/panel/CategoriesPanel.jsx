@@ -40,6 +40,7 @@ import { useState } from "react";
 const CategoriesPanel = ({ criteria, categories, setCategories }) => {
 
     let generalId = Math.min(...categories.map(i => i.id));
+
     // EDIT BUTTON
     const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
     const formik = useFormik({
@@ -64,6 +65,7 @@ const CategoriesPanel = ({ criteria, categories, setCategories }) => {
             onCloseEdit();
         }
     })
+
     // CRITERIA BUTTON
     const { isOpen: isOpenCriteria, onOpen: onOpenCriteria, onClose: onCloseCriteria } = useDisclosure();
     const [currentCategory, setCurrentCategory] = useState(null);

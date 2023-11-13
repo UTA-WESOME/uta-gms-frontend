@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Flex, Heading, Show, Spacer } from "@chakra-ui/react";
 import Rank from "./desktop/Rank.jsx";
 import Alternative from "./desktop/Alternative.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RankMobile from "./mobile/RankMobile.jsx";
 import { DndContext } from "@dnd-kit/core";
 import AlternativeMobile from "./mobile/AlternativeMobile.jsx";
@@ -20,6 +20,18 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
         let maxRank = Math.max(...ranksInAlternatives)
         return Array.from({ length: maxRank }, (_, index) => 1 + index);
     });
+
+    useEffect(() => {
+        const ranksInAlternatives = categories
+            .find(c => c.id === currentCategoryId)
+            .rankings
+            .map(ranking => ranking.reference_ranking)
+            .filter(value => value !== 0)
+            .sort()
+
+        let maxRank = Math.max(...ranksInAlternatives)
+        setRanks(Array.from({ length: maxRank }, (_, index) => 1 + index))
+    }, [currentCategoryId])
 
     const handleDragEnd = (event) => {
         const { active, over } = event;

@@ -6,7 +6,8 @@ import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
 const CriteriaTab = ({
                          criteria,
                          setCriteria,
-                         setAlternatives
+                         setAlternatives,
+                         setCategories
                      }) => {
 
     const addCriterion = () => {
@@ -24,7 +25,7 @@ const CriteriaTab = ({
             weight: 1,
         }])
 
-        // set alternatives
+        // set alternatives - performances
         setAlternatives(pAlternatives => {
             return pAlternatives.map(alternative => {
                 return {
@@ -39,21 +40,34 @@ const CriteriaTab = ({
                 }
             })
         })
+
+        // set criterion_categories - by default add the criterion to the Root category
+        setCategories(pCategories => pCategories.map((category, index) => {
+            if (index === 0)
+                return {
+                    ...category,
+                    criterion_categories: [...category.criterion_categories, { criterion: maxId + 1 }]
+                }
+            return category;
+        }))
+
     }
 
     const deleteCriterion = (id) => {
         // set criteria
         setCriteria(previousCriteria => previousCriteria.filter(item => item.id !== id));
 
-        // set alternatives
-        setAlternatives(pAlternatives => {
-            return pAlternatives.map(alternative => {
-                return {
-                    ...alternative,
-                    performances: alternative.performances.filter(performance => performance.criterion !== id)
-                }
-            })
-        })
+        // set alternatives - delete performances
+        setAlternatives(pAlternatives => pAlternatives.map(alternative => ({
+            ...alternative,
+            performances: alternative.performances.filter(performance => performance.criterion !== id)
+        })))
+
+        // set categories - delete criterion_categories
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            criterion_categories: category.criterion_categories.filter(cc => cc.criterion !== id)
+        })))
     }
 
     return (

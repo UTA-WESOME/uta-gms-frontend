@@ -337,7 +337,8 @@ const ProjectTabs = (props) => {
             borderRadius={'lg'}
             p={{ base: 2, sm: 5 }}
         >
-            {JSON.stringify(categories.map(cat => ({ n: cat.name, r: cat.rankings.map(r => ({rr: r.reference_ranking, a: r.alternative})) })))}
+            {/*{JSON.stringify(categories.map(cat => ({ n: cat.name, r: cat.rankings.map(r => ({rr: r.reference_ranking, a: r.alternative})) })))}*/}
+            {JSON.stringify(categories.map(cat => ({ n: cat.name, r: cat.criterion_categories })))}
             <Tabs variant='soft-rounded'
                   colorScheme='teal'
                   isFitted={isScreenMobile}
@@ -380,6 +381,7 @@ const ProjectTabs = (props) => {
                                 criteria={criteria}
                                 setCriteria={setCriteria}
                                 setAlternatives={setAlternatives}
+                                setCategories={setCategories}
                             />
                         }
                     </TabPanel>
