@@ -30,7 +30,7 @@ const ComparisonsTab = ({
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
-    const [currentCategoryId, setCurrentCategoryId] = useState(Math.min(...categories.map(c => c.id)));
+    const [currentCategoryId, setCurrentCategoryId] = useState(categories[0].id);
 
     const handleChangePairwise = () => {
         setPairwiseMode(!pairwiseMode);
@@ -56,8 +56,10 @@ const ComparisonsTab = ({
                         <FormLabel>Category</FormLabel>
                         <Select
                             minW={'200px'}
-                            value={currentCategoryId}
-                            onChange={(event) => setCurrentCategoryId(parseInt(event.target.value))}
+                            value={categories.find(c => c.id === currentCategoryId).id}
+                            onChange={(event) =>
+                                setCurrentCategoryId(categories.find(cat => cat.id === parseInt(event.target.value)).id)
+                            }
                         >
                             {categories.map(category => (
                                 <option value={category.id} key={category.id}>{category.name}</option>
@@ -71,8 +73,9 @@ const ComparisonsTab = ({
                 <ReferenceRanking
                     alternatives={alternatives}
                     setAlternatives={setAlternatives}
-                    categories={categories}
                     currentCategoryId={currentCategoryId}
+                    categories={categories}
+                    setCategories={setCategories}
                 />
                 :
                 <PairwiseComparisons

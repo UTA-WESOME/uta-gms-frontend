@@ -6,35 +6,42 @@ import RankMobile from "./mobile/RankMobile.jsx";
 import { DndContext } from "@dnd-kit/core";
 import AlternativeMobile from "./mobile/AlternativeMobile.jsx";
 
-const ReferenceRanking = ({ alternatives, setAlternatives, categories }) => {
+const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, categories, setCategories }) => {
 
+    // ranks is an array of integers [1, 2, ...] that represents each rank
     const [ranks, setRanks] = useState(() => {
-        const ranksInAlternatives = alternatives
-            .map(alternative => alternative.reference_ranking)
+        const ranksInAlternatives = categories
+            .find(c => c.id === currentCategoryId)
+            .rankings
+            .map(ranking => ranking.reference_ranking)
             .filter(value => value !== 0)
             .sort()
 
         let maxRank = Math.max(...ranksInAlternatives)
         return Array.from({ length: maxRank }, (_, index) => 1 + index);
-
     });
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
-        setAlternatives(pAlternatives => {
-            return pAlternatives.map(pAlternative => {
-                if (pAlternative.id.toString() === active.id) {
-                    return {
-                        ...pAlternative,
-                        reference_ranking: over ? parseInt(over.id) : 0
-                    };
+        setCategories(categories.map(category => {
+            if(category.id === currentCategoryId) {
+                return {
+                    ...category,
+                    rankings: category.rankings.map(ranking => {
+                        if (ranking.alternative.toString() === active.id)
+                            return {
+                                ...ranking,
+                                reference_ranking: over ? parseInt(over.id) : 0
+                            };
+                        return ranking;
+                    })
                 }
-                return pAlternative;
-            })
-        })
+            }
+            return category;
+        }))
     }
 
-    const handleNewRank = () => {
+    const addRank = () => {
         // get max rank
         let maxRank = Math.max(...ranks);
         maxRank = maxRank === -Infinity ? 0 : maxRank;
@@ -42,14 +49,44 @@ const ReferenceRanking = ({ alternatives, setAlternatives, categories }) => {
         setRanks(pRanks => [...pRanks, maxRank + 1])
     }
 
-    const handleReset = () => {
-        setAlternatives(pAlternatives =>
-            pAlternatives.map(pAlternative => ({
-                ...pAlternative,
-                reference_ranking: 0,
-            })))
+    const deleteRank = (id) => {
+        // delete rank
+        setRanks(pRanks => pRanks.filter(rank => rank !== id));
+
+        // update rankings that have this rank
+        setCategories(categories.map(category => {
+            if(category.id === currentCategoryId) {
+                return {
+                    ...category,
+                    rankings: category.rankings.map(ranking => {
+                        if (ranking.reference_ranking === id)
+                            return {
+                                ...ranking,
+                                reference_ranking: 0
+                            };
+                        return ranking;
+                    })
+                }
+            }
+            return category;
+        }))
     }
 
+    const handleReset = () => {
+        setCategories(categories.map(category => {
+            if(category.id === currentCategoryId) {
+                return {
+                    ...category,
+                    rankings: category.rankings.map(ranking => {
+                            return {
+                                ...ranking,
+                                reference_ranking: 0
+                            };
+                })}
+            }
+            return category;
+        }))
+    }
 
     return (
         <>
@@ -63,9 +100,19 @@ const ReferenceRanking = ({ alternatives, setAlternatives, categories }) => {
                             <Heading fontWeight={400} fontSize={'3xl'} textAlign={'center'}>
                                 Alternatives
                             </Heading>
-                            {alternatives.filter(alt => alt.reference_ranking === 0).map((alternative, index) => (
-                                <Alternative id={alternative.id} name={alternative.name} key={index}/>
-                            ))}
+                            <>
+                                {categories
+                                    .find(c => c.id === currentCategoryId)
+                                    .rankings
+                                    .filter(ranking => ranking.reference_ranking === 0)
+                                    .map((ranking, index) => {
+                                        let alternative = alternatives.find(alt => alt.id === ranking.alternative);
+                                        return (
+                                            <Alternative id={alternative.id} name={alternative.name} key={index}/>
+                                        )
+                                    })
+                                }
+                            </>
                         </Box>
 
                         <Spacer/>
@@ -75,27 +122,36 @@ const ReferenceRanking = ({ alternatives, setAlternatives, categories }) => {
                             <Heading fontWeight={400} fontSize={'3xl'} textAlign={'center'}>
                                 Ranks
                             </Heading>
-                            {ranks.map((rank, index) => (
-                                <Rank id={rank}
-                                    // needed for deleting a rank
-                                      setRanks={setRanks} setAlternatives={setAlternatives}
-                                      key={index}
-                                >
-                                    {alternatives
-                                        .filter(alt => alt.reference_ranking === rank)
-                                        .map((alternative, index) => (
-                                            <Alternative id={alternative.id} name={alternative.name} key={index}/>
-                                        ))}
-                                </Rank>
-                            ))}
-
+                            <>
+                                {ranks.map((rank, index) => (
+                                    <Rank
+                                        id={rank}
+                                        setAlternatives={setAlternatives}
+                                        deleteRank={() => deleteRank(rank)}
+                                        key={index}
+                                    >
+                                        {categories
+                                            .find(c => c.id === currentCategoryId)
+                                            .rankings
+                                            .filter(ranking => ranking.reference_ranking === rank)
+                                            .map((ranking, index) => {
+                                                let alternative = alternatives.find(alt => alt.id === ranking.alternative);
+                                                return (
+                                                    <Alternative id={alternative.id} name={alternative.name}
+                                                                 key={index}/>
+                                                )
+                                            })
+                                        }
+                                    </Rank>
+                                ))}
+                            </>
                             <ButtonGroup pt={"1rem"}>
                                 <Button
                                     colorScheme={"teal"}
                                     variant='outline'
                                     ml={5}
                                     mt={2}
-                                    onClick={handleNewRank}
+                                    onClick={addRank}
                                 >New rank</Button>
                                 <Button
                                     colorScheme={'red'}
@@ -135,7 +191,7 @@ const ReferenceRanking = ({ alternatives, setAlternatives, categories }) => {
                         colorScheme={"teal"}
                         variant='outline'
                         ml={1}
-                        onClick={handleNewRank}
+                        onClick={addRank}
                     >New rank</Button>
                     <Button
                         colorScheme={'red'}
