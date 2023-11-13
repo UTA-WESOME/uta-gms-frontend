@@ -195,7 +195,7 @@ const ImportModal = (props) => {
                     toast({
                         id: toastId,
                         title: 'Error!',
-                        description: `Error while uploading files: ${error}`,
+                        description: `${error}`,
                         status: 'error',
                         duration: 7000,
                         isClosable: true,
@@ -233,7 +233,7 @@ const ImportModal = (props) => {
                         <>
                             Upload files
                             <CustomTooltip
-                                label={"You can upload a .csv file or a group of .xmcda files. [TODO: Optionally there should be info about the format of the files contents]"}
+                                label={"You can upload a .csv file or a group of .xml files in the XMCDA format. [TODO: Optionally there should be info about the format of the files contents]"}
                                 openDelay={200} >
                                 <InfoIcon minH={'4'} minW={'4'} ml={2} mb={1} />
                             </CustomTooltip>
