@@ -3,32 +3,53 @@ import { DeleteIcon } from "@chakra-ui/icons";
 
 const PairwiseComparisonsDesktop = ({
                                         alternatives,
-                                        pairwiseComparisons,
-                                        setPairwiseComparisons,
+                                        categories,
+                                        setCategories,
                                         addPairwiseComparison,
                                         deletePairwiseComparison
                                     }) => {
 
     const handleChangeAlternative = (comparisonId, alternativeNumber, alternativeId) => {
-        setPairwiseComparisons(pPairwiseComparisons => {
-            return pPairwiseComparisons.map(pc => {
-                if (pc.id === comparisonId) {
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            pairwise_comparisons: category.pairwise_comparisons.map(pc => {
+                if (pc.id === comparisonId)
                     return { ...pc, [`alternative_${alternativeNumber}`]: alternativeId };
-                }
                 return pc;
             })
-        })
+        })))
     }
 
     const handleChangeType = (comparisonId, newType) => {
-        setPairwiseComparisons(pPairwiseComparisons => {
-            return pPairwiseComparisons.map(pc => {
-                if (pc.id === comparisonId) {
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            pairwise_comparisons: category.pairwise_comparisons.map(pc => {
+                if (pc.id === comparisonId)
                     return { ...pc, type: newType };
-                }
                 return pc;
             })
-        })
+        })))
+    }
+
+    const handleChangeCategory = (comparisonId, newCategory) => {
+        // find the comparison
+        const savedComparison = categories
+            .flatMap(category => category.pairwise_comparisons)
+            .find(pairwiseComparison => pairwiseComparison.id === comparisonId)
+
+        // insert and delete
+        setCategories(pCategories => pCategories.map(category => {
+            if (category.id === newCategory)
+                return {
+                    ...category,
+                    pairwise_comparisons: [...category.pairwise_comparisons, savedComparison]
+                }
+            else
+                return {
+                    ...category,
+                    pairwise_comparisons: category.pairwise_comparisons.filter(pc => pc.id !== comparisonId)
+                }
+        }))
     }
 
     return (
@@ -37,21 +58,16 @@ const PairwiseComparisonsDesktop = ({
                 <Thead>
                     <Tr>
                         <>
-                            <Th>
-                                <Text>Alternative A</Text>
-                            </Th>
-                            <Th>
-                                <Text>Type</Text>
-                            </Th>
-                            <Th>
-                                <Text>Alternative B</Text>
-                            </Th>
+                            <Th>Alternative A</Th>
+                            <Th>Type</Th>
+                            <Th>Alternative B</Th>
+                            <Th>Category</Th>
                             <Th/>
                         </>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {pairwiseComparisons.map((pairwiseComparison, index) => (
+                    {categories.map(category => category.pairwise_comparisons.map((pairwiseComparison, index) => (
                         <Tr key={index}>
                             <Td>
                                 <Select
@@ -88,6 +104,17 @@ const PairwiseComparisonsDesktop = ({
                                     ))}
                                 </Select>
                             </Td>
+                            <Td>
+                                <Select
+                                    value={category.id}
+                                    onChange={(event) =>
+                                        handleChangeCategory(pairwiseComparison.id, parseInt(event.target.value))}
+                                >
+                                    {categories.map(category => (
+                                        <option value={category.id} key={category.id}>{category.name}</option>
+                                    ))}
+                                </Select>
+                            </Td>
                             <Td textAlign={'center'} maxWidth={'45px'} minWidth={'45px'}>
                                 <IconButton
                                     color={'red.300'}
@@ -97,7 +124,7 @@ const PairwiseComparisonsDesktop = ({
                                 />
                             </Td>
                         </Tr>
-                    ))}
+                    )))}
                 </Tbody>
             </Table>
 
