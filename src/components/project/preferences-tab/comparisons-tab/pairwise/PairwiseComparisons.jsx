@@ -29,7 +29,7 @@ const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setC
         // we can be sure that there is at least one alternative because of the if statement at the beginning of the function
         let firstAltId = alternatives[0].id;
 
-        setCategories(pCategories => pCategories.map((category, index) => {
+        setCategories(pCategories => pCategories.map(category => {
             if (category.id === currentCategoryId)
                 return {
                     ...category,

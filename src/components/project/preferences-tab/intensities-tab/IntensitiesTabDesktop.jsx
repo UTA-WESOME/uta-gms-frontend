@@ -1,17 +1,4 @@
-import {
-    Button,
-    Icon,
-    IconButton,
-    Select,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tr
-} from "@chakra-ui/react";
+import { Icon, IconButton, Select, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { FaGreaterThan, FaMinus } from "react-icons/fa";
 import * as c from './constants.js';
@@ -21,8 +8,6 @@ const IntensitiesTabDesktop = ({
                                    alternatives,
                                    criteria,
                                    currentCategoryId,
-                                   categories,
-                                   setCategories,
                                    preferenceIntensities,
                                    setPreferenceIntensities,
                                    deletePreferenceIntensity
@@ -73,7 +58,7 @@ const IntensitiesTabDesktop = ({
                     <Tbody>
                         {preferenceIntensities
                             .filter(pi => {
-                                if(currentCategoryId === 0) {
+                                if (currentCategoryId === 0) {
                                     return pi.criterion !== null;
                                 } else {
                                     return pi.category === currentCategoryId;
