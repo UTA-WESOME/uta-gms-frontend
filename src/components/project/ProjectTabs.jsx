@@ -220,24 +220,26 @@ const ProjectTabs = (props) => {
         }
 
         // check if all pairwise comparisons have different alternatives
-        // TODO
-        // const pairwiseComparisonsCheck = categories.some(c => c.pairwiseComparisons.some(pc => pc.alternative_1 === pc.alternative_2))
-        // if (pairwiseComparisonsCheck && pairwiseMode) {
-        //     toastError("There is at least one pairwise comparison with identical alternatives.");
-        //     return false;
-        // }
+        const pairwiseComparisonsCheck = categories.some(c => c.pairwise_comparisons.some(pc => pc.alternative_1 === pc.alternative_2))
+        if (pairwiseComparisonsCheck && pairwiseMode) {
+            toastError("There is at least one pairwise comparison with identical alternatives.");
+            setTabIndex(3);
+            return false;
+        }
 
         // check if all best-worst positions are correct - best is higher than worst
-        // TODO
-        // const maxMinPositionsCheck = alternatives.some(alternative => (
-        //     alternative.best_position > alternative.worst_position &&
-        //     alternative.best_position !== null &&
-        //     alternative.worst_position !== null
-        // ));
-        // if (maxMinPositionsCheck) {
-        //     toastError("There is at least one incorrect Best-Worst preference");
-        //     return false;
-        // }
+        const maxMinPositionsCheck = categories.some(category =>
+            category.rankings.some(ranking => (
+                ranking.best_position > ranking.worst_position &&
+                ranking.best_position !== null &&
+                ranking.worst_position !== null
+            ))
+        );
+        if (maxMinPositionsCheck) {
+            toastError("There is at least one incorrect Best-Worst preference");
+            setTabIndex(3);
+            return false;
+        }
 
         return true;
     }
