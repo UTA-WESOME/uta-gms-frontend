@@ -403,6 +403,7 @@ const ProjectTabs = (props) => {
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
                             <CategoryTab
+                                alternatives={alternatives}
                                 criteria={criteria}
                                 categories={categories}
                                 setCategories={setCategories}
