@@ -2,7 +2,7 @@ import { Show, useToast } from "@chakra-ui/react";
 import PairwiseComparisonsDesktop from "./PairwiseComparisonsDesktop.jsx";
 import PairwiseComparisonsMobile from "./PairwiseComparisonsMobile.jsx";
 
-const PairwiseComparisons = ({ alternatives, categories, setCategories }) => {
+const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setCategories }) => {
 
     const toast = useToast();
     const toastId = "toast-project-pairwise-comparisons-add"
@@ -57,6 +57,7 @@ const PairwiseComparisons = ({ alternatives, categories, setCategories }) => {
             <Show above={'lg'}>
                 <PairwiseComparisonsDesktop
                     alternatives={alternatives}
+                    currentCategoryId={currentCategoryId}
                     categories={categories}
                     setCategories={setCategories}
                     addPairwiseComparison={addPairwiseComparison}

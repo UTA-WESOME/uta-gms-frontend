@@ -44,12 +44,16 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategorie
         setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id));
 
         // update rankings in categories
-        setCategories(pCategories => pCategories.map(category => {
-            return {
-                ...category,
-                rankings: category.rankings.filter(r => r.alternative !== id)
-            }
-        }))
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            rankings: category.rankings.filter(r => r.alternative !== id)
+        })))
+
+        // update pairwise_comparisons in categories
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            pairwise_comparisons: category.pairwise_comparisons.filter(pc => pc.alternative_1 !== id && pc.alternative_2 !== id)
+        })))
     }
 
     return (

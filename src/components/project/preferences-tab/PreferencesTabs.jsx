@@ -51,10 +51,10 @@ const PreferencesTabs = ({
                 </TabPanel>
                 {/*<TabPanel p={1} py={5}>*/}
                 {/*    <IntensitiesTab*/}
-                {/*        preferenceIntensities={preferenceIntensities}*/}
-                {/*        setPreferenceIntensities={setPreferenceIntensities}*/}
                 {/*        alternatives={alternatives}*/}
                 {/*        criteria={criteria}*/}
+                {/*        categories={categories}*/}
+                {/*        setCategories={setCategories}*/}
                 {/*    />*/}
                 {/*</TabPanel>*/}
                 {/*<TabPanel p={1} py={5}>*/}

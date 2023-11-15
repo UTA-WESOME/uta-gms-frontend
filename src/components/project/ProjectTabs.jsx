@@ -338,7 +338,7 @@ const ProjectTabs = (props) => {
             p={{ base: 2, sm: 5 }}
         >
             {/*{JSON.stringify(categories.map(cat => ({ n: cat.name, r: cat.rankings.map(r => ({rr: r.reference_ranking, a: r.alternative})) })))}*/}
-            {JSON.stringify(categories.map(cat => ({ n: cat.name, r: cat.pairwise_comparisons })))}
+            {JSON.stringify(categories.map(cat => ({ name: cat.name, pcs: cat.pairwise_comparisons.map(pc => ({id: pc.id, a1: pc.alternative_1, a2: pc.alternative_2})) })))}
             <Tabs variant='soft-rounded'
                   colorScheme='teal'
                   isFitted={isScreenMobile}

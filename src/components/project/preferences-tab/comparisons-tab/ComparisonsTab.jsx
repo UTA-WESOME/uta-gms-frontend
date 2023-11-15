@@ -42,7 +42,7 @@ const ComparisonsTab = ({
             <Center>
                 <HStack spacing={4}>
                     <FormControl>
-                        {!pairwiseMode && <FormLabel>Comparisons type</FormLabel>}
+                        <FormLabel>Comparisons type</FormLabel>
                         <Button
                             minW={'min-content'}
                             colorScheme={'teal'}
@@ -52,22 +52,20 @@ const ComparisonsTab = ({
                             {pairwiseMode ? 'Pairwise comparisons' : 'Reference ranking'}
                         </Button>
                     </FormControl>
-                    {!pairwiseMode &&
-                        <FormControl>
-                            <FormLabel>Category</FormLabel>
-                            <Select
-                                minW={'200px'}
-                                value={categories.find(c => c.id === currentCategoryId).id}
-                                onChange={(event) =>
-                                    setCurrentCategoryId(categories.find(cat => cat.id === parseInt(event.target.value)).id)
-                                }
-                            >
-                                {categories.map(category => (
-                                    <option value={category.id} key={category.id}>{category.name}</option>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    }
+                    <FormControl>
+                        <FormLabel>Category</FormLabel>
+                        <Select
+                            minW={'200px'}
+                            value={categories.find(c => c.id === currentCategoryId).id}
+                            onChange={(event) =>
+                                setCurrentCategoryId(categories.find(cat => cat.id === parseInt(event.target.value)).id)
+                            }
+                        >
+                            {categories.map(category => (
+                                <option value={category.id} key={category.id}>{category.name}</option>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </HStack>
             </Center>
 
@@ -82,6 +80,7 @@ const ComparisonsTab = ({
                 :
                 <PairwiseComparisons
                     alternatives={alternatives}
+                    currentCategoryId={currentCategoryId}
                     categories={categories}
                     setCategories={setCategories}
                 />
