@@ -37,6 +37,23 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { useState } from "react";
 
+const findChildren = (categories, categoryId) => {
+    let childrenIds = [];
+
+    const findChildrenRecursive = (parentId) => {
+        categories.forEach(category => {
+            if (category.parent === parentId) {
+                childrenIds.push(category.id);
+                findChildrenRecursive(category.id);
+            }
+        })
+    }
+
+    findChildrenRecursive(categoryId);
+    return childrenIds;
+}
+
+
 const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, setPreferenceIntensities }) => {
 
     let generalId = Math.min(...categories.map(i => i.id));
@@ -85,7 +102,11 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
             function_points: [],
             preference_intensities: [],
             pairwise_comparisons: [],
-            rankings: alternatives.map(alternative => ({reference_ranking: 0, ranking: 0, alternative: alternative.id})),
+            rankings: alternatives.map(alternative => ({
+                reference_ranking: 0,
+                ranking: 0,
+                alternative: alternative.id
+            })),
             percentages: [],
             acceptability_indices: []
         }])
@@ -172,9 +193,12 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                                             value={category.parent}
                                             onChange={(event) => handleChangeParent(category.id, parseInt(event.target.value))}
                                         >
-                                            {categories.filter(cat => cat.id !== category.id).filter(cat => cat.parent !== category.id).map(cat => (
-                                                <option value={cat.id} key={cat.id}>{cat.name}</option>
-                                            ))}
+                                            {categories
+                                                .filter(cat => cat.id !== category.id && !findChildren(categories, category.id).includes(cat.id)) // prevent cycles inside the tree
+                                                .map(cat => (
+                                                    <option value={cat.id} key={cat.id}>{cat.name}</option>
+                                                ))
+                                            }
                                         </Select>
                                     }
                                 </Td>

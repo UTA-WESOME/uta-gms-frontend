@@ -371,7 +371,7 @@ const ProjectTabs = (props) => {
                             <Tab>Alternatives</Tab>
                             <Tab>Hierarchy</Tab>
                             <Tab>Preferences</Tab>
-                            <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
+                            <Tab>Results</Tab>
                         </>
                     }
                 </TabList>
