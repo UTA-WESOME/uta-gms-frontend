@@ -1,6 +1,8 @@
 import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
 import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
 import { FaGreaterThan } from "react-icons/fa";
+import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
+import { IoFlash } from "react-icons/io5";
 
 const PreferencesTabs = ({
                              alternatives,
@@ -8,6 +10,8 @@ const PreferencesTabs = ({
                              criteria,
                              categories,
                              setCategories,
+                             preferenceIntensities,
+                             setPreferenceIntensities,
                              pairwiseMode,
                              setPairwiseMode
                          }) => {
@@ -24,16 +28,16 @@ const PreferencesTabs = ({
                         <Tab fontSize={'15px'}>
                             <Icon as={FaGreaterThan}></Icon>
                         </Tab>
-                        {/*<Tab fontSize={'15px'}>*/}
-                        {/*    <Icon as={IoFlash}></Icon>*/}
-                        {/*</Tab>*/}
+                        <Tab fontSize={'15px'}>
+                            <Icon as={IoFlash}></Icon>
+                        </Tab>
                         {/*<Tab fontSize={'15px'}>*/}
                         {/*    <Icon as={MdOutlineExpand}></Icon>*/}
                         {/*</Tab>*/}
                     </> :
                     <>
                         <Tab>Comparisons</Tab>
-                        {/*<Tab>Intensities</Tab>*/}
+                        <Tab>Intensities</Tab>
                         {/*<Tab>Best-Worst</Tab>*/}
                     </>
                 }
@@ -49,14 +53,15 @@ const PreferencesTabs = ({
                         setPairwiseMode={setPairwiseMode}
                     />
                 </TabPanel>
-                {/*<TabPanel p={1} py={5}>*/}
-                {/*    <IntensitiesTab*/}
-                {/*        alternatives={alternatives}*/}
-                {/*        criteria={criteria}*/}
-                {/*        categories={categories}*/}
-                {/*        setCategories={setCategories}*/}
-                {/*    />*/}
-                {/*</TabPanel>*/}
+                <TabPanel p={1} py={5}>
+                    <IntensitiesTab
+                        alternatives={alternatives}
+                        criteria={criteria}
+                        categories={categories}
+                        preferenceIntensities={preferenceIntensities}
+                        setPreferenceIntensities={setPreferenceIntensities}
+                    />
+                </TabPanel>
                 {/*<TabPanel p={1} py={5}>*/}
                 {/*    <BestWorstTab*/}
                 {/*        alternatives={alternatives}*/}

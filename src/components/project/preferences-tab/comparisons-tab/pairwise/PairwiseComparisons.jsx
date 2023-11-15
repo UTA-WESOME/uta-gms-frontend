@@ -30,7 +30,7 @@ const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setC
         let firstAltId = alternatives[0].id;
 
         setCategories(pCategories => pCategories.map((category, index) => {
-            if (index === 0)
+            if (category.id === currentCategoryId)
                 return {
                     ...category,
                     pairwise_comparisons: [...category.pairwise_comparisons, {

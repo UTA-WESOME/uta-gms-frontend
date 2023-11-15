@@ -102,6 +102,8 @@ const ProjectTabs = (props) => {
     const [alternatives, setAlternatives] = useState([]);
     const alternativesRef = useRef([]);
 
+    const [preferenceIntensities, setPreferenceIntensities] = useState([]);
+
     const [pairwiseMode, setPairwiseMode] = useState(false);
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -127,6 +129,7 @@ const ProjectTabs = (props) => {
             setCategories(data.categories);
             setAlternatives(data.alternatives);
             alternativesRef.current = data.alternatives;
+            setPreferenceIntensities(data.preference_intensities);
             setPairwiseMode(data.pairwise_mode);
             setHasLoaded(true);
         }).catch(err => {
@@ -252,7 +255,8 @@ const ProjectTabs = (props) => {
                 pairwise_mode: pairwiseMode,
                 criteria: criteria,
                 categories: categories,
-                alternatives: alternatives
+                alternatives: alternatives,
+                preference_intensities: preferenceIntensities
             })
         }).then(response => {
             if (!response.ok) {
@@ -283,7 +287,8 @@ const ProjectTabs = (props) => {
                 pairwise_mode: pairwiseMode,
                 criteria: criteria,
                 categories: categories,
-                alternatives: alternatives
+                alternatives: alternatives,
+                preference_intensities: preferenceIntensities
             })
         }).then(response => {
             if (!response.ok) {
@@ -318,12 +323,12 @@ const ProjectTabs = (props) => {
                 setCategories(data.categories);
                 setAlternatives(data.alternatives);
                 alternativesRef.current = data.alternatives;
+                setPreferenceIntensities(data.preference_intensities);
                 setPairwiseMode(data.pairwise_mode);
                 setSaveClicked(false);
                 toastSuccess();
                 setTabIndex(3);
             })
-
         }).catch(err => {
             console.log(err);
         })
@@ -337,8 +342,9 @@ const ProjectTabs = (props) => {
             borderRadius={'lg'}
             p={{ base: 2, sm: 5 }}
         >
-            {/*{JSON.stringify(categories.map(cat => ({ n: cat.name, r: cat.rankings.map(r => ({rr: r.reference_ranking, a: r.alternative})) })))}*/}
-            {JSON.stringify(categories.map(cat => ({ name: cat.name, pcs: cat.pairwise_comparisons.map(pc => ({id: pc.id, a1: pc.alternative_1, a2: pc.alternative_2})) })))}
+            {JSON.stringify(preferenceIntensities)}
+            {/*{JSON.stringify(categories.map(cat => ({ name: cat.name, pcs: cat.rankings.map(pc => ({id: pc.id, a1: pc.alternative})) })))}*/}
+            {/*{JSON.stringify(categories.map(cat => ({ name: cat.name, pcs: cat.preference_intensities.map(pc => ({id: pc.id, a1: pc.alternative_1, a2: pc.alternative_2, a3: pc.alternative_3, a4: pc.alternative_4, cr: pc.criterion})) })))}*/}
             <Tabs variant='soft-rounded'
                   colorScheme='teal'
                   isFitted={isScreenMobile}
@@ -412,6 +418,8 @@ const ProjectTabs = (props) => {
                                 criteria={criteria}
                                 categories={categories}
                                 setCategories={setCategories}
+                                preferenceIntensities={preferenceIntensities}
+                                setPreferenceIntensities={setPreferenceIntensities}
                                 pairwiseMode={pairwiseMode}
                                 setPairwiseMode={setPairwiseMode}
                             />
