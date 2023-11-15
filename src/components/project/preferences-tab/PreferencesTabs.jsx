@@ -3,6 +3,8 @@ import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
 import { FaGreaterThan } from "react-icons/fa";
 import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
 import { IoFlash } from "react-icons/io5";
+import BestWorstTab from "./maxmin-tab/BestWorstTab.jsx";
+import { MdOutlineExpand } from "react-icons/md";
 
 const PreferencesTabs = ({
                              alternatives,
@@ -31,14 +33,15 @@ const PreferencesTabs = ({
                         <Tab fontSize={'15px'}>
                             <Icon as={IoFlash}></Icon>
                         </Tab>
-                        {/*<Tab fontSize={'15px'}>*/}
-                        {/*    <Icon as={MdOutlineExpand}></Icon>*/}
-                        {/*</Tab>*/}
-                    </> :
+                        <Tab fontSize={'15px'}>
+                            <Icon as={MdOutlineExpand}></Icon>
+                        </Tab>
+                    </>
+                    :
                     <>
                         <Tab>Comparisons</Tab>
                         <Tab>Intensities</Tab>
-                        {/*<Tab>Best-Worst</Tab>*/}
+                        <Tab>Best-Worst</Tab>
                     </>
                 }
             </TabList>
@@ -62,12 +65,13 @@ const PreferencesTabs = ({
                         setPreferenceIntensities={setPreferenceIntensities}
                     />
                 </TabPanel>
-                {/*<TabPanel p={1} py={5}>*/}
-                {/*    <BestWorstTab*/}
-                {/*        alternatives={alternatives}*/}
-                {/*        setAlternatives={setAlternatives}*/}
-                {/*    />*/}
-                {/*</TabPanel>*/}
+                <TabPanel p={1} py={5}>
+                    <BestWorstTab
+                        alternatives={alternatives}
+                        categories={categories}
+                        setCategories={setCategories}
+                    />
+                </TabPanel>
             </TabPanels>
         </Tabs>
     )

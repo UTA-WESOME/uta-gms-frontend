@@ -14,27 +14,43 @@ import {
     Tr
 } from "@chakra-ui/react";
 
-const BestWorstTabDesktop = ({ alternatives, setAlternatives }) => {
+const BestWorstTabDesktop = ({ alternatives, currentCategoryId, categories, setCategories }) => {
 
     const handleChangeUpperBound = (valueNumber, alternativeId) => {
-        setAlternatives(pAlternatives => pAlternatives.map(alternative => {
-            if (alternative.id === alternativeId)
+        setCategories(categories.map(category => {
+            if(category.id === currentCategoryId) {
                 return {
-                    ...alternative,
-                    best_position: valueNumber,
+                    ...category,
+                    rankings: category.rankings.map(ranking => {
+                        if (ranking.alternative === alternativeId)
+                            return {
+                                ...ranking,
+                                best_position: valueNumber
+                            };
+                        return ranking;
+                    })
                 }
-            return alternative;
+            }
+            return category;
         }))
     }
 
     const handleChangeLowerBound = (valueNumber, alternativeId) => {
-        setAlternatives(pAlternatives => pAlternatives.map(alternative => {
-            if (alternative.id === alternativeId)
+        setCategories(categories.map(category => {
+            if(category.id === currentCategoryId) {
                 return {
-                    ...alternative,
-                    worst_position: valueNumber,
+                    ...category,
+                    rankings: category.rankings.map(ranking => {
+                        if (ranking.alternative === alternativeId)
+                            return {
+                                ...ranking,
+                                worst_position: valueNumber
+                            };
+                        return ranking;
+                    })
                 }
-            return alternative;
+            }
+            return category;
         }))
     }
 
@@ -51,22 +67,26 @@ const BestWorstTabDesktop = ({ alternatives, setAlternatives }) => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {alternatives.map((alternative, index) => (
+                        {categories
+                            .find(c => c.id === currentCategoryId)
+                            ?.rankings
+                            .map((ranking, index) => (
                             <Tr key={index}>
                                 <Td borderRightWidth={'1px'}>
-                                    <Text fontSize={'xl'}>{alternative.name}</Text>
+                                    <Text fontSize={'xl'}>{alternatives.find(a => a.id === ranking.alternative).name}</Text>
                                 </Td>
                                 <Td>
                                     <NumberInput
+                                        key={`${currentCategoryId}-${ranking.alternative}-b`}
                                         isInvalid={
-                                            alternative.best_position > alternative.worst_position
-                                            && alternative.best_position !== null
-                                            && alternative.worst_position !== null
+                                            ranking.best_position > ranking.worst_position
+                                            && ranking.best_position !== null
+                                            && ranking.worst_position !== null
                                         }
-                                        defaultValue={alternative.best_position !== null ? alternative.best_position : ""}
+                                        defaultValue={ranking.best_position !== null ? ranking.best_position : ""}
                                         min={1}
                                         max={alternatives.length}
-                                        onBlur={(event) => handleChangeUpperBound(parseInt(event.target.value), alternative.id)}
+                                        onBlur={(event) => handleChangeUpperBound(parseInt(event.target.value), ranking.alternative)}
                                     >
                                         <NumberInputField/>
                                         <NumberInputStepper>
@@ -77,15 +97,16 @@ const BestWorstTabDesktop = ({ alternatives, setAlternatives }) => {
                                 </Td>
                                 <Td>
                                     <NumberInput
+                                        key={`${currentCategoryId}-${ranking.alternative}-w`}
                                         isInvalid={
-                                            alternative.best_position > alternative.worst_position
-                                            && alternative.best_position !== null
-                                            && alternative.worst_position !== null
+                                            ranking.best_position > ranking.worst_position
+                                            && ranking.best_position !== null
+                                            && ranking.worst_position !== null
                                         }
-                                        defaultValue={alternative.worst_position !== null ? alternative.worst_position : ""}
+                                        defaultValue={ranking.worst_position !== null ? ranking.worst_position : ""}
                                         min={1}
                                         max={alternatives.length}
-                                        onBlur={(event) => handleChangeLowerBound(parseInt(event.target.value), alternative.id)}
+                                        onBlur={(event) => handleChangeLowerBound(parseInt(event.target.value), ranking.alternative)}
                                     >
                                         <NumberInputField/>
                                         <NumberInputStepper>

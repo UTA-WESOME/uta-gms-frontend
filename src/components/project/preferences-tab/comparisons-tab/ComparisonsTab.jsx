@@ -33,7 +33,8 @@ const ComparisonsTab = ({
     const [currentCategoryId, setCurrentCategoryId] = useState(categories[0].id);
 
     useEffect(() => {
-        setCurrentCategoryId(categories[0].id);
+        if(categories.find(c => c.id === currentCategoryId) === undefined)
+            setCurrentCategoryId(categories[0].id);
     }, [categories])
 
     const handleChangePairwise = () => {
