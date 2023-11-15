@@ -55,7 +55,7 @@ const PairwiseComparisonsDesktop = ({
                     <>
                         {categories
                             .find(c => c.id === currentCategoryId)
-                            .pairwise_comparisons
+                            ?.pairwise_comparisons
                             .map((pairwiseComparison, index) => (
                                 <Tr key={index}>
                                     <Td>

@@ -37,7 +37,7 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { useState } from "react";
 
-const CategoriesPanel = ({ criteria, categories, setCategories }) => {
+const CategoriesPanel = ({ criteria, categories, setCategories, setPreferenceIntensities }) => {
 
     let generalId = Math.min(...categories.map(i => i.id));
 
@@ -105,6 +105,9 @@ const CategoriesPanel = ({ criteria, categories, setCategories }) => {
                 }
             return category;
         }))
+
+        // update preference intensities
+        setPreferenceIntensities(pPreferenceIntensities => pPreferenceIntensities.filter(pi => pi.category !== categoryId))
     }
 
     const handleChangeParent = (categoryId, newParentId) => {

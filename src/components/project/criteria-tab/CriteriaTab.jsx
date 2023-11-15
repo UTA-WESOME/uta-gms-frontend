@@ -7,7 +7,8 @@ const CriteriaTab = ({
                          criteria,
                          setCriteria,
                          setAlternatives,
-                         setCategories
+                         setCategories,
+                         setPreferenceIntensities
                      }) => {
 
     const addCriterion = () => {
@@ -68,6 +69,9 @@ const CriteriaTab = ({
             ...category,
             criterion_categories: category.criterion_categories.filter(cc => cc.criterion !== id)
         })))
+
+        // set preference intensities
+        setPreferenceIntensities(pPreferenceIntensities => pPreferenceIntensities.filter(pi => pi.criterion !== id))
     }
 
     return (

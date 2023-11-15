@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -32,6 +32,10 @@ const ComparisonsTab = ({
     const cancelRef = useRef();
     const [currentCategoryId, setCurrentCategoryId] = useState(categories[0].id);
 
+    useEffect(() => {
+        setCurrentCategoryId(categories[0].id);
+    }, [categories])
+
     const handleChangePairwise = () => {
         setPairwiseMode(!pairwiseMode);
         onClose();
@@ -56,9 +60,8 @@ const ComparisonsTab = ({
                         <FormLabel>Category</FormLabel>
                         <Select
                             minW={'200px'}
-                            value={categories.find(c => c.id === currentCategoryId).id}
                             onChange={(event) =>
-                                setCurrentCategoryId(categories.find(cat => cat.id === parseInt(event.target.value)).id)
+                                setCurrentCategoryId(parseInt(event.target.value))
                             }
                         >
                             {categories.map(category => (

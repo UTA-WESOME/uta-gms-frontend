@@ -1,6 +1,6 @@
 import { Box, Button, Center, FormControl, FormLabel, HStack, Select, Show, Text, useToast } from "@chakra-ui/react";
 import IntensitiesTabDesktop from "./IntensitiesTabDesktop.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { InfoIcon } from "@chakra-ui/icons";
 
@@ -16,6 +16,10 @@ const IntensitiesTab = ({
     const toastId = "toast-project-preference-tab-add";
     // if currentCategoryId == 0 then it means that we choose a particular criterion
     const [currentCategoryId, setCurrentCategoryId] = useState(categories[0].id);
+
+    useEffect(() => {
+        setCurrentCategoryId(categories[0].id);
+    }, [categories])
 
     const addPreferenceIntensity = () => {
 

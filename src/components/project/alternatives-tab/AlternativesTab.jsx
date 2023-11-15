@@ -2,7 +2,7 @@ import { Button, ButtonGroup, Show } from "@chakra-ui/react";
 import AlternativesTabMobile from "./AlternativesTabMobile.jsx";
 import AlternativesTabDesktop from "./AlternativesTabDesktop.jsx";
 
-const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategories }) => {
+const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategories, setPreferenceIntensities }) => {
 
     const addAlternative = () => {
         // get max alternative id
@@ -54,6 +54,16 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategorie
             ...category,
             pairwise_comparisons: category.pairwise_comparisons.filter(pc => pc.alternative_1 !== id && pc.alternative_2 !== id)
         })))
+
+        // update preference_intensities
+        setPreferenceIntensities(pPreferenceIntensities => pPreferenceIntensities.filter(pi =>
+            (
+                pi.alternative_1 !== id &&
+                pi.alternative_2 !== id &&
+                pi.alternative_3 !== id &&
+                pi.alternative_4 !== id
+            )
+        ))
     }
 
     return (

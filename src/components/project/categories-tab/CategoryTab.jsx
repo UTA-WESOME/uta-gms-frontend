@@ -3,7 +3,7 @@ import CategoriesPanel from "./panel/CategoriesPanel.jsx";
 import Graphviz from "../../utils/Graphviz.jsx";
 import { generateHierarchyDotString } from "./hierarchy/graph.js";
 
-const CategoryTab = ({ criteria, categories, setCategories }) => {
+const CategoryTab = ({ criteria, categories, setCategories, setPreferenceIntensities }) => {
 
     const bgColor = useColorModeValue("#FFFFFF", "#1A202C");
     const categoryBgColor = useColorModeValue("#E2E8F0", "#F7FAFC");
@@ -24,6 +24,7 @@ const CategoryTab = ({ criteria, categories, setCategories }) => {
                     criteria={criteria}
                     categories={categories}
                     setCategories={setCategories}
+                    setPreferenceIntensities={setPreferenceIntensities}
                 />
             </Box>
 

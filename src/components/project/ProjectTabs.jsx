@@ -342,9 +342,6 @@ const ProjectTabs = (props) => {
             borderRadius={'lg'}
             p={{ base: 2, sm: 5 }}
         >
-            {JSON.stringify(preferenceIntensities)}
-            {/*{JSON.stringify(categories.map(cat => ({ name: cat.name, pcs: cat.rankings.map(pc => ({id: pc.id, a1: pc.alternative})) })))}*/}
-            {/*{JSON.stringify(categories.map(cat => ({ name: cat.name, pcs: cat.preference_intensities.map(pc => ({id: pc.id, a1: pc.alternative_1, a2: pc.alternative_2, a3: pc.alternative_3, a4: pc.alternative_4, cr: pc.criterion})) })))}*/}
             <Tabs variant='soft-rounded'
                   colorScheme='teal'
                   isFitted={isScreenMobile}
@@ -388,6 +385,7 @@ const ProjectTabs = (props) => {
                                 setCriteria={setCriteria}
                                 setAlternatives={setAlternatives}
                                 setCategories={setCategories}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
                         }
                     </TabPanel>
@@ -398,6 +396,7 @@ const ProjectTabs = (props) => {
                                 setAlternatives={setAlternatives}
                                 criteria={criteria}
                                 setCategories={setCategories}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
                         }
                     </TabPanel>
@@ -407,6 +406,7 @@ const ProjectTabs = (props) => {
                                 criteria={criteria}
                                 categories={categories}
                                 setCategories={setCategories}
+                                setPreferenceIntensities={setPreferenceIntensities}
                             />
                         }
                     </TabPanel>

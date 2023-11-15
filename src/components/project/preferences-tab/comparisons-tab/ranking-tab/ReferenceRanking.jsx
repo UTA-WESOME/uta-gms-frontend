@@ -115,7 +115,7 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
                             <>
                                 {categories
                                     .find(c => c.id === currentCategoryId)
-                                    .rankings
+                                    ?.rankings
                                     .filter(ranking => ranking.reference_ranking === 0)
                                     .map((ranking, index) => {
                                         let alternative = alternatives.find(alt => alt.id === ranking.alternative);
@@ -144,7 +144,7 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
                                     >
                                         {categories
                                             .find(c => c.id === currentCategoryId)
-                                            .rankings
+                                            ?.rankings
                                             .filter(ranking => ranking.reference_ranking === rank)
                                             .map((ranking, index) => {
                                                 let alternative = alternatives.find(alt => alt.id === ranking.alternative);
