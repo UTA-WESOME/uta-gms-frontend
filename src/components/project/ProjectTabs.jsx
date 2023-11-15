@@ -23,6 +23,7 @@ import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 import ImportModal from "../import/ImportModal.jsx";
+import ExportButton from "../export/ExportButton.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria, criterion function, criterion categories
@@ -429,6 +430,7 @@ const ProjectTabs = (props) => {
             >
                 {!saveClicked ?
                     <ButtonGroup>
+                        <ExportButton projectId={props.id} desktop={!isScreenMobile}/>
                         <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
                         <Button
                             colorScheme={'teal'}
