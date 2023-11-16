@@ -298,21 +298,21 @@ const ProjectTabs = (props) => {
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
             }).then(response => {
-                    if (!response.ok) {
-                        if (response.status === 400) {
-                            return response.json().then(data => {
-                                    toastError(data.details);
-                                    throw new Error('Error getting results');
-                                }
-                            )
-                        } else {
-                            toastError('Sorry, some unexpected error occurred');
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        return response.json().then(data => {
+                            toastError(data.details);
                             throw new Error('Error getting results');
-
                         }
+                        )
+                    } else {
+                        toastError('Sorry, some unexpected error occurred');
+                        throw new Error('Error getting results');
+
                     }
-                    return response.json();
                 }
+                return response.json();
+            }
             ).then(data => {
                 setCriteria(data.criteria);
                 criteriaRef.current = data.criteria;
@@ -342,12 +342,12 @@ const ProjectTabs = (props) => {
             p={{ base: 2, sm: 5 }}
         >
             <Tabs variant='soft-rounded'
-                  colorScheme='teal'
-                  isFitted={isScreenMobile}
-                  index={tabIndex}
-                  onChange={(index) => {
-                      setTabIndex(index);
-                  }}>
+                colorScheme='teal'
+                isFitted={isScreenMobile}
+                index={tabIndex}
+                onChange={(index) => {
+                    setTabIndex(index);
+                }}>
                 <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                     {isScreenMobile ?
                         <>
@@ -374,7 +374,7 @@ const ProjectTabs = (props) => {
                     }
                 </TabList>
 
-                <Divider/>
+                <Divider />
                 <TabPanels>
                     <TabPanel>
                         {hasLoaded &&
@@ -430,8 +430,15 @@ const ProjectTabs = (props) => {
             >
                 {!saveClicked ?
                     <ButtonGroup>
-                        <ExportModal projectId={props.id} desktop={!isScreenMobile}/>
-                        <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
+                        <ExportModal projectId={props.id} desktop={!isScreenMobile}
+                            pairwiseMode={pairwiseMode}
+                            criteria={criteria}
+                            categories={categories}
+                            alternatives={alternatives}
+                            preferenceIntensities={preferenceIntensities}
+                            pairwiseComparisons={pairwiseComparisons}
+                        />
+                        <ImportModal projectId={props.id} desktop={!isScreenMobile} />
                         <Button
                             colorScheme={'teal'}
                             onClick={submitData}

@@ -20,7 +20,6 @@ import { InfoIcon } from '@chakra-ui/icons';
 import CustomTooltip from '../CustomTooltip';
 
 
-
 const ExportButton = (props) => {
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
     const [selectedValues, setSelectedValues] = useState(['csv', 'xml']);
@@ -32,25 +31,44 @@ const ExportButton = (props) => {
         setSelectedValues(values);
     };
 
-    function handleExport() {
-        if (selectedValues.includes('csv')) {
-            console.log('csv');
-            downloadCsv();
-        }
-        if (selectedValues.includes('xml')) {
-            console.log('xml');
-            if (!toast.isActive(toastId)) {
-                toast({
-                    id: toastId,
-                    title: 'Error!',
-                    description: `not implemented yet!`,
-                    status: 'error',
-                    duration: 7000,
-                    isClosable: true,
-                });
+    function handleSaveAndExport() {
+        fetch(`http://localhost:8080/api/projects/${props.projectId}/batch`, {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                pairwise_mode: props.pairwiseMode,
+                criteria: props.criteria,
+                categories: props.categories,
+                alternatives: props.alternatives,
+                preferenceIntensities: props.preferenceIntensities,
+                pairwiseComparisons: props.pairwiseComparisons,
+            })
+        }).then(response => {
+            if (!response.ok) {
+                toastError('Sorry, some unexpected error occurred');
+                throw new Error('Error updating data');
             }
-        }
-
+            else {
+                if (selectedValues.includes('csv')) {
+                    downloadCsv();
+                }
+                if (selectedValues.includes('xml')) {
+                    if (!toast.isActive(toastId)) {
+                        toast({
+                            id: toastId,
+                            title: 'Error!',
+                            description: `not implemented yet!`,
+                            status: 'error',
+                            duration: 7000,
+                            isClosable: true,
+                        });
+                    }
+                }
+            }
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     function downloadCsv() {
@@ -98,10 +116,10 @@ const ExportButton = (props) => {
                     colorScheme={'teal'}
                     leftIcon={<BiDownload />}
                     onClick={onOpenInfo} >
-                    Export data
+                    Save and export
                 </Button>
                 : <IconButton
-                    aria-label={'Export to file'}
+                    aria-label={'Save and export'}
                     colorScheme={'teal'}
                     icon={<BiDownload />}
                     onClick={onOpenInfo} >
@@ -112,7 +130,7 @@ const ExportButton = (props) => {
                 <ModalContent margin={10}>
                     <ModalHeader>
                         <>
-                            Export data
+                            Export to file
                             <CustomTooltip
                                 label={"Export the project by downloading a .csv file or a group of .xml files in the XMCDA format."}
                                 openDelay={200} >
@@ -140,7 +158,7 @@ const ExportButton = (props) => {
                             alignSelf={'end'}
                             size={'md'}
                             mb={6}
-                            onClick={handleExport}>
+                            onClick={handleSaveAndExport}>
                             Download Files
                         </Button>
                     </ModalBody>
