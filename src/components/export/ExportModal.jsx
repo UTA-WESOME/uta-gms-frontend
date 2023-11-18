@@ -15,7 +15,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { BiDownload } from "react-icons/bi";
+import { BiExport } from "react-icons/bi";
 import { InfoIcon } from '@chakra-ui/icons';
 import CustomTooltip from '../CustomTooltip';
 
@@ -125,14 +125,14 @@ const ExportButton = (props) => {
                     ml={props.margLeft}
                     mr={props.margRight}
                     colorScheme={'teal'}
-                    leftIcon={<BiDownload />}
+                    leftIcon={<BiExport />}
                     onClick={onOpenInfo} >
                     Save and export
                 </Button>
                 : <IconButton
                     aria-label={'Save and export'}
                     colorScheme={'teal'}
-                    icon={<BiDownload />}
+                    icon={<BiExport />}
                     onClick={onOpenInfo} >
                 </IconButton>}
 

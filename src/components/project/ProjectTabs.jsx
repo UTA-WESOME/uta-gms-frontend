@@ -4,6 +4,7 @@ import {
     ButtonGroup,
     Divider,
     Icon,
+    IconButton,
     Spinner,
     Tab,
     TabList,
@@ -16,6 +17,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
+import { BiSave, BiRocket } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
@@ -439,14 +441,34 @@ const ProjectTabs = (props) => {
                             preferenceIntensities={preferenceIntensities}
                             pairwiseComparisons={pairwiseComparisons}
                         />
-                        <Button
-                            colorScheme={'teal'}
-                            onClick={submitData}
-                        >Save</Button>
-                        <Button
-                            colorScheme={'orange'}
-                            onClick={submitDataAndRun}
-                        >Save & run</Button>
+                        {isScreenMobile
+                            ? <IconButton
+                                aria-label={'Save'}
+                                colorScheme={'orange'}
+                                icon={<BiSave />}
+                                onClick={submitData} >
+                            </IconButton>
+                            : <Button
+                                leftIcon={<BiSave />}
+                                colorScheme={'orange'}
+                                onClick={submitData} >
+                                Save
+                            </Button>
+                        }
+                        {isScreenMobile
+                            ? <IconButton
+                                aria-label={'Save & run'}
+                                colorScheme={'orange'}
+                                icon={<BiRocket />}
+                                onClick={submitDataAndRun} >
+                            </IconButton>
+                            : <Button
+                                leftIcon={<BiRocket />}
+                                colorScheme={'orange'}
+                                onClick={submitDataAndRun} >
+                                Save & run
+                            </Button>
+                        }
                     </ButtonGroup>
                     :
                     <Spinner
