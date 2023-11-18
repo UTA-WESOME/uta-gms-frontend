@@ -46,8 +46,16 @@ const ExportButton = (props) => {
             })
         }).then(response => {
             if (!response.ok) {
-                toastError('Sorry, some unexpected error occurred');
-                throw new Error('Error updating data');
+                if (!toast.isActive(toastId)) {
+                    toast({
+                        id: toastId,
+                        title: "Error!",
+                        description: 'Sorry, some unexpected error occurred',
+                        status: 'error',
+                        duration: 7000,
+                        isClosable: true
+                    });
+                }
             }
             else {
                 if (selectedValues.includes('csv')) {
@@ -72,7 +80,10 @@ const ExportButton = (props) => {
     }
 
     function downloadCsv() {
-        fetch(`http://localhost:8080/api/projects/${props.projectId}/export_csv/`)
+        fetch(`http://localhost:8080/api/projects/${props.projectId}/export_csv/`, {
+            method: 'GET',
+            credentials: 'include'
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

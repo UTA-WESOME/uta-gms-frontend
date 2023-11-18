@@ -430,6 +430,7 @@ const ProjectTabs = (props) => {
             >
                 {!saveClicked ?
                     <ButtonGroup>
+                        <ImportModal projectId={props.id} desktop={!isScreenMobile} />
                         <ExportModal projectId={props.id} desktop={!isScreenMobile}
                             pairwiseMode={pairwiseMode}
                             criteria={criteria}
@@ -438,7 +439,6 @@ const ProjectTabs = (props) => {
                             preferenceIntensities={preferenceIntensities}
                             pairwiseComparisons={pairwiseComparisons}
                         />
-                        <ImportModal projectId={props.id} desktop={!isScreenMobile} />
                         <Button
                             colorScheme={'teal'}
                             onClick={submitData}
