@@ -9,18 +9,24 @@ const getId = () => `graphviz${counter++}`;
 
 // Graphviz renders a graph specified in `dot`
 // currentCategoryId, setCurrentCategoryId is used only in the Results tab
-const Graphviz = ({ dot, currentCategoryId, setCurrentCategoryId }) => {
+const Graphviz = ({ dot, currentCategoryId, setCurrentCategoryId, categoryBgColor, categoryBgColorHover }) => {
 
     const id = useMemo(getId, []);
 
     const interactive = () => {
         const nodes = d3.selectAll(`#${id} .node`);
-        nodes
-            .on("click", function () {
-                const title = d3.select(this).select('title').text();
-                const match = title.match(/\d+$/);
-                setCurrentCategoryId(parseInt(match[0]));
-            });
+        nodes.on("click", function () {
+            const title = d3.select(this).select('title').text();
+            const match = title.match(/\d+$/);
+            setCurrentCategoryId(parseInt(match[0]));
+        });
+        nodes.on("mouseover", function () {
+            const color = d3.select(this).select('ellipse').attr('fill', categoryBgColorHover); // Change color to red on hover
+        });
+
+        nodes.on("mouseout", function () {
+            d3.select(this).select('ellipse').attr('fill', categoryBgColor); // Change color back to blue on mouseout
+        });
     };
     const render = (dotSrc) => {
 
@@ -31,7 +37,7 @@ const Graphviz = ({ dot, currentCategoryId, setCurrentCategoryId }) => {
                 })
                 .renderDot(dotSrc);
         } else {
-            graphviz(`#${id}`, {zoom: false})
+            graphviz(`#${id}`, { zoom: false })
                 .renderDot(dotSrc)
                 .on("end", interactive);
         }

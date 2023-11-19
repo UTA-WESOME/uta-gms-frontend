@@ -1,6 +1,6 @@
 import {
     Box,
-    Button,
+    Button, Divider,
     Heading,
     Icon,
     Tab,
@@ -19,11 +19,15 @@ import Graphviz from "../../utils/Graphviz.jsx";
 import { generateHierarchyDotString } from "./graph.js";
 import { useState } from "react";
 import { FaArrowUp } from "react-icons/fa";
+import HasseDiagramTab from "./hasse-diagram-tab/HasseDiagramTab.jsx";
+import RankingTab from "./ranking-tab/RankingTab.jsx";
+import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
 
 const ResultsTabs = ({ alternatives, criteria, categories }) => {
 
     const bgColor = useColorModeValue("#FFFFFF", "#1A202C");
     const categoryBgColor = useColorModeValue("#E2E8F0", "#F7FAFC");
+    const categoryBgColorHover = useColorModeValue("#4FD1C5", "#38B2AC")
     const [currentCategoryId, setCurrentCategoryId] = useState(0);
     const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
 
@@ -52,6 +56,8 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                         dot={generateHierarchyDotString(categories, bgColor, categoryBgColor)}
                         currentCategoryId={currentCategoryId}
                         setCurrentCategoryId={setCurrentCategoryId}
+                        categoryBgColor={categoryBgColor}
+                        categoryBgColorHover={categoryBgColorHover}
                     />
                 </Box>
                 :
@@ -61,45 +67,48 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                           px={{ base: 2, sm: 5 }}
                           isFitted={!isLargerThan480}
                     >
-                        {isLargerThan480 ?
-                            <TabList>
-                                <Tab>Hasse diagram</Tab>
-                                <Tab>Ranking</Tab>
-                                <Tab>Functions</Tab>
-                            </TabList>
-                            :
-                            <TabList>
-                                <Tab fontSize={'20px'}>
-                                    <Icon as={BsDiagram2Fill}></Icon>
-                                </Tab>
-                                <Tab fontSize={'20px'}>
-                                    <Icon as={FaRankingStar}></Icon>
-                                </Tab>
-                                <Tab fontSize={'20px'}>
-                                    <Icon as={TbMathFunction}></Icon>
-                                </Tab>
-                            </TabList>
-                        }
+                        <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
+                            {isLargerThan480 ?
+                                <>
+                                    <Tab>Hasse diagram</Tab>
+                                    <Tab>Ranking</Tab>
+                                    <Tab>Functions</Tab>
+                                </>
+                                :
+                                <>
+                                    <Tab fontSize={'20px'}>
+                                        <Icon as={BsDiagram2Fill}></Icon>
+                                    </Tab>
+                                    <Tab fontSize={'20px'}>
+                                        <Icon as={FaRankingStar}></Icon>
+                                    </Tab>
+                                    <Tab fontSize={'20px'}>
+                                        <Icon as={TbMathFunction}></Icon>
+                                    </Tab>
+                                </>
 
+                            }
+                        </TabList>
+
+                        <Divider/>
                         <TabPanels>
                             <TabPanel>
-                                <div>hasse diagram tab</div>
-                                {/*<HasseDiagramTab*/}
-                                {/*    alternatives={alternatives}*/}
-                                {/*    hasseGraph={hasseGraph}*/}
-                                {/*/>*/}
+                                <HasseDiagramTab
+                                    alternatives={alternatives}
+                                    hasseGraph={categories.find(c => c.id === currentCategoryId).hasse_graph}
+                                />
                             </TabPanel>
                             <TabPanel>
-                                <div>ranking tab</div>
-                                {/*<RankingTab*/}
-                                {/*    alternatives={alternatives}*/}
-                                {/*/>*/}
+                                <RankingTab
+                                    alternatives={alternatives}
+                                    rankings={categories.find(c => c.id === currentCategoryId).rankings}
+                                />
                             </TabPanel>
                             <TabPanel>
-                                <div>functions tab</div>
-                                {/*<FunctionsTab*/}
-                                {/*    criteria={criteria}*/}
-                                {/*/>*/}
+                                <FunctionsTab
+                                    criteria={criteria}
+                                    functions={categories.find(c => c.id === currentCategoryId).function_points}
+                                />
                             </TabPanel>
                         </TabPanels>
                     </Tabs>
