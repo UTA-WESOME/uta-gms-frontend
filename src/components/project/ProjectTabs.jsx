@@ -4,7 +4,7 @@ import {
     ButtonGroup,
     Divider,
     Icon,
-    Spinner,
+    Progress,
     Tab,
     TabList,
     TabPanel,
@@ -115,7 +115,7 @@ const ProjectTabs = (props) => {
 
     useEffect(() => {
         // get data
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
             method: 'GET',
             credentials: 'include'
         }).then(response => {
@@ -249,7 +249,7 @@ const ProjectTabs = (props) => {
             return;
         }
         setSaveClicked(true);
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -281,7 +281,7 @@ const ProjectTabs = (props) => {
         setSaveClicked(true);
 
         // update data
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -297,39 +297,33 @@ const ProjectTabs = (props) => {
                 toastError('Sorry, some unexpected error occurred');
                 throw new Error('Error updating data');
             }
+            return response.json();
+        }).then(data => {
 
-            // get results
-            fetch(`http://localhost:8080/api/projects/${props.id}/results`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-            }).then(response => {
+            let categoriesUpdated = data.categories;
+            let waitingArrayResults = categoriesUpdated.map(() => false);
+            categoriesUpdated.forEach((categoryUpdated, index) => {
+                fetch(`http://localhost:8080/api/categories/${categoryUpdated.id}/results/`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(response => {
+
                     if (!response.ok) {
-                        if (response.status === 400) {
-                            return response.json().then(data => {
-                                    toastError(data.details);
-                                    throw new Error('Error getting results');
-                                }
-                            )
-                        } else {
-                            toastError('Sorry, some unexpected error occurred');
-                            throw new Error('Error getting results');
-
-                        }
+                        waitingArrayResults[index] = true;
+                        toastError(`Error getting results for ${categoryUpdated.name} - ${response.status}`);
+                        throw new Error('Error getting results');
                     }
-                    return response.json();
-                }
-            ).then(data => {
-                setCriteria(data.criteria);
-                criteriaRef.current = data.criteria;
-                setCategories(data.categories);
-                setAlternatives(data.alternatives);
-                alternativesRef.current = data.alternatives;
-                setPreferenceIntensities(data.preference_intensities);
-                setPairwiseMode(data.pairwise_mode);
-                setSaveClicked(false);
-                toastSuccess();
-                setTabIndex(3);
+
+                    waitingArrayResults[index] = true;
+                    if (waitingArrayResults.every(i => i === true)) {
+                        toastSuccess("Results ready!");
+                        setSaveClicked(false);
+                    }
+
+                }).catch(err => {
+                    console.log(err);
+                })
             })
         }).catch(err => {
             console.log(err);
@@ -444,7 +438,9 @@ const ProjectTabs = (props) => {
                 textAlign={'right'}
                 mt={tabIndex === 2 ? 3 : 0}
             >
-                {!saveClicked ?
+                {saveClicked ?
+                    <Progress size={'xs'} isIndeterminate colorScheme={'teal'}/>
+                    :
                     <ButtonGroup>
                         <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
                         <Button
@@ -456,12 +452,6 @@ const ProjectTabs = (props) => {
                             onClick={submitDataAndRun}
                         >Save & run</Button>
                     </ButtonGroup>
-                    :
-                    <Spinner
-                        color={'teal'}
-                        mr={tabIndex === 2 ? 1 : 6}
-                    />
-
                 }
             </Box>
         </Box>
