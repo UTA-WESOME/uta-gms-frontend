@@ -4,6 +4,7 @@ import {
     ButtonGroup,
     Divider,
     Icon,
+    IconButton,
     Spinner,
     Tab,
     TabList,
@@ -16,6 +17,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
+import { BiSave, BiRocket } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
@@ -23,6 +25,7 @@ import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 import ImportModal from "../import/ImportModal.jsx";
+import ExportModal from "../export/ExportModal.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria, criterion function, criterion categories
@@ -297,21 +300,21 @@ const ProjectTabs = (props) => {
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
             }).then(response => {
-                    if (!response.ok) {
-                        if (response.status === 400) {
-                            return response.json().then(data => {
-                                    toastError(data.details);
-                                    throw new Error('Error getting results');
-                                }
-                            )
-                        } else {
-                            toastError('Sorry, some unexpected error occurred');
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        return response.json().then(data => {
+                            toastError(data.details);
                             throw new Error('Error getting results');
-
                         }
+                        )
+                    } else {
+                        toastError('Sorry, some unexpected error occurred');
+                        throw new Error('Error getting results');
+
                     }
-                    return response.json();
                 }
+                return response.json();
+            }
             ).then(data => {
                 setCriteria(data.criteria);
                 criteriaRef.current = data.criteria;
@@ -341,12 +344,12 @@ const ProjectTabs = (props) => {
             p={{ base: 2, sm: 5 }}
         >
             <Tabs variant='soft-rounded'
-                  colorScheme='teal'
-                  isFitted={isScreenMobile}
-                  index={tabIndex}
-                  onChange={(index) => {
-                      setTabIndex(index);
-                  }}>
+                colorScheme='teal'
+                isFitted={isScreenMobile}
+                index={tabIndex}
+                onChange={(index) => {
+                    setTabIndex(index);
+                }}>
                 <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                     {isScreenMobile ?
                         <>
@@ -373,7 +376,7 @@ const ProjectTabs = (props) => {
                     }
                 </TabList>
 
-                <Divider/>
+                <Divider />
                 <TabPanels>
                     <TabPanel>
                         {hasLoaded &&
@@ -429,15 +432,43 @@ const ProjectTabs = (props) => {
             >
                 {!saveClicked ?
                     <ButtonGroup>
-                        <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
-                        <Button
-                            colorScheme={'teal'}
-                            onClick={submitData}
-                        >Save</Button>
-                        <Button
-                            colorScheme={'orange'}
-                            onClick={submitDataAndRun}
-                        >Save & run</Button>
+                        <ImportModal projectId={props.id} desktop={!isScreenMobile} />
+                        <ExportModal projectId={props.id} desktop={!isScreenMobile}
+                            pairwiseMode={pairwiseMode}
+                            criteria={criteria}
+                            categories={categories}
+                            alternatives={alternatives}
+                            preferenceIntensities={preferenceIntensities}
+                            pairwiseComparisons={pairwiseComparisons}
+                        />
+                        {isScreenMobile
+                            ? <IconButton
+                                aria-label={'Save'}
+                                colorScheme={'orange'}
+                                icon={<BiSave />}
+                                onClick={submitData} >
+                            </IconButton>
+                            : <Button
+                                leftIcon={<BiSave />}
+                                colorScheme={'orange'}
+                                onClick={submitData} >
+                                Save
+                            </Button>
+                        }
+                        {isScreenMobile
+                            ? <IconButton
+                                aria-label={'Save & run'}
+                                colorScheme={'orange'}
+                                icon={<BiRocket />}
+                                onClick={submitDataAndRun} >
+                            </IconButton>
+                            : <Button
+                                leftIcon={<BiRocket />}
+                                colorScheme={'orange'}
+                                onClick={submitDataAndRun} >
+                                Save & run
+                            </Button>
+                        }
                     </ButtonGroup>
                     :
                     <Spinner

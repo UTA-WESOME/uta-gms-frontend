@@ -21,7 +21,7 @@ import {
     useDisclosure,
     useToast,
 } from '@chakra-ui/react';
-import { BiCheckCircle, BiSolidFileImport, BiTrash } from "react-icons/bi";
+import { BiCheckCircle, BiImport, BiTrash } from "react-icons/bi";
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import CustomTooltip from '../CustomTooltip';
@@ -214,14 +214,14 @@ const ImportModal = (props) => {
                     ml={props.margLeft}
                     mr={props.margRight}
                     colorScheme={'teal'}
-                    leftIcon={<BiSolidFileImport />}
+                    leftIcon={<BiImport />}
                     onClick={onOpenInfo} >
                     Import from file
                 </Button>
                 : <IconButton
                     aria-label={'Import file'}
                     colorScheme={'teal'}
-                    icon={<BiSolidFileImport />}
+                    icon={<BiImport />}
                     onClick={onOpenInfo} >
                 </IconButton>}
 
