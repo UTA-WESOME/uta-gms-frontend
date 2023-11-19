@@ -21,7 +21,7 @@ const Graphviz = ({ dot, currentCategoryId, setCurrentCategoryId, categoryBgColo
             setCurrentCategoryId(parseInt(match[0]));
         });
         nodes.on("mouseover", function () {
-            const color = d3.select(this).select('ellipse').attr('fill', categoryBgColorHover); // Change color to red on hover
+            d3.select(this).select('ellipse').attr('fill', categoryBgColorHover); // Change color to red on hover
         });
 
         nodes.on("mouseout", function () {

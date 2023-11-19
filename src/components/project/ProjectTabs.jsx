@@ -10,7 +10,6 @@ import {
     TabPanel,
     TabPanels,
     Tabs,
-    Text,
     useMediaQuery,
     useToast
 } from "@chakra-ui/react";
