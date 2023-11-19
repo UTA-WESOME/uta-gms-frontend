@@ -24,6 +24,7 @@ import ImportModal from "../import/ImportModal.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import CategoryTab from "./categories-tab/CategoryTab.jsx";
 import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
+import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria
@@ -78,6 +79,7 @@ const ProjectTabs = (props) => {
     //     ...
     // ]
     const [categories, setCategories] = useState([]);
+    const categoriesRef = useRef([]);
 
     // alternatives holds active data about alternatives and their performances
     //  [
@@ -113,28 +115,38 @@ const ProjectTabs = (props) => {
     const navigate = useNavigate();
     const toast = useToast();
 
-    useEffect(() => {
-        // get data
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
-            method: 'GET',
-            credentials: 'include'
-        }).then(response => {
+
+    const getData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
             if (!response.ok) {
-                throw new Error("error getting project in batch");
+                throw new Error("Error getting project in batch");
             }
-            return response.json();
-        }).then(data => {
+
+            const data = await response.json();
+
             setCriteria(data.criteria);
             criteriaRef.current = data.criteria;
             setCategories(data.categories);
+            categoriesRef.current = data.categories;
             setAlternatives(data.alternatives);
             alternativesRef.current = data.alternatives;
             setPreferenceIntensities(data.preference_intensities);
             setPairwiseMode(data.pairwise_mode);
             setHasLoaded(true);
-        }).catch(err => {
-            console.log(err);
-        })
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    useEffect(() => {
+        // get data
+        getData();
     }, [])
 
     const toastSuccess = (description) => {
@@ -319,6 +331,10 @@ const ProjectTabs = (props) => {
                     if (waitingArrayResults.every(i => i === true)) {
                         toastSuccess("Results ready!");
                         setSaveClicked(false);
+                        // get current project data
+                        getData().then(() => {
+                            setTabIndex(4);
+                        });
                     }
 
                 }).catch(err => {
@@ -424,12 +440,11 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                     <TabPanel p={1} py={2}>
                         {hasLoaded &&
-                            <Text>Results Tab</Text>
-                            // <ResultsTabs
-                            //     alternatives={alternativesRef.current}
-                            //     criteria={criteriaRef.current}
-                            //     hasseGraph={hasseGraph}
-                            // />
+                            <ResultsTabs
+                                alternatives={alternativesRef.current}
+                                criteria={criteriaRef.current}
+                                categories={categoriesRef.current}
+                            />
                         }
                     </TabPanel>
                 </TabPanels>
