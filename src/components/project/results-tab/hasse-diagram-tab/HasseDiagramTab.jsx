@@ -24,6 +24,7 @@ const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
                 :
                 <Graphviz
                     dot={generateDotString(hasseGraph, alternatives, bgColor, nodeBgColor)}
+                    download={true}
                 />
             }
 

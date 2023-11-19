@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { graphviz } from "d3-graphviz";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import * as d3 from 'd3';
+import { DownloadIcon } from "@chakra-ui/icons";
 
 let counter = 0;
 
@@ -9,7 +10,14 @@ const getId = () => `graphviz${counter++}`;
 
 // Graphviz renders a graph specified in `dot`
 // currentCategoryId, setCurrentCategoryId is used only in the Results tab
-const Graphviz = ({ dot, currentCategoryId, setCurrentCategoryId, categoryBgColor, categoryBgColorHover }) => {
+const Graphviz = ({
+                      dot,
+                      currentCategoryId,
+                      setCurrentCategoryId,
+                      categoryBgColor,
+                      categoryBgColorHover,
+                      download = false
+                  }) => {
 
     const id = useMemo(getId, []);
 
@@ -48,14 +56,38 @@ const Graphviz = ({ dot, currentCategoryId, setCurrentCategoryId, categoryBgColo
         render(dot);
     }, [dot]);
 
+    const downloadSvg = () => {
+        const svgElement = document.getElementById(id).querySelector('svg');
+        const svgData = new XMLSerializer().serializeToString(svgElement);
+
+        const blob = new Blob([svgData], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'hasse_graph.svg';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <Box
             p={10}
-            id={id}
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             borderWidth={'1px'}
             borderRadius={'lg'}
-        />
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}
+        >
+            <Box
+                id={id}
+                mb={5}
+            />
+            {download &&
+                <Button colorScheme={'teal'} variant={'outline'} onClick={downloadSvg} leftIcon={<DownloadIcon/>}
+                >Download as SVG</Button>
+            }
+        </Box>
     )
 
 }

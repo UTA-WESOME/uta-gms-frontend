@@ -39,6 +39,7 @@ const CategoryTab = ({ alternatives, criteria, categories, setCategories, setPre
                 </Center>
                 <Graphviz
                     dot={generateHierarchyDotString(categories, criteria, bgColor, categoryBgColor)}
+                    download={true}
                 />
             </Box>
         </Flex>
