@@ -74,10 +74,14 @@ const Graphviz = ({
 
     return (
         <Box
+            borderWidth={'1px'}
+            borderRadius={'lg'}
             p={10}
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}
+            overflowX={'clip'}
         >
             <Box
+                cursor={download ? 'move' : ''}
                 id={id}
                 mb={5}
             />
