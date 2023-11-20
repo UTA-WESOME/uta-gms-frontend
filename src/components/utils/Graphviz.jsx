@@ -75,8 +75,6 @@ const Graphviz = ({
     return (
         <Box
             p={10}
-            borderWidth={'1px'}
-            borderRadius={'lg'}
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}
         >
             <Box

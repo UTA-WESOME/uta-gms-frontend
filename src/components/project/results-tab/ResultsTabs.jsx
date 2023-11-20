@@ -22,6 +22,7 @@ import { FaArrowUp } from "react-icons/fa";
 import HasseDiagramTab from "./hasse-diagram-tab/HasseDiagramTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
+import PercentagesTab from "./percentages-tab/PercentagesTab.jsx";
 
 const ResultsTabs = ({ alternatives, criteria, categories }) => {
 
@@ -73,6 +74,7 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                     <Tab>Hasse diagram</Tab>
                                     <Tab>Ranking</Tab>
                                     <Tab>Functions</Tab>
+                                    <Tab>Percentages</Tab>
                                 </>
                                 :
                                 <>
@@ -108,6 +110,12 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                 <FunctionsTab
                                     criteria={criteria}
                                     functions={categories.find(c => c.id === currentCategoryId).function_points}
+                                />
+                            </TabPanel>
+                            <TabPanel>
+                                <PercentagesTab
+                                    alternatives={alternatives}
+                                    percentages={categories.find(c => c.id === currentCategoryId).percentages}
                                 />
                             </TabPanel>
                         </TabPanels>
