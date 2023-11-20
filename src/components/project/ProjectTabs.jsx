@@ -4,9 +4,8 @@ import {
     ButtonGroup,
     Divider,
     Icon,
-    Progress,
     IconButton,
-    Spinner,
+    Progress,
     Tab,
     TabList,
     TabPanel,
@@ -18,7 +17,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
-import { BiSave, BiRocket } from "react-icons/bi";
+import { BiRocket, BiSave } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
@@ -462,7 +461,7 @@ const ProjectTabs = (props) => {
                     <Progress size={'xs'} isIndeterminate colorScheme={'teal'}/>
                     :
                     <ButtonGroup>
-                        <ImportModal projectId={props.id} desktop={!isScreenMobile} />
+                        <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
                         <ExportModal
                             projectId={props.id}
                             desktop={!isScreenMobile}
@@ -476,13 +475,13 @@ const ProjectTabs = (props) => {
                             ? <IconButton
                                 aria-label={'Save'}
                                 colorScheme={'orange'}
-                                icon={<BiSave />}
-                                onClick={submitData} >
+                                icon={<BiSave/>}
+                                onClick={submitData}>
                             </IconButton>
                             : <Button
-                                leftIcon={<BiSave />}
+                                leftIcon={<BiSave/>}
                                 colorScheme={'orange'}
-                                onClick={submitData} >
+                                onClick={submitData}>
                                 Save
                             </Button>
                         }
@@ -490,13 +489,13 @@ const ProjectTabs = (props) => {
                             ? <IconButton
                                 aria-label={'Save & run'}
                                 colorScheme={'orange'}
-                                icon={<BiRocket />}
-                                onClick={submitDataAndRun} >
+                                icon={<BiRocket/>}
+                                onClick={submitDataAndRun}>
                             </IconButton>
                             : <Button
-                                leftIcon={<BiRocket />}
+                                leftIcon={<BiRocket/>}
                                 colorScheme={'orange'}
-                                onClick={submitDataAndRun} >
+                                onClick={submitDataAndRun}>
                                 Save & run
                             </Button>
                         }
