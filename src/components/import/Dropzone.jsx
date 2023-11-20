@@ -1,30 +1,16 @@
 import {
     Box,
-    Button,
-    HStack,
     Icon,
     IconButton,
-    Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
     List,
     ListIcon,
     ListItem,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Progress,
     Text,
     useColorModeValue,
-    useDisclosure,
-    VStack,
     Heading,
 } from '@chakra-ui/react';
-import { Image } from '@chakra-ui/react';
 import { useDropzone } from 'react-dropzone';
-import { BiCheckCircle, BiSolidFileImport, BiTrash } from "react-icons/bi";
+import { BiCheckCircle, BiTrash } from "react-icons/bi";
 import { useCallback, useState } from 'react';
 
 

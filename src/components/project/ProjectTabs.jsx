@@ -5,6 +5,8 @@ import {
     Divider,
     Icon,
     Progress,
+    IconButton,
+    Spinner,
     Tab,
     TabList,
     TabPanel,
@@ -16,17 +18,19 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
+import { BiSave, BiRocket } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
-import ImportModal from "../import/ImportModal.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import CategoryTab from "./categories-tab/CategoryTab.jsx";
 import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
+import ImportModal from "../import/ImportModal.jsx";
+import ExportModal from "../export/ExportModal.jsx";
 
 const ProjectTabs = (props) => {
-    // criteria holds active data about criteria
+    // criteria holds active data about criteria, criterion function, criterion categories
     //  [
     //      {
     //          "id": integer,
@@ -353,13 +357,15 @@ const ProjectTabs = (props) => {
             borderRadius={'lg'}
             p={{ base: 2, sm: 5 }}
         >
-            <Tabs variant='soft-rounded'
-                  colorScheme='teal'
-                  isFitted={isScreenMobile}
-                  index={tabIndex}
-                  onChange={(index) => {
-                      setTabIndex(index);
-                  }}>
+            <Tabs
+                variant='soft-rounded'
+                colorScheme='teal'
+                isFitted={isScreenMobile}
+                index={tabIndex}
+                onChange={(index) => {
+                    setTabIndex(index);
+                }}
+            >
                 <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                     {isScreenMobile ?
                         <>
@@ -456,15 +462,43 @@ const ProjectTabs = (props) => {
                     <Progress size={'xs'} isIndeterminate colorScheme={'teal'}/>
                     :
                     <ButtonGroup>
-                        <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
-                        <Button
-                            colorScheme={'teal'}
-                            onClick={submitData}
-                        >Save</Button>
-                        <Button
-                            colorScheme={'orange'}
-                            onClick={submitDataAndRun}
-                        >Save & run</Button>
+                        <ImportModal projectId={props.id} desktop={!isScreenMobile} />
+                        <ExportModal projectId={props.id} desktop={!isScreenMobile}
+                            pairwiseMode={pairwiseMode}
+                            criteria={criteria}
+                            categories={categories}
+                            alternatives={alternatives}
+                            preferenceIntensities={preferenceIntensities}
+                            pairwiseComparisons={pairwiseComparisons}
+                        />
+                        {isScreenMobile
+                            ? <IconButton
+                                aria-label={'Save'}
+                                colorScheme={'orange'}
+                                icon={<BiSave />}
+                                onClick={submitData} >
+                            </IconButton>
+                            : <Button
+                                leftIcon={<BiSave />}
+                                colorScheme={'orange'}
+                                onClick={submitData} >
+                                Save
+                            </Button>
+                        }
+                        {isScreenMobile
+                            ? <IconButton
+                                aria-label={'Save & run'}
+                                colorScheme={'orange'}
+                                icon={<BiRocket />}
+                                onClick={submitDataAndRun} >
+                            </IconButton>
+                            : <Button
+                                leftIcon={<BiRocket />}
+                                colorScheme={'orange'}
+                                onClick={submitDataAndRun} >
+                                Save & run
+                            </Button>
+                        }
                     </ButtonGroup>
                 }
             </Box>
