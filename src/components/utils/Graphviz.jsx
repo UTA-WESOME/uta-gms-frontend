@@ -78,7 +78,7 @@ const Graphviz = ({
             borderRadius={'lg'}
             p={10}
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}
-            overflowX={'clip'}
+            overflowX={'hidden'}
         >
             <Box
                 cursor={download ? 'move' : ''}
