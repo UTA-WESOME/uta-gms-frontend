@@ -463,13 +463,14 @@ const ProjectTabs = (props) => {
                     :
                     <ButtonGroup>
                         <ImportModal projectId={props.id} desktop={!isScreenMobile} />
-                        <ExportModal projectId={props.id} desktop={!isScreenMobile}
+                        <ExportModal
+                            projectId={props.id}
+                            desktop={!isScreenMobile}
                             pairwiseMode={pairwiseMode}
                             criteria={criteria}
                             categories={categories}
                             alternatives={alternatives}
                             preferenceIntensities={preferenceIntensities}
-                            pairwiseComparisons={pairwiseComparisons}
                         />
                         {isScreenMobile
                             ? <IconButton
