@@ -1,8 +1,9 @@
 import { useEffect, useMemo } from "react";
 import { graphviz } from "d3-graphviz";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Center } from "@chakra-ui/react";
 import * as d3 from 'd3';
 import { DownloadIcon } from "@chakra-ui/icons";
+import { TbFocusCentered } from "react-icons/tb";
 
 let counter = 0;
 
@@ -29,11 +30,13 @@ const Graphviz = ({
             setCurrentCategoryId(parseInt(match[0]));
         });
         nodes.on("mouseover", function () {
-            d3.select(this).select('ellipse').attr('fill', categoryBgColorHover); // Change color to red on hover
+            d3.select(this).select('ellipse').attr('fill', categoryBgColorHover);
+            d3.select(this).select('ellipse').attr('stroke', categoryBgColorHover);
         });
 
         nodes.on("mouseout", function () {
-            d3.select(this).select('ellipse').attr('fill', categoryBgColor); // Change color back to blue on mouseout
+            d3.select(this).select('ellipse').attr('fill', categoryBgColor);
+            d3.select(this).select('ellipse').attr('stroke', categoryBgColor);
         });
     };
     const render = (dotSrc) => {
@@ -57,6 +60,7 @@ const Graphviz = ({
     }, [dot]);
 
     const downloadSvg = () => {
+        d3.select(`#${id}`).graphviz().resetZoom();
         const svgElement = document.getElementById(id).querySelector('svg');
         const svgData = new XMLSerializer().serializeToString(svgElement);
 
@@ -72,22 +76,37 @@ const Graphviz = ({
         URL.revokeObjectURL(url);
     };
 
+    const centerGraph = () => {
+        d3.select(`#${id}`).graphviz().resetZoom();
+    }
+
     return (
-        <Box
-            borderWidth={'1px'}
-            borderRadius={'lg'}
-            p={10}
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}
-            overflowX={'hidden'}
-        >
+        <Box>
             <Box
-                cursor={download ? 'move' : ''}
                 id={id}
-                mb={5}
+                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                cursor={download ? 'move' : ''}
             />
             {download &&
-                <Button colorScheme={'teal'} variant={'outline'} onClick={downloadSvg} leftIcon={<DownloadIcon/>}
-                >Download as SVG</Button>
+                <Center>
+                    <ButtonGroup
+                        mt={5}>
+                        <Button
+                            colorScheme={'teal'}
+                            variant={'outline'}
+                            onClick={downloadSvg}
+                            leftIcon={<DownloadIcon/>}
+                        >Download as SVG</Button>
+                        <Button
+                            colorScheme={'teal'}
+                            variant={'outline'}
+                            onClick={centerGraph}
+                            leftIcon={<TbFocusCentered/>}
+                        >Center</Button>
+
+                    </ButtonGroup>
+
+                </Center>
             }
         </Box>
     )

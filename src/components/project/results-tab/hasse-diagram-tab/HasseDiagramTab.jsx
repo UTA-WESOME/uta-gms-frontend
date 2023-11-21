@@ -9,7 +9,7 @@ const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
     const nodeBgColor = useColorModeValue("#E2E8F0", "#F7FAFC");
 
     return (
-        <Box textAlign={'center'} mx={{ base: '0%', lg: '18%', '2xl': '25%' }} mt={'10px'}>
+        <Box textAlign={'center'} mx={{ base: '0%', lg: '18%' }} mt={'10px'}>
             <Heading size={{ base: 'md', md: 'xl' }} mb={3}>
                 Hasse diagram
             </Heading>
