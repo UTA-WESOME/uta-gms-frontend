@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { graphviz } from "d3-graphviz";
-import { Box, Button, ButtonGroup, Center } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Center, IconButton } from "@chakra-ui/react";
 import * as d3 from 'd3';
 import { DownloadIcon } from "@chakra-ui/icons";
 import { TbFocusCentered } from "react-icons/tb";
@@ -97,12 +97,13 @@ const Graphviz = ({
                             onClick={downloadSvg}
                             leftIcon={<DownloadIcon/>}
                         >Download as SVG</Button>
-                        <Button
+                        <IconButton
+                            aria-label={'center-graph'}
                             colorScheme={'teal'}
                             variant={'outline'}
                             onClick={centerGraph}
-                            leftIcon={<TbFocusCentered/>}
-                        >Center</Button>
+                            icon={<TbFocusCentered/>}
+                        />
 
                     </ButtonGroup>
 
