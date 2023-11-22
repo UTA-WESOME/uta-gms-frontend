@@ -19,14 +19,14 @@ import { useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, } from '@chakra-ui/icons';
 import ToggleColorMode from "./ToggleColorMode.jsx";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "./utils/useLocalStorage.jsx";
+import { useLocalStorage } from "../utils/useLocalStorage.jsx";
 import UserInfo from './UserInfo.jsx';
 
 export default function Navbar(props) {
 
     const { isOpen, onToggle } = useDisclosure();
     const [loaded, setLoaded] = useState(false);
-    const [getAuth, setAuth, deleteAuth] = useLocalStorage('auth');
+    const [getAuth, setAuth, _] = useLocalStorage('auth');
     const navigate = useNavigate();
     const [user, setUser] = useState([]);
 
@@ -78,7 +78,8 @@ export default function Navbar(props) {
     } else {
         handleUserData();
         buttons = (
-            <UserInfo userName={user.name} userSurname={user.surname} userEmail={user.email} toggleRefresh={props.toggleRefresh} />
+            <UserInfo userName={user.name} userSurname={user.surname} userEmail={user.email}
+                      toggleRefresh={props.toggleRefresh}/>
         )
     }
 
@@ -102,7 +103,7 @@ export default function Navbar(props) {
                     <IconButton
                         onClick={onToggle}
                         icon={
-                            isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+                            isOpen ? <CloseIcon w={3} h={3}/> : <HamburgerIcon w={5} h={5}/>
                         }
                         variant={'ghost'}
                         aria-label={'Toggle Navigation'}
@@ -120,7 +121,7 @@ export default function Navbar(props) {
                     </Text>
 
                     <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                        <DesktopNav />
+                        <DesktopNav/>
                     </Flex>
                 </Flex>
 
@@ -129,13 +130,13 @@ export default function Navbar(props) {
                     justify={'flex-end'}
                     direction={'row'}
                     spacing={6}>
-                    <ToggleColorMode />
+                    <ToggleColorMode/>
                     {buttons}
                 </Stack>
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
-                <MobileNav />
+                <MobileNav/>
             </Collapse>
         </Box>
     );
@@ -216,7 +217,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
                     justify={'flex-end'}
                     align={'center'}
                     flex={1}>
-                    <Icon color={'teal.100'} w={5} h={5} as={ChevronRightIcon} />
+                    <Icon color={'teal.100'} w={5} h={5} as={ChevronRightIcon}/>
                 </Flex>
             </Stack>
         </Link>

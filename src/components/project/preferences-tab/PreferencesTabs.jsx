@@ -1,19 +1,19 @@
 import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
-import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
 import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
-import { IoFlash } from "react-icons/io5";
 import { FaGreaterThan } from "react-icons/fa";
-import { MdOutlineExpand } from "react-icons/md";
+import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
+import { IoFlash } from "react-icons/io5";
 import BestWorstTab from "./maxmin-tab/BestWorstTab.jsx";
+import { MdOutlineExpand } from "react-icons/md";
 
 const PreferencesTabs = ({
                              alternatives,
                              setAlternatives,
                              criteria,
+                             categories,
+                             setCategories,
                              preferenceIntensities,
                              setPreferenceIntensities,
-                             pairwiseComparisons,
-                             setPairwiseComparisons,
                              pairwiseMode,
                              setPairwiseMode
                          }) => {
@@ -36,7 +36,8 @@ const PreferencesTabs = ({
                         <Tab fontSize={'15px'}>
                             <Icon as={MdOutlineExpand}></Icon>
                         </Tab>
-                    </> :
+                    </>
+                    :
                     <>
                         <Tab>Comparisons</Tab>
                         <Tab>Intensities</Tab>
@@ -49,24 +50,26 @@ const PreferencesTabs = ({
                     <ComparisonsTab
                         alternatives={alternatives}
                         setAlternatives={setAlternatives}
-                        pairwiseComparisons={pairwiseComparisons}
-                        setPairwiseComparisons={setPairwiseComparisons}
+                        categories={categories}
+                        setCategories={setCategories}
                         pairwiseMode={pairwiseMode}
                         setPairwiseMode={setPairwiseMode}
                     />
                 </TabPanel>
                 <TabPanel p={1} py={5}>
                     <IntensitiesTab
-                        preferenceIntensities={preferenceIntensities}
-                        setPreferenceIntensities={setPreferenceIntensities}
                         alternatives={alternatives}
                         criteria={criteria}
+                        categories={categories}
+                        preferenceIntensities={preferenceIntensities}
+                        setPreferenceIntensities={setPreferenceIntensities}
                     />
                 </TabPanel>
                 <TabPanel p={1} py={5}>
                     <BestWorstTab
                         alternatives={alternatives}
-                        setAlternatives={setAlternatives}
+                        categories={categories}
+                        setCategories={setCategories}
                     />
                 </TabPanel>
             </TabPanels>

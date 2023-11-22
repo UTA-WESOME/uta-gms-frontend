@@ -5,7 +5,7 @@ import {
     Divider,
     Icon,
     IconButton,
-    Spinner,
+    Progress,
     Tab,
     TabList,
     TabPanel,
@@ -17,13 +17,14 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
-import { BiSave, BiRocket } from "react-icons/bi";
+import { BiRocket, BiSave } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
-import ResultsTabs from "./results-tab/ResultsTabs.jsx";
+import CategoryTab from "./categories-tab/CategoryTab.jsx";
 import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
+import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 import ImportModal from "../import/ImportModal.jsx";
 import ExportModal from "../export/ExportModal.jsx";
 
@@ -34,36 +35,53 @@ const ProjectTabs = (props) => {
     //          "id": integer,
     //          "name": string,
     //          "gain": boolean,
-    //          "linear_segments": integer,
-    //          "criterion_categories": [
-    //              {
-    //                  "id": integer,
-    //                  "created_at": datetime,
-    //                  "updated_at": datetime,
-    //                  "category": integer
-    //              },
-    //              ...
-    //          ],
-    //          "criterion_function_points": [
-    //              {
-    //              "id": integer,
-    //              "ordinate": float,
-    //              "abscissa": float,
-    //              "created_at": datetime,
-    //              "updated_at": datetime
-    //          },
-    //          ...
-    //      ],
-    //      "created_at": datetime,  # optional
-    //      "updated_at": datetime,  # optional
-    //  },
-    //  ...
+    //          "linear_segments": integer
+    //      },
+    //      ...
     // ]
     const [criteria, setCriteria] = useState([]);
     const criteriaRef = useRef([]);
 
     // categories holds active data about categories in the project
+    // [
+    //     {
+    //         "id": integer,
+    //         "name": string,
+    //         "color": string,
+    //         "active": boolean,
+    //         "diagram": JSON,
+    //         "parent": integer,
+    //         "project": integer,
+    //         "criterion_categories": [
+    //             {
+    //                 "id": integer,
+    //                 "criterion": integer,
+    //             },
+    //             ...
+    //         ],
+    //         "function_points": [
+    //
+    //         ],
+    //         "preference_intensities": [
+    //
+    //         ],
+    //         "pairwise_comparisons": [
+    //
+    //         ],
+    //         "rankings": [
+    //
+    //         ],
+    //         "percentages": [
+    //
+    //         ],
+    //         "acceptability_indices": [
+    //
+    //         ]
+    //     },
+    //     ...
+    // ]
     const [categories, setCategories] = useState([]);
+    const categoriesRef = useRef([]);
 
     // alternatives holds active data about alternatives and their performances
     //  [
@@ -72,8 +90,6 @@ const ProjectTabs = (props) => {
     //          "name": string,
     //          "reference_ranking": integer,
     //          "ranking": integer,
-    //          "created_at": datetime,  # optional
-    //          "updated_at": datetime,  # optional
     //          "performances": [
     //              {
     //                  "id": integer,  # optional
@@ -90,33 +106,8 @@ const ProjectTabs = (props) => {
     const [alternatives, setAlternatives] = useState([]);
     const alternativesRef = useRef([]);
 
-    // preferenceIntensities holds active data about preference intensities
-    // [
-    //     {
-    //         id: integer,
-    //         alternative_1: integer,
-    //         alternative_2: integer,
-    //         alternative_3: integer,
-    //         alternative_4: integer,
-    //         criterion: integer,
-    //     },
-    //     ...
-    // ]
     const [preferenceIntensities, setPreferenceIntensities] = useState([]);
 
-    // pairwiseComparisons holds active data about pairwise comparisons between alternatives
-    // [
-    //     {
-    //         id: integer,
-    //         type: ("preference", "indifference"),
-    //         alternative_1: integer,
-    //         alternative_2: integer,
-    //     },
-    //     ...
-    // ]
-    const [pairwiseComparisons, setPairwiseComparisons] = useState([]);
-
-    const [hasseGraph, setHasseGraph] = useState({});
     const [pairwiseMode, setPairwiseMode] = useState(false);
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -126,30 +117,38 @@ const ProjectTabs = (props) => {
     const navigate = useNavigate();
     const toast = useToast();
 
-    useEffect(() => {
-        // get data
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
-            method: 'GET',
-            credentials: 'include'
-        }).then(response => {
+
+    const getData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
             if (!response.ok) {
-                throw new Error("error getting project in batch");
+                throw new Error("Error getting project in batch");
             }
-            return response.json();
-        }).then(data => {
+
+            const data = await response.json();
+
             setCriteria(data.criteria);
             criteriaRef.current = data.criteria;
             setCategories(data.categories);
+            categoriesRef.current = data.categories;
             setAlternatives(data.alternatives);
             alternativesRef.current = data.alternatives;
             setPreferenceIntensities(data.preference_intensities);
-            setPairwiseComparisons(data.pairwise_comparisons);
-            setHasseGraph(data.hasse_graph);
             setPairwiseMode(data.pairwise_mode);
             setHasLoaded(true);
-        }).catch(err => {
-            console.log(err);
-        })
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    useEffect(() => {
+        // get data
+        getData();
     }, [])
 
     const toastSuccess = (description) => {
@@ -178,6 +177,7 @@ const ProjectTabs = (props) => {
         // check if there are any criteria
         if (criteria.length === 0) {
             toastError("No criteria!");
+            setTabIndex(0);
             return false;
         }
 
@@ -185,6 +185,7 @@ const ProjectTabs = (props) => {
         const criteriaCheckName = criteria.some(criterion => criterion.name === "");
         if (criteriaCheckName) {
             toastError("There is at least one criterion without a name!", 6000);
+            setTabIndex(0);
             return false;
         }
 
@@ -198,6 +199,7 @@ const ProjectTabs = (props) => {
         // check if there are any alternatives
         if (alternatives.length === 0) {
             toastError("No alternatives!");
+            setTabIndex(1);
             return false;
         }
 
@@ -205,6 +207,7 @@ const ProjectTabs = (props) => {
         const alternativesCheckName = alternatives.some(alternative => alternative.name === "");
         if (alternativesCheckName) {
             toastError("There is at least one alternative without a name!", 6000);
+            setTabIndex(1);
             return false;
         }
 
@@ -214,24 +217,41 @@ const ProjectTabs = (props) => {
         )
         if (alternativesCheckPerformances) {
             toastError("There is at least one alternative with an empty performance!");
+            setTabIndex(1);
+            return false;
+        }
+
+        // check if there is at least one criterion that does not have a category
+        const criteriaCheckCategories = criteria.some(criterion =>
+            !categories.some(category =>
+                category.criterion_categories.some(i => i.criterion === criterion.id)
+            )
+        )
+        if (criteriaCheckCategories) {
+            toastError("There is at least one criterion not assigned to a category!");
+            setTabIndex(2);
             return false;
         }
 
         // check if all pairwise comparisons have different alternatives
-        const pairwiseComparisonsCheck = pairwiseComparisons.some(pc => pc.alternative_1 === pc.alternative_2)
+        const pairwiseComparisonsCheck = categories.some(c => c.pairwise_comparisons.some(pc => pc.alternative_1 === pc.alternative_2))
         if (pairwiseComparisonsCheck && pairwiseMode) {
             toastError("There is at least one pairwise comparison with identical alternatives.");
+            setTabIndex(3);
             return false;
         }
 
         // check if all best-worst positions are correct - best is higher than worst
-        const maxMinPositionsCheck = alternatives.some(alternative => (
-            alternative.best_position > alternative.worst_position &&
-            alternative.best_position !== null &&
-            alternative.worst_position !== null
-        ));
+        const maxMinPositionsCheck = categories.some(category =>
+            category.rankings.some(ranking => (
+                ranking.best_position > ranking.worst_position &&
+                ranking.best_position !== null &&
+                ranking.worst_position !== null
+            ))
+        );
         if (maxMinPositionsCheck) {
             toastError("There is at least one incorrect Best-Worst preference");
+            setTabIndex(3);
             return false;
         }
 
@@ -243,7 +263,7 @@ const ProjectTabs = (props) => {
             return;
         }
         setSaveClicked(true);
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -252,8 +272,7 @@ const ProjectTabs = (props) => {
                 criteria: criteria,
                 categories: categories,
                 alternatives: alternatives,
-                preference_intensities: preferenceIntensities,
-                pairwise_comparisons: pairwiseComparisons,
+                preference_intensities: preferenceIntensities
             })
         }).then(response => {
             if (!response.ok) {
@@ -276,7 +295,7 @@ const ProjectTabs = (props) => {
         setSaveClicked(true);
 
         // update data
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch`, {
+        fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -285,51 +304,45 @@ const ProjectTabs = (props) => {
                 criteria: criteria,
                 categories: categories,
                 alternatives: alternatives,
-                preference_intensities: preferenceIntensities,
-                pairwise_comparisons: pairwiseComparisons,
+                preference_intensities: preferenceIntensities
             })
         }).then(response => {
             if (!response.ok) {
                 toastError('Sorry, some unexpected error occurred');
                 throw new Error('Error updating data');
             }
+            return response.json();
+        }).then(data => {
 
-            // get results
-            fetch(`http://localhost:8080/api/projects/${props.id}/results`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-            }).then(response => {
-                if (!response.ok) {
-                    if (response.status === 400) {
-                        return response.json().then(data => {
-                            toastError(data.details);
-                            throw new Error('Error getting results');
-                        }
-                        )
-                    } else {
-                        toastError('Sorry, some unexpected error occurred');
+            let categoriesUpdated = data.categories;
+            let waitingArrayResults = categoriesUpdated.map(() => false);
+            categoriesUpdated.forEach((categoryUpdated, index) => {
+                fetch(`http://localhost:8080/api/categories/${categoryUpdated.id}/results/`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(response => {
+
+                    if (!response.ok) {
+                        waitingArrayResults[index] = true;
+                        toastError(`Error getting results for ${categoryUpdated.name} - ${response.status}`);
                         throw new Error('Error getting results');
-
                     }
-                }
-                return response.json();
-            }
-            ).then(data => {
-                setCriteria(data.criteria);
-                criteriaRef.current = data.criteria;
-                setCategories(data.categories);
-                setAlternatives(data.alternatives);
-                alternativesRef.current = data.alternatives;
-                setPreferenceIntensities(data.preference_intensities);
-                setPairwiseComparisons(data.pairwise_comparisons);
-                setHasseGraph(data.hasse_graph);
-                setPairwiseMode(data.pairwise_mode);
-                setSaveClicked(false);
-                toastSuccess();
-                setTabIndex(3);
-            })
 
+                    waitingArrayResults[index] = true;
+                    if (waitingArrayResults.every(i => i === true)) {
+                        toastSuccess("Results ready!");
+                        setSaveClicked(false);
+                        // get current project data
+                        getData().then(() => {
+                            setTabIndex(4);
+                        });
+                    }
+
+                }).catch(err => {
+                    console.log(err);
+                })
+            })
         }).catch(err => {
             console.log(err);
         })
@@ -343,13 +356,15 @@ const ProjectTabs = (props) => {
             borderRadius={'lg'}
             p={{ base: 2, sm: 5 }}
         >
-            <Tabs variant='soft-rounded'
+            <Tabs
+                variant='soft-rounded'
                 colorScheme='teal'
                 isFitted={isScreenMobile}
                 index={tabIndex}
                 onChange={(index) => {
                     setTabIndex(index);
-                }}>
+                }}
+            >
                 <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                     {isScreenMobile ?
                         <>
@@ -370,22 +385,22 @@ const ProjectTabs = (props) => {
                         <>
                             <Tab>Criteria</Tab>
                             <Tab>Alternatives</Tab>
+                            <Tab>Hierarchy</Tab>
                             <Tab>Preferences</Tab>
-                            <Tab isDisabled={alternatives.every(alt => alt.ranking === 0)}>Results</Tab>
+                            <Tab>Results</Tab>
                         </>
                     }
                 </TabList>
 
-                <Divider />
+                <Divider/>
                 <TabPanels>
                     <TabPanel>
                         {hasLoaded &&
                             <CriteriaTab
                                 criteria={criteria}
                                 setCriteria={setCriteria}
-                                categories={categories}
-                                setCategories={setCategories}
                                 setAlternatives={setAlternatives}
+                                setCategories={setCategories}
                                 setPreferenceIntensities={setPreferenceIntensities}
                             />
                         }
@@ -396,6 +411,18 @@ const ProjectTabs = (props) => {
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
                                 criteria={criteria}
+                                setCategories={setCategories}
+                                setPreferenceIntensities={setPreferenceIntensities}
+                            />
+                        }
+                    </TabPanel>
+                    <TabPanel p={1} py={2}>
+                        {hasLoaded &&
+                            <CategoryTab
+                                alternatives={alternatives}
+                                criteria={criteria}
+                                categories={categories}
+                                setCategories={setCategories}
                                 setPreferenceIntensities={setPreferenceIntensities}
                             />
                         }
@@ -406,10 +433,10 @@ const ProjectTabs = (props) => {
                                 alternatives={alternatives}
                                 setAlternatives={setAlternatives}
                                 criteria={criteria}
+                                categories={categories}
+                                setCategories={setCategories}
                                 preferenceIntensities={preferenceIntensities}
                                 setPreferenceIntensities={setPreferenceIntensities}
-                                pairwiseComparisons={pairwiseComparisons}
-                                setPairwiseComparisons={setPairwiseComparisons}
                                 pairwiseMode={pairwiseMode}
                                 setPairwiseMode={setPairwiseMode}
                             />
@@ -420,7 +447,7 @@ const ProjectTabs = (props) => {
                             <ResultsTabs
                                 alternatives={alternativesRef.current}
                                 criteria={criteriaRef.current}
-                                hasseGraph={hasseGraph}
+                                categories={categoriesRef.current}
                             />
                         }
                     </TabPanel>
@@ -430,28 +457,31 @@ const ProjectTabs = (props) => {
                 textAlign={'right'}
                 mt={tabIndex === 2 ? 3 : 0}
             >
-                {!saveClicked ?
+                {saveClicked ?
+                    <Progress size={'xs'} isIndeterminate colorScheme={'teal'}/>
+                    :
                     <ButtonGroup>
-                        <ImportModal projectId={props.id} desktop={!isScreenMobile} />
-                        <ExportModal projectId={props.id} desktop={!isScreenMobile}
+                        <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
+                        <ExportModal
+                            projectId={props.id}
+                            desktop={!isScreenMobile}
                             pairwiseMode={pairwiseMode}
                             criteria={criteria}
                             categories={categories}
                             alternatives={alternatives}
                             preferenceIntensities={preferenceIntensities}
-                            pairwiseComparisons={pairwiseComparisons}
                         />
                         {isScreenMobile
                             ? <IconButton
                                 aria-label={'Save'}
                                 colorScheme={'orange'}
-                                icon={<BiSave />}
-                                onClick={submitData} >
+                                icon={<BiSave/>}
+                                onClick={submitData}>
                             </IconButton>
                             : <Button
-                                leftIcon={<BiSave />}
+                                leftIcon={<BiSave/>}
                                 colorScheme={'orange'}
-                                onClick={submitData} >
+                                onClick={submitData}>
                                 Save
                             </Button>
                         }
@@ -459,23 +489,17 @@ const ProjectTabs = (props) => {
                             ? <IconButton
                                 aria-label={'Save & run'}
                                 colorScheme={'orange'}
-                                icon={<BiRocket />}
-                                onClick={submitDataAndRun} >
+                                icon={<BiRocket/>}
+                                onClick={submitDataAndRun}>
                             </IconButton>
                             : <Button
-                                leftIcon={<BiRocket />}
+                                leftIcon={<BiRocket/>}
                                 colorScheme={'orange'}
-                                onClick={submitDataAndRun} >
+                                onClick={submitDataAndRun}>
                                 Save & run
                             </Button>
                         }
                     </ButtonGroup>
-                    :
-                    <Spinner
-                        color={'teal'}
-                        mr={tabIndex === 2 ? 1 : 6}
-                    />
-
                 }
             </Box>
         </Box>

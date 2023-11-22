@@ -1,7 +1,8 @@
 import Function from "./Function.jsx";
 import { Center, Divider, Heading, useMediaQuery, VStack } from "@chakra-ui/react";
+import { Fragment } from "react";
 
-const FunctionsTab = ({ criteria }) => {
+const FunctionsTab = ({ criteria, functions }) => {
 
 
     const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
@@ -23,12 +24,13 @@ const FunctionsTab = ({ criteria }) => {
                 spacing={5}
             >
                 <>
-                    {criteria.map(c => (
-                        <>
+                    {criteria.filter(c => functions.map(point => point.criterion).includes(c.id)).map(c => (
+                        <Fragment key={c.id}>
                             <Heading size={'lg'}>{c.name}</Heading>
-                            <Function key={c.id} criterion={c}/>
-                        </>
+                            <Function function_points={functions.filter(f => f.criterion === c.id)}/>
+                        </Fragment>
                     ))}
+
                 </>
             </VStack>
         </>

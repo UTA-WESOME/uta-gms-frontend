@@ -17,22 +17,21 @@ import {
 import { useState } from 'react';
 import { BiExport } from "react-icons/bi";
 import { InfoIcon } from '@chakra-ui/icons';
-import CustomTooltip from '../CustomTooltip';
+import CustomTooltip from '../utils/CustomTooltip';
 
 
 const ExportButton = (props) => {
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
     const [selectedValues, setSelectedValues] = useState(['csv', 'xml']);
     const toast = useToast();
-    const toastId = "toast-import";
+    const toastId = "toast-export";
 
     const handleCheckboxChange = (values) => {
-        console.log(values);
         setSelectedValues(values);
     };
 
     function handleSaveAndExport() {
-        fetch(`http://localhost:8080/api/projects/${props.projectId}/batch`, {
+        fetch(`http://localhost:8080/api/projects/${props.projectId}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -41,8 +40,7 @@ const ExportButton = (props) => {
                 criteria: props.criteria,
                 categories: props.categories,
                 alternatives: props.alternatives,
-                preferenceIntensities: props.preferenceIntensities,
-                pairwiseComparisons: props.pairwiseComparisons,
+                preference_intensities: props.preferenceIntensities
             })
         }).then(response => {
             if (!response.ok) {

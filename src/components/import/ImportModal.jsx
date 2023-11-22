@@ -24,7 +24,7 @@ import {
 import { BiCheckCircle, BiImport, BiTrash } from "react-icons/bi";
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import CustomTooltip from '../CustomTooltip';
+import CustomTooltip from '../utils/CustomTooltip.jsx';
 import { InfoIcon } from '@chakra-ui/icons';
 
 

@@ -1,6 +1,6 @@
 import Hero from "./home/Hero.jsx";
 import Features from "./home/Features.jsx";
-import Footer from "./Footer.jsx";
+import Footer from "./home/Footer.jsx";
 
 const Home = () => {
 

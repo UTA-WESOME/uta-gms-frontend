@@ -1,24 +1,15 @@
-import { Button, ButtonGroup, Show, useDisclosure } from "@chakra-ui/react";
+import { Button, ButtonGroup, Show } from "@chakra-ui/react";
 import CriteriaTabMobile from "./CriteriaTabMobile.jsx";
 import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
-import CategoriesPanel from "./categories/CategoriesPanel.jsx";
-import { useState } from "react";
-import EditCriterionCategoriesModal from "./categories/EditCriterionCategoriesModal.jsx";
 
 
 const CriteriaTab = ({
                          criteria,
                          setCriteria,
-                         categories,
-                         setCategories,
                          setAlternatives,
+                         setCategories,
                          setPreferenceIntensities
                      }) => {
-
-
-    const { isOpen: isOpenCategories, onOpen: onOpenCategories, onClose: onCloseCategories } = useDisclosure();
-    const { isOpen: isOpenEditCriterion, onOpen: onOpenEditCriterion, onClose: onCloseEditCriterion } = useDisclosure();
-    const [currentEditCriterionId, setCurrentEditCriterionId] = useState(0);
 
     const addCriterion = () => {
         // get max criteria id
@@ -35,7 +26,7 @@ const CriteriaTab = ({
             weight: 1,
         }])
 
-        // set alternatives
+        // set alternatives - performances
         setAlternatives(pAlternatives => {
             return pAlternatives.map(alternative => {
                 return {
@@ -50,24 +41,37 @@ const CriteriaTab = ({
                 }
             })
         })
+
+        // set criterion_categories - by default add the criterion to the Root category
+        setCategories(pCategories => pCategories.map((category, index) => {
+            if (index === 0)
+                return {
+                    ...category,
+                    criterion_categories: [...category.criterion_categories, { criterion: maxId + 1 }]
+                }
+            return category;
+        }))
+
     }
 
     const deleteCriterion = (id) => {
         // set criteria
         setCriteria(previousCriteria => previousCriteria.filter(item => item.id !== id));
 
-        // set alternatives
-        setAlternatives(pAlternatives => {
-            return pAlternatives.map(alternative => {
-                return {
-                    ...alternative,
-                    performances: alternative.performances.filter(performance => performance.criterion !== id)
-                }
-            })
-        })
+        // set alternatives - delete performances
+        setAlternatives(pAlternatives => pAlternatives.map(alternative => ({
+            ...alternative,
+            performances: alternative.performances.filter(performance => performance.criterion !== id)
+        })))
 
-        // set preferences
-        setPreferenceIntensities(pPreferenceIntensities => pPreferenceIntensities.filter(item => item.criterion !== id));
+        // set categories - delete criterion_categories
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            criterion_categories: category.criterion_categories.filter(cc => cc.criterion !== id)
+        })))
+
+        // set preference intensities
+        setPreferenceIntensities(pPreferenceIntensities => pPreferenceIntensities.filter(pi => pi.criterion !== id))
     }
 
     return (
@@ -77,11 +81,7 @@ const CriteriaTab = ({
                 <CriteriaTabDesktop
                     criteria={criteria}
                     setCriteria={setCriteria}
-                    categories={categories}
-                    setCategories={setCategories}
                     deleteCriterion={deleteCriterion}
-                    setCurrentEditCriterionId={setCurrentEditCriterionId}
-                    onOpenEditCriterion={onOpenEditCriterion}
                 />
             </Show>
 
@@ -91,34 +91,14 @@ const CriteriaTab = ({
                 <CriteriaTabMobile
                     criteria={criteria}
                     setCriteria={setCriteria}
-                    deleteCriterion={deleteCriterion}/>
+                    deleteCriterion={deleteCriterion}
+                />
             </Show>
-
-            {/*CATEGORIES PANEL*/}
-            <CategoriesPanel
-                isOpen={isOpenCategories}
-                onClose={onCloseCategories}
-                categories={categories}
-                setCategories={setCategories}
-                setCriteria={setCriteria}
-            />
-
-            {/*EDIT CRITERION CATEGORIES MODAL*/}
-            <EditCriterionCategoriesModal
-                isOpen={isOpenEditCriterion}
-                onClose={onCloseEditCriterion}
-                categories={categories}
-                criterion={criteria.find(c => c.id === currentEditCriterionId)}
-                setCriteria={setCriteria}
-            />
 
             {/*BUTTONS*/}
             <ButtonGroup mx={4} my={4}>
                 <Button colorScheme={'teal'} onClick={addCriterion} variant='outline'>
                     New criterion
-                </Button>
-                <Button colorScheme={'orange'} onClick={onOpenCategories} variant={'outline'}>
-                    Categories
                 </Button>
             </ButtonGroup>
         </>

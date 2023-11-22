@@ -2,7 +2,7 @@ import { Show, useToast } from "@chakra-ui/react";
 import PairwiseComparisonsDesktop from "./PairwiseComparisonsDesktop.jsx";
 import PairwiseComparisonsMobile from "./PairwiseComparisonsMobile.jsx";
 
-const PairwiseComparisons = ({ alternatives, pairwiseComparisons, setPairwiseComparisons }) => {
+const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setCategories }) => {
 
     const toast = useToast();
     const toastId = "toast-project-pairwise-comparisons-add"
@@ -23,22 +23,32 @@ const PairwiseComparisons = ({ alternatives, pairwiseComparisons, setPairwiseCom
         }
 
         // get max pairwise comparison id
-        let maxId = Math.max(...pairwiseComparisons.map(item => item.id));
+        let maxId = Math.max(...categories.flatMap(c => c.pairwise_comparisons).map(item => item.id));
         maxId = maxId === -Infinity ? 0 : maxId;
         // get first alternative
         // we can be sure that there is at least one alternative because of the if statement at the beginning of the function
-        let firstAltId = alternatives[0].id
+        let firstAltId = alternatives[0].id;
 
-        setPairwiseComparisons(pPairwiseComparisons => [...pPairwiseComparisons, {
-            id: maxId + 1,
-            alternative_1: firstAltId,
-            alternative_2: firstAltId,
-            type: 'preference'
-        }])
+        setCategories(pCategories => pCategories.map(category => {
+            if (category.id === currentCategoryId)
+                return {
+                    ...category,
+                    pairwise_comparisons: [...category.pairwise_comparisons, {
+                        id: maxId + 1,
+                        alternative_1: firstAltId,
+                        alternative_2: firstAltId,
+                        type: 'preference'
+                    }]
+                }
+            return category;
+        }))
     }
 
     const deletePairwiseComparison = (id) => {
-        setPairwiseComparisons(p => p.filter(item => item.id !== id));
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            pairwise_comparisons: category.pairwise_comparisons.filter(pc => pc.id !== id)
+        })));
     }
 
     return (
@@ -47,8 +57,9 @@ const PairwiseComparisons = ({ alternatives, pairwiseComparisons, setPairwiseCom
             <Show above={'lg'}>
                 <PairwiseComparisonsDesktop
                     alternatives={alternatives}
-                    pairwiseComparisons={pairwiseComparisons}
-                    setPairwiseComparisons={setPairwiseComparisons}
+                    currentCategoryId={currentCategoryId}
+                    categories={categories}
+                    setCategories={setCategories}
                     addPairwiseComparison={addPairwiseComparison}
                     deletePairwiseComparison={deletePairwiseComparison}
                 />
@@ -58,8 +69,6 @@ const PairwiseComparisons = ({ alternatives, pairwiseComparisons, setPairwiseCom
             <Show below={'991px'}>
                 <PairwiseComparisonsMobile
                     alternatives={alternatives}
-                    pairwiseComparisons={pairwiseComparisons}
-                    setPairwiseComparisons={setPairwiseComparisons}
                     addPairwiseComparison={addPairwiseComparison}
                     deletePairwiseComparison={deletePairwiseComparison}
                 />

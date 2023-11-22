@@ -1,15 +1,16 @@
-import { Show } from "@chakra-ui/react";
+import { Button, ButtonGroup, Show } from "@chakra-ui/react";
 import AlternativesTabMobile from "./AlternativesTabMobile.jsx";
 import AlternativesTabDesktop from "./AlternativesTabDesktop.jsx";
 
-const AlternativesTab = ({ alternatives, setAlternatives, criteria, setPreferenceIntensities }) => {
+const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategories, setPreferenceIntensities }) => {
 
     const addAlternative = () => {
         // get max alternative id
         let maxId = Math.max(...alternatives.map(item => item.id));
         maxId = maxId === -Infinity ? 0 : maxId;
 
-        setAlternatives(pAlternatives => [...pAlternatives,
+        // update alternatives
+        setAlternatives([...alternatives,
             {
                 id: maxId + 1,
                 name: "Alternative name",
@@ -21,22 +22,48 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria, setPreferenc
                         criterion: item.id
                     }
                 })
-            }])
+            }
+        ])
+
+        // update rankings in categories
+        setCategories(pCategories => pCategories.map(category => {
+            return {
+                ...category,
+                rankings: [...category.rankings, {
+                    reference_ranking: 0,
+                    ranking: 0,
+                    alternative: maxId + 1
+                }]
+            }
+        }))
+
     }
 
     const deleteAlternative = (id) => {
+        // update alternatives
         setAlternatives(pAlternatives => pAlternatives.filter(alt => alt.id !== id));
 
-        setPreferenceIntensities(pPreferenceIntensities =>
-            pPreferenceIntensities.filter(item =>
-                (
-                    item.alternative_1 !== id &&
-                    item.alternative_2 !== id &&
-                    item.alternative_3 !== id &&
-                    item.alternative_4 !== id
-                )
+        // update rankings in categories
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            rankings: category.rankings.filter(r => r.alternative !== id)
+        })))
+
+        // update pairwise_comparisons in categories
+        setCategories(pCategories => pCategories.map(category => ({
+            ...category,
+            pairwise_comparisons: category.pairwise_comparisons.filter(pc => pc.alternative_1 !== id && pc.alternative_2 !== id)
+        })))
+
+        // update preference_intensities
+        setPreferenceIntensities(pPreferenceIntensities => pPreferenceIntensities.filter(pi =>
+            (
+                pi.alternative_1 !== id &&
+                pi.alternative_2 !== id &&
+                pi.alternative_3 !== id &&
+                pi.alternative_4 !== id
             )
-        )
+        ))
     }
 
     return (
@@ -47,7 +74,6 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria, setPreferenc
                 <AlternativesTabDesktop alternatives={alternatives}
                                         setAlternatives={setAlternatives}
                                         criteria={criteria}
-                                        addAlternative={addAlternative}
                                         deleteAlternative={deleteAlternative}/>
             </Show>
 
@@ -56,9 +82,15 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria, setPreferenc
                 <AlternativesTabMobile alternatives={alternatives}
                                        setAlternatives={setAlternatives}
                                        criteria={criteria}
-                                       addAlternative={addAlternative}
                                        deleteAlternative={deleteAlternative}/>
             </Show>
+
+            {/*BUTTONS*/}
+            <ButtonGroup mx={4} my={4}>
+                <Button colorScheme={'teal'} onClick={addAlternative} variant='outline'>
+                    New alternative
+                </Button>
+            </ButtonGroup>
 
         </>
 

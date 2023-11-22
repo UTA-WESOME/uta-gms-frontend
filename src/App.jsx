@@ -1,12 +1,12 @@
-import {Outlet, useNavigate} from "react-router-dom";
-import Navbar from "./components/Navbar.jsx";
-import {useCallback, useEffect, useState} from "react";
-import {useLocalStorage} from "./components/utils/useLocalStorage.jsx";
+import { Outlet, useNavigate } from "react-router-dom";
+import Navbar from "./components/navbar/Navbar.jsx";
+import { useCallback, useEffect, useState } from "react";
+import { useLocalStorage } from "./components/utils/useLocalStorage.jsx";
 
 const App = () => {
 
     const navigate = useNavigate();
-    const [getAuth, setAuth, deleteAuth] = useLocalStorage('auth');
+    const [getAuth, setAuth, _] = useLocalStorage('auth');
     const [tickInterval, setTickInterval] = useState();
 
     const toggleRefresh = useCallback((status) => {
@@ -23,7 +23,7 @@ const App = () => {
                             setAuth(true);
                         }
                     })
-                    .catch(error => {
+                    .catch(_ => {
                         console.log("user is not logged in");
                     })
             }, 600000);
@@ -58,7 +58,7 @@ const App = () => {
                 }
             })
             .catch(error => {
-                if(getAuth() === true) {
+                if (getAuth() === true) {
                     // this means that the user was logged in - in the past
                     // but the refresh token expired
                     setAuth(false);
@@ -71,7 +71,7 @@ const App = () => {
     return (
         <>
             <Navbar toggleRefresh={toggleRefresh}/>
-            <Outlet context={{toggleRefresh}}/>
+            <Outlet context={{ toggleRefresh }}/>
         </>
     )
 }

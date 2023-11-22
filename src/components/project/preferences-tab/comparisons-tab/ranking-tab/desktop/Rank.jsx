@@ -8,22 +8,6 @@ const Rank = (props) => {
         id: props.id.toString(),
     });
 
-    const handleDeleteRank = () => {
-        // delete rank
-        props.setRanks(pRanks => pRanks.filter(rank => rank !== props.id));
-
-        // update alternatives that have this rank
-        props.setAlternatives(pAlternatives => pAlternatives.map(pAlternative => {
-            if (pAlternative.reference_ranking === props.id) {
-                return {
-                    ...pAlternative,
-                    reference_ranking: 0,
-                }
-            }
-            return pAlternative
-        }))
-    }
-
     return (
         <Box
             ref={setNodeRef}
@@ -43,7 +27,7 @@ const Rank = (props) => {
                         aria-label={'delete-rank'}
                         icon={<DeleteIcon/>}
                         ml={'auto'} my={1} mr={1}
-                        onClick={handleDeleteRank}
+                        onClick={props.deleteRank}
                     />
                 </Flex>
             </Flex>
