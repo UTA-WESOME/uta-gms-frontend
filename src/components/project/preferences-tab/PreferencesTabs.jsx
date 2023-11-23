@@ -3,7 +3,7 @@ import ComparisonsTab from "./comparisons-tab/ComparisonsTab.jsx";
 import { FaGreaterThan } from "react-icons/fa";
 import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
 import { IoFlash } from "react-icons/io5";
-import BestWorstTab from "./maxmin-tab/BestWorstTab.jsx";
+import BestWorstTab from "./bestworst-tab/BestWorstTab.jsx";
 import { MdOutlineExpand } from "react-icons/md";
 
 const PreferencesTabs = ({

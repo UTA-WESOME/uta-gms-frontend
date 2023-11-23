@@ -39,6 +39,10 @@ export const Preferences = {
         ],
         maxWidthMobile: '1201px',
         minWidthDesktop: '1200px'
+    },
+    BestWorst: {
+        maxWidthMobile: '991px',
+        minWidthDesktop: '992px'
     }
 
 };
