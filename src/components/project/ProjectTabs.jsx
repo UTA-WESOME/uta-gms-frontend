@@ -381,7 +381,7 @@ const ProjectTabs = (props) => {
                             <Tab fontSize={'15px'}>
                                 <Icon as={FaBalanceScaleLeft}></Icon>
                             </Tab>
-                            <Tab fontSize={'20px'}>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaRegCheckCircle}></Icon>
                             </Tab>
                         </>

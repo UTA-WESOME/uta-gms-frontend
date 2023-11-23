@@ -1,13 +1,19 @@
 import {
     Box,
-    Button, Divider,
+    Button,
+    Divider,
+    Flex,
     Heading,
+    HStack,
     Icon,
+    IconButton,
+    Spacer,
     Tab,
     TabList,
     TabPanel,
     TabPanels,
     Tabs,
+    Text,
     useColorModeValue,
     useMediaQuery,
     VStack
@@ -18,11 +24,12 @@ import { TbMathFunction } from "react-icons/tb";
 import Graphviz from "../../utils/Graphviz.jsx";
 import { generateHierarchyDotString } from "./graph.js";
 import { useState } from "react";
-import { FaArrowUp } from "react-icons/fa";
+import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import HasseDiagramTab from "./hasse-diagram-tab/HasseDiagramTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
 import PercentagesTab from "./percentages-tab/PercentagesTab.jsx";
+import * as c from "./../../../config.js";
 
 const ResultsTabs = ({ alternatives, criteria, categories }) => {
 
@@ -30,13 +37,19 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
     const categoryBgColor = useColorModeValue("#E2E8F0", "#F7FAFC");
     const categoryBgColorHover = useColorModeValue("#4FD1C5", "#38B2AC")
     const [currentCategoryId, setCurrentCategoryId] = useState(0);
-    const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
+    const [isMobile] = useMediaQuery(`(max-width: ${c.Results.maxWidthMobile})`);
 
     return (
         <>
             <VStack>
                 {currentCategoryId === 0 ?
-                    <Heading size={'lg'} my={4}>Click on a category to see results</Heading>
+                    <>
+                        {!isMobile ?
+                            <Heading size={'lg'} my={4}>Click on a category to see results</Heading>
+                            :
+                            <Heading size={'lg'} my={4}>Choose category</Heading>
+                        }
+                    </>
                     :
                     <>
                         <Heading
@@ -52,31 +65,52 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                 }
             </VStack>
             {currentCategoryId === 0 ?
-                <Box _hover={{ cursor: 'pointer' }}>
-                    <Graphviz
-                        dot={generateHierarchyDotString(categories, bgColor, categoryBgColor)}
-                        currentCategoryId={currentCategoryId}
-                        setCurrentCategoryId={setCurrentCategoryId}
-                        categoryBgColor={categoryBgColor}
-                        categoryBgColorHover={categoryBgColorHover}
-                    />
-                </Box>
+                <>
+                    {!isMobile ?
+                        <Box _hover={{ cursor: 'pointer' }} mb={5}>
+                            <Graphviz
+                                dot={generateHierarchyDotString(categories, bgColor, categoryBgColor)}
+                                currentCategoryId={currentCategoryId}
+                                setCurrentCategoryId={setCurrentCategoryId}
+                                categoryBgColor={categoryBgColor}
+                                categoryBgColorHover={categoryBgColorHover}
+                            />
+                        </Box>
+                        :
+                        <Flex direction={'column'} spacing={4}>
+                            {categories.map((category, index) => {
+                                return (
+                                    <HStack
+                                        borderTopWidth={'1px'}
+                                        borderBottomWidth={index === criteria.length - 1 ? '1px' : '0px'}
+                                        p={2}
+                                        key={index}
+                                    >
+                                        <Text isTruncated>{category.name}</Text>
+                                        <Spacer/>
+                                        <IconButton
+                                            colorScheme={'teal'}
+                                            variant={'outline'}
+                                            aria-label={'choose-category'}
+                                            icon={<FaArrowDown/>}
+                                            onClick={() => setCurrentCategoryId(category.id)}>
+                                        </IconButton>
+                                    </HStack>
+                                )
+                            })
+                            }
+                        </Flex>
+                    }
+                </>
                 :
                 <Box borderWidth={'1px'} borderRadius={'lg'} p={3} mt={3}>
                     <Tabs variant={'soft-rounded'}
                           colorScheme={'teal'}
                           px={{ base: 2, sm: 5 }}
-                          isFitted={!isLargerThan480}
+                          isFitted={isMobile}
                     >
                         <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
-                            {isLargerThan480 ?
-                                <>
-                                    <Tab>Hasse diagram</Tab>
-                                    <Tab>Ranking</Tab>
-                                    <Tab>Functions</Tab>
-                                    <Tab>Percentages</Tab>
-                                </>
-                                :
+                            {isMobile ?
                                 <>
                                     <Tab fontSize={'20px'}>
                                         <Icon as={BsDiagram2Fill}></Icon>
@@ -88,7 +122,13 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                         <Icon as={TbMathFunction}></Icon>
                                     </Tab>
                                 </>
-
+                                :
+                                <>
+                                    <Tab>Hasse diagram</Tab>
+                                    <Tab>Ranking</Tab>
+                                    <Tab>Functions</Tab>
+                                    <Tab>Percentages</Tab>
+                                </>
                             }
                         </TabList>
 

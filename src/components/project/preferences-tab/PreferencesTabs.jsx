@@ -5,6 +5,7 @@ import IntensitiesTab from "./intensities-tab/IntensitiesTab.jsx";
 import { IoFlash } from "react-icons/io5";
 import BestWorstTab from "./bestworst-tab/BestWorstTab.jsx";
 import { MdOutlineExpand } from "react-icons/md";
+import * as c from "./../../../config.js";
 
 const PreferencesTabs = ({
                              alternatives,
@@ -17,7 +18,7 @@ const PreferencesTabs = ({
                              pairwiseMode,
                              setPairwiseMode
                          }) => {
-    const [isScreenMobile] = useMediaQuery('(max-width: 628px)');
+    const [isScreenMobile] = useMediaQuery(`(max-width: ${c.Preferences.maxWidthMobile})`);
     return (
         <Tabs variant={'soft-rounded'}
               colorScheme={'teal'}

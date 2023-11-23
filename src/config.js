@@ -19,6 +19,7 @@ export const Categories = {
 }
 
 export const Preferences = {
+    maxWidthMobile: '500px',
     Comparisons: {
         maxWidthDropdownColumn: '550px',
         ReferenceRanking: {
@@ -44,5 +45,8 @@ export const Preferences = {
         maxWidthMobile: '991px',
         minWidthDesktop: '992px'
     }
-
 };
+
+export const Results = {
+    maxWidthMobile: '650px'
+}
