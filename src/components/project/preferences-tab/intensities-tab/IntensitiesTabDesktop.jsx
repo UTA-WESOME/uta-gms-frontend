@@ -42,7 +42,7 @@ const IntensitiesTabDesktop = ({
                     <Thead>
                         <Tr>
                             <>
-                                {c.alternativesInIntensities.map(alternative => (
+                                {c.Intensities.alternatives.map(alternative => (
                                     <Fragment key={alternative.number}>
                                         <Th>
                                             <Text>Alternative {alternative.letter}</Text>
@@ -67,7 +67,7 @@ const IntensitiesTabDesktop = ({
                             .map((preferenceIntensity, index) => (
                                 <Tr key={index}>
                                     <>
-                                        {c.alternativesInIntensities.map(alternativeConst => (
+                                        {c.Intensities.alternatives.map(alternativeConst => (
                                             <Fragment key={alternativeConst.number}>
                                                 <Td>
                                                     <Select

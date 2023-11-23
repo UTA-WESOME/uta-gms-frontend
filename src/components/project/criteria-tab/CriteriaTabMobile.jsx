@@ -147,7 +147,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
                                             <PopoverContent>
                                                 <PopoverCloseButton/>
                                                 <PopoverBody>
-                                                    {c.descriptionCriterionType}
+                                                    {c.Criteria.descriptionType}
                                                 </PopoverBody>
                                             </PopoverContent>
                                         </Popover>
@@ -182,7 +182,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
                                             </PopoverTrigger>
                                             <PopoverContent>
                                                 <PopoverCloseButton/>
-                                                <PopoverBody>{c.descriptionCriterionLinearSegments}</PopoverBody>
+                                                <PopoverBody>{c.Criteria.descriptionLinearSegments}</PopoverBody>
                                             </PopoverContent>
                                         </Popover>
                                     </HStack>

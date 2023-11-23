@@ -85,7 +85,7 @@ const CriteriaTabDesktop = ({
                                 <HStack>
                                     <Text>Type</Text>
                                     <CustomTooltip
-                                        label={c.descriptionCriterionType}
+                                        label={c.Criteria.descriptionType}
                                         openDelay={200}>
                                         <InfoIcon/>
                                     </CustomTooltip>
@@ -95,7 +95,7 @@ const CriteriaTabDesktop = ({
                                 <HStack>
                                     <Text>Linear segments</Text>
                                     <CustomTooltip
-                                        label={c.descriptionCriterionLinearSegments}
+                                        label={c.Criteria.descriptionLinearSegments}
                                         openDelay={200}>
                                         <InfoIcon/>
                                     </CustomTooltip>

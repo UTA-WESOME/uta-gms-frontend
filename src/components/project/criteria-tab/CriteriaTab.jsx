@@ -77,7 +77,7 @@ const CriteriaTab = ({
     return (
         <>
             {/*DESKTOP*/}
-            <Show above={c.minWidthDesktopCriterion}>
+            <Show above={c.Criteria.minWidthDesktop}>
                 <CriteriaTabDesktop
                     criteria={criteria}
                     setCriteria={setCriteria}
@@ -86,7 +86,7 @@ const CriteriaTab = ({
             </Show>
 
             {/*MOBILE*/}
-            <Show below={c.maxWidthMobileCriterion}>
+            <Show below={c.Criteria.maxWidthMobile}>
                 <CriteriaTabMobile
                     criteria={criteria}
                     setCriteria={setCriteria}

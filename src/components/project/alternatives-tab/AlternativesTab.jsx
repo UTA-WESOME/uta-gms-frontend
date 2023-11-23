@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, Show } from "@chakra-ui/react";
 import AlternativesTabMobile from "./AlternativesTabMobile.jsx";
 import AlternativesTabDesktop from "./AlternativesTabDesktop.jsx";
+import * as c from "./../../../config.js";
 
 const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategories, setPreferenceIntensities }) => {
 
@@ -70,23 +71,27 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategorie
         <>
 
             {/*DESKTOP*/}
-            <Show above={'lg'}>
-                <AlternativesTabDesktop alternatives={alternatives}
-                                        setAlternatives={setAlternatives}
-                                        criteria={criteria}
-                                        deleteAlternative={deleteAlternative}/>
+            <Show above={c.Alternatives.minWidthDesktop}>
+                <AlternativesTabDesktop
+                    alternatives={alternatives}
+                    setAlternatives={setAlternatives}
+                    criteria={criteria}
+                    deleteAlternative={deleteAlternative}
+                />
             </Show>
 
             {/*MOBILE*/}
-            <Show below={'991px'}>
-                {/*<AlternativesTabMobile alternatives={alternatives}*/}
-                {/*                       setAlternatives={setAlternatives}*/}
-                {/*                       criteria={criteria}*/}
-                {/*                       deleteAlternative={deleteAlternative}/>*/}
+            <Show below={c.Alternatives.maxWidthMobile}>
+                <AlternativesTabMobile
+                    alternatives={alternatives}
+                    setAlternatives={setAlternatives}
+                    criteria={criteria}
+                    deleteAlternative={deleteAlternative}
+                />
             </Show>
 
             {/*BUTTONS*/}
-            <ButtonGroup mx={4} my={4}>
+            <ButtonGroup mx={{base: 'auto', md: 4}} my={4}>
                 <Button colorScheme={'teal'} onClick={addAlternative} variant='outline'>
                     New alternative
                 </Button>
