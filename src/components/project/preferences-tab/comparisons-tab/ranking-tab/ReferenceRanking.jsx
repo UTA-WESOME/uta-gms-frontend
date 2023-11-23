@@ -7,7 +7,7 @@ import { DndContext } from "@dnd-kit/core";
 import AlternativeMobile from "./mobile/AlternativeMobile.jsx";
 import * as c from "./../../../../../config.js";
 
-const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, categories, setCategories }) => {
+const ReferenceRanking = ({ alternatives, currentCategoryId, categories, setCategories }) => {
 
     // ranks is an array of integers [1, 2, ...] that represents each rank
     const [ranks, setRanks] = useState(() => {
