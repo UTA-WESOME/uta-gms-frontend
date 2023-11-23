@@ -24,6 +24,10 @@ export const Preferences = {
         ReferenceRanking: {
             maxWidthMobile: '1200px',
             minWidthDesktop: '1201px'
+        },
+        PairwiseComparisons: {
+            maxWidthMobile: '991px',
+            minWidthDesktop: '992px'
         }
     }
 
