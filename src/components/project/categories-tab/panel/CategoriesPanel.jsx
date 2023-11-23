@@ -28,6 +28,7 @@ import {
     Thead,
     Tr,
     useDisclosure,
+    useMediaQuery,
     VStack
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
@@ -35,7 +36,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import CustomTooltip from "../../../utils/CustomTooltip.jsx";
+import * as c from "./../../../../config.js";
 import { useState } from "react";
+
 
 const findChildren = (categories, categoryId) => {
     let childrenIds = [];
@@ -57,6 +60,7 @@ const findChildren = (categories, categoryId) => {
 const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, setPreferenceIntensities }) => {
 
     let generalId = Math.min(...categories.map(i => i.id));
+    const [showParent] = useMediaQuery(`(min-width: ${c.Categories.minWidthShowParent})`);
 
     // EDIT BUTTON
     const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
@@ -177,7 +181,7 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                     <Thead>
                         <Tr>
                             <Th>Name</Th>
-                            <Th>Parent</Th>
+                            {showParent && <Th>Parent</Th>}
                             <Th>Actions</Th>
                         </Tr>
                     </Thead>
@@ -185,26 +189,29 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                         {categories.map((category, index) => (
                             <Tr key={index}>
                                 <Td>
-                                    <Text fontSize={'md'}>{category.name}</Text>
+                                    <Text fontSize={{ base: 'sm', sm: 'md' }}>{category.name}</Text>
                                 </Td>
-                                <Td>
-                                    {index !== 0 &&
-                                        <Select
-                                            value={category.parent}
-                                            onChange={(event) => handleChangeParent(category.id, parseInt(event.target.value))}
-                                        >
-                                            {categories
-                                                .filter(cat => cat.id !== category.id && !findChildren(categories, category.id).includes(cat.id)) // prevent cycles inside the tree
-                                                .map(cat => (
-                                                    <option value={cat.id} key={cat.id}>{cat.name}</option>
-                                                ))
-                                            }
-                                        </Select>
-                                    }
-                                </Td>
+                                {showParent &&
+                                    <Td>
+                                        {index !== 0 &&
+                                            <Select
+                                                value={category.parent}
+                                                onChange={(event) => handleChangeParent(category.id, parseInt(event.target.value))}
+                                            >
+                                                {categories
+                                                    .filter(cat => cat.id !== category.id && !findChildren(categories, category.id).includes(cat.id)) // prevent cycles inside the tree
+                                                    .map(cat => (
+                                                        <option value={cat.id} key={cat.id}>{cat.name}</option>
+                                                    ))
+                                                }
+                                            </Select>
+                                        }
+                                    </Td>
+                                }
                                 <Td w={'min-content'}>
                                     <CustomTooltip label={'Edit'}>
                                         <IconButton
+                                            size={{ base: 'sm', sm: 'md' }}
                                             mr={1}
                                             color={'orange.300'}
                                             aria-label={'edit-category'}
@@ -224,6 +231,7 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                                     </CustomTooltip>
                                     <CustomTooltip label={'Criteria'}>
                                         <IconButton
+                                            size={{ base: 'sm', sm: 'md' }}
                                             mr={1}
                                             color={'teal.300'}
                                             aria-label={'edit-criterion-categories'}
@@ -237,6 +245,7 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                                     {index !== 0 &&
                                         <CustomTooltip label={'Delete'}>
                                             <IconButton
+                                                size={{ base: 'sm', sm: 'md' }}
                                                 color={'red.300'}
                                                 aria-label={'delete-category'}
                                                 icon={<DeleteIcon/>}

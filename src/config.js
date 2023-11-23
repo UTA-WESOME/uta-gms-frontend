@@ -12,6 +12,12 @@ export const Alternatives = {
     minWidthDesktop: '768px',
 };
 
+export const Categories = {
+    minWidthShowParent: '1150px',
+    maxWidthMobile: '870px',
+    minWidthDesktop: '871px'
+}
+
 export const Preferences = {
 
 };
