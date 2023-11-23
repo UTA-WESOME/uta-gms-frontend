@@ -23,24 +23,11 @@ const RankMobile = (props) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     // checkAlternatives holds ids of alternatives which are checked in modal form
-    let checkedAlternatives = props.alternatives
-        .filter(alt => alt.reference_ranking === props.id)
-        .map(alt => alt.id);
-
-    const handleDeleteRank = () => {
-        // delete rank
-        props.setRanks(pRanks => pRanks.filter(rank => rank !== props.id));
-
-        // update alternatives that have this rank
-        props.setAlternatives(pAlternatives => pAlternatives.map(pAlternative => {
-            if (pAlternative.reference_ranking === props.id) {
-                return {
-                    ...pAlternative, reference_ranking: 0,
-                }
-            }
-            return pAlternative
-        }))
-    }
+    let checkedAlternatives = props.categories
+        .find(c => c.id === props.currentCategoryId)
+        ?.rankings
+        .filter(ranking => ranking.reference_ranking === props.id)
+        .map(ranking => ranking.alternative);
 
     const handleCheck = (event, alternativeId) => {
         if (!event.target.checked) {
@@ -53,28 +40,38 @@ const RankMobile = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        props.setAlternatives(pAlternatives => pAlternatives.map(alternative => {
-            if (checkedAlternatives.some(item => item === alternative.id)) {
+        props.setCategories(pCategories => pCategories.map(category => {
+            if (category.id === props.currentCategoryId) {
                 return {
-                    ...alternative, reference_ranking: props.id,
-                };
-            }
-            if (!checkedAlternatives.some(item => item === alternative.id) && props.id === alternative.reference_ranking) {
-                return {
-                    ...alternative, reference_ranking: 0,
+                    ...category,
+                    rankings: category.rankings.map(ranking => {
+                        if (checkedAlternatives.some(item => item === ranking.alternative)) {
+                            return {
+                                ...ranking, reference_ranking: props.id,
+                            };
+                        }
+                        if (!checkedAlternatives.some(item => item === ranking.alternative) && props.id === ranking.reference_ranking) {
+                            return {
+                                ...ranking, reference_ranking: 0,
+                            }
+                        }
+                        return ranking;
+                    })
                 }
             }
-            return alternative;
+            return category;
         }));
 
         onClose();
     }
 
-    return (<>
+    return (
+        <>
             <Box
+                mx={1}
+                my={3}
                 borderWidth={useColorModeValue('3px', '1px')}
                 borderRadius={'lg'}
-                mx={1} my={3}
                 bg={useColorModeValue('gray.50', 'gray.700')}
             >
                 <Flex justify={'center'}>
@@ -88,7 +85,7 @@ const RankMobile = (props) => {
                             aria-label={'delete-rank'}
                             icon={<DeleteIcon/>}
                             ml={'auto'} my={1} mr={1}
-                            onClick={handleDeleteRank}
+                            onClick={props.deleteRank}
                         />
                     </Flex>
                 </Flex>
@@ -99,7 +96,8 @@ const RankMobile = (props) => {
                         size={'sm'}
                         variant={'outline'}
                         colorScheme={'teal'}
-                        mx={'auto'} my={2}
+                        mx={'auto'}
+                        my={2}
                         onClick={onOpen}
                     >
                         Edit alternatives
@@ -120,15 +118,18 @@ const RankMobile = (props) => {
 
                     <ModalBody>
                         <Flex spacing={"15px"} direction={'column'}>
-                            {props.alternatives.map((alternative, index) => (
-                                <Checkbox
-                                    my={1}
-                                    colorScheme={'teal'}
-                                    isDisabled={alternative.reference_ranking !== 0 && alternative.reference_ranking !== props.id}
-                                    onChange={(event) => handleCheck(event, alternative.id)}
-                                    defaultChecked={alternative.reference_ranking === props.id}
-                                    key={index}
-                                >{alternative.name}</Checkbox>))}
+                            {props.categories
+                                .find(c => c.id === props.currentCategoryId)
+                                ?.rankings
+                                .map((ranking, index) => (
+                                    <Checkbox
+                                        my={1}
+                                        colorScheme={'teal'}
+                                        isDisabled={ranking.reference_ranking !== 0 && ranking.reference_ranking !== props.id}
+                                        onChange={(event) => handleCheck(event, ranking.alternative)}
+                                        defaultChecked={ranking.reference_ranking === props.id}
+                                        key={index}
+                                    >{props.alternatives.find(alt => alt.id === ranking.alternative).name}</Checkbox>))}
                         </Flex>
 
                         <ModalFooter px={0}>

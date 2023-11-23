@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
 import { BiRocket, BiSave } from "react-icons/bi";
+import { TbBinaryTree } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
 import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
@@ -28,7 +29,6 @@ import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 import ImportModal from "../import/ImportModal.jsx";
 import ExportModal from "../export/ExportModal.jsx";
 import * as c from '../../config.js';
-import { TbBinaryTree } from "react-icons/tb";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria, criterion function, criterion categories

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import RankMobile from "./mobile/RankMobile.jsx";
 import { DndContext } from "@dnd-kit/core";
 import AlternativeMobile from "./mobile/AlternativeMobile.jsx";
+import * as c from "./../../../../../config.js";
 
 const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, categories, setCategories }) => {
 
@@ -36,7 +37,7 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
     const handleDragEnd = (event) => {
         const { active, over } = event;
         setCategories(categories.map(category => {
-            if(category.id === currentCategoryId) {
+            if (category.id === currentCategoryId) {
                 return {
                     ...category,
                     rankings: category.rankings.map(ranking => {
@@ -67,7 +68,7 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
 
         // update rankings that have this rank
         setCategories(categories.map(category => {
-            if(category.id === currentCategoryId) {
+            if (category.id === currentCategoryId) {
                 return {
                     ...category,
                     rankings: category.rankings.map(ranking => {
@@ -86,15 +87,16 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
 
     const handleReset = () => {
         setCategories(categories.map(category => {
-            if(category.id === currentCategoryId) {
+            if (category.id === currentCategoryId) {
                 return {
                     ...category,
                     rankings: category.rankings.map(ranking => {
-                            return {
-                                ...ranking,
-                                reference_ranking: 0
-                            };
-                })}
+                        return {
+                            ...ranking,
+                            reference_ranking: 0
+                        };
+                    })
+                }
             }
             return category;
         }))
@@ -104,7 +106,7 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
         <>
 
             {/*DESKTOP*/}
-            <Show above={'1000px'}>
+            <Show above={c.Preferences.Comparisons.ReferenceRanking.minWidthDesktop}>
                 <DndContext onDragEnd={handleDragEnd}>
                     <Flex justify={'center'} mx={{ base: '5%', xl: '8%' }}>
                         {/*ALTERNATIVES BOX*/}
@@ -138,7 +140,6 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
                                 {ranks.map((rank, index) => (
                                     <Rank
                                         id={rank}
-                                        setAlternatives={setAlternatives}
                                         deleteRank={() => deleteRank(rank)}
                                         key={index}
                                     >
@@ -149,8 +150,11 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
                                             .map((ranking, index) => {
                                                 let alternative = alternatives.find(alt => alt.id === ranking.alternative);
                                                 return (
-                                                    <Alternative id={alternative.id} name={alternative.name}
-                                                                 key={index}/>
+                                                    <Alternative
+                                                        id={alternative.id}
+                                                        name={alternative.name}
+                                                        key={index}
+                                                    />
                                                 )
                                             })
                                         }
@@ -179,39 +183,53 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
             </Show>
 
             {/*MOBILE*/}
-            {/*TODO: change 1200px to const*/}
-            <Show below={'999px'}>
-                {/*<Flex direction={'column'}>*/}
-                {/*    {ranks.map((rank, index) => (*/}
-                {/*        <RankMobile id={rank} key={index}*/}
-                {/*            // needed for deleting a rank*/}
-                {/*                    setRanks={setRanks} setAlternatives={setAlternatives}*/}
-                {/*            // needed for modal*/}
-                {/*                    alternatives={alternatives}*/}
-                {/*        >*/}
-                {/*            {alternatives*/}
-                {/*                .filter(alt => alt.reference_ranking === rank)*/}
-                {/*                .map((alternative, index) => (*/}
-                {/*                    <AlternativeMobile name={alternative.name} key={index}/>*/}
-                {/*                ))}*/}
-                {/*        </RankMobile>*/}
-                {/*    ))}*/}
-                {/*</Flex>*/}
+            <Show below={c.Preferences.Comparisons.ReferenceRanking.maxWidthMobile}>
+                <Flex direction={'column'}>
+                    <>
+                        {ranks.map((rank, index) => (
+                            <RankMobile
+                                id={rank}
+                                alternatives={alternatives}
+                                currentCategoryId={currentCategoryId}
+                                categories={categories}
+                                setCategories={setCategories}
+                                deleteRank={() => deleteRank(rank)}
+                                key={index}
+                            >
+                                {categories
+                                    .find(c => c.id === currentCategoryId)
+                                    ?.rankings
+                                    .filter(ranking => ranking.reference_ranking === rank)
+                                    .map((ranking, index) => {
+                                        let alternative = alternatives.find(alt => alt.id === ranking.alternative);
+                                        return (
+                                            <AlternativeMobile
+                                                id={alternative.id}
+                                                name={alternative.name}
+                                                key={index}
+                                            />
+                                        )
+                                    })
+                                }
+                            </RankMobile>
+                        ))}
+                    </>
+                </Flex>
 
-                {/*<ButtonGroup pt={"1rem"}>*/}
-                {/*    <Button*/}
-                {/*        colorScheme={"teal"}*/}
-                {/*        variant='outline'*/}
-                {/*        ml={1}*/}
-                {/*        onClick={addRank}*/}
-                {/*    >New rank</Button>*/}
-                {/*    <Button*/}
-                {/*        colorScheme={'red'}*/}
-                {/*        variant='outline'*/}
-                {/*        ml={1}*/}
-                {/*        onClick={handleReset}*/}
-                {/*    >Reset</Button>*/}
-                {/*</ButtonGroup>*/}
+                <ButtonGroup pt={"1rem"}>
+                    <Button
+                        colorScheme={"teal"}
+                        variant='outline'
+                        ml={1}
+                        onClick={addRank}
+                    >New rank</Button>
+                    <Button
+                        colorScheme={'red'}
+                        variant='outline'
+                        ml={1}
+                        onClick={handleReset}
+                    >Reset</Button>
+                </ButtonGroup>
             </Show>
 
         </>

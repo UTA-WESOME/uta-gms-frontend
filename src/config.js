@@ -19,6 +19,13 @@ export const Categories = {
 }
 
 export const Preferences = {
+    Comparisons: {
+        maxWidthDropdownColumn: '550px',
+        ReferenceRanking: {
+            maxWidthMobile: '1200px',
+            minWidthDesktop: '1201px'
+        }
+    }
 
 };
 
