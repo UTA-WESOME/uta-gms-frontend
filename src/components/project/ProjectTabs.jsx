@@ -27,6 +27,8 @@ import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
 import ImportModal from "../import/ImportModal.jsx";
 import ExportModal from "../export/ExportModal.jsx";
+import * as c from '../../config.js';
+import { TbBinaryTree } from "react-icons/tb";
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria, criterion function, criterion categories
@@ -112,7 +114,7 @@ const ProjectTabs = (props) => {
 
     const [tabIndex, setTabIndex] = useState(0);
     const [hasLoaded, setHasLoaded] = useState(false);
-    const [isScreenMobile] = useMediaQuery('(max-width: 628px)');
+    const [isScreenMobile] = useMediaQuery(c.maxWidthMobileIcons);
     const [saveClicked, setSaveClicked] = useState(false);
     const navigate = useNavigate();
     const toast = useToast();
@@ -144,7 +146,6 @@ const ProjectTabs = (props) => {
             console.error(error);
         }
     };
-
 
     useEffect(() => {
         // get data
@@ -375,9 +376,12 @@ const ProjectTabs = (props) => {
                                 <Icon as={FaList}></Icon>
                             </Tab>
                             <Tab fontSize={'15px'}>
+                                <Icon as={TbBinaryTree}></Icon>
+                            </Tab>
+                            <Tab fontSize={'15px'}>
                                 <Icon as={FaBalanceScaleLeft}></Icon>
                             </Tab>
-                            <Tab fontSize={'20px'} isDisabled={alternatives.some(alt => alt.ranking === 0)}>
+                            <Tab fontSize={'20px'}>
                                 <Icon as={FaRegCheckCircle}></Icon>
                             </Tab>
                         </>

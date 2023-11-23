@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import * as c from './constants.js';
+import * as c from '../../../../config.js';
 
 const IntensitiesTabMobile = ({
                                  preferenceIntensities,

@@ -1,7 +1,7 @@
 import { Icon, IconButton, Select, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { FaGreaterThan, FaMinus } from "react-icons/fa";
-import * as c from './constants.js';
+import * as c from '../../../../config.js';
 import { Fragment } from "react";
 
 const IntensitiesTabDesktop = ({
@@ -42,7 +42,7 @@ const IntensitiesTabDesktop = ({
                     <Thead>
                         <Tr>
                             <>
-                                {c.alternatives.map(alternative => (
+                                {c.alternativesInIntensities.map(alternative => (
                                     <Fragment key={alternative.number}>
                                         <Th>
                                             <Text>Alternative {alternative.letter}</Text>
@@ -67,7 +67,7 @@ const IntensitiesTabDesktop = ({
                             .map((preferenceIntensity, index) => (
                                 <Tr key={index}>
                                     <>
-                                        {c.alternatives.map(alternativeConst => (
+                                        {c.alternativesInIntensities.map(alternativeConst => (
                                             <Fragment key={alternativeConst.number}>
                                                 <Td>
                                                     <Select
