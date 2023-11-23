@@ -1,8 +1,11 @@
 import { Box, Button, Center, FormControl, FormLabel, HStack, Select, Show, Text, useToast } from "@chakra-ui/react";
-import IntensitiesTabDesktop from "./IntensitiesTabDesktop.jsx";
-import { useEffect, useState } from "react";
-import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import { InfoIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+
+import IntensitiesTabDesktop from "./IntensitiesTabDesktop.jsx";
+import IntensitiesTabMobile from "./IntensitiesTabMobile.jsx";
+import CustomTooltip from "../../../utils/CustomTooltip.jsx";
+import * as c from "./../../../../config.js";
 
 const IntensitiesTab = ({
                             alternatives,
@@ -94,7 +97,7 @@ const IntensitiesTab = ({
                     <FormControl>
                         <FormLabel>
                             <HStack>
-                                <Text>Choose a category or criteria</Text>
+                                <Text>Choose category/criteria</Text>
                                 <CustomTooltip
                                     label={"You can either choose a whole category or assign the intensity directly to a criterion."}
                                     openDelay={200}>
@@ -102,24 +105,28 @@ const IntensitiesTab = ({
                                 </CustomTooltip>
                             </HStack>
                         </FormLabel>
-                        <Select
-                            w={'300px'}
-                            onChange={(event) =>
-                                setCurrentCategoryId(parseInt(event.target.value))
-                            }
-                        >
-                            {categories.map(category => (
-                                <option value={category.id} key={category.id}>{category.name}</option>
-                            ))}
-                            <option value={0}>Criteria</option>
-                        </Select>
+                        <Center>
+                            <Select
+                                w={{ base: '200px', sm: '300px' }}
+                                onChange={(event) =>
+                                    setCurrentCategoryId(parseInt(event.target.value))
+                                }
+                            >
+                                {categories.map(category => (
+                                    <option value={category.id} key={category.id}>{category.name}</option>
+                                ))}
+                                <option value={0}>Criteria</option>
+                            </Select>
+
+                        </Center>
+
                     </FormControl>
                 </Box>
             </Center>
 
 
             {/*DESKTOP*/}
-            <Show above={'lg'}>
+            <Show above={c.Preferences.Intensities.minWidthDesktop}>
                 <IntensitiesTabDesktop
                     alternatives={alternatives}
                     criteria={criteria}
@@ -132,17 +139,21 @@ const IntensitiesTab = ({
             </Show>
 
             {/*MOBILE*/}
-            <Show below={'991px'}>
-            {/*    <IntensitiesTabMobile*/}
-            {/*        alternatives={alternatives}*/}
-            {/*        criteria={criteria}*/}
-            {/*        addPreferenceIntensity={addPreferenceIntensity}*/}
-            {/*        deletePreferenceIntensity={deletePreferenceIntensity}*/}
-            {/*    />*/}
+            <Show below={c.Preferences.Intensities.maxWidthMobile}>
+                <IntensitiesTabMobile
+                    alternatives={alternatives}
+                    criteria={criteria}
+                    currentCategoryId={currentCategoryId}
+                    categories={categories}
+                    preferenceIntensities={preferenceIntensities}
+                    setPreferenceIntensities={setPreferenceIntensities}
+                    deletePreferenceIntensity={deletePreferenceIntensity}
+                />
             </Show>
 
 
-            <Button mx={4} my={4} colorScheme={'teal'} onClick={addPreferenceIntensity} variant='outline'>
+            <Button mx={{ base: 'auto', lg: 4 }} my={4} colorScheme={'teal'} onClick={addPreferenceIntensity}
+                    variant='outline'>
                 New intensity
             </Button>
         </>

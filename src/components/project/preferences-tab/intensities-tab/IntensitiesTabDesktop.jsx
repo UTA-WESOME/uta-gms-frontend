@@ -42,7 +42,7 @@ const IntensitiesTabDesktop = ({
                     <Thead>
                         <Tr>
                             <>
-                                {c.Intensities.alternatives.map(alternative => (
+                                {c.Preferences.Intensities.alternatives.map(alternative => (
                                     <Fragment key={alternative.number}>
                                         <Th>
                                             <Text>Alternative {alternative.letter}</Text>
@@ -58,16 +58,14 @@ const IntensitiesTabDesktop = ({
                     <Tbody>
                         {preferenceIntensities
                             .filter(pi => {
-                                if (currentCategoryId === 0) {
+                                if (currentCategoryId === 0)
                                     return pi.criterion !== null;
-                                } else {
-                                    return pi.category === currentCategoryId;
-                                }
+                                return pi.category === currentCategoryId;
                             })
                             .map((preferenceIntensity, index) => (
                                 <Tr key={index}>
                                     <>
-                                        {c.Intensities.alternatives.map(alternativeConst => (
+                                        {c.Preferences.Intensities.alternatives.map(alternativeConst => (
                                             <Fragment key={alternativeConst.number}>
                                                 <Td>
                                                     <Select

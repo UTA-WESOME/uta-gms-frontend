@@ -26,12 +26,12 @@ import { useState } from "react";
 import * as c from '../../../../config.js';
 
 const IntensitiesTabMobile = ({
-                                 preferenceIntensities,
-                                 setPreferenceIntensities,
-                                 alternatives,
-                                 criteria,
-                                 addPreferenceIntensity,
-                                 deletePreferenceIntensity
+                                  alternatives,
+                                  criteria,
+                                  currentCategoryId,
+                                  preferenceIntensities,
+                                  setPreferenceIntensities,
+                                  deletePreferenceIntensity
                              }) => {
 
     const [currentPreferenceIntensity, setCurrentPreferenceIntensity] = useState({
@@ -40,7 +40,8 @@ const IntensitiesTabMobile = ({
         alternative_2: 0,
         alternative_3: 0,
         alternative_4: 0,
-        criterion: null,
+        category: null,
+        criterion: null
     });
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -73,17 +74,25 @@ const IntensitiesTabMobile = ({
 
     return (
         <>
-            <Flex
-                direction={'column'}
-                spacing={4}
-            >
+            <Flex direction={'column'} spacing={4}>
                 <Center>
                     <Heading size={'lg'} mb={2}>Intensities</Heading>
                 </Center>
-                {preferenceIntensities.map((preferenceIntensity, index) => (
+                {preferenceIntensities
+                    .filter(pi => {
+                        if (currentCategoryId === 0)
+                            return pi.criterion !== null;
+                        return pi.category === currentCategoryId;
+                    })
+                    .map((preferenceIntensity, index) => (
                     <HStack
                         borderTopWidth={'1px'}
-                        borderBottomWidth={index === preferenceIntensities.length - 1 ? '1px' : '0px'}
+                        borderBottomWidth={index === preferenceIntensities
+                            .filter(pi => {
+                                if (currentCategoryId === 0)
+                                    return pi.criterion !== null;
+                                return pi.category === currentCategoryId;
+                            }).length - 1 ? '1px' : '0px'}
                         p={2}
                         key={index}
                     >
@@ -107,10 +116,6 @@ const IntensitiesTabMobile = ({
                 ))}
             </Flex>
 
-            <Button my={4} colorScheme={'teal'} onClick={addPreferenceIntensity} variant='outline'>
-                New intensity
-            </Button>
-
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay/>
                 <ModalContent
@@ -122,37 +127,38 @@ const IntensitiesTabMobile = ({
                     <ModalCloseButton/>
                     <ModalBody textAlign={'center'}>
                         <VStack spacing={"15px"}>
-                            <Heading colorScheme={'teal'}
-                                     size={'xl'}
-                            >
-                                A - B &gt; C - D
-                            </Heading>
-                            {c.alternatives.map(alternativeConst => (
-                                <FormControl key={alternativeConst.number}>
-                                    <FormLabel fontSize={'sm'}>Alternative {alternativeConst.letter}</FormLabel>
+                            <Heading colorScheme={'teal'} size={'xl'}>A - B &gt; C - D</Heading>
+                            <>
+                                {c.Preferences.Intensities.alternatives.map(alternativeConst => (
+                                    <FormControl key={alternativeConst.number}>
+                                        <FormLabel fontSize={'sm'}>Alternative {alternativeConst.letter}</FormLabel>
+                                        <Select
+                                            value={currentPreferenceIntensity[`alternative_${alternativeConst.number}`]}
+                                            onChange={(event) => handleChangeAlternative(alternativeConst.number, parseInt(event.target.value))}
+                                        >
+                                            {alternatives.map(alternative => (
+                                                <option value={alternative.id}
+                                                        key={alternative.id}>{alternative.name}</option>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                ))}
+                            </>
+                            {currentCategoryId === 0 &&
+                                <FormControl>
+                                    <FormLabel fontSize={'sm'}>Criterion</FormLabel>
                                     <Select
-                                        value={currentPreferenceIntensity[`alternative_${alternativeConst.number}`]}
-                                        onChange={(event) => handleChangeAlternative(alternativeConst.number, parseInt(event.target.value))}
+                                        value={currentPreferenceIntensity.criterion !== null ? currentPreferenceIntensity.criterion : 0}
+                                        onChange={(event) => handleChangeCriterion(parseInt(event.target.value))}
                                     >
-                                        {alternatives.map(alternative => (
-                                            <option value={alternative.id}
-                                                    key={alternative.id}>{alternative.name}</option>
+                                        <option value={0}>General</option>
+                                        {criteria.map(criterion => (
+                                            <option value={criterion.id} key={criterion.id}>{criterion.name}</option>
                                         ))}
                                     </Select>
                                 </FormControl>
-                            ))}
-                            <FormControl>
-                                <FormLabel fontSize={'sm'}>Criterion</FormLabel>
-                                <Select
-                                    value={currentPreferenceIntensity.criterion !== null ? currentPreferenceIntensity.criterion : 0}
-                                    onChange={(event) => handleChangeCriterion(parseInt(event.target.value))}
-                                >
-                                    <option value={0}>General</option>
-                                    {criteria.map(criterion => (
-                                        <option value={criterion.id} key={criterion.id}>{criterion.name}</option>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                            }
+
                         </VStack>
                     </ModalBody>
                     <ModalFooter>

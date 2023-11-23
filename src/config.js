@@ -29,15 +29,16 @@ export const Preferences = {
             maxWidthMobile: '991px',
             minWidthDesktop: '992px'
         }
+    },
+    Intensities: {
+        alternatives: [
+            { number: 1, letter: 'A' },
+            { number: 2, letter: 'B' },
+            { number: 3, letter: 'C' },
+            { number: 4, letter: 'D' },
+        ],
+        maxWidthMobile: '1201px',
+        minWidthDesktop: '1200px'
     }
 
-};
-
-export const Intensities = {
-    alternatives: [
-        { number: 1, letter: 'A' },
-        { number: 2, letter: 'B' },
-        { number: 3, letter: 'C' },
-        { number: 4, letter: 'D' },
-    ],
 };
