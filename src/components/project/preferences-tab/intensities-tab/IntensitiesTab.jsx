@@ -132,14 +132,14 @@ const IntensitiesTab = ({
             </Show>
 
             {/*MOBILE*/}
-            {/*<Show below={'991px'}>*/}
+            <Show below={'991px'}>
             {/*    <IntensitiesTabMobile*/}
             {/*        alternatives={alternatives}*/}
             {/*        criteria={criteria}*/}
             {/*        addPreferenceIntensity={addPreferenceIntensity}*/}
             {/*        deletePreferenceIntensity={deletePreferenceIntensity}*/}
             {/*    />*/}
-            {/*</Show>*/}
+            </Show>
 
 
             <Button mx={4} my={4} colorScheme={'teal'} onClick={addPreferenceIntensity} variant='outline'>

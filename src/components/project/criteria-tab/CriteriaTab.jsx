@@ -88,11 +88,11 @@ const CriteriaTab = ({
             {/*MOBILE*/}
             {/*TODO: change 991px to const, can't be 'md' because mobile and desktop are both seen then*/}
             <Show below={'991px'}>
-                <CriteriaTabMobile
-                    criteria={criteria}
-                    setCriteria={setCriteria}
-                    deleteCriterion={deleteCriterion}
-                />
+                {/*<CriteriaTabMobile*/}
+                {/*    criteria={criteria}*/}
+                {/*    setCriteria={setCriteria}*/}
+                {/*    deleteCriterion={deleteCriterion}*/}
+                {/*/>*/}
             </Show>
 
             {/*BUTTONS*/}

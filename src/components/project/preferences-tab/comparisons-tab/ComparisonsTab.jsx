@@ -90,6 +90,7 @@ const ComparisonsTab = ({
                 />
             }
 
+            {/*PAIRWISE COMPARISON CONFIRMATION*/}
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}

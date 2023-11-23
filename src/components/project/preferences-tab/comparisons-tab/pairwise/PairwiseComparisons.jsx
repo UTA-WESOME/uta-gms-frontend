@@ -67,11 +67,11 @@ const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setC
 
             {/*MOBILE*/}
             <Show below={'991px'}>
-                <PairwiseComparisonsMobile
-                    alternatives={alternatives}
-                    addPairwiseComparison={addPairwiseComparison}
-                    deletePairwiseComparison={deletePairwiseComparison}
-                />
+                {/*<PairwiseComparisonsMobile*/}
+                {/*    alternatives={alternatives}*/}
+                {/*    addPairwiseComparison={addPairwiseComparison}*/}
+                {/*    deletePairwiseComparison={deletePairwiseComparison}*/}
+                {/*/>*/}
             </Show>
         </>
     )

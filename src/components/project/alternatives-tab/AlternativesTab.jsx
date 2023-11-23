@@ -79,10 +79,10 @@ const AlternativesTab = ({ alternatives, setAlternatives, criteria, setCategorie
 
             {/*MOBILE*/}
             <Show below={'991px'}>
-                <AlternativesTabMobile alternatives={alternatives}
-                                       setAlternatives={setAlternatives}
-                                       criteria={criteria}
-                                       deleteAlternative={deleteAlternative}/>
+                {/*<AlternativesTabMobile alternatives={alternatives}*/}
+                {/*                       setAlternatives={setAlternatives}*/}
+                {/*                       criteria={criteria}*/}
+                {/*                       deleteAlternative={deleteAlternative}/>*/}
             </Show>
 
             {/*BUTTONS*/}

@@ -181,37 +181,37 @@ const ReferenceRanking = ({ alternatives, setAlternatives, currentCategoryId, ca
             {/*MOBILE*/}
             {/*TODO: change 1200px to const*/}
             <Show below={'999px'}>
-                <Flex direction={'column'}>
-                    {ranks.map((rank, index) => (
-                        <RankMobile id={rank} key={index}
-                            // needed for deleting a rank
-                                    setRanks={setRanks} setAlternatives={setAlternatives}
-                            // needed for modal
-                                    alternatives={alternatives}
-                        >
-                            {alternatives
-                                .filter(alt => alt.reference_ranking === rank)
-                                .map((alternative, index) => (
-                                    <AlternativeMobile name={alternative.name} key={index}/>
-                                ))}
-                        </RankMobile>
-                    ))}
-                </Flex>
+                {/*<Flex direction={'column'}>*/}
+                {/*    {ranks.map((rank, index) => (*/}
+                {/*        <RankMobile id={rank} key={index}*/}
+                {/*            // needed for deleting a rank*/}
+                {/*                    setRanks={setRanks} setAlternatives={setAlternatives}*/}
+                {/*            // needed for modal*/}
+                {/*                    alternatives={alternatives}*/}
+                {/*        >*/}
+                {/*            {alternatives*/}
+                {/*                .filter(alt => alt.reference_ranking === rank)*/}
+                {/*                .map((alternative, index) => (*/}
+                {/*                    <AlternativeMobile name={alternative.name} key={index}/>*/}
+                {/*                ))}*/}
+                {/*        </RankMobile>*/}
+                {/*    ))}*/}
+                {/*</Flex>*/}
 
-                <ButtonGroup pt={"1rem"}>
-                    <Button
-                        colorScheme={"teal"}
-                        variant='outline'
-                        ml={1}
-                        onClick={addRank}
-                    >New rank</Button>
-                    <Button
-                        colorScheme={'red'}
-                        variant='outline'
-                        ml={1}
-                        onClick={handleReset}
-                    >Reset</Button>
-                </ButtonGroup>
+                {/*<ButtonGroup pt={"1rem"}>*/}
+                {/*    <Button*/}
+                {/*        colorScheme={"teal"}*/}
+                {/*        variant='outline'*/}
+                {/*        ml={1}*/}
+                {/*        onClick={addRank}*/}
+                {/*    >New rank</Button>*/}
+                {/*    <Button*/}
+                {/*        colorScheme={'red'}*/}
+                {/*        variant='outline'*/}
+                {/*        ml={1}*/}
+                {/*        onClick={handleReset}*/}
+                {/*    >Reset</Button>*/}
+                {/*</ButtonGroup>*/}
             </Show>
 
         </>

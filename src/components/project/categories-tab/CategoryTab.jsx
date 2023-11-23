@@ -14,7 +14,6 @@ const CategoryTab = ({ alternatives, criteria, categories, setCategories, setPre
             justify={'space-evenly'}
             m={3}
         >
-
             {/*PANEL*/}
             <Box
                 w={'35%'}

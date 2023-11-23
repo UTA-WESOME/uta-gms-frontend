@@ -10,7 +10,6 @@ const PercentagesTab = ({alternatives, percentages}) => {
             <Divider/>
             <TableContainer mt={3}>
                 <Table variant='striped' size={'sm'}>
-                    <TableCaption>How many percent...</TableCaption>
                     <Thead>
                         <Tr>
                             <Th>alternative</Th>
