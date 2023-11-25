@@ -1,6 +1,7 @@
 import { Show, useToast } from "@chakra-ui/react";
 import PairwiseComparisonsDesktop from "./PairwiseComparisonsDesktop.jsx";
 import PairwiseComparisonsMobile from "./PairwiseComparisonsMobile.jsx";
+import * as c from "./../../../../../config.js";
 
 const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setCategories }) => {
 
@@ -54,7 +55,7 @@ const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setC
     return (
         <>
             {/*DESKTOP*/}
-            <Show above={'lg'}>
+            <Show above={c.Preferences.Comparisons.PairwiseComparisons.minWidthDesktop}>
                 <PairwiseComparisonsDesktop
                     alternatives={alternatives}
                     currentCategoryId={currentCategoryId}
@@ -66,9 +67,12 @@ const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setC
             </Show>
 
             {/*MOBILE*/}
-            <Show below={'991px'}>
+            <Show below={c.Preferences.Comparisons.PairwiseComparisons.maxWidthMobile}>
                 <PairwiseComparisonsMobile
                     alternatives={alternatives}
+                    currentCategoryId={currentCategoryId}
+                    categories={categories}
+                    setCategories={setCategories}
                     addPairwiseComparison={addPairwiseComparison}
                     deletePairwiseComparison={deletePairwiseComparison}
                 />

@@ -25,8 +25,9 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 const PairwiseComparisonsMobile = ({
                                        alternatives,
-                                       pairwiseComparisons,
-                                       setPairwiseComparisons,
+                                       categories,
+                                       currentCategoryId,
+                                       setCategories,
                                        addPairwiseComparison,
                                        deletePairwiseComparison
                                    }) => {
@@ -55,13 +56,18 @@ const PairwiseComparisonsMobile = ({
     const submitData = (event) => {
         event.preventDefault();
 
-        setPairwiseComparisons(pPairwiseComparisons => pPairwiseComparisons.map(pc => {
-            if (pc.id === currentPairwiseComparison.id) {
-                return currentPairwiseComparison;
-            }
-            return pc;
+        setCategories(categories.map(category => {
+            if (category.id === currentCategoryId)
+                return {
+                    ...category,
+                    pairwise_comparisons: category.pairwise_comparisons.map(pc => {
+                        if (pc.id === currentPairwiseComparison.id)
+                            return currentPairwiseComparison;
+                        return pc;
+                    })
+                }
+            return category
         }))
-
         onClose();
     }
 
@@ -72,31 +78,40 @@ const PairwiseComparisonsMobile = ({
                 spacing={4}
                 pt={3}
             >
-                {pairwiseComparisons.map((pc, index) => (
-                    <HStack
-                        borderTopWidth={'1px'}
-                        borderBottomWidth={index === pairwiseComparisons.length - 1 ? '1px' : '0px'}
-                        p={2}
-                        key={index}
-                    >
-                        <Text isTruncated>Comparison {index + 1}</Text>
-                        <Spacer/>
-                        <IconButton
-                            aria-label={'edit-pairwise-comparison'}
-                            icon={<EditIcon/>}
-                            onClick={() => {
-                                setCurrentPairwiseComparison(pc);
-                                onOpen();
-                            }}
-                        />
-                        <IconButton
-                            color={'red.300'}
-                            aria-label={'delete-pairwise-comparison'}
-                            icon={<DeleteIcon/>}
-                            onClick={() => deletePairwiseComparison(pc.id)}
-                        />
-                    </HStack>
-                ))}
+                {categories
+                    .find(c => c.id === currentCategoryId)
+                    ?.pairwise_comparisons
+                    .map((pc, index) => (
+                        <HStack
+                            borderTopWidth={'1px'}
+                            borderBottomWidth={
+                                index === categories.find(c => c.id === currentCategoryId)?.pairwise_comparisons.length - 1
+                                    ?
+                                    '1px'
+                                    :
+                                    '0px'
+                            }
+                            p={2}
+                            key={index}
+                        >
+                            <Text isTruncated>Comparison {index + 1}</Text>
+                            <Spacer/>
+                            <IconButton
+                                aria-label={'edit-pairwise-comparison'}
+                                icon={<EditIcon/>}
+                                onClick={() => {
+                                    setCurrentPairwiseComparison(pc);
+                                    onOpen();
+                                }}
+                            />
+                            <IconButton
+                                color={'red.300'}
+                                aria-label={'delete-pairwise-comparison'}
+                                icon={<DeleteIcon/>}
+                                onClick={() => deletePairwiseComparison(pc.id)}
+                            />
+                        </HStack>
+                    ))}
             </Flex>
 
             <Button my={4} colorScheme={'teal'} onClick={addPairwiseComparison} variant='outline'>

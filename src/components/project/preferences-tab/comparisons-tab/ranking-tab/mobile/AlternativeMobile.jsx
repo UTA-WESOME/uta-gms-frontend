@@ -8,7 +8,7 @@ const AlternativeMobile = ({ name }) => {
             bg={useColorModeValue('teal.200', 'teal')}
             py={2}
             my={3}
-            w={{base: '125px', sm: '200px', md: '250px'}}
+            w={{base: '125px', sm: '250px', md: '300px', lg: '450px'}}
             mx={'auto'}
             textAlign={'center'}
         >

@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Show } from "@chakra-ui/react";
 import CriteriaTabMobile from "./CriteriaTabMobile.jsx";
 import CriteriaTabDesktop from "./CriteriaTabDesktop.jsx";
-
+import * as c from "./../../../config.js";
 
 const CriteriaTab = ({
                          criteria,
@@ -77,7 +77,7 @@ const CriteriaTab = ({
     return (
         <>
             {/*DESKTOP*/}
-            <Show above={'lg'}>
+            <Show above={c.Criteria.minWidthDesktop}>
                 <CriteriaTabDesktop
                     criteria={criteria}
                     setCriteria={setCriteria}
@@ -86,8 +86,7 @@ const CriteriaTab = ({
             </Show>
 
             {/*MOBILE*/}
-            {/*TODO: change 991px to const, can't be 'md' because mobile and desktop are both seen then*/}
-            <Show below={'991px'}>
+            <Show below={c.Criteria.maxWidthMobile}>
                 <CriteriaTabMobile
                     criteria={criteria}
                     setCriteria={setCriteria}
@@ -96,7 +95,7 @@ const CriteriaTab = ({
             </Show>
 
             {/*BUTTONS*/}
-            <ButtonGroup mx={4} my={4}>
+            <ButtonGroup mx={{base: 'auto', md: 4}} my={4}>
                 <Button colorScheme={'teal'} onClick={addCriterion} variant='outline'>
                     New criterion
                 </Button>

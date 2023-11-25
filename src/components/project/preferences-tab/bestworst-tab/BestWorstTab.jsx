@@ -1,6 +1,8 @@
 import BestWorstTabDesktop from "./BestWorstTabDesktop.jsx";
 import { Box, Center, FormControl, FormLabel, Select, Show, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import * as c from "./../../../../config.js";
+import BestWorstTabMobile from "./BestWorstTabMobile.jsx";
 
 const BestWorstTab = ({ alternatives, categories, setCategories }) => {
 
@@ -19,20 +21,23 @@ const BestWorstTab = ({ alternatives, categories, setCategories }) => {
                         <FormLabel>
                             <Text>Choose category</Text>
                         </FormLabel>
-                        <Select
-                            w={'300px'}
-                            onChange={(event) =>
-                                setCurrentCategoryId(parseInt(event.target.value))
-                            }
-                        >
-                            {categories.map(category => (
-                                <option value={category.id} key={category.id}>{category.name}</option>
-                            ))}
-                        </Select>
+                        <Center>
+                            <Select
+                                w={{base: '200px', md: '300px'}}
+                                onChange={(event) =>
+                                    setCurrentCategoryId(parseInt(event.target.value))
+                                }
+                            >
+                                {categories.map(category => (
+                                    <option value={category.id} key={category.id}>{category.name}</option>
+                                ))}
+                            </Select>
+                        </Center>
+
                     </FormControl>
                 </Box>
             </Center>
-            <Show above={'lg'}>
+            <Show above={c.Preferences.BestWorst.minWidthDesktop}>
                 <BestWorstTabDesktop
                     alternatives={alternatives}
                     currentCategoryId={currentCategoryId}
@@ -41,11 +46,13 @@ const BestWorstTab = ({ alternatives, categories, setCategories }) => {
                 />
             </Show>
 
-            <Show below={'991px'}>
-                {/*<BestWorstTabMobile*/}
-                {/*    alternatives={alternatives}*/}
-                {/*    setAlternatives={setAlternatives}*/}
-                {/*/>*/}
+            <Show below={c.Preferences.BestWorst.maxWidthMobile}>
+                <BestWorstTabMobile
+                    alternatives={alternatives}
+                    currentCategoryId={currentCategoryId}
+                    categories={categories}
+                    setCategories={setCategories}
+                />
             </Show>
 
         </>

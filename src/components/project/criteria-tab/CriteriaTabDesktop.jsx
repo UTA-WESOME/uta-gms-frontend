@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import CustomTooltip from "../../utils/CustomTooltip.jsx";
 import { DeleteIcon, InfoIcon } from "@chakra-ui/icons";
+import * as c from "./../../../config.js";
 
 const CriteriaTabDesktop = ({
                                 criteria,
@@ -84,7 +85,7 @@ const CriteriaTabDesktop = ({
                                 <HStack>
                                     <Text>Type</Text>
                                     <CustomTooltip
-                                        label={"Gain means that high values of a given alternative on this criterion will result in a higher position of the alternative in the final ranking. Cost means that low values of an alternative on this criterion will result in a higher position of the alternative in the final ranking."}
+                                        label={c.Criteria.descriptionType}
                                         openDelay={200}>
                                         <InfoIcon/>
                                     </CustomTooltip>
@@ -94,7 +95,7 @@ const CriteriaTabDesktop = ({
                                 <HStack>
                                     <Text>Linear segments</Text>
                                     <CustomTooltip
-                                        label={"Choose how many linear segments the criterion should have. To select the general function, choose 0."}
+                                        label={c.Criteria.descriptionLinearSegments}
                                         openDelay={200}>
                                         <InfoIcon/>
                                     </CustomTooltip>

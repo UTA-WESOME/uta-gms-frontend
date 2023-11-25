@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { graphviz } from "d3-graphviz";
-import { Box, Button, ButtonGroup, Center, IconButton } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Center, IconButton, useMediaQuery } from "@chakra-ui/react";
 import * as d3 from 'd3';
 import { DownloadIcon } from "@chakra-ui/icons";
 import { TbFocusCentered } from "react-icons/tb";
@@ -21,6 +21,7 @@ const Graphviz = ({
                   }) => {
 
     const id = useMemo(getId, []);
+    const [isBigDownload] = useMediaQuery('(min-width: 500px)')
 
     const interactive = () => {
         const nodes = d3.selectAll(`#${id} .node`);
@@ -89,14 +90,23 @@ const Graphviz = ({
             />
             {download &&
                 <Center>
-                    <ButtonGroup
-                        mt={5}>
-                        <Button
-                            colorScheme={'teal'}
-                            variant={'outline'}
-                            onClick={downloadSvg}
-                            leftIcon={<DownloadIcon/>}
-                        >Download as SVG</Button>
+                    <ButtonGroup mt={5}>
+                        {isBigDownload ?
+                            <Button
+                                colorScheme={'teal'}
+                                variant={'outline'}
+                                onClick={downloadSvg}
+                                leftIcon={<DownloadIcon/>}
+                            >Download as SVG</Button>
+                            :
+                            <IconButton
+                                aria-label={'download-graph'}
+                                colorScheme={'teal'}
+                                variant={'outline'}
+                                onClick={centerGraph}
+                                icon={<DownloadIcon/>}
+                            />
+                        }
                         <IconButton
                             aria-label={'center-graph'}
                             colorScheme={'teal'}

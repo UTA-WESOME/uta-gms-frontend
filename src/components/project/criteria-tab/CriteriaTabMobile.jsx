@@ -31,13 +31,14 @@ import {
 import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import * as c from "./../../../config.js";
 
 const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const formik = useFormik({
-        initialValues: { id: 0, name: "", gain: false, linear_segments: 0, weight: 1 },
+        initialValues: { id: 0, name: "", gain: false, linear_segments: 0 },
         validationSchema: Yup.object({
             name: Yup.string().required("Criterion name is required!")
                 .max(64, "Criterion name too long!"),
@@ -45,10 +46,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
                 .required("This field is required!")
                 .max(30, "The criterion is limited to a maximum of 30 linear segments!")
                 .min(0, "The criterion must have a minimum of 0 linear segments!")
-                .integer("The count of linear segments must be a whole number!"),
-            weight: Yup.number()
-                .required("Weight is required!")
-                .min(0, "The minimum value is 0")
+                .integer("The count of linear segments must be a whole number!")
         }),
         onSubmit: (values, _) => {
             // update criterion
@@ -60,8 +58,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
                             id: values.id,
                             name: values.name,
                             gain: values.gain,
-                            linear_segments: values.linear_segments,
-                            weight: values.weight
+                            linear_segments: values.linear_segments
                         };
                     }
                     return criterion;
@@ -75,11 +72,6 @@ const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
     const handleChangeLinearSegments = (change) => {
         let newValue = (formik.values.linear_segments === "" ? 0 : formik.values.linear_segments) + change;
         formik.setFieldValue("linear_segments", newValue);
-    }
-
-    const handleChangeWeight = (change) => {
-        let newValue = (formik.values.weight === "" ? 0 : formik.values.weight) + change;
-        formik.setFieldValue("weight", newValue);
     }
 
     return (
@@ -154,11 +146,9 @@ const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
                                             </PopoverTrigger>
                                             <PopoverContent>
                                                 <PopoverCloseButton/>
-                                                <PopoverBody>Gain means that high values of a given alternative on this
-                                                    criterion will result in a higher position of the alternative in the
-                                                    final ranking. Loss means that low values of an alternative on this
-                                                    criterion will result in a higher position of the alternative in the
-                                                    final ranking.</PopoverBody>
+                                                <PopoverBody>
+                                                    {c.Criteria.descriptionType}
+                                                </PopoverBody>
                                             </PopoverContent>
                                         </Popover>
                                     </HStack>
@@ -192,8 +182,7 @@ const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
                                             </PopoverTrigger>
                                             <PopoverContent>
                                                 <PopoverCloseButton/>
-                                                <PopoverBody>Choose how many linear segments the criterion should have.
-                                                    To select the general function, choose 0.</PopoverBody>
+                                                <PopoverBody>{c.Criteria.descriptionLinearSegments}</PopoverBody>
                                             </PopoverContent>
                                         </Popover>
                                     </HStack>
@@ -216,41 +205,6 @@ const CriteriaTabMobile = ({ criteria, setCriteria, deleteCriterion }) => {
                                     >+</Button>
                                 </HStack>
                                 <FormErrorMessage>{formik.errors.linear_segments}</FormErrorMessage>
-                            </FormControl>
-
-                            <FormControl isInvalid={formik.errors.weight && formik.touched.weight}>
-                                <FormLabel fontSize={'sm'}>
-                                    <HStack>
-                                        <Text>
-                                            Weight
-                                        </Text>
-                                        <Popover>
-                                            <PopoverTrigger>
-                                                <InfoIcon/>
-                                            </PopoverTrigger>
-                                            <PopoverContent>
-                                                <PopoverCloseButton/>
-                                                <PopoverBody>Choose the weight of the criterion.</PopoverBody>
-                                            </PopoverContent>
-                                        </Popover>
-                                    </HStack>
-                                </FormLabel>
-                                <HStack>
-                                    <Button
-                                        isDisabled={formik.values.weight - 1 <= 0.0}
-                                        onClick={() => handleChangeWeight(-1)}
-                                    >-</Button>
-                                    <Input
-                                        id={'input_weight'}
-                                        name={'weight'}
-                                        type={'number'}
-                                        {...formik.getFieldProps("weight")}
-                                    />
-                                    <Button
-                                        onClick={() => handleChangeWeight(1)}
-                                    >+</Button>
-                                </HStack>
-                                <FormErrorMessage>{formik.errors.weight}</FormErrorMessage>
                             </FormControl>
                         </VStack>
 

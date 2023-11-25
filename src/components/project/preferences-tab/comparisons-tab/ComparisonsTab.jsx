@@ -11,13 +11,15 @@ import {
     Center,
     FormControl,
     FormLabel,
-    HStack,
     Select,
-    useDisclosure
+    Stack,
+    useDisclosure,
+    useMediaQuery
 } from "@chakra-ui/react";
 import ReferenceRanking from "./ranking-tab/ReferenceRanking.jsx";
 import PairwiseComparisons from "./pairwise/PairwiseComparisons.jsx";
 import { HiOutlineSwitchVertical } from "react-icons/hi";
+import * as c from "./../../../../config.js";
 
 const ComparisonsTab = ({
                             alternatives,
@@ -31,9 +33,10 @@ const ComparisonsTab = ({
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
     const [currentCategoryId, setCurrentCategoryId] = useState(categories[0].id);
+    const [isMobile] = useMediaQuery(`(max-width: ${c.Preferences.Comparisons.maxWidthDropdownColumn})`);
 
     useEffect(() => {
-        if(categories.find(c => c.id === currentCategoryId) === undefined)
+        if (categories.find(c => c.id === currentCategoryId) === undefined)
             setCurrentCategoryId(categories[0].id);
     }, [categories])
 
@@ -45,11 +48,11 @@ const ComparisonsTab = ({
     return (
         <>
             <Center>
-                <HStack spacing={4}>
+                <Stack spacing={4} direction={isMobile ? 'column' : 'row'}>
                     <FormControl>
                         <FormLabel>Comparisons type</FormLabel>
                         <Button
-                            minW={'min-content'}
+                            minW={'200px'}
                             colorScheme={'teal'}
                             onClick={onOpen}
                             rightIcon={<HiOutlineSwitchVertical/>}
@@ -70,7 +73,7 @@ const ComparisonsTab = ({
                             ))}
                         </Select>
                     </FormControl>
-                </HStack>
+                </Stack>
             </Center>
 
             {!pairwiseMode ?
@@ -90,6 +93,7 @@ const ComparisonsTab = ({
                 />
             }
 
+            {/*PAIRWISE COMPARISON CONFIRMATION*/}
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}

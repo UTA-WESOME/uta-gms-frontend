@@ -1,4 +1,4 @@
-import { Box, Divider, Heading, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Divider, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 
 const PercentagesTab = ({alternatives, percentages}) => {
     return (
@@ -10,7 +10,6 @@ const PercentagesTab = ({alternatives, percentages}) => {
             <Divider/>
             <TableContainer mt={3}>
                 <Table variant='striped' size={'sm'}>
-                    <TableCaption>How many percent...</TableCaption>
                     <Thead>
                         <Tr>
                             <Th>alternative</Th>
