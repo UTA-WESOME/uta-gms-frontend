@@ -2,7 +2,9 @@ import {
     Box,
     Button,
     ButtonGroup,
+    Center,
     Divider,
+    Heading,
     Icon,
     IconButton,
     Progress,
@@ -116,6 +118,7 @@ const ProjectTabs = (props) => {
     const [hasLoaded, setHasLoaded] = useState(false);
     const [isScreenMobile] = useMediaQuery(c.maxWidthMobileIcons);
     const [saveClicked, setSaveClicked] = useState(false);
+    const [progressBarValue, setProgressBarValue] = useState(5);
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -325,15 +328,22 @@ const ProjectTabs = (props) => {
                 }).then(response => {
 
                     if (!response.ok) {
-                        waitingArrayResults[index] = true;
-                        toastError(`Error getting results for ${categoryUpdated.name} - ${response.status}`);
-                        throw new Error('Error getting results');
+                        toast({
+                            title: "Error!",
+                            description: `Error getting results for ${categoryUpdated.name} - ${response.status}`,
+                            status: 'error',
+                            duration: 3000,
+                            isClosable: true
+                        });
                     }
 
                     waitingArrayResults[index] = true;
+                    // has to use pbv because otherwise does not work for some reason (?)
+                    setProgressBarValue(pbv => waitingArrayResults.filter(value => value === true).length * 100 / categories.length)
                     if (waitingArrayResults.every(i => i === true)) {
                         toastSuccess("Results ready!");
                         setSaveClicked(false);
+                        setProgressBarValue(5);
                         // get current project data
                         getData().then(() => {
                             setTabIndex(4);
@@ -457,13 +467,23 @@ const ProjectTabs = (props) => {
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-            <Box
-                textAlign={'right'}
-                mt={tabIndex === 2 ? 3 : 0}
-            >
-                {saveClicked ?
-                    <Progress size={'xs'} isIndeterminate colorScheme={'teal'}/>
-                    :
+
+            {saveClicked ?
+                <>
+                    <Center>
+                        <Heading fontSize={'lg'} mb={3}>Please wait...</Heading>
+                    </Center>
+                    <Progress
+                        hasStripe
+                        isAnimated
+                        value={progressBarValue}
+                        colorScheme={'teal'}
+                        borderRadius={'lg'}
+                        mb={2}
+                    />
+                </>
+                :
+                <Box textAlign={'right'}>
                     <ButtonGroup>
                         <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
                         <ExportModal
@@ -504,8 +524,8 @@ const ProjectTabs = (props) => {
                             </Button>
                         }
                     </ButtonGroup>
-                }
-            </Box>
+                </Box>
+            }
         </Box>
     )
 }
