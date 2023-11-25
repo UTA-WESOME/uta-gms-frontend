@@ -24,7 +24,7 @@ import { TbMathFunction } from "react-icons/tb";
 import Graphviz from "../../utils/Graphviz.jsx";
 import { generateHierarchyDotString } from "./graph.js";
 import { useState } from "react";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { FaArrowDown, FaArrowUp, FaPercentage } from "react-icons/fa";
 import HasseDiagramTab from "./hasse-diagram-tab/HasseDiagramTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
@@ -112,14 +112,17 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                         <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                             {isMobile ?
                                 <>
-                                    <Tab fontSize={'20px'}>
+                                    <Tab fontSize={'15px'}>
                                         <Icon as={BsDiagram2Fill}></Icon>
                                     </Tab>
-                                    <Tab fontSize={'20px'}>
+                                    <Tab fontSize={'15px'}>
                                         <Icon as={FaRankingStar}></Icon>
                                     </Tab>
-                                    <Tab fontSize={'20px'}>
+                                    <Tab fontSize={'15px'}>
                                         <Icon as={TbMathFunction}></Icon>
+                                    </Tab>
+                                    <Tab fontSize={'15px'}>
+                                        <Icon as={FaPercentage}/>
                                     </Tab>
                                 </>
                                 :
