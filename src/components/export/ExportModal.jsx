@@ -60,16 +60,7 @@ const ExportButton = (props) => {
                     downloadCsv();
                 }
                 if (selectedValues.includes('xml')) {
-                    if (!toast.isActive(toastId)) {
-                        toast({
-                            id: toastId,
-                            title: 'Error!',
-                            description: `not implemented yet!`,
-                            status: 'error',
-                            duration: 7000,
-                            isClosable: true,
-                        });
-                    }
+                    downloadXml();
                 }
             }
         }).catch(err => {
@@ -101,6 +92,43 @@ const ExportButton = (props) => {
             })
             .catch(error => {
                 console.error('Error while downloading CSV:', error);
+                if (!toast.isActive(toastId)) {
+                    toast({
+                        id: toastId,
+                        title: 'Error!',
+                        description: `${error}`,
+                        status: 'error',
+                        duration: 7000,
+                        isClosable: true,
+                    });
+                }
+            });
+    }
+
+    function downloadXml() {
+        fetch(`http://localhost:8080/api/projects/${props.projectId}/export_xml/`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+
+                link.download = 'data.zip';
+
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.removeChild(link);
+            })
+            .catch(error => {
+                console.error('Error while downloading XMCDA:', error);
                 if (!toast.isActive(toastId)) {
                     toast({
                         id: toastId,
