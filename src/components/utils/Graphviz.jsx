@@ -70,7 +70,7 @@ const Graphviz = ({
 
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'hasse_graph.svg';
+        a.download = 'graph.svg';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
