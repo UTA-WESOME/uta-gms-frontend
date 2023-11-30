@@ -31,8 +31,8 @@ import HasseDiagramTab from "./hasse-diagram-tab/HasseDiagramTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
 import PercentagesTab from "./percentages-tab/PercentagesTab.jsx";
-import * as c from "./../../../config.js";
 import InconsistenciesTab from "./inconsistencies-tab/InconsistenciesTab.jsx";
+import * as c from "./../../../config.js";
 
 const ResultsTabs = ({ alternatives, criteria, categories }) => {
 
@@ -62,12 +62,16 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                         <Heading
                             size={'lg'}
                             my={4}
-                        >Results for {categories.find(c => c.id === currentCategoryId).name}</Heading>
+                        >
+                            Results for {categories.find(c => c.id === currentCategoryId).name}
+                        </Heading>
                         <Button
                             colorScheme={'teal'}
                             onClick={() => setCurrentCategoryId(0)}
                             leftIcon={<FaArrowUp/>}
-                        >Hierarchy</Button>
+                        >
+                            Hierarchy
+                        </Button>
                     </>
                 }
             </VStack>
@@ -115,22 +119,31 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                     {categories.find(c => c.id === currentCategoryId).hasse_graph === null
                     || Object.keys(categories.find(c => c.id === currentCategoryId).hasse_graph).length === 0
                         ?
-                        // checking if there are inconsistencies detected
                         categories.find(c => c.id === currentCategoryId).inconsistencies.length !== 0
                             ?
+                            // there are some inconsistencies detected
                             <InconsistenciesTab
                                 inconsistencies={categories.find(c => c.id === currentCategoryId).inconsistencies}
                             />
                             :
-                            <Center>
-                                <Text p={5} fontSize={'lg'}>
-                                    <Highlight
-                                        fontSize={'lg'}
-                                        query={'Save & run'}
-                                        styles={{ px: '3', py: '2', rounded: 'md', bg: 'orange.200' }}
-                                    >Click Save & run button</Highlight>
-                                </Text>
-                            </Center>
+                            // there is no data to display, the hasse_graph is empty
+                            categories.find(c => c.id === currentCategoryId).active ?
+                                // the category is active
+                                <Center>
+                                    <Text p={5} fontSize={'lg'}>
+                                        <Highlight
+                                            fontSize={'lg'}
+                                            query={'Save & run'}
+                                            styles={{ px: '3', py: '2', rounded: 'md', bg: 'orange.200' }}
+                                        >Click Save & run button</Highlight>
+                                    </Text>
+                                </Center>
+                                :
+                                <Center>
+                                    <Text p={5} fontSize={'lg'}>
+                                        This category is marked as inactive
+                                    </Text>
+                                </Center>
                         :
                         // everything should be fine and we can display standard tabs
                         <Tabs

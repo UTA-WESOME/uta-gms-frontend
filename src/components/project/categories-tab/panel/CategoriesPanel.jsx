@@ -72,6 +72,10 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
             active: Yup.boolean()
         }),
         onSubmit: (values, _) => {
+
+            // find children of the node
+            const childrenIds = findChildren(categories, values.id)
+
             setCategories(categories.map(category => {
                 if (category.id === values.id)
                     return {
@@ -81,6 +85,13 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                         active: values.active,
                         parent: values.parent
                     }
+                // if we change to inactive, set children as inactive too
+                if (childrenIds.includes(category.id) && !values.active) {
+                    return {
+                        ...category,
+                        active: false
+                    }
+                }
                 return category;
             }))
             onCloseEdit();
@@ -208,7 +219,7 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                                         }
                                     </Td>
                                 }
-                                <Td w={'min-content'}>
+                                <Td>
                                     <CustomTooltip label={'Edit'}>
                                         <IconButton
                                             size={{ base: 'sm', sm: 'md' }}
@@ -315,9 +326,13 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                                     <Switch
                                         name={'active'}
                                         isChecked={formik.values.active}
+                                        isDisabled={formik.values.id !== generalId && !categories.find(cat => cat.id === formik.values.parent).active}
                                         colorScheme={'teal'}
                                         {...formik.getFieldProps("active")}
                                     />
+                                    {formik.values.id !== generalId && !categories.find(cat => cat.id === formik.values.parent).active &&
+                                        <Text>Parent is inactive</Text>
+                                    }
                                 </HStack>
                             </FormControl>
 

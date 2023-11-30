@@ -10,7 +10,7 @@ const Function = ({ function_points }) => {
         <LineChart
             width={isLargerThan1030 ? 800 : isLargerThan550 ? 500 : isLargerThan420 ? 350 : 250}
             height={isLargerThan420 ? 300 : 225}
-            data={function_points}
+            data={function_points.sort((x, y) => x.abscissa > y.abscissa ? 1 : x.abscissa < y.abscissa ? -1 : 0)}
             margin={{
                 top: 5,
                 right: 30,

@@ -318,7 +318,8 @@ const ProjectTabs = (props) => {
             return response.json();
         }).then(data => {
 
-            let categoriesUpdated = data.categories;
+            // we get the categories from the PATCH request but want to get results only for those that are active
+            let categoriesUpdated = data.categories.filter(cat => cat.active);
             let waitingArrayResults = categoriesUpdated.map(() => false);
             categoriesUpdated.forEach((categoryUpdated, index) => {
                 fetch(`http://localhost:8080/api/categories/${categoryUpdated.id}/results/`, {
@@ -328,18 +329,31 @@ const ProjectTabs = (props) => {
                 }).then(response => {
 
                     if (!response.ok) {
-                        toast({
-                            title: "Error!",
-                            description: `Error getting results for ${categoryUpdated.name} - ${response.status}`,
-                            status: 'error',
-                            duration: 3000,
-                            isClosable: true
-                        });
+                        switch (response.status) {
+                            case 400:
+                                toast({
+                                    title: `${categoryUpdated.name}`,
+                                    description: "No active criteria for this category!",
+                                    status: 'info',
+                                    duration: 3000,
+                                    isClosable: true
+                                });
+                                break;
+                            default:
+                                toast({
+                                    title: "Error!",
+                                    description: `Error getting results for ${categoryUpdated.name} - ${response.status}`,
+                                    status: 'error',
+                                    duration: 3000,
+                                    isClosable: true
+                                });
+                                break;
+                        }
                     }
 
                     waitingArrayResults[index] = true;
                     // has to use pbv because otherwise does not work for some reason (?)
-                    setProgressBarValue(pbv => waitingArrayResults.filter(value => value === true).length * 100 / categories.length)
+                    setProgressBarValue(pbv => waitingArrayResults.filter(value => value === true).length * 100 / categoriesUpdated.length);
                     if (waitingArrayResults.every(i => i === true)) {
                         toastSuccess("Results ready!");
                         setSaveClicked(false);
