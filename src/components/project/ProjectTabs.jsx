@@ -259,6 +259,14 @@ const ProjectTabs = (props) => {
             return false;
         }
 
+        // check if there is at least one active category
+        const activeCategoriesCheck = categories.every(c => !c.active)
+        if (activeCategoriesCheck) {
+            toastError("There are no active categories!");
+            setTabIndex(2);
+            return false;
+        }
+
         return true;
     }
 
