@@ -28,7 +28,12 @@ export const Preferences = {
         },
         PairwiseComparisons: {
             maxWidthMobile: '991px',
-            minWidthDesktop: '992px'
+            minWidthDesktop: '992px',
+            types: {
+                preference: '>',
+                weakPreference: '>=',
+                indifference: '='
+            }
         }
     },
     Intensities: {
@@ -39,7 +44,12 @@ export const Preferences = {
             { number: 4, letter: 'D' },
         ],
         maxWidthMobile: '1201px',
-        minWidthDesktop: '1200px'
+        minWidthDesktop: '1200px',
+        types: {
+            preference: '>',
+            weakPreference: '>=',
+            indifference: '='
+        }
     },
     BestWorst: {
         maxWidthMobile: '991px',

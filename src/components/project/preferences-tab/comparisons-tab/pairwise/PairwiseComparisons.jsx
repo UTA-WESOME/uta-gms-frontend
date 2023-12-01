@@ -38,7 +38,7 @@ const PairwiseComparisons = ({ alternatives, currentCategoryId, categories, setC
                         id: maxId + 1,
                         alternative_1: firstAltId,
                         alternative_2: firstAltId,
-                        type: 'preference'
+                        type: c.Preferences.Comparisons.PairwiseComparisons.types.preference
                     }]
                 }
             return category;
