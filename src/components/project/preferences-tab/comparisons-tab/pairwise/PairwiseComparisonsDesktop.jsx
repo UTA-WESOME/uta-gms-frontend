@@ -1,5 +1,6 @@
 import { Button, IconButton, Select, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
+import * as c from "./../../../../../config.js";
 
 const PairwiseComparisonsDesktop = ({
                                         alternatives,
@@ -76,8 +77,17 @@ const PairwiseComparisonsDesktop = ({
                                             value={pairwiseComparison.type}
                                             onChange={(event) => handleChangeType(pairwiseComparison.id, event.target.value)}
                                         >
-                                            <option value={'preference'} key={'preference'}>&gt;</option>
-                                            <option value={'indifference'} key={'indifference'}>=</option>
+                                            <>
+                                                {Object.entries(c.Preferences.Comparisons.PairwiseComparisons.types).map(([type, preference]) => (
+                                                    <option
+                                                        value={preference}
+                                                        key={type}
+                                                    >
+                                                        {preference}
+                                                    </option>
+                                                ))
+                                                }
+                                            </>
                                         </Select>
                                     </Td>
                                     <Td>

@@ -22,6 +22,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import * as c from "../../../../../config.js";
 
 const PairwiseComparisonsMobile = ({
                                        alternatives,
@@ -33,7 +34,7 @@ const PairwiseComparisonsMobile = ({
                                    }) => {
     const [currentPairwiseComparison, setCurrentPairwiseComparison] = useState({
         id: 0,
-        type: "preference",
+        type: c.Preferences.Comparisons.PairwiseComparisons.types.preference,
         alternative_1: 0,
         alternative_2: 0
     });
@@ -146,8 +147,16 @@ const PairwiseComparisonsMobile = ({
                                     value={currentPairwiseComparison.type}
                                     onChange={(event) => handleChangeType(event.target.value)}
                                 >
-                                    <option value={'preference'} key={'preference'}>&gt;</option>
-                                    <option value={'indifference'} key={'indifference'}>=</option>
+                                    <>
+                                        {Object.entries(c.Preferences.Comparisons.PairwiseComparisons.types).map(([type, preference]) => (
+                                            <option
+                                                value={preference}
+                                                key={type}
+                                            >
+                                                {preference}
+                                            </option>
+                                        ))}
+                                    </>
                                 </Select>
                             </FormControl>
                             <FormControl>

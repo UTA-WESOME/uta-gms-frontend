@@ -1,6 +1,6 @@
 import { Icon, IconButton, Select, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { FaGreaterThan, FaMinus } from "react-icons/fa";
+import { FaMinus } from "react-icons/fa";
 import * as c from '../../../../config.js';
 import { Fragment } from "react";
 
@@ -18,6 +18,17 @@ const IntensitiesTabDesktop = ({
             return pPreferenceIntensities.map(pi => {
                 if (pi.id === preferenceId) {
                     return { ...pi, [`alternative_${alternativeNumber}`]: alternativeId };
+                }
+                return pi;
+            })
+        })
+    }
+
+    const handleChangeType = (preferenceId, newType) => {
+        setPreferenceIntensities(pPreferenceIntensities => {
+            return pPreferenceIntensities.map(pi => {
+                if (pi.id === preferenceId) {
+                    return { ...pi, type: newType };
                 }
                 return pi;
             })
@@ -47,7 +58,8 @@ const IntensitiesTabDesktop = ({
                                         <Th>
                                             <Text>Alternative {alternative.letter}</Text>
                                         </Th>
-                                        {alternative.number !== 4 && <Th/>}
+                                        {alternative.number === 2 && <Th>type</Th>}
+                                        {(alternative.number === 1 || alternative.number === 3) && <Th/>}
                                     </Fragment>
                                 ))}
                             </>
@@ -85,7 +97,21 @@ const IntensitiesTabDesktop = ({
                                                 }
                                                 {alternativeConst.number === 2 &&
                                                     <Td textAlign={'center'}>
-                                                        <Icon as={FaGreaterThan}/>
+                                                        <Select
+                                                            value={preferenceIntensity.type}
+                                                            onChange={(event) => handleChangeType(preferenceIntensity.id, event.target.value)}
+                                                        >
+                                                            <>
+                                                                {Object.entries(c.Preferences.Intensities.types).map(([type, preference]) => (
+                                                                    <option
+                                                                        value={preference}
+                                                                        key={type}
+                                                                    >
+                                                                        {preference}
+                                                                    </option>
+                                                                ))}
+                                                            </>
+                                                        </Select>
                                                     </Td>
                                                 }
                                             </Fragment>
