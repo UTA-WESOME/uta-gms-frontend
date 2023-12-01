@@ -180,6 +180,16 @@ const ImportModal = (props) => {
             .then((response) => {
                 if (!response.ok) {
                     return response.json().then((data) => {
+                        if (!toast.isActive(toastId)) {
+                            toast({
+                                id: toastId,
+                                title: 'Error!',
+                                description: `${data.message}`,
+                                status: 'error',
+                                duration: 7000,
+                                isClosable: true,
+                            });
+                        }
                         throw new Error(data.message);
                     });
                 }
@@ -190,19 +200,10 @@ const ImportModal = (props) => {
                 onCloseInfo();
                 window.location.reload();
             })
-            .catch((error) => {
-                if (!toast.isActive(toastId)) {
-                    toast({
-                        id: toastId,
-                        title: 'Error!',
-                        description: `${error}`,
-                        status: 'error',
-                        duration: 7000,
-                        isClosable: true,
-                    });
-                }
+            .catch(err => {
                 setUploading(false);
-            });
+                console.log(err);
+            })
     }
 
     return (
