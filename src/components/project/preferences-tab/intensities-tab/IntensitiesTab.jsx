@@ -66,6 +66,7 @@ const IntensitiesTab = ({
         if (currentCategoryId !== 0) {
             setPreferenceIntensities(pPreferenceIntensities => [...pPreferenceIntensities, {
                 id: maxId + 1,
+                type: c.Preferences.Intensities.types.preference,
                 alternative_1: firstAltId,
                 alternative_2: firstAltId,
                 alternative_3: firstAltId,
@@ -76,6 +77,7 @@ const IntensitiesTab = ({
         } else {
             setPreferenceIntensities(pPreferenceIntensities => [...pPreferenceIntensities, {
                 id: maxId + 1,
+                type: c.Preferences.Intensities.types.preference,
                 alternative_1: firstAltId,
                 alternative_2: firstAltId,
                 alternative_3: firstAltId,

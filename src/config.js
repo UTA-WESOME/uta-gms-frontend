@@ -43,8 +43,8 @@ export const Preferences = {
             { number: 3, letter: 'C' },
             { number: 4, letter: 'D' },
         ],
-        maxWidthMobile: '1201px',
-        minWidthDesktop: '1200px',
+        maxWidthMobile: '1380px',
+        minWidthDesktop: '1381px',
         types: {
             preference: '>',
             weakPreference: '>=',

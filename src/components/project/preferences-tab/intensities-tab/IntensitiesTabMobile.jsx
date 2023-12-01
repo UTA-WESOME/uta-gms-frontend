@@ -36,6 +36,7 @@ const IntensitiesTabMobile = ({
 
     const [currentPreferenceIntensity, setCurrentPreferenceIntensity] = useState({
         id: 0,
+        type: c.Preferences.Intensities.types.preference,
         alternative_1: 0,
         alternative_2: 0,
         alternative_3: 0,
@@ -56,6 +57,13 @@ const IntensitiesTabMobile = ({
         setCurrentPreferenceIntensity({
             ...currentPreferenceIntensity,
             criterion: criterionId !== 0 ? criterionId : null,
+        })
+    }
+
+    const handleChangeType = (newType) => {
+        setCurrentPreferenceIntensity({
+            ...currentPreferenceIntensity,
+            type: newType,
         })
     }
 
@@ -127,7 +135,22 @@ const IntensitiesTabMobile = ({
                     <ModalCloseButton/>
                     <ModalBody textAlign={'center'}>
                         <VStack spacing={"15px"}>
-                            <Heading colorScheme={'teal'} size={'xl'}>A - B &gt; C - D</Heading>
+                            <Heading colorScheme={'teal'} size={'xl'}>A - B {currentPreferenceIntensity.type} C - D</Heading>
+                            <FormControl>
+                                <FormLabel fontSize={'sm'}>Type</FormLabel>
+                                <Select
+                                    value={currentPreferenceIntensity.type}
+                                    onChange={(event) => handleChangeType(event.target.value)}
+                                >
+                                    <>
+                                        {Object.entries(c.Preferences.Intensities.types).map(([type, preference]) => (
+                                            <option value={preference} key={type}>
+                                                {preference}
+                                            </option>
+                                        ))}
+                                    </>
+                                </Select>
+                            </FormControl>
                             <>
                                 {c.Preferences.Intensities.alternatives.map(alternativeConst => (
                                     <FormControl key={alternativeConst.number}>

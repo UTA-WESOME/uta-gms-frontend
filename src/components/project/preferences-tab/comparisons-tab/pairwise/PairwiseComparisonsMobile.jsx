@@ -34,7 +34,7 @@ const PairwiseComparisonsMobile = ({
                                    }) => {
     const [currentPairwiseComparison, setCurrentPairwiseComparison] = useState({
         id: 0,
-        type: "preference",
+        type: c.Preferences.Comparisons.PairwiseComparisons.types.preference,
         alternative_1: 0,
         alternative_2: 0
     });
@@ -155,8 +155,7 @@ const PairwiseComparisonsMobile = ({
                                             >
                                                 {preference}
                                             </option>
-                                        ))
-                                        }
+                                        ))}
                                     </>
                                 </Select>
                             </FormControl>
