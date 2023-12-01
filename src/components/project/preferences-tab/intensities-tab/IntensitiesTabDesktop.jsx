@@ -1,6 +1,6 @@
 import { Icon, IconButton, Select, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { FaGreaterThan, FaMinus } from "react-icons/fa";
+import { FaMinus } from "react-icons/fa";
 import * as c from '../../../../config.js';
 import { Fragment } from "react";
 
