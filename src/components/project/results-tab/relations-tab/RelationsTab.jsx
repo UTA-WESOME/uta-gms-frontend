@@ -1,4 +1,16 @@
-import { Box, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from "@chakra-ui/react";
+import {
+    Box,
+    Divider,
+    Heading,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+    useColorModeValue
+} from "@chakra-ui/react";
 
 
 const RelationsTab = ({ alternatives, relations }) => {
@@ -9,6 +21,7 @@ const RelationsTab = ({ alternatives, relations }) => {
     return (
         <Box textAlign={'center'} mx={{ base: '1%', sm: '4%' }} mt={'10px'}>
             <Heading size={{ base: 'md', md: 'xl' }} mb={2}>Necessary and possible relations</Heading>
+            <Divider/>
             <TableContainer my={3}>
                 <Table size={'sm'} mb={2}>
                     <Thead>

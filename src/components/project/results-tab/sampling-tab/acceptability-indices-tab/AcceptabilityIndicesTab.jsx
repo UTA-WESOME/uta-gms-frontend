@@ -16,12 +16,12 @@ const findColor = (number) => {
 }
 
 
-const PercentagesTab = ({alternatives, percentages}) => {
+const AcceptabilityIndicesTab = ({ alternatives, percentages }) => {
     return (
 
-        <Box textAlign={'center'} mx={{ base: '1%', sm: '4%'}} mt={'10px'}>
+        <Box textAlign={'center'} mx={{ base: '1%', sm: '4%' }} mt={'10px'}>
             <Heading size={{ base: 'md', md: 'xl' }} mb={2}>
-                Percentages
+                Acceptability indices
             </Heading>
             <Divider/>
             <TableContainer my={3}>
@@ -63,4 +63,4 @@ const PercentagesTab = ({alternatives, percentages}) => {
     )
 }
 
-export default PercentagesTab;
+export default AcceptabilityIndicesTab;

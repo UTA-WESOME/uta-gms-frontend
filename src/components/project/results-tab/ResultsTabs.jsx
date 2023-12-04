@@ -33,6 +33,7 @@ import HasseDiagramTab from "./hasse-graph-tab/HasseDiagramTab.jsx";
 import InconsistenciesTab from "./inconsistencies-tab/InconsistenciesTab.jsx";
 import RankingTab from "./ranking-tab/RankingTab.jsx";
 import RelationsTab from "./relations-tab/RelationsTab.jsx";
+import SamplingTab from "./sampling-tab/SamplingTab.jsx";
 
 const ResultsTabs = ({ alternatives, criteria, categories }) => {
 
@@ -214,10 +215,10 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                     />
                                 </TabPanel>
                                 <TabPanel>
-                                    {/*<PercentagesTab*/}
-                                    {/*    alternatives={alternatives}*/}
-                                    {/*    percentages={categories.find(c => c.id === currentCategoryId).percentages}*/}
-                                    {/*/>*/}
+                                    <SamplingTab
+                                        alternatives={alternatives}
+                                        acceptabilityIndices={categories.find(c => c.id === currentCategoryId).acceptability_indices}
+                                    />
                                 </TabPanel>
                             </TabPanels>
                         </Tabs>
