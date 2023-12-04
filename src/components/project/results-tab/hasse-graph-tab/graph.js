@@ -18,7 +18,7 @@ function jsonToObjectWithConnections(graph) {
 
 function createGraphStructureFromRelations(inputList) {
     let result = {};
-    inputList.forEach((structure, index) => {
+    inputList.forEach(structure => {
         let alternative_1 = structure.alternative_1.toString();
         let alternative_2 = structure.alternative_2.toString();
 
