@@ -23,7 +23,8 @@ import {
 import { useEffect, useState } from "react";
 import { BsDiagram2Fill } from "react-icons/bs";
 import { FaArrowDown, FaArrowUp, FaPercentage } from "react-icons/fa";
-import { FaRankingStar } from "react-icons/fa6";
+import { FaTableList } from "react-icons/fa6";
+import { IoIosPodium } from "react-icons/io";
 import { TbMathFunction } from "react-icons/tb";
 import Graphviz from "../../utils/Graphviz.jsx";
 import * as c from "./../../../config.js";
@@ -149,20 +150,22 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                         <Tabs
                             variant={'soft-rounded'}
                             colorScheme={'teal'}
-                            px={{ base: 2, sm: 5 }}
                             isFitted={isMobile}
                         >
                             <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                                 {isMobile ?
                                     <>
                                         <Tab fontSize={'15px'}>
-                                            <Icon as={BsDiagram2Fill}></Icon>
+                                            <Icon as={BsDiagram2Fill}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
-                                            <Icon as={FaRankingStar}></Icon>
+                                            <Icon as={FaTableList}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
-                                            <Icon as={TbMathFunction}></Icon>
+                                            <Icon as={IoIosPodium}/>
+                                        </Tab>
+                                        <Tab fontSize={'15px'}>
+                                            <Icon as={TbMathFunction}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
                                             <Icon as={FaPercentage}/>
@@ -181,7 +184,7 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
 
                             <Divider/>
                             <TabPanels>
-                                <TabPanel>
+                                <TabPanel p={1} py={2}>
                                     <HasseDiagramTab
                                         alternatives={alternatives}
                                         necessaryRelations={
@@ -192,7 +195,7 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                         }
                                     />
                                 </TabPanel>
-                                <TabPanel>
+                                <TabPanel p={1} py={2}>
                                     <RelationsTab
                                         alternatives={alternatives}
                                         relations={
@@ -202,19 +205,19 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                         }
                                     />
                                 </TabPanel>
-                                <TabPanel>
+                                <TabPanel p={1} py={2}>
                                     <RankingTab
                                         alternatives={alternatives}
                                         rankings={categories.find(c => c.id === currentCategoryId).rankings}
                                     />
                                 </TabPanel>
-                                <TabPanel>
+                                <TabPanel p={1} py={2}>
                                     <FunctionsTab
                                         criteria={criteria}
                                         functions={categories.find(c => c.id === currentCategoryId).function_points}
                                     />
                                 </TabPanel>
-                                <TabPanel>
+                                <TabPanel p={1} py={2}>
                                     <SamplingTab
                                         alternatives={alternatives}
                                         acceptabilityIndices={categories.find(c => c.id === currentCategoryId).acceptability_indices}

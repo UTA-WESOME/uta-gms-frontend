@@ -11,7 +11,7 @@ const HasseDiagramTab = ({ alternatives, necessaryRelations }) => {
     return (
         <Box textAlign={'center'} mx={{ base: '0%', lg: '18%' }} mt={'10px'}>
             <Heading size={{ base: 'md', md: 'xl' }} mb={3}>
-                Hasse diagram
+                Hasse graph
             </Heading>
             <Graphviz
                 dot={generateDotString(necessaryRelations, alternatives, bgColor, nodeBgColor)}
