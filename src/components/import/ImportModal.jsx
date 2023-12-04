@@ -31,7 +31,7 @@ import { InfoIcon } from '@chakra-ui/icons';
 
 const ImportModal = (props) => {
 
-    const maxFiles = 5;
+    const maxFiles = 6;
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
     const [uploading, setUploading] = useState(false);
     const [csvFiles, setCsvFiles] = useState([]);
