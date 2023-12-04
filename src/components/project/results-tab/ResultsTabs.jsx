@@ -116,8 +116,7 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                 :
                 <Box borderWidth={'1px'} borderRadius={'lg'} p={3} my={3}>
                     {/*making sure that there are valid results*/}
-                    {categories.find(c => c.id === currentCategoryId).hasse_graph === null
-                    || Object.keys(categories.find(c => c.id === currentCategoryId).hasse_graph).length === 0
+                    {categories.find(c => c.id === currentCategoryId).has_results === false
                         ?
                         categories.find(c => c.id === currentCategoryId).inconsistencies.length !== 0
                             ?
@@ -126,7 +125,7 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                 inconsistencies={categories.find(c => c.id === currentCategoryId).inconsistencies}
                             />
                             :
-                            // there is no data to display, the hasse_graph is empty
+                            // there is no results for this category
                             categories.find(c => c.id === currentCategoryId).active ?
                                 // the category is active
                                 <Center>
@@ -183,7 +182,12 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                 <TabPanel>
                                     <HasseDiagramTab
                                         alternatives={alternatives}
-                                        hasseGraph={categories.find(c => c.id === currentCategoryId).hasse_graph}
+                                        necessaryRelations={
+                                            categories
+                                                .find(c => c.id === currentCategoryId)
+                                                ?.relations
+                                                .filter(r => r.type === 'necessary')
+                                        }
                                     />
                                 </TabPanel>
                                 <TabPanel>
@@ -199,10 +203,10 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                     />
                                 </TabPanel>
                                 <TabPanel>
-                                    <PercentagesTab
-                                        alternatives={alternatives}
-                                        percentages={categories.find(c => c.id === currentCategoryId).percentages}
-                                    />
+                                    {/*<PercentagesTab*/}
+                                    {/*    alternatives={alternatives}*/}
+                                    {/*    percentages={categories.find(c => c.id === currentCategoryId).percentages}*/}
+                                    {/*/>*/}
                                 </TabPanel>
                             </TabPanels>
                         </Tabs>

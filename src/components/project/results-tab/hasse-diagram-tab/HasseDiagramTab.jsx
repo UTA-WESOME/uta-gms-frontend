@@ -3,7 +3,7 @@ import Graphviz from "../../../utils/Graphviz.jsx";
 import { generateDotString } from "./graph.js";
 
 
-const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
+const HasseDiagramTab = ({ alternatives, necessaryRelations }) => {
 
     const bgColor = useColorModeValue("#FFFFFF", "#1A202C");
     const nodeBgColor = useColorModeValue("#E2E8F0", "#F7FAFC");
@@ -14,7 +14,7 @@ const HasseDiagramTab = ({ alternatives, hasseGraph }) => {
                 Hasse diagram
             </Heading>
             <Graphviz
-                dot={generateDotString(hasseGraph, alternatives, bgColor, nodeBgColor)}
+                dot={generateDotString(necessaryRelations, alternatives, bgColor, nodeBgColor)}
                 download={true}
             />
         </Box>
