@@ -20,19 +20,19 @@ import {
     useMediaQuery,
     VStack
 } from "@chakra-ui/react";
-import { FaRankingStar } from "react-icons/fa6";
+import { useEffect, useState } from "react";
 import { BsDiagram2Fill } from "react-icons/bs";
+import { FaArrowDown, FaArrowUp, FaPercentage } from "react-icons/fa";
+import { FaRankingStar } from "react-icons/fa6";
 import { TbMathFunction } from "react-icons/tb";
 import Graphviz from "../../utils/Graphviz.jsx";
-import { generateHierarchyDotString } from "./graph.js";
-import { useEffect, useState } from "react";
-import { FaArrowDown, FaArrowUp, FaPercentage } from "react-icons/fa";
-import HasseDiagramTab from "./hasse-diagram-tab/HasseDiagramTab.jsx";
-import RankingTab from "./ranking-tab/RankingTab.jsx";
-import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
-import PercentagesTab from "./percentages-tab/PercentagesTab.jsx";
-import InconsistenciesTab from "./inconsistencies-tab/InconsistenciesTab.jsx";
 import * as c from "./../../../config.js";
+import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
+import { generateHierarchyDotString } from "./graph.js";
+import HasseDiagramTab from "./hasse-graph-tab/HasseDiagramTab.jsx";
+import InconsistenciesTab from "./inconsistencies-tab/InconsistenciesTab.jsx";
+import RankingTab from "./ranking-tab/RankingTab.jsx";
+import RelationsTab from "./relations-tab/RelationsTab.jsx";
 
 const ResultsTabs = ({ alternatives, criteria, categories }) => {
 
@@ -169,10 +169,11 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                     </>
                                     :
                                     <>
-                                        <Tab>Hasse diagram</Tab>
+                                        <Tab>Hasse graph</Tab>
+                                        <Tab>Relations</Tab>
                                         <Tab>Ranking</Tab>
                                         <Tab>Functions</Tab>
-                                        <Tab>Percentages</Tab>
+                                        <Tab>Sampling</Tab>
                                     </>
                                 }
                             </TabList>
@@ -185,8 +186,18 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                         necessaryRelations={
                                             categories
                                                 .find(c => c.id === currentCategoryId)
-                                                ?.relations
+                                                .relations
                                                 .filter(r => r.type === 'necessary')
+                                        }
+                                    />
+                                </TabPanel>
+                                <TabPanel>
+                                    <RelationsTab
+                                        alternatives={alternatives}
+                                        relations={
+                                            categories
+                                                .find(c => c.id === currentCategoryId)
+                                                .relations
                                         }
                                     />
                                 </TabPanel>
