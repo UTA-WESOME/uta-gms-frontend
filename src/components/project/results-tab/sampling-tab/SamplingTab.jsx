@@ -9,14 +9,13 @@ const SamplingTab = ({ alternatives, acceptabilityIndices }) => {
     const [isMobile] = useMediaQuery(`(max-width: ${c.Results.Sampling.maxWidthMobile})`);
 
     return (
-        <Box borderWidth={'1px'} borderRadius={'lg'} py={3} my={3}>
             <Tabs
                 variant={'soft-rounded'}
                 colorScheme={'teal'}
-                px={{ base: 1, sm: 2 }}
+                px={{ base: 1, sm: 5 }}
                 isFitted={isMobile}
             >
-                <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
+                <TabList mb={2}>
                     {isMobile ?
                         <>
                             <Tab fontSize={'15px'}>
@@ -33,7 +32,6 @@ const SamplingTab = ({ alternatives, acceptabilityIndices }) => {
                         </>
                     }
                 </TabList>
-                <Divider/>
                 <TabPanels>
                     <TabPanel p={1} py={2}>
                         <AcceptabilityIndicesTab
@@ -46,8 +44,6 @@ const SamplingTab = ({ alternatives, acceptabilityIndices }) => {
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-
-        </Box>
     )
 }
 
