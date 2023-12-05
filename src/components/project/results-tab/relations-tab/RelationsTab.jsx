@@ -1,16 +1,4 @@
-import {
-    Box,
-    Divider,
-    Heading,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr,
-    useColorModeValue
-} from "@chakra-ui/react";
+import { Box, Divider, Heading, Table, TableContainer, Tbody, Td, Tr, useColorModeValue } from "@chakra-ui/react";
 
 
 const RelationsTab = ({ alternatives, relations }) => {
@@ -24,25 +12,23 @@ const RelationsTab = ({ alternatives, relations }) => {
             <Divider/>
             <TableContainer my={3}>
                 <Table size={'sm'} mb={2}>
-                    <Thead>
+                    <Tbody>
                         <Tr>
-                            <Th>name</Th>
+                            <Td/>
                             <>
                                 {alternatives
                                     .sort((x, y) => x.id > y.id ? 1 : x.id < y.id ? -1 : 0)
                                     .map((alt, i) => (
-                                        <Th key={i}>{alt.name}</Th>
+                                        <Td key={i} fontWeight={'bold'}>{alt.name}</Td>
                                     ))
                                 }
                             </>
                         </Tr>
-                    </Thead>
-                    <Tbody>
                         {alternatives
                             .sort((x, y) => x.id > y.id ? 1 : x.id < y.id ? -1 : 0)
                             .map((alternative_1, index) => (
                                 <Tr key={index}>
-                                    <Td>{alternative_1.name}</Td>
+                                    <Td fontWeight={'bold'}>{alternative_1.name}</Td>
                                     {alternatives
                                         .sort((x, y) => x.id > y.id ? 1 : x.id < y.id ? -1 : 0)
                                         .map((alternative_2, index) => {
