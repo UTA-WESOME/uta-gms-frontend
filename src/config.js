@@ -59,6 +59,9 @@ export const Preferences = {
 
 export const Results = {
     maxWidthMobile: '650px',
+    Representative: {
+      maxWidthMobile: '500px'
+    },
     Sampling : {
         maxWidthMobile: '620px'
     }

@@ -6,7 +6,7 @@ const PageTemplate = (props) => {
         <Center>
             <Flex
                 direction={'column'}
-                w={{ base: '80%', sm: '90%', md: '90%', lg: '90%', xl: '85%', '2xl': '75%' }}
+                w={{ base: '90%', xl: '85%', '2xl': '75%' }}
                 marginBottom={'10'}
                 justify={'center'}
             >
