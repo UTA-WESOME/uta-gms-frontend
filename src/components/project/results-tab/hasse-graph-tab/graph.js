@@ -16,16 +16,18 @@ function jsonToObjectWithConnections(graph) {
     return objectWithConnections;
 }
 
-function stringifyChildrenNodes(graph) {
-    const stringified = {};
+function createGraphStructureFromRelations(inputList) {
+    let result = {};
+    inputList.forEach(structure => {
+        let alternative_1 = structure.alternative_1.toString();
+        let alternative_2 = structure.alternative_2.toString();
 
-    for (const key in graph) {
-        if (graph.hasOwnProperty(key)) {
-            stringified[key] = graph[key].map(String);
-        }
-    }
+        result[alternative_1] = result[alternative_1] || [];
+        result[alternative_2] = result[alternative_2] || [];
 
-    return stringified;
+        result[alternative_1].push(alternative_2);
+    });
+    return result;
 }
 
 function transitiveReduction(graph) {
@@ -244,10 +246,10 @@ function createDotString(graph, ranks, indifferences, alternatives, bgcolor, nod
     return dotString;
 }
 
-export function generateDotString(graph, alternatives, bgColor, nodeBgColor) {
+export function generateDotString(relations, alternatives, bgColor, nodeBgColor) {
 
     // stringify children nodes
-    graph = stringifyChildrenNodes(graph);
+    let graph = createGraphStructureFromRelations(relations);
 
     // transform JSON graph to graphObject
     let graphObject = jsonToObjectWithConnections(graph);

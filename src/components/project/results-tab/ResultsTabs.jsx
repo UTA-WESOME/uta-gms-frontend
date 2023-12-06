@@ -20,19 +20,21 @@ import {
     useMediaQuery,
     VStack
 } from "@chakra-ui/react";
-import { FaRankingStar } from "react-icons/fa6";
+import { useEffect, useState } from "react";
 import { BsDiagram2Fill } from "react-icons/bs";
+import { FaArrowDown, FaArrowUp, FaPercentage } from "react-icons/fa";
+import { FaTableList } from "react-icons/fa6";
+import { IoIosPodium } from "react-icons/io";
 import { TbMathFunction } from "react-icons/tb";
 import Graphviz from "../../utils/Graphviz.jsx";
-import { generateHierarchyDotString } from "./graph.js";
-import { useEffect, useState } from "react";
-import { FaArrowDown, FaArrowUp, FaPercentage } from "react-icons/fa";
-import HasseDiagramTab from "./hasse-diagram-tab/HasseDiagramTab.jsx";
-import RankingTab from "./ranking-tab/RankingTab.jsx";
-import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
-import PercentagesTab from "./percentages-tab/PercentagesTab.jsx";
-import InconsistenciesTab from "./inconsistencies-tab/InconsistenciesTab.jsx";
 import * as c from "./../../../config.js";
+import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
+import { generateHierarchyDotString } from "./graph.js";
+import HasseDiagramTab from "./hasse-graph-tab/HasseDiagramTab.jsx";
+import InconsistenciesTab from "./inconsistencies-tab/InconsistenciesTab.jsx";
+import RankingTab from "./ranking-tab/RankingTab.jsx";
+import RelationsTab from "./relations-tab/RelationsTab.jsx";
+import SamplingTab from "./sampling-tab/SamplingTab.jsx";
 
 const ResultsTabs = ({ alternatives, criteria, categories }) => {
 
@@ -116,8 +118,7 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                 :
                 <Box borderWidth={'1px'} borderRadius={'lg'} p={3} my={3}>
                     {/*making sure that there are valid results*/}
-                    {categories.find(c => c.id === currentCategoryId).hasse_graph === null
-                    || Object.keys(categories.find(c => c.id === currentCategoryId).hasse_graph).length === 0
+                    {categories.find(c => c.id === currentCategoryId).has_results === false
                         ?
                         categories.find(c => c.id === currentCategoryId).inconsistencies.length !== 0
                             ?
@@ -126,7 +127,7 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                 inconsistencies={categories.find(c => c.id === currentCategoryId).inconsistencies}
                             />
                             :
-                            // there is no data to display, the hasse_graph is empty
+                            // there is no results for this category
                             categories.find(c => c.id === currentCategoryId).active ?
                                 // the category is active
                                 <Center>
@@ -149,20 +150,22 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                         <Tabs
                             variant={'soft-rounded'}
                             colorScheme={'teal'}
-                            px={{ base: 2, sm: 5 }}
                             isFitted={isMobile}
                         >
                             <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
                                 {isMobile ?
                                     <>
                                         <Tab fontSize={'15px'}>
-                                            <Icon as={BsDiagram2Fill}></Icon>
+                                            <Icon as={BsDiagram2Fill}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
-                                            <Icon as={FaRankingStar}></Icon>
+                                            <Icon as={FaTableList}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
-                                            <Icon as={TbMathFunction}></Icon>
+                                            <Icon as={IoIosPodium}/>
+                                        </Tab>
+                                        <Tab fontSize={'15px'}>
+                                            <Icon as={TbMathFunction}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
                                             <Icon as={FaPercentage}/>
@@ -170,38 +173,54 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                     </>
                                     :
                                     <>
-                                        <Tab>Hasse diagram</Tab>
+                                        <Tab>Hasse graph</Tab>
+                                        <Tab>Relations</Tab>
                                         <Tab>Ranking</Tab>
                                         <Tab>Functions</Tab>
-                                        <Tab>Percentages</Tab>
+                                        <Tab>Sampling</Tab>
                                     </>
                                 }
                             </TabList>
 
                             <Divider/>
                             <TabPanels>
-                                <TabPanel>
+                                <TabPanel p={1} py={2}>
                                     <HasseDiagramTab
                                         alternatives={alternatives}
-                                        hasseGraph={categories.find(c => c.id === currentCategoryId).hasse_graph}
+                                        necessaryRelations={
+                                            categories
+                                                .find(c => c.id === currentCategoryId)
+                                                .relations
+                                                .filter(r => r.type === 'necessary')
+                                        }
                                     />
                                 </TabPanel>
-                                <TabPanel>
+                                <TabPanel p={1} py={2}>
+                                    <RelationsTab
+                                        alternatives={alternatives}
+                                        relations={
+                                            categories
+                                                .find(c => c.id === currentCategoryId)
+                                                .relations
+                                        }
+                                    />
+                                </TabPanel>
+                                <TabPanel p={1} py={2}>
                                     <RankingTab
                                         alternatives={alternatives}
                                         rankings={categories.find(c => c.id === currentCategoryId).rankings}
                                     />
                                 </TabPanel>
-                                <TabPanel>
+                                <TabPanel p={1} py={2}>
                                     <FunctionsTab
                                         criteria={criteria}
                                         functions={categories.find(c => c.id === currentCategoryId).function_points}
                                     />
                                 </TabPanel>
-                                <TabPanel>
-                                    <PercentagesTab
+                                <TabPanel p={1} py={2}>
+                                    <SamplingTab
                                         alternatives={alternatives}
-                                        percentages={categories.find(c => c.id === currentCategoryId).percentages}
+                                        acceptabilityIndices={categories.find(c => c.id === currentCategoryId).acceptability_indices}
                                     />
                                 </TabPanel>
                             </TabPanels>
