@@ -25,15 +25,15 @@ import { BsDiagram2Fill } from "react-icons/bs";
 import { FaArrowDown, FaArrowUp, FaPercentage } from "react-icons/fa";
 import { FaTableList } from "react-icons/fa6";
 import { IoIosPodium } from "react-icons/io";
-import { TbMathFunction } from "react-icons/tb";
+import { MdOutlineExpand } from "react-icons/md";
 import Graphviz from "../../utils/Graphviz.jsx";
 import * as c from "./../../../config.js";
-import FunctionsTab from "./functions-tab/FunctionsTab.jsx";
+import ExtremesTab from "./extremes-tab/ExtremesTab.jsx";
 import { generateHierarchyDotString } from "./graph.js";
 import HasseDiagramTab from "./hasse-graph-tab/HasseDiagramTab.jsx";
 import InconsistenciesTab from "./inconsistencies-tab/InconsistenciesTab.jsx";
-import RankingTab from "./ranking-tab/RankingTab.jsx";
 import RelationsTab from "./relations-tab/RelationsTab.jsx";
+import RepresentativeTab from "./representative-tab/RepresentativeTab.jsx";
 import SamplingTab from "./sampling-tab/SamplingTab.jsx";
 
 const ResultsTabs = ({ alternatives, criteria, categories }) => {
@@ -152,7 +152,10 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                             colorScheme={'teal'}
                             isFitted={isMobile}
                         >
-                            <TabList mx={{ base: 0, sm: '15px' }} mb={2}>
+                            <TabList
+                                mx={{ base: 0, sm: '15px' }}
+                                mb={2}
+                            >
                                 {isMobile ?
                                     <>
                                         <Tab fontSize={'15px'}>
@@ -162,10 +165,10 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                             <Icon as={FaTableList}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
-                                            <Icon as={IoIosPodium}/>
+                                            <Icon as={MdOutlineExpand}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
-                                            <Icon as={TbMathFunction}/>
+                                            <Icon as={IoIosPodium}/>
                                         </Tab>
                                         <Tab fontSize={'15px'}>
                                             <Icon as={FaPercentage}/>
@@ -175,8 +178,8 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                     <>
                                         <Tab>Hasse graph</Tab>
                                         <Tab>Relations</Tab>
-                                        <Tab>Ranking</Tab>
-                                        <Tab>Functions</Tab>
+                                        <Tab>Extremes</Tab>
+                                        <Tab>Representative</Tab>
                                         <Tab>Sampling</Tab>
                                     </>
                                 }
@@ -206,17 +209,20 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                     />
                                 </TabPanel>
                                 <TabPanel p={1} py={2}>
-                                    <RankingTab
+                                    <ExtremesTab
                                         alternatives={alternatives}
                                         rankings={categories.find(c => c.id === currentCategoryId).rankings}
                                     />
                                 </TabPanel>
                                 <TabPanel p={1} py={2}>
-                                    <FunctionsTab
+                                    <RepresentativeTab
+                                        alternatives={alternatives}
                                         criteria={criteria}
+                                        rankings={categories.find(c => c.id === currentCategoryId).rankings}
                                         functions={categories.find(c => c.id === currentCategoryId).function_points}
                                     />
                                 </TabPanel>
+
                                 <TabPanel p={1} py={2}>
                                     <SamplingTab
                                         alternatives={alternatives}
