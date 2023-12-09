@@ -1,7 +1,6 @@
 name: uta-gms-frontend
 services:
   - build_command: npm run build
-    run_command: npm install -g serve && serve .
     environment_slug: node-js
     github:
       branch: master
