@@ -16,7 +16,7 @@ const App = () => {
                     method: "GET",
                     credentials: "include",
                 }
-                fetch(`http://localhost:8080/api/refresh`, requestOptions)
+                fetch(`${import.meta.env.VITE_BACKEND}/api/refresh`, requestOptions)
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.message === "authenticated") {
@@ -44,7 +44,7 @@ const App = () => {
             credentials: "include",
         }
 
-        fetch(`http://localhost:8080/api/refresh`, requestOptions)
+        fetch(`${import.meta.env.VITE_BACKEND}/api/refresh`, requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("user not logged in");

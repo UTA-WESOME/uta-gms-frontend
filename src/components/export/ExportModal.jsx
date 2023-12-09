@@ -31,7 +31,7 @@ const ExportButton = (props) => {
     };
 
     function handleSaveAndExport() {
-        fetch(`http://localhost:8080/api/projects/${props.projectId}/batch/`, {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.projectId}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -69,7 +69,7 @@ const ExportButton = (props) => {
     }
 
     function downloadCsv() {
-        fetch(`http://localhost:8080/api/projects/${props.projectId}/export_csv/`, {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.projectId}/export_csv/`, {
             method: 'GET',
             credentials: 'include'
         })
@@ -106,7 +106,7 @@ const ExportButton = (props) => {
     }
 
     function downloadXml() {
-        fetch(`http://localhost:8080/api/projects/${props.projectId}/export_xml/`, {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.projectId}/export_xml/`, {
             method: 'GET',
             credentials: 'include'
         })

@@ -34,7 +34,7 @@ const Project = () => {
         if (!getAuth()) {
             navigate("/signin");
         } else {
-            fetch(`http://localhost:8080/api/projects/${id}`, {
+            fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${id}`, {
                 method: "GET",
                 credentials: "include"
             }).then(response => {

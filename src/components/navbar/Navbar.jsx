@@ -33,7 +33,7 @@ export default function Navbar(props) {
 
     const handleUserData = () => {
         if (!loaded) {
-            fetch(`http://localhost:8080/api/user`, {
+            fetch(`${import.meta.env.VITE_BACKEND}/api/user`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",

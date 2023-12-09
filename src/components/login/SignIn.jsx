@@ -18,7 +18,7 @@ const SignIn = () => {
                 .min(6, "Password too short!").max(28, "Password too long!"),
         }),
         onSubmit: (values, actions) => {
-            fetch(`http://localhost:8080/api/login`, {
+            fetch(`${import.meta.env.VITE_BACKEND}/api/login`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 credentials: 'include',
