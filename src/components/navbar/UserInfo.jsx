@@ -22,7 +22,7 @@ const UserInfo = (props) => {
     const [getAuth, setAuth, deleteAuth] = useLocalStorage('auth');
 
     const logout = () => {
-        fetch(`http://localhost:8080/api/logout`, {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/logout`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

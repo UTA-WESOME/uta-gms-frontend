@@ -42,7 +42,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
     const toast = useToast();
 
     const deleteProject = () => {
-        fetch(`http://localhost:8080/api/projects/${id}`, {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

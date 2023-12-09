@@ -36,7 +36,7 @@ const EditProject = () => {
         if (getAuth() !== true) {
             navigate("/projects");
         } else {
-            fetch(`http://localhost:8080/api/projects/${id}`, {
+            fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${id}`, {
                 method: "GET",
                 credentials: "include"
             }).then(response => {
@@ -80,7 +80,7 @@ const EditProject = () => {
             description: Yup.string().max(256, "Description too long!"),
         }),
         onSubmit: (values, actions) => {
-            fetch(`http://localhost:8080/api/projects/${id}`, {
+            fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 credentials: 'include',

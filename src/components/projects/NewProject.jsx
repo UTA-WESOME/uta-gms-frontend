@@ -37,7 +37,7 @@ const NewProject = () => {
             description: Yup.string().max(256, "Description too long!"),
         }),
         onSubmit: (values, actions) => {
-            fetch(`http://localhost:8080/api/projects/`, {
+            fetch(`${import.meta.env.VITE_BACKEND}/api/projects/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',

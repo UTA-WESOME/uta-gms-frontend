@@ -172,7 +172,7 @@ const ImportModal = (props) => {
         });
 
         setUploading(true);
-        fetch(`http://localhost:8080/api/projects/${props.projectId}/upload/`, {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.projectId}/upload/`, {
             method: 'POST',
             credentials: 'include',
             body: formData,

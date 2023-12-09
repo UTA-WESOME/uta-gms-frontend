@@ -125,7 +125,7 @@ const ProjectTabs = (props) => {
 
     const getData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.id}/batch/`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -275,7 +275,7 @@ const ProjectTabs = (props) => {
             return;
         }
         setSaveClicked(true);
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.id}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -307,7 +307,7 @@ const ProjectTabs = (props) => {
         setSaveClicked(true);
 
         // update data
-        fetch(`http://localhost:8080/api/projects/${props.id}/batch/`, {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.id}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -330,7 +330,7 @@ const ProjectTabs = (props) => {
             let categoriesUpdated = data.categories.filter(cat => cat.active);
             let waitingArrayResults = categoriesUpdated.map(() => false);
             categoriesUpdated.forEach((categoryUpdated, index) => {
-                fetch(`http://localhost:8080/api/categories/${categoryUpdated.id}/results/`, {
+                fetch(`${import.meta.env.VITE_BACKEND}/api/categories/${categoryUpdated.id}/results/`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' }
