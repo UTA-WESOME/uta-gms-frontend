@@ -1,9 +1,10 @@
 name: uta-gms-frontend
-services:
+static_sites:
   - build_command: npm run build
-    environment_slug: node-js
+    catchall_document: index.html
     github:
       branch: master
       deploy_on_push: true
       repo: UTA-WESOME/uta-gms-frontend
     name: uta-gms-frontend
+    source_dir: /
