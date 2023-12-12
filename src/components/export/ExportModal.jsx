@@ -62,6 +62,7 @@ const ExportButton = (props) => {
                 if (selectedValues.includes('xml')) {
                     downloadXml();
                 }
+                onCloseInfo();
             }
         }).catch(err => {
             console.log(err);

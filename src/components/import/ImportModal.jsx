@@ -31,7 +31,7 @@ import { InfoIcon } from '@chakra-ui/icons';
 
 const ImportModal = (props) => {
 
-    const maxFiles = 5;
+    const maxFiles = 6;
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
     const [uploading, setUploading] = useState(false);
     const [csvFiles, setCsvFiles] = useState([]);
@@ -180,6 +180,16 @@ const ImportModal = (props) => {
             .then((response) => {
                 if (!response.ok) {
                     return response.json().then((data) => {
+                        if (!toast.isActive(toastId)) {
+                            toast({
+                                id: toastId,
+                                title: 'Error!',
+                                description: `${data.message}`,
+                                status: 'error',
+                                duration: 7000,
+                                isClosable: true,
+                            });
+                        }
                         throw new Error(data.message);
                     });
                 }
@@ -190,19 +200,10 @@ const ImportModal = (props) => {
                 onCloseInfo();
                 window.location.reload();
             })
-            .catch((error) => {
-                if (!toast.isActive(toastId)) {
-                    toast({
-                        id: toastId,
-                        title: 'Error!',
-                        description: `${error}`,
-                        status: 'error',
-                        duration: 7000,
-                        isClosable: true,
-                    });
-                }
+            .catch(err => {
                 setUploading(false);
-            });
+                console.log(err);
+            })
     }
 
     return (
