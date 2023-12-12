@@ -1,4 +1,5 @@
 import {
+    Box,
     Button,
     Icon,
     IconButton,
@@ -11,7 +12,8 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react';
-import { BiSolidUser, BiSolidUserCircle, BiUser, } from "react-icons/bi";
+import Avatar from "boring-avatars";
+import { BiSolidUser, BiUser, } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../utils/useLocalStorage.jsx";
 
@@ -42,29 +44,36 @@ const UserInfo = (props) => {
                             fontSize={'sm'}
                             fontWeight={400}
                             icon={<Icon as={isOpen ? BiSolidUser : BiUser} minH={'7'} minW={'7'}
-                                        color={useColorModeValue('teal.500', 'teal.200')}/>}/>
+                                color={useColorModeValue('teal.500', 'teal.200')} />} />
                     </PopoverTrigger>
                     <PopoverContent>
-                        <PopoverArrow borderRadius={'4px'}/>
+                        <PopoverArrow borderRadius={'4px'} />
                         <PopoverBody>
                             <VStack
                                 justify={'center'}
-                                spacing={'1rem'}>
-                                <Text fontSize={'24px'} textAlign="center" marginTop={'20px'} lineHeight={'80%'}>
+                                spacing={'1rem'}
+                                py={4}>
+
+                                <Box
+                                    borderWidth={6}
+                                    borderRadius={90}
+                                    borderColor={'teal.200'}>
+                                    <Avatar
+                                        size={80}
+                                        name={`${props.userEmail}`}
+                                        variant={"beam"}
+                                        colors={["#FAF089", "#319795", "#FEB2B2", "#E53E3E", "#D69E2E"]} />
+                                </Box>
+
+
+                                <Text fontSize={'24px'} textAlign="center" lineHeight={'80%'}>
                                     {props.userName} {props.userSurname}
-                                </Text>
-
-                                <Icon as={BiSolidUserCircle} minH={32} minW={32}
-                                      color={useColorModeValue('teal.500', 'teal.200')}/>
-
-                                <Text fontSize={'24px'} textAlign="center" lineHeight={'50%'}>
-                                    {props.userEmail}
                                 </Text>
 
                                 <Button
                                     fontSize={'sm'}
                                     fontWeight={400}
-                                    marginBottom={'10px'}
+                                    mt={2}
                                     size={'md'}
                                     onClick={() => {
                                         logout();
