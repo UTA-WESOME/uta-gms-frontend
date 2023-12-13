@@ -18,13 +18,14 @@ const AddProjectCard = () => {
                 h={'full'}
                 borderWidth='1px'
                 borderRadius='lg'
+                borderColor={useColorModeValue('gray.300', 'gray.600')}
                 overflow='hidden'
                 p={5}
                 isRound={true}
                 variant='solid'
                 colorScheme='black'
                 aria-label='Add'
-                _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
+                _hover={{ bg: useColorModeValue('gray.100', 'gray.700') }}
                 icon={<Icon
                     as={BiSolidPlusCircle}
                     w={'50%'}
