@@ -28,9 +28,10 @@ const UserInfo = (props) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
+        }).then(() => {
+            setAuth(false);
+            props.onLogout();
         });
-        setAuth(false);
-        props.toggleRefresh(false)
     }
 
 
