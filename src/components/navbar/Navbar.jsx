@@ -37,6 +37,7 @@ export default function Navbar(props) {
     const handleLogout = () => {
         setUser([]);
         setLoaded(false);
+        props.toggleRefresh(false);
     }
 
     const handleUserData = () => {
@@ -54,7 +55,6 @@ export default function Navbar(props) {
             }).then(data => {
                 setUser(data);
                 setLoaded(true);
-                props.toggleRefresh(true);
             }).catch(err => {
                 console.log(err);
             })
