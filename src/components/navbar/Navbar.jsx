@@ -15,7 +15,7 @@ import {
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, } from '@chakra-ui/icons';
 import ToggleColorMode from "./ToggleColorMode.jsx";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,15 @@ export default function Navbar(props) {
     const navigate = useNavigate();
     const [user, setUser] = useState([]);
 
+    useEffect(() => {
+        handleUserData();
+    }, []);
+
+    const handleLogout = () => {
+        setUser([]);
+        setLoaded(false);
+        props.toggleRefresh(false);
+    }
 
     const handleUserData = () => {
         if (!loaded) {
@@ -45,11 +54,10 @@ export default function Navbar(props) {
                 return response.json();
             }).then(data => {
                 setUser(data);
-                props.toggleRefresh(true);
+                setLoaded(true);
             }).catch(err => {
                 console.log(err);
             })
-            setLoaded(true);
         }
     }
 
@@ -78,8 +86,7 @@ export default function Navbar(props) {
     } else {
         handleUserData();
         buttons = (
-            <UserInfo userName={user.name} userSurname={user.surname} userEmail={user.email}
-                      toggleRefresh={props.toggleRefresh}/>
+            <UserInfo userName={user.name} userSurname={user.surname} userEmail={user.email} onLogout={handleLogout}/>
         )
     }
 

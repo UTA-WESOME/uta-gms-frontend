@@ -11,12 +11,12 @@ const App = () => {
 
     const toggleRefresh = useCallback((status) => {
         if (status) {
+            clearInterval(tickInterval);
             let i = setInterval(() => {
-                const requestOptions = {
+                fetch(`${import.meta.env.VITE_BACKEND}/api/refresh`, {
                     method: "GET",
                     credentials: "include",
-                }
-                fetch(`${import.meta.env.VITE_BACKEND}/api/refresh`, requestOptions)
+                })
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.message === "authenticated") {
