@@ -37,7 +37,8 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
     const navigate = useNavigate();
     const { isOpen: isOpenInfo, onOpen: onOpenInfo, onClose: onCloseInfo } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
-    const [hoveredFlag, setHoveredFlag] = useBoolean();
+    const [hoveredOnCard, setHoveredOnCard] = useBoolean();
+    const [hoveredOnButtons, setHoveredOnButtons] = useBoolean();
     const cancelRef = useRef();
     const toast = useToast();
 
@@ -86,9 +87,10 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                 borderWidth='1px'
                 borderRadius='lg'
                 overflow='hidden'
-                _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
-                onMouseEnter={setHoveredFlag.on}
-                onMouseLeave={setHoveredFlag.off}
+                borderColor={useColorModeValue('gray.300', 'gray.600')}
+                _hover={{ bg: useColorModeValue('gray.100', 'gray.700') }}
+                onMouseEnter={setHoveredOnCard.on}
+                onMouseLeave={setHoveredOnCard.off}
                 p={5}>
                 <Flex direction={'column'} spacing={'4px'} height='100%' align={{ base: 'center', md: 'start' }}>
                     <Heading
@@ -121,7 +123,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                         color={useColorModeValue('gray.400', 'gray.400')}
                         paddingBottom={'2'}
                         mx={'auto'}>
-                        {hoveredFlag ? "Click to open project" : <span>&nbsp;&nbsp;</span>}
+                        {(hoveredOnCard && ! hoveredOnButtons) ? "Click to open project" : <span>&nbsp;&nbsp;</span>}
                     </Text>
 
                     <Flex
@@ -132,6 +134,9 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                         p={1}
                         borderWidth={'1px'}
                         borderRadius={'lg'}
+                        borderColor={useColorModeValue('gray.300', 'gray.600')}
+                        onMouseEnter={setHoveredOnButtons.on}
+                        onMouseLeave={setHoveredOnButtons.off}
                     >
                         <CustomTooltip label='Info'>
                             <IconButton
@@ -139,6 +144,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                                 padding={'2'}
                                 background={'transparent'}
                                 borderRadius={'full'}
+                                _hover={{ bg: useColorModeValue('gray.300', 'gray.600') }}
                                 icon={<Icon as={BiInfoCircle} minH={'7'} minW={'7'}
                                             color={useColorModeValue('blue.500', 'blue.200')}/>}
                                 onClick={onOpenInfo}
@@ -150,6 +156,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                                 padding={'2'}
                                 background={'transparent'}
                                 borderRadius={'full'}
+                                _hover={{ bg: useColorModeValue('gray.300', 'gray.600') }}
                                 icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
                                             color={useColorModeValue('green.500', 'green.200')}/>}
                                 onClick={shareProject}
@@ -161,6 +168,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                                 padding={'2'}
                                 background={'transparent'}
                                 borderRadius={'full'}
+                                _hover={{ bg: useColorModeValue('gray.300', 'gray.600') }}
                                 icon={<Icon as={BiEditAlt} minH={'7'} minW={'7'}
                                             color={useColorModeValue('yellow.500', 'yellow.200')}/>}
                                 onClick={() => navigate(`/projects/${id}/edit`)}
@@ -172,6 +180,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                                 padding={'2'}
                                 background={'transparent'}
                                 borderRadius={'full'}
+                                _hover={{ bg: useColorModeValue('gray.300', 'gray.600') }}
                                 icon={<Icon as={BiTrash} minH={'7'} minW={'7'}
                                             color={useColorModeValue('red.500', 'red.200')}/>}
                                 onClick={onOpenDelete}
