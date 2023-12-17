@@ -16,14 +16,16 @@ function jsonToObjectWithConnections(graph) {
     return objectWithConnections;
 }
 
-function createGraphStructureFromRelations(inputList) {
+function createGraphStructureFromRelations(inputList, alternatives) {
     let result = {};
+
+    alternatives.forEach(alternative => {
+        result[alternative.id.toString()] = [];
+    })
+
     inputList.forEach(structure => {
         let alternative_1 = structure.alternative_1.toString();
         let alternative_2 = structure.alternative_2.toString();
-
-        result[alternative_1] = result[alternative_1] || [];
-        result[alternative_2] = result[alternative_2] || [];
 
         result[alternative_1].push(alternative_2);
     });
@@ -249,7 +251,7 @@ function createDotString(graph, ranks, indifferences, alternatives, bgcolor, nod
 export function generateDotString(relations, alternatives, bgColor, nodeBgColor) {
 
     // stringify children nodes
-    let graph = createGraphStructureFromRelations(relations);
+    let graph = createGraphStructureFromRelations(relations, alternatives);
 
     // transform JSON graph to graphObject
     let graphObject = jsonToObjectWithConnections(graph);
