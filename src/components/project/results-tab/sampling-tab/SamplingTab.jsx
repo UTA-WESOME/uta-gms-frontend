@@ -3,8 +3,9 @@ import { FaRankingStar } from "react-icons/fa6";
 import { GiPodiumWinner } from "react-icons/gi";
 import * as c from "./../../../../config.js";
 import AcceptabilityIndicesTab from "./acceptability-indices-tab/AcceptabilityIndicesTab.jsx";
+import PairwiseWinningTab from "./pairwise-winning-tab/PairwiseWinningTab.jsx";
 
-const SamplingTab = ({ alternatives, acceptabilityIndices }) => {
+const SamplingTab = ({ alternatives, acceptabilityIndices, pairwiseWinnings }) => {
 
     const [isMobile] = useMediaQuery(`(max-width: ${c.Results.Sampling.maxWidthMobile})`);
 
@@ -40,7 +41,10 @@ const SamplingTab = ({ alternatives, acceptabilityIndices }) => {
                     />
                 </TabPanel>
                 <TabPanel p={1} py={2}>
-                    <Text>Not implemented yet!</Text>
+                    <PairwiseWinningTab
+                        alternatives={alternatives}
+                        percentages={pairwiseWinnings}
+                    />
                 </TabPanel>
             </TabPanels>
         </Tabs>

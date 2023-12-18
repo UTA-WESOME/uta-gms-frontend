@@ -227,6 +227,7 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                     <SamplingTab
                                         alternatives={alternatives}
                                         acceptabilityIndices={categories.find(c => c.id === currentCategoryId).acceptability_indices}
+                                        pairwiseWinnings={categories.find(c => c.id === currentCategoryId).pairwise_winnings}
                                     />
                                 </TabPanel>
                             </TabPanels>

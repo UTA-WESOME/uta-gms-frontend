@@ -63,6 +63,23 @@ export const Results = {
       maxWidthMobile: '500px'
     },
     Sampling : {
-        maxWidthMobile: '620px'
+        maxWidthMobile: '620px',
+        darkModeColors: {
+            0: 'teal.900',
+            10: 'teal.800',
+            20: 'teal.700',
+            30: 'teal.600',
+            40: 'teal.500',
+            60: 'teal.400',
+            80: 'teal.300'
+        },
+        lightModeColors: {
+            0: 'teal.50',
+            10: 'teal.100',
+            20: 'teal.200',
+            30: 'teal.300',
+            50: 'teal.400',
+            80: 'teal.500'
+        }
     }
 }
