@@ -46,8 +46,8 @@ const PairwiseWinningTab = ({ alternatives, percentages }) => {
 
                                             return <Td
                                                 key={index}
-                                                bgColor={findColor(p.percentage)}
-                                            >{p.percentage}</Td>;
+                                                bgColor={findColor(p.percent)}
+                                            >{p.percent}</Td>;
                                         })
                                     }
                                 </Tr>
