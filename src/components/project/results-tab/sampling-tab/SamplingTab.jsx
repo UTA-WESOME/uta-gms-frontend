@@ -1,4 +1,4 @@
-import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useMediaQuery } from "@chakra-ui/react";
+import { Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from "@chakra-ui/react";
 import { FaRankingStar } from "react-icons/fa6";
 import { GiPodiumWinner } from "react-icons/gi";
 import * as c from "./../../../../config.js";
