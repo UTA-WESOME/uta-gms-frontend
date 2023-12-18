@@ -2,7 +2,7 @@ import { Box, Divider, Heading, Table, TableCaption, TableContainer, Tbody, Td, 
 
 const ExtremesTab = ({ alternatives, rankings }) => {
     return (
-        <Box textAlign={'center'} mx={{ base: '1%', sm: '10%', lg: '18%', '2xl': '25%' }} mt={'10px'}>
+        <Box textAlign={'center'} mx={{ base: '1%', sm: '3%', lg: '10%' }} mt={'10px'}>
             <Heading size={{ base: 'md', md: 'xl' }} mb={2}>
                 Extreme ranks
             </Heading>
@@ -13,8 +13,10 @@ const ExtremesTab = ({ alternatives, rankings }) => {
                     <Thead>
                         <Tr>
                             <Th>name</Th>
-                            <Th>best</Th>
-                            <Th>worst</Th>
+                            <Th>pessimistic best</Th>
+                            <Th>pessimistic worst</Th>
+                            <Th>optimistic best</Th>
+                            <Th>optimistic worst</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -23,8 +25,10 @@ const ExtremesTab = ({ alternatives, rankings }) => {
                             .map((alternative, index) => (
                                 <Tr key={index}>
                                     <Td>{alternative.name}</Td>
-                                    <Td>{rankings.find(r => r.alternative === alternative.id).extreme_best}</Td>
-                                    <Td>{rankings.find(r => r.alternative === alternative.id).extreme_worst}</Td>
+                                    <Td>{rankings.find(r => r.alternative === alternative.id).extreme_pessimistic_best}</Td>
+                                    <Td>{rankings.find(r => r.alternative === alternative.id).extreme_pessimistic_worst}</Td>
+                                    <Td>{rankings.find(r => r.alternative === alternative.id).extreme_optimistic_best}</Td>
+                                    <Td>{rankings.find(r => r.alternative === alternative.id).extreme_optimistic_worst}</Td>
                                 </Tr>
                             ))
                         }
