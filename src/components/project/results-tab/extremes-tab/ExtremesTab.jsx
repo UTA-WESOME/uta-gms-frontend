@@ -1,4 +1,21 @@
-import { Box, Divider, Heading, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
+import {
+    Box,
+    Divider,
+    Heading,
+    HStack,
+    Table,
+    TableCaption,
+    TableContainer,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr
+} from "@chakra-ui/react";
+import CustomTooltip from "../../../utils/CustomTooltip.jsx";
+import * as c from "./../../../../config.js";
 
 const ExtremesTab = ({ alternatives, rankings }) => {
     return (
@@ -8,15 +25,51 @@ const ExtremesTab = ({ alternatives, rankings }) => {
             </Heading>
             <Divider/>
             <TableContainer mt={3}>
-                <Table variant='striped' size={'sm'}>
+                <Table size={'sm'}>
                     <TableCaption>Best and worst possible ranks for alternatives</TableCaption>
                     <Thead>
                         <Tr>
                             <Th>name</Th>
-                            <Th>pessimistic best</Th>
-                            <Th>pessimistic worst</Th>
-                            <Th>optimistic best</Th>
-                            <Th>optimistic worst</Th>
+                            <Th>
+                                <HStack>
+                                    <Text>pessimistic best</Text>
+                                    <CustomTooltip
+                                        label={c.Results.Extremes.pbDescription}
+                                        openDelay={200}>
+                                        <InfoIcon/>
+                                    </CustomTooltip>
+                                </HStack>
+                            </Th>
+                            <Th>
+                                <HStack>
+                                    <Text>pessimistic worst</Text>
+                                    <CustomTooltip
+                                        label={c.Results.Extremes.pwDescription}
+                                        openDelay={200}>
+                                        <InfoIcon/>
+                                    </CustomTooltip>
+                                </HStack>
+                            </Th>
+                            <Th>
+                                <HStack>
+                                    <Text>optimistic best</Text>
+                                    <CustomTooltip
+                                        label={c.Results.Extremes.obDescription}
+                                        openDelay={200}>
+                                        <InfoIcon/>
+                                    </CustomTooltip>
+                                </HStack>
+                            </Th>
+                            <Th>
+                                <HStack>
+                                    <Text>optimistic worst</Text>
+                                    <CustomTooltip
+                                        label={c.Results.Extremes.owDescription}
+                                        openDelay={200}>
+                                        <InfoIcon/>
+                                    </CustomTooltip>
+                                </HStack>
+                            </Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -25,9 +78,9 @@ const ExtremesTab = ({ alternatives, rankings }) => {
                             .map((alternative, index) => (
                                 <Tr key={index}>
                                     <Td>{alternative.name}</Td>
-                                    <Td>{rankings.find(r => r.alternative === alternative.id).extreme_pessimistic_best}</Td>
+                                    <Td borderLeftWidth={'1px'}>{rankings.find(r => r.alternative === alternative.id).extreme_pessimistic_best}</Td>
                                     <Td>{rankings.find(r => r.alternative === alternative.id).extreme_pessimistic_worst}</Td>
-                                    <Td>{rankings.find(r => r.alternative === alternative.id).extreme_optimistic_best}</Td>
+                                    <Td borderLeftWidth={'1px'}>{rankings.find(r => r.alternative === alternative.id).extreme_optimistic_best}</Td>
                                     <Td>{rankings.find(r => r.alternative === alternative.id).extreme_optimistic_worst}</Td>
                                 </Tr>
                             ))

@@ -59,6 +59,12 @@ export const Preferences = {
 
 export const Results = {
     maxWidthMobile: '650px',
+    Extremes: {
+        obDescription: "Best possible position with the assumption that variants with the same utility are ranked lower in the ranking",
+        pbDescription: "Best possible position with the assumption that variants with the same utility are ranked higher in the ranking",
+        owDescription: "Worst possible position with the assumption that variants with the same utility are ranked lower in the ranking",
+        pwDescription: "Worst possible position with the assumption that variants with the same utility are ranked higher in the ranking"
+    },
     Representative: {
       maxWidthMobile: '500px'
     },
