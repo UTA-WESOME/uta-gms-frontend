@@ -59,10 +59,33 @@ export const Preferences = {
 
 export const Results = {
     maxWidthMobile: '650px',
+    Extremes: {
+        obDescription: "Best possible position with the assumption that variants with the same utility are ranked lower in the ranking",
+        pbDescription: "Best possible position with the assumption that variants with the same utility are ranked higher in the ranking",
+        owDescription: "Worst possible position with the assumption that variants with the same utility are ranked lower in the ranking",
+        pwDescription: "Worst possible position with the assumption that variants with the same utility are ranked higher in the ranking"
+    },
     Representative: {
       maxWidthMobile: '500px'
     },
     Sampling : {
-        maxWidthMobile: '620px'
+        maxWidthMobile: '620px',
+        darkModeColors: {
+            0: 'teal.900',
+            10: 'teal.800',
+            20: 'teal.700',
+            30: 'teal.600',
+            40: 'teal.500',
+            60: 'teal.400',
+            80: 'teal.300'
+        },
+        lightModeColors: {
+            0: 'teal.50',
+            10: 'teal.100',
+            20: 'teal.200',
+            30: 'teal.300',
+            50: 'teal.400',
+            80: 'teal.500'
+        }
     }
 }

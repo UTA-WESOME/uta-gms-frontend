@@ -1,16 +1,21 @@
-import { Box, Divider, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+    Box,
+    Divider,
+    Heading,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+    useColorModeValue
+} from "@chakra-ui/react";
+import * as c from "./../../../../../config.js";
 
-const colors = {
-    0: 'teal.900',
-    10: 'teal.800',
-    20: 'teal.700',
-    30: 'teal.600',
-    40: 'teal.500',
-    60: 'teal.400',
-    80: 'teal.300'
-}
 
 const findColor = (number) => {
+    const colors = useColorModeValue(c.Results.Sampling.lightModeColors, c.Results.Sampling.darkModeColors);
     const range = Object.keys(colors).reverse().find(key => number >= parseInt(key));
     return colors[range];
 }

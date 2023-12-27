@@ -224,10 +224,18 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                                 </TabPanel>
 
                                 <TabPanel p={1} py={2}>
-                                    <SamplingTab
-                                        alternatives={alternatives}
-                                        acceptabilityIndices={categories.find(c => c.id === currentCategoryId).acceptability_indices}
-                                    />
+                                    {categories.find(c => c.id === currentCategoryId).sampler_error === null ?
+                                        <SamplingTab
+                                            alternatives={alternatives}
+                                            acceptabilityIndices={categories.find(c => c.id === currentCategoryId).acceptability_indices}
+                                            pairwiseWinnings={categories.find(c => c.id === currentCategoryId).pairwise_winnings}
+                                        />
+                                        :
+                                        <VStack>
+                                            <Heading>Sampler unavailable</Heading>
+                                            <Text>{categories.find(c => c.id === currentCategoryId).sampler_error}</Text>
+                                        </VStack>
+                                    }
                                 </TabPanel>
                             </TabPanels>
                         </Tabs>
@@ -235,8 +243,6 @@ const ResultsTabs = ({ alternatives, criteria, categories }) => {
                     }
                 </Box>
             }
-
-
         </>
     )
 }
