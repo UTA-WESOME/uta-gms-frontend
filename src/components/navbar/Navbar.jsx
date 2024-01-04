@@ -86,7 +86,7 @@ export default function Navbar(props) {
     } else {
         handleUserData();
         buttons = (
-            <UserInfo userName={user.name} userSurname={user.surname} userEmail={user.email} onLogout={handleLogout}/>
+            <UserInfo userName={user.name} userSurname={user.surname} userEmail={user.email} onLogout={handleLogout} />
         )
     }
 
@@ -110,25 +110,27 @@ export default function Navbar(props) {
                     <IconButton
                         onClick={onToggle}
                         icon={
-                            isOpen ? <CloseIcon w={3} h={3}/> : <HamburgerIcon w={5} h={5}/>
+                            isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
                         }
                         variant={'ghost'}
                         aria-label={'Toggle Navigation'}
                     />
                 </Flex>
                 <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-                    <Text
-                        as={'button'}
-                        textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-                        fontFamily={'heading'}
-                        color={useColorModeValue('gray.800', 'white')}
-                        onClick={() => navigate("/")}
-                    >
-                        UTA GMS
-                    </Text>
+                    <IconButton
+                        aria-label={'UTA-GMS'}
+                        variant={'link'}
+                        icon={
+                            <div>
+                                <img src="/logo_text.svg" alt="UTA-GMS" />
+                            </div>
+                        }
+                        style={{ width: '75px', height: '25px' }}
+                        onClick={() => navigate("/")} >
+                    </IconButton>
 
                     <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                        <DesktopNav/>
+                        <DesktopNav />
                     </Flex>
                 </Flex>
 
@@ -137,13 +139,13 @@ export default function Navbar(props) {
                     justify={'flex-end'}
                     direction={'row'}
                     spacing={6}>
-                    <ToggleColorMode/>
+                    <ToggleColorMode />
                     {buttons}
                 </Stack>
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
-                <MobileNav/>
+                <MobileNav />
             </Collapse>
         </Box>
     );
@@ -224,7 +226,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
                     justify={'flex-end'}
                     align={'center'}
                     flex={1}>
-                    <Icon color={'teal.100'} w={5} h={5} as={ChevronRightIcon}/>
+                    <Icon color={'teal.100'} w={5} h={5} as={ChevronRightIcon} />
                 </Flex>
             </Stack>
         </Link>
