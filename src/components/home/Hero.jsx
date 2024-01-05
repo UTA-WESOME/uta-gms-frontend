@@ -1,12 +1,5 @@
-import {
-    Container,
-    Heading,
-    Stack,
-    Text,
-    Button,
-    useColorModeValue
-} from '@chakra-ui/react';
-import {useNavigate} from "react-router-dom";
+import { Button, Container, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
 
@@ -17,22 +10,22 @@ export default function Hero() {
             <Stack
                 textAlign={'center'}
                 align={'center'}
-                spacing={{base: 8, md: 10}}
-                py={{base: 15, md: 20}}>
+                spacing={{ base: 8, md: 10 }}
+                py={{ base: 15, md: 20 }}>
                 <Heading
                     fontWeight={600}
-                    fontSize={{base: '3xl', sm: '4xl', md: '6xl'}}
+                    fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
                     lineHeight={'110%'}>
                     Decision making {' '}
                     <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
                         made easy
                     </Text>
                 </Heading>
-                <Text color={'gray.500'} maxW={'3xl'} fontSize={{base: 'sm', sm: 'lg'}}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                    molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-                    numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-                    optio, eaque rerum! Provident similique accusantium nemo autem.
+                <Text color={'gray.500'} maxW={'3xl'} fontSize={{ base: 'sm', sm: 'lg' }}>
+                    Elevate your decision-making with the UTA-GMS, a groundbreaking solution
+                    that fuses the power of the UTA method with advanced robustness analysis.
+                    Choose the UTA-GMS for a future-ready approach to Multiple Criteria Decision Analysis,
+                    where making complex decisions becomes both confident and effortless.
                 </Text>
                 <Stack spacing={6} direction={'row'}>
                     <Button

@@ -1,13 +1,14 @@
-import {Box, Button, Container, Flex, Heading, Icon, Stack, Text, useColorModeValue,} from '@chakra-ui/react';
-import {BsFillLightningChargeFill} from "react-icons/bs";
-import {BiExport, BiSolidSave, BiSolidShareAlt} from "react-icons/bi";
-import {MdFeedback} from "react-icons/md";
+import { Box, Button, Container, Flex, Heading, Icon, Stack, Text, useColorModeValue, } from '@chakra-ui/react';
+import { AiOutlineAim } from "react-icons/ai";
+import { BiExport, BiSolidSave } from "react-icons/bi";
+import { BsFillLightningChargeFill } from "react-icons/bs";
+import { MdFeedback } from "react-icons/md";
 
 
-const Card = ({heading, description, icon, href}) => {
+const Card = ({ heading, description, icon, href }) => {
     return (
         <Box
-            maxW={{base: 'full', md: '275px'}}
+            maxW={{ base: 'full', md: '275px' }}
             w={'full'}
             borderWidth="1px"
             borderRadius="lg"
@@ -42,12 +43,13 @@ export default function Features() {
     return (
         <Box p={4}>
             <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'}>
-                <Heading fontSize={{base: '2xl', sm: '4xl'}} fontWeight={'bold'}>
+                <Heading fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={'bold'}>
                     UTA-GMS features
                 </Heading>
-                <Text color={'gray.500'} fontSize={{base: 'sm', sm: 'lg'}}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-                    obcaecati ut cupiditate pariatur, dignissimos, placeat amet officiis.
+                <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'lg' }}>
+                    UTA-GMS offers a suite of powerful features, including swift decision-making,
+                    advanced stochastic analysis, interactive feedback, seamless XMCDA import-export functionality,
+                    and project-saving capabilities.
                 </Text>
             </Stack>
 
@@ -57,9 +59,17 @@ export default function Features() {
                         heading={'Make decisions quick'}
                         icon={<Icon as={BsFillLightningChargeFill} w={8} h={8}/>}
                         description={
-                            'Blazingly fast results with UTA-GMS method'
+                            'Blazingly fast results with the UTA-GMS method'
                         }
                         href={'/signup'}
+                    />
+                    <Card
+                        heading={'Stochastic analysis'}
+                        icon={<Icon as={AiOutlineAim} w={8} h={8}/>}
+                        description={
+                            'Get details about ranking positions and outperformance metrics'
+                        }
+                        href={'#'}
                     />
                     <Card
                         heading={'Get feedback'}
@@ -70,10 +80,10 @@ export default function Features() {
                         href={'#'}
                     />
                     <Card
-                        heading={'Export to XMCDA'}
+                        heading={'Work with XMCDA'}
                         icon={<Icon as={BiExport} w={8} h={8}/>}
                         description={
-                            'UTA-GMS allows to download results in XMCDA format'
+                            'Support for the XMCDA format'
                         }
                         href={'#'}
                     />
@@ -82,14 +92,6 @@ export default function Features() {
                         icon={<Icon as={BiSolidSave} w={8} h={8}/>}
                         description={
                             'Save your projects in the cloud'
-                        }
-                        href={'#'}
-                    />
-                    <Card
-                        heading={'Share results'}
-                        icon={<Icon as={BiSolidShareAlt} w={8} h={8}/>}
-                        description={
-                            'Share results with your colleagues'
                         }
                         href={'#'}
                     />

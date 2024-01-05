@@ -1,3 +1,4 @@
+import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, } from '@chakra-ui/icons';
 import {
     Box,
     Button,
@@ -11,15 +12,13 @@ import {
     PopoverTrigger,
     Stack,
     Text,
-    useBreakpointValue,
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
-import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, } from '@chakra-ui/icons';
-import ToggleColorMode from "./ToggleColorMode.jsx";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../utils/useLocalStorage.jsx";
+import ToggleColorMode from "./ToggleColorMode.jsx";
 import UserInfo from './UserInfo.jsx';
 
 export default function Navbar(props) {
@@ -117,15 +116,19 @@ export default function Navbar(props) {
                     />
                 </Flex>
                 <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-                    <Text
-                        as={'button'}
-                        textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-                        fontFamily={'heading'}
-                        color={useColorModeValue('gray.800', 'white')}
-                        onClick={() => navigate("/")}
-                    >
-                        UTA GMS
-                    </Text>
+                    <IconButton
+                        aria-label={'UTA-GMS'}
+                        variant={'link'}
+                        icon={
+                            <div>
+                                <img src="/logo_text.svg" alt="UTA-GMS"/>
+                            </div>
+                        }
+                        w={'90px'}
+                        h={'20px'}
+                        mb={2}
+                        onClick={() => navigate("/")}>
+                    </IconButton>
 
                     <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
                         <DesktopNav/>
@@ -136,7 +139,8 @@ export default function Navbar(props) {
                     flex={{ base: 1, md: 0 }}
                     justify={'flex-end'}
                     direction={'row'}
-                    spacing={6}>
+                    spacing={{ base: 2, lg: 3, xl: 4 }}
+                >
                     <ToggleColorMode/>
                     {buttons}
                 </Stack>
