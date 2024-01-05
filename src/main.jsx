@@ -52,6 +52,7 @@ const router = createBrowserRouter([
     }
 ])
 
+document.title = import.meta.env.MODE === 'development' ? 'UTA-GMS-DEV' : 'UTA-GMS';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
