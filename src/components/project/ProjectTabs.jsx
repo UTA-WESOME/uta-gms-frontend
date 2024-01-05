@@ -347,6 +347,15 @@ const ProjectTabs = (props) => {
                                     isClosable: true
                                 });
                                 break;
+                            case 504:
+                                toast({
+                                    title: `${categoryUpdated.name}`,
+                                    description: "Connection timeout",
+                                    status: 'info',
+                                    duration: 3000,
+                                    isClosable: true
+                                });
+                                break;
                             default:
                                 toast({
                                     title: "Error!",
