@@ -1,3 +1,4 @@
+import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, } from '@chakra-ui/icons';
 import {
     Box,
     Button,
@@ -11,15 +12,13 @@ import {
     PopoverTrigger,
     Stack,
     Text,
-    useBreakpointValue,
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
-import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, } from '@chakra-ui/icons';
-import ToggleColorMode from "./ToggleColorMode.jsx";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../utils/useLocalStorage.jsx";
+import ToggleColorMode from "./ToggleColorMode.jsx";
 import UserInfo from './UserInfo.jsx';
 
 export default function Navbar(props) {
@@ -86,7 +85,7 @@ export default function Navbar(props) {
     } else {
         handleUserData();
         buttons = (
-            <UserInfo userName={user.name} userSurname={user.surname} userEmail={user.email} onLogout={handleLogout} />
+            <UserInfo userName={user.name} userSurname={user.surname} userEmail={user.email} onLogout={handleLogout}/>
         )
     }
 
@@ -110,7 +109,7 @@ export default function Navbar(props) {
                     <IconButton
                         onClick={onToggle}
                         icon={
-                            isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+                            isOpen ? <CloseIcon w={3} h={3}/> : <HamburgerIcon w={5} h={5}/>
                         }
                         variant={'ghost'}
                         aria-label={'Toggle Navigation'}
@@ -122,15 +121,17 @@ export default function Navbar(props) {
                         variant={'link'}
                         icon={
                             <div>
-                                <img src="/logo_text.svg" alt="UTA-GMS" />
+                                <img src="/logo_text.svg" alt="UTA-GMS"/>
                             </div>
                         }
-                        style={{ width: '75px', height: '25px' }}
-                        onClick={() => navigate("/")} >
+                        w={'90px'}
+                        h={'20px'}
+                        mb={2}
+                        onClick={() => navigate("/")}>
                     </IconButton>
 
                     <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                        <DesktopNav />
+                        <DesktopNav/>
                     </Flex>
                 </Flex>
 
@@ -138,14 +139,15 @@ export default function Navbar(props) {
                     flex={{ base: 1, md: 0 }}
                     justify={'flex-end'}
                     direction={'row'}
-                    spacing={6}>
-                    <ToggleColorMode />
+                    spacing={{ base: 2, lg: 3, xl: 4 }}
+                >
+                    <ToggleColorMode/>
                     {buttons}
                 </Stack>
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
-                <MobileNav />
+                <MobileNav/>
             </Collapse>
         </Box>
     );
@@ -226,7 +228,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
                     justify={'flex-end'}
                     align={'center'}
                     flex={1}>
-                    <Icon color={'teal.100'} w={5} h={5} as={ChevronRightIcon} />
+                    <Icon color={'teal.100'} w={5} h={5} as={ChevronRightIcon}/>
                 </Flex>
             </Stack>
         </Link>

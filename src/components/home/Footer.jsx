@@ -1,4 +1,4 @@
-import {Box, Text, useColorModeValue,} from '@chakra-ui/react';
+import { Box, Text, useColorModeValue } from '@chakra-ui/react';
 
 export default function Footer() {
     return (
@@ -8,7 +8,7 @@ export default function Footer() {
             py={4}
             align={'center'}
         >
-            <Text>© 2023 UTA-WESOME. All rights reserved</Text>
+            <Text>© {new Date().getFullYear()} UTA-WESOME. All rights reserved</Text>
         </Box>
     );
 }
