@@ -314,22 +314,22 @@ const NAV_ITEMS = [
             {
                 label: 'About UTA-GMS',
                 subLabel: 'Learn about the method',
-                href: '#'
+                href: '/documentation/start'
             },
             {
                 label: 'Tutorial',
                 subLabel: 'Learn how to use the UTA-GMS app',
-                href: '#'
+                href: '/documentation/tutorial'
             },
             {
                 label: 'XMCDA v4.0',
                 subLabel: 'Learn about XMCDA v4.0 format',
-                href: '#',
+                href: 'https://www.decision-deck.org/xmcda/',
             },
             {
                 label: 'Contact',
                 subLabel: 'Contact contributors and view source',
-                href: '#',
+                href: '/documentation/contact',
             }
         ]
     },

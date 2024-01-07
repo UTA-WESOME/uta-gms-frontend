@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import Documentation from "./components/Documentation.jsx";
 import theme from "./theme.js";
 import Home from "./components/Home.jsx";
 import SignUp from "./components/login/SignUp.jsx";
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 path: "/projects/:id",
                 element: <Project/>
+            },
+            {
+                path: "/documentation/:part",
+                element: <Documentation/>,
             },
             {
                 path: "*",
