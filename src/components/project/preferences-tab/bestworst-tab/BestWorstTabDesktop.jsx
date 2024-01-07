@@ -70,6 +70,7 @@ const BestWorstTabDesktop = ({ alternatives, currentCategoryId, categories, setC
                         {categories
                             .find(c => c.id === currentCategoryId)
                             ?.rankings
+                            .sort((x, y) => x.alternative > y.alternative ? 1 : x.alternative < y.alternative ? -1 : 0)
                             .map((ranking, index) => (
                             <Tr key={index}>
                                 <Td borderRightWidth={'1px'}>
