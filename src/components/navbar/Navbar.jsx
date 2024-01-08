@@ -202,14 +202,16 @@ const DesktopNav = () => {
 };
 
 const DesktopSubNav = ({ label, href, subLabel }) => {
+    const navigate = useNavigate();
     return (
-        <Link
-            href={href}
+        <Box
             role={'group'}
             display={'block'}
             p={2}
             rounded={'md'}
-            _hover={{ bg: useColorModeValue('teal.50', 'gray.900') }}>
+            _hover={{ bg: useColorModeValue('teal.50', 'gray.900'), cursor: 'pointer'}}
+            onClick={() => navigate(href)}
+        >
             <Stack direction={'row'} align={'center'}>
                 <Box>
                     <Text
@@ -231,7 +233,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
                     <Icon color={'teal.100'} w={5} h={5} as={ChevronRightIcon}/>
                 </Flex>
             </Stack>
-        </Link>
+        </Box>
     );
 };
 
@@ -289,9 +291,9 @@ const MobileNavItem = ({ label, children, href }) => {
                     align={'start'}>
                     {children &&
                         children.map((child) => (
-                            <Link key={child.label} py={2} href={child.href}>
+                            <Box onClick={() => navigate(child.href)} key={child.label} py={2}>
                                 {child.label}
-                            </Link>
+                            </Box>
                         ))}
                 </Stack>
             </Collapse>
@@ -319,12 +321,12 @@ const NAV_ITEMS = [
             {
                 label: 'Tutorial',
                 subLabel: 'Learn how to use the UTA-GMS app',
-                href: '/documentation/tutorial'
+                href: '/documentation/project'
             },
             {
                 label: 'XMCDA v4.0',
                 subLabel: 'Learn about XMCDA v4.0 format',
-                href: 'https://www.decision-deck.org/xmcda/',
+                href: '/documentation/import-and-export',
             },
             {
                 label: 'Contact',

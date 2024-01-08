@@ -101,6 +101,12 @@ export const routes = [
                         ],
                     },
                     {
+                        path: "import-and-export",
+                        element: <Box/>,
+                        displayName: "Import and export",
+                        fullUrl: "/documentation/import-and-export"
+                    },
+                    {
                         path: "contact",
                         element: <Box/>,
                         displayName: "Contact",
