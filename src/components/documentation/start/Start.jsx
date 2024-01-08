@@ -1,4 +1,4 @@
-import { Box, Divider, Heading, List, ListItem, Text, Link as ChakraLink } from "@chakra-ui/react";
+import { Box, Divider, Heading, List, ListItem, Text } from "@chakra-ui/react";
 import DocumentationHeading from "../DocumentationHeading.jsx";
 import ListPoint from "./ListPoint.jsx";
 
@@ -17,7 +17,8 @@ const Start = () => {
                 method.
             </Text>
 
-            <DocumentationHeading id={'main-features'} as={'h3'} size={'lg'}>Main features of the UTA-GMS application</DocumentationHeading>
+            <DocumentationHeading id={'main-features'} as={'h3'} size={'lg'}>Main features of the UTA-GMS
+                application</DocumentationHeading>
             <Divider my={2}/>
             <List spacing={3} my={5}>
                 <ListPoint>

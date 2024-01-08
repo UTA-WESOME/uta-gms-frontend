@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from './App.jsx'
 import Documentation from "./components/Documentation.jsx";
 import Start from "./components/documentation/start/Start.jsx";
+import UtaGms from "./components/documentation/uta-gms/UtaGms.jsx";
 import Home from "./components/Home.jsx";
 import SignIn from "./components/login/SignIn.jsx";
 import SignUp from "./components/login/SignUp.jsx";
@@ -59,7 +60,7 @@ export const routes = [
                     },
                     {
                         path: "uta-gms",
-                        element: <Box/>,
+                        element: <UtaGms/>,
                         displayName: "UTA-GMS",
                         fullUrl: "/documentation/uta-gms"
                     },
