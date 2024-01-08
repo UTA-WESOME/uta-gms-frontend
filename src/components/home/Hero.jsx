@@ -36,7 +36,7 @@ export default function Hero() {
                     >
                         Get started
                     </Button>
-                    <Button rounded={'full'} px={6}>
+                    <Button rounded={'full'} px={6} onClick={() => navigate("/documentation/start")}>
                         Learn more
                     </Button>
                 </Stack>

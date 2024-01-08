@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from './App.jsx'
 import Documentation from "./components/Documentation.jsx";
+import Start from "./components/documentation/start/Start.jsx";
 import Home from "./components/Home.jsx";
 import SignIn from "./components/login/SignIn.jsx";
 import SignUp from "./components/login/SignUp.jsx";
@@ -52,7 +53,7 @@ export const routes = [
                 children: [
                     {
                         path: "start",
-                        element: <Box/>,
+                        element: <Start/>,
                         displayName: "Start",
                         fullUrl: "/documentation/start"
                     },
