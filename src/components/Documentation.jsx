@@ -1,18 +1,11 @@
 import { Box, Divider, Flex } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
-import Header from "./documentation/navigation/Header.jsx";
+import { routes } from "../main.jsx";
+import SectionHeader from "./documentation/navigation/SectionHeader.jsx";
 import PageTemplate from "./PageTemplate.jsx";
 
 const Documentation = () => {
-    const { part } = useParams();
-    const getBgColor = (section) => (part.toLowerCase() === section.toLowerCase() ? 'teal.700' : '');
-    const getColor = (section) => (part.toLowerCase() === section.toLowerCase() ? 'teal.100' : '');
 
-    const sectionData = [
-        { name: 'Start', url: '/documentation/start' },
-        { name: 'Tutorial', url: '/documentation/tutorial' },
-        { name: 'Contact', url: '/documentation/contact' },
-    ];
+    const sectionData = routes[0].children.find(r => r.path === "/documentation").children;
 
     return (
         <PageTemplate title={"Documentation"}>
@@ -20,14 +13,29 @@ const Documentation = () => {
             <Flex direction={'row'} mt={5}>
                 <Flex direction={'column'} minW={'20%'}>
                     <>
-                        {sectionData.map((section,) => (
-                            <Header
-                                key={section.name}
-                                name={section.name}
-                                color={getColor(section.name)}
-                                bgColor={getBgColor(section.name)}
-                                url={section.url}
-                            />
+                        {sectionData.map((section) => (
+                            <SectionHeader
+                                key={section.displayName}
+                                name={section.displayName}
+                                url={section.fullUrl}
+                                color={'teal.200'}
+                                bgColor={'teal.700'}
+                            >
+                                {section.children && (
+                                    <div>
+                                        {section.children.map((subpage) => (
+                                            <SectionHeader
+                                                key={subpage.displayName}
+                                                name={subpage.displayName}
+                                                url={subpage.fullUrl}
+                                                color={'teal.200'}
+                                                bgColor={'teal.700'}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+
+                            </SectionHeader>
                         ))}
                     </>
                 </Flex>
@@ -57,8 +65,6 @@ const Documentation = () => {
                     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
                     culpa qui officia deserunt mollit anim id est laborum.
                 </Box>
-
-
             </Flex>
         </PageTemplate>
     );
