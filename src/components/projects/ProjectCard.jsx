@@ -11,7 +11,7 @@ import {
     Flex,
     Heading,
     Icon,
-    IconButton,
+    IconButton, Link,
     LinkBox,
     LinkOverlay,
     Modal,
@@ -98,9 +98,13 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                         fontSize={{ base: '1xl', sm: '2xl', md: '2xl' }}
                         lineHeight={'100%'}
                         textAlign={'start'}
-                        paddingBottom={2}>
-                        {/*TODO: might need refactor*/}
-                        <LinkOverlay onClick={() => navigate(`/projects/${id}`)} href={`#`}>
+                        paddingBottom={2}
+                    >
+                        <LinkOverlay
+                            as={Link}
+                            href={`/projects/${id}`}
+                            style={{textDecoration: 'none'}}
+                        >
                             <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
                                 {name}
                             </Text>
