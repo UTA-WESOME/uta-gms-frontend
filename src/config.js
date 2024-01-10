@@ -15,7 +15,13 @@ export const Alternatives = {
 export const Categories = {
     minWidthShowParent: '1150px',
     maxWidthMobile: '870px',
-    minWidthDesktop: '871px'
+    minWidthDesktop: '871px',
+    CategoriesPanel: {
+        minValueSamples: 0,
+        defaultValueSamples: 100,
+        maxValueSamples: 10000,
+        descriptionSamples: 'Define how many samples will be used for this category when running calculations. To turn off the sampler, enter 0. Please remember that sampler does not take into account preferences defined as indifference.'
+    }
 }
 
 export const Preferences = {
@@ -66,9 +72,9 @@ export const Results = {
         pwDescription: "Worst possible position with the assumption that variants with the same utility are ranked higher in the ranking"
     },
     Representative: {
-      maxWidthMobile: '500px'
+        maxWidthMobile: '500px'
     },
-    Sampling : {
+    Sampling: {
         maxWidthMobile: '620px',
         darkModeColors: {
             0: 'teal.900',
