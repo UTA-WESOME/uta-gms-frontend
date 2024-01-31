@@ -6,7 +6,7 @@ const Export = () => {
 
     return (
         <Box>
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 Similarly to importing, data can be exported in two file formats. <b>XMCDA</b>
                 files are downloaded in a compressed folder. <b>CSV</b> file is downloaded
                 separately. Exported files can be used in different applications or shared with

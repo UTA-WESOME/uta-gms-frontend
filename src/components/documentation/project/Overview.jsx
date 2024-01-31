@@ -19,12 +19,12 @@ const Overview = () => {
     return (
         <Box>
 
-            <Text my={3}>
+            <Text my={3} textAlign={'justify'}>
                 This section of the documentation presents an example problem and how to solve it using the UTA-GMS
                 system.
             </Text>
 
-            <Text>
+            <Text textAlign={'justify'}>
                 The data used for the problem, shown below, comes from the official website of the
                 National Basketball Association and represents a list of 10 basketball players along
                 with their statistics. The players selected are among the best in terms of points scored per game.
@@ -48,7 +48,7 @@ const Overview = () => {
                     player's team when the player is on the court.
                 </ListPoint>
             </List>
-            <Text mb={5}>
+            <Text mb={5} textAlign={'justify'}>
                 Each statistic is divided by the number of games the player has played, so the values are averages per
                 game.
             </Text>
@@ -56,7 +56,7 @@ const Overview = () => {
             <DocumentationHeading id={'performance-table'} as={'h5'} size={'md'}>
                 Performance Table
             </DocumentationHeading>
-            <Divider my={2}/>
+            <Divider my={2} />
 
             <TableContainer my={4} mx={5}>
                 <Table variant={'striped'} size={'sm'}>
@@ -159,9 +159,9 @@ const Overview = () => {
             <DocumentationHeading id={'categories'} as={'h5'} size={'md'}>
                 Categories
             </DocumentationHeading>
-            <Divider my={2}/>
+            <Divider my={2} />
 
-            <Text mb={5}>The criteria can be broken down into two categories. The first category, <b>Individual</b>,
+            <Text mb={5} textAlign={'justify'}>The criteria can be broken down into two categories. The first category, <b>Individual</b>,
                 consists
                 of PTS, REB, and TOV. The other category, <b>Team</b>, is made up of the remaining criteria, which
                 reward players who make a positive impact on the team they play for. By dividing the problem into parts,
@@ -170,9 +170,9 @@ const Overview = () => {
             <DocumentationHeading id={'categories'} as={'h5'} size={'md'}>
                 Preferences
             </DocumentationHeading>
-            <Divider my={2}/>
+            <Divider my={2} />
 
-            <Text my={4}>Preferences defined for the problem are pairwise comparisons, intensities, and best and worst
+            <Text my={4} textAlign={'justify'}>Preferences defined for the problem are pairwise comparisons, intensities, and best and worst
                 positions a player can take.</Text>
             <List spacing={2}>
                 <ListPoint>

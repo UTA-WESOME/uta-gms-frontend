@@ -6,13 +6,13 @@ const XMCDA = () => {
 
     return (
         <Box>
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 <b>XMCDA</b> is a data standard used to represent MCDA data elements such as lists of alternatives or criteria.
                 Each element is described in a separate <b>XML</b> file. The latest version of the standard, <i>version 4.0.0</i>, is
                 used in the application to import and export data.
             </Text>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 The minimum number of files a user can upload is two: a file containing the list of alternatives and a file
                 containing the list of criteria. The performance table will then be filled with zeros and the criteria will
                 be of type gain by default. If a user wants to upload the performance table information, they can use a performance
@@ -25,12 +25,12 @@ const XMCDA = () => {
                 ranking of the selected alternatives.
             </Text>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 All of the above can also be exported. Another file that is exported is the criteria functions file. It contains
                 the utility functions for each criterion. If categories are defined, a separate file is created for each category.
             </Text>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 Below are sample files that could be used for a problem similar to the one defined in the <b>CSV</b> section.
             </Text>
 
@@ -51,7 +51,7 @@ const XMCDA = () => {
                 </CardBody>
             </Card>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 The list of alternatives is stored in an <b>alternatives</b> tag. Each alternative has its own name and id,
                 which must be unique for a set of files describing a project. Additional information that can be included in
                 an alternative tag is the type and whether the alternative is active. Type can be real or fictive. For the
@@ -74,7 +74,7 @@ const XMCDA = () => {
                 </CardBody>
             </Card>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 The <b>criteria</b> tag stores a list of all the criteria used in the problem. Similar to alternatives,
                 each criterion is described by a unique id and name. The additional tag <b>active</b> is responsible for
                 taking the criterion into account when importing the file.
@@ -103,7 +103,7 @@ const XMCDA = () => {
                 </CardBody>
             </Card>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 Criteria scales are used to determine the direction of preference. In UTA-GMS, each criterion must be of
                 the type either gain or cost. The value max in the <b>preferenceDirection</b> tag means that the criterion
                 is of type gain. On the other hand, value min means that the criterion is of type cost.
@@ -130,7 +130,7 @@ const XMCDA = () => {
                 </CardBody>
             </Card>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 Tag <b>criteriaValues</b> can be used for a variety of purposes. In the app, it is used to define the
                 number of linear segments in utility functions for each criterion. If the value is equal to 0, then
                 the general function is used for the criterion.
@@ -161,7 +161,7 @@ const XMCDA = () => {
                 </CardBody>
             </Card>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 Performance table is stored in the <b>performanceTable</b> tag. It consists of a list of
                 <b>alternativePerformances</b> tags containing the alternative's id and a list of values for
                 each criterion. The given example shows that the value of alternative 194 on criterion 168
@@ -190,7 +190,7 @@ const XMCDA = () => {
                 </CardBody>
             </Card>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 <b>AlternativesValues</b> tag can be used for many different purposes. In the app, it is used to
                 store information about preference ranking created by the user. Values assigned to alternatives
                 represent their positions in the ranking.
@@ -237,7 +237,7 @@ const XMCDA = () => {
                 </CardBody>
             </Card>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 Utility function is represented as a list of linear segments. Each segment is defined by a head
                 and a tail. Head is a point where the segment begins and tail is a point where the segment ends.
                 Each point has an abscissa and an ordinate, which in the method are the value of a criterion and
@@ -245,7 +245,7 @@ const XMCDA = () => {
                 criterion. When the data is exported from the application, one of these files is created for each category.
             </Text>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 For more information, be sure to visit {" "}
                 <ChakraLink
                     href="https://www.decision-deck.org/xmcda/"

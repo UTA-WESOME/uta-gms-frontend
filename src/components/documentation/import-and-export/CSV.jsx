@@ -3,10 +3,10 @@ import { Box, Card, CardBody, Table, Text, Thead, Tbody, Tr, Th, Td, TableContai
 const CSV = () => {
     return (
         <Box>
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 This section of the documentation is dedicated to import and export mechanism in the app.
             </Text>
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 The <b>CSV</b> file used in the application is a simple text file containing information about alternatives,
                 criteria and values of alternatives on the criteria. The file is a text representation of the performance
                 table, with the first row corresponding to the scales of the criteria. The columns are separated by a
@@ -24,7 +24,7 @@ const CSV = () => {
                 </CardBody>
             </Card>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 The file provided could be illustrated as the table.
             </Text>
 
@@ -79,7 +79,7 @@ const CSV = () => {
                 </Table>
             </TableContainer>
 
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 The data represents information about basketball players and their statistics. It consists of four criteria,
                 which are listed in the second row. The first three are of the gain type. The fourth is of the cost type.
                 The first column contains the names of the alternatives, which in this example are basketball players. The

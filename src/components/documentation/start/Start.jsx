@@ -7,7 +7,7 @@ const Start = () => {
         <Box>
             <Heading>Welcome to the official documentation 🧾</Heading>
             <Divider my={2}/>
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 This is the official documentation for the UTA-GMS application. The application was written as part
                 of <Text as={'b'}>DECISION SUPPORT SYSTEM BASED ON ROBUSTNESS
                 ANALYSIS METHODS FOR PREFERENCE DISAGGREGATION</Text> bachelor thesis at the Poznań University of

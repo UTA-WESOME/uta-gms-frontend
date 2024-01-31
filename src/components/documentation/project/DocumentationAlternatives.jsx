@@ -3,7 +3,7 @@ import { Box, Center, Image, Text } from "@chakra-ui/react";
 const DocumentationAlternatives = () => {
     return (
         <Box>
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 The <b>Alternatives</b> tab is used not only to add alternatives to the problem but also to enter all
                 the values from the performance table. Each row represents one alternative. The previously defined
                 criteria are the columns of the table. The color  of each column corresponds to the type of criterion.

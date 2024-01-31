@@ -6,7 +6,7 @@ const Import = () => {
 
     return (
         <Box>
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 As an alternative to entering the values manually, the user can import the files containing them. 
                 This can be done using the <b>Import from File</b> button. The button opens a window where files 
                 can be dragged and dropped. The switch at the top of the window allows the user to select the type 

@@ -3,7 +3,7 @@ import { Box, Text, Image, Center } from "@chakra-ui/react";
 const Dashboard = () => {
     return (
         <Box>
-            <Text my={5}>
+            <Text my={5} textAlign={'justify'}>
                 When the project is opened, the user is presented with a dashboard. By using the navigation bar at the
                 top of the dashboard, users can switch between the
                 tabs. <b>Criteria</b>, <b>Alternatives</b>, <b>Hierarchy</b>, and <b>Preferences</b> tabs are used to
