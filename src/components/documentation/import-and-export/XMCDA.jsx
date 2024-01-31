@@ -1,4 +1,4 @@
-import { Box, Card, CardBody,  CardHeader, Heading, Link as ChakraLink, Text, } from "@chakra-ui/react";
+import { Box, Card, CardBody,  CardHeader, Heading, Link as ChakraLink, Text, useColorModeValue, } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const XMCDA = () => {
@@ -249,7 +249,7 @@ const XMCDA = () => {
                 For more information, be sure to visit {" "}
                 <ChakraLink
                     href="https://www.decision-deck.org/xmcda/"
-                    color="teal.500"
+                    color={useColorModeValue('teal.500', 'teal.200')}
                     isExternal
                 >
                     <b>the official XMCDA website.</b>

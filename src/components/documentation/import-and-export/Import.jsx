@@ -1,4 +1,4 @@
-import { Box, Center, Image, Link as ChakraLink, Text, } from "@chakra-ui/react";
+import { Box, Center, Image, Link as ChakraLink, Text, useColorModeValue, } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const Import = () => {
@@ -15,7 +15,7 @@ const Import = () => {
                 configurations of <b>XMCDA</b> files, see Section {" "}
                 <ChakraLink
                     as="span"
-                    color="teal.500"
+                    color={useColorModeValue('teal.500', 'teal.200')}
                     onClick={() => navigate("../xmcda")}
                     cursor="pointer"
                 >
