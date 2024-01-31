@@ -326,7 +326,7 @@ const NAV_ITEMS = [
             {
                 label: 'XMCDA v4.0',
                 subLabel: 'Learn about XMCDA v4.0 format',
-                href: '/documentation/import-and-export',
+                href: '/documentation/import-and-export/xmcda',
             },
             {
                 label: 'Contact',
