@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from './App.jsx'
 import Documentation from "./components/Documentation.jsx";
 import Dashboard from "./components/documentation/project/Dashboard.jsx";
+import DocumentationAlternatives from "./components/documentation/project/DocumentationAlternatives.jsx";
 import DocumentationCriteria from "./components/documentation/project/DocumentationCriteria.jsx";
 import DocumentationProject from "./components/documentation/project/DocumentationProject.jsx";
 import Overview from "./components/documentation/project/Overview.jsx";
@@ -94,7 +95,7 @@ export const routes = [
                             },
                             {
                                 path: "alternatives",
-                                element: <Box/>,
+                                element: <DocumentationAlternatives/>,
                                 displayName: "Alternatives",
                                 fullUrl: "/documentation/project/alternatives"
                             },
