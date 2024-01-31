@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from './App.jsx'
 import Documentation from "./components/Documentation.jsx";
+import DocumentationProject from "./components/documentation/project/DocumentationProject.jsx";
+import Overview from "./components/documentation/project/Overview.jsx";
 import Start from "./components/documentation/start/Start.jsx";
 import UtaGms from "./components/documentation/uta-gms/UtaGms.jsx";
 import Home from "./components/Home.jsx";
@@ -66,10 +68,16 @@ export const routes = [
                     },
                     {
                         path: "project",
-                        element: <Box/>,
+                        element: <DocumentationProject/>,
                         displayName: "Project",
-                        fullUrl: "/documentation/project",
+                        fullUrl: "/documentation/project/overview",
                         children: [
+                            {
+                                path: "overview",
+                                element: <Overview/>,
+                                displayName: "Overview",
+                                fullUrl: "/documentation/project/overview"
+                            },
                             {
                                 path: "criteria",
                                 element: <Box/>,

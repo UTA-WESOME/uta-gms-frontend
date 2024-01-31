@@ -13,7 +13,7 @@ const UtaGms = () => {
             <DocumentationHeading id={'basic-concepts'} as={'h3'} size={'lg'}>Basic concepts</DocumentationHeading>
             <Divider my={2}/>
             <Text my={5}>
-                In the context of a set of alternatives characterized by a set of criteria, the primary objective of the
+                In the context of a set of <b>alternatives</b> characterized by a set of <b>criteria</b>, the primary objective of the
                 ranking problem is to establish either a complete or partial preorder among these variants.
             </Text>
         </Box>
