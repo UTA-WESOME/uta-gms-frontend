@@ -11,6 +11,11 @@ import DocumentationProject from "./components/documentation/project/Documentati
 import Overview from "./components/documentation/project/Overview.jsx";
 import Start from "./components/documentation/start/Start.jsx";
 import UtaGms from "./components/documentation/uta-gms/UtaGms.jsx";
+import ImportAndExport from "./components/documentation/import-and-export/ImportAndExport.jsx";
+import CSV from "./components/documentation/import-and-export/CSV.jsx";
+import XMCDA from "./components/documentation/import-and-export/XMCDA.jsx";
+import Import from "./components/documentation/import-and-export/Import.jsx";
+import Export from "./components/documentation/import-and-export/Export.jsx";
 import Home from "./components/Home.jsx";
 import SignIn from "./components/login/SignIn.jsx";
 import SignUp from "./components/login/SignUp.jsx";
@@ -121,9 +126,35 @@ export const routes = [
                     },
                     {
                         path: "import-and-export",
-                        element: <Box/>,
+                        element: <ImportAndExport/>,
                         displayName: "Import and export",
-                        fullUrl: "/documentation/import-and-export"
+                        fullUrl: "/documentation/import-and-export/csv",
+                        children: [
+                            {
+                                path: "csv",
+                                element: <CSV/>,
+                                displayName: "CSV",
+                                fullUrl: "/documentation/import-and-export/csv"
+                            },
+                            {
+                                path: "xmcda",
+                                element: <XMCDA/>,
+                                displayName: "XMCDA",
+                                fullUrl: "/documentation/import-and-export/xmcda"
+                            },
+                            {
+                                path: "import",
+                                element: <Import/>,
+                                displayName: "Import",
+                                fullUrl: "/documentation/import-and-export/import"
+                            },
+                            {
+                                path: "export",
+                                element: <Export/>,
+                                displayName: "Export",
+                                fullUrl: "/documentation/import-and-export/export"
+                            }
+                        ],
                     },
                     {
                         path: "contact",
