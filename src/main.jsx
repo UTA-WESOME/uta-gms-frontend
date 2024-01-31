@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from './App.jsx'
 import Documentation from "./components/Documentation.jsx";
+import Dashboard from "./components/documentation/project/Dashboard.jsx";
+import DocumentationCriteria from "./components/documentation/project/DocumentationCriteria.jsx";
 import DocumentationProject from "./components/documentation/project/DocumentationProject.jsx";
 import Overview from "./components/documentation/project/Overview.jsx";
 import Start from "./components/documentation/start/Start.jsx";
@@ -79,8 +81,14 @@ export const routes = [
                                 fullUrl: "/documentation/project/overview"
                             },
                             {
+                                path: "dashboard",
+                                element: <Dashboard/>,
+                                displayName: "Dashboard",
+                                fullUrl: "/documentation/project/dashboard"
+                            },
+                            {
                                 path: "criteria",
-                                element: <Box/>,
+                                element: <DocumentationCriteria/>,
                                 displayName: "Criteria",
                                 fullUrl: "/documentation/project/criteria"
                             },

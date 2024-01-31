@@ -6,7 +6,8 @@ const DocumentationProject = () => {
 
     const navigate = useNavigate();
     useEffect(() => {
-        navigate("/documentation/project/overview");
+        if(window.location.pathname === "/documentation/project")
+            navigate("/documentation/project/overview");
     }, [])
 
     return (
