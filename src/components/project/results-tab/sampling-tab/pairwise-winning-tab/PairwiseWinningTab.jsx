@@ -44,10 +44,9 @@ const PairwiseWinningTab = ({ alternatives, percentages }) => {
                                             let p = percentages
                                                 .find(r => r.alternative_1 === alternative_1.id && r.alternative_2 === alternative_2.id);
 
-                                            return <Td
-                                                key={index}
-                                                bgColor={findColor(p.percent)}
-                                            >{p.percent}</Td>;
+                                            return <Td key={index} bgColor={findColor(p.percent)}>
+                                                {p.percent.toFixed(3).replace(/\.?0+$/, '')}
+                                            </Td>;
                                         })
                                     }
                                 </Tr>

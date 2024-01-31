@@ -55,7 +55,7 @@ const AcceptabilityIndicesTab = ({ alternatives, percentages }) => {
                                     .sort((x, y) => x.position > y.position ? 1 : x.position < x.position ? -1 : 0)
                                     .map((p, index) => (
                                         <Td key={index} bgColor={findColor(p.percent)}>
-                                            {p.percent}
+                                            {p.percent.toFixed(3).replace(/\.?0+$/, '')}
                                         </Td>
                                     ))
                                 }

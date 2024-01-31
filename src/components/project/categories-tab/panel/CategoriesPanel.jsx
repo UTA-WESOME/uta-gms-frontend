@@ -1,3 +1,4 @@
+import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import {
     Button,
     Center,
@@ -17,6 +18,11 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Popover,
+    PopoverBody,
+    PopoverCloseButton,
+    PopoverContent,
+    PopoverTrigger,
     Select,
     Switch,
     Table,
@@ -31,13 +37,12 @@ import {
     useMediaQuery,
     VStack
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
+import * as Yup from "yup";
 import CustomTooltip from "../../../utils/CustomTooltip.jsx";
 import * as c from "./../../../../config.js";
-import { useState } from "react";
 
 
 const findChildren = (categories, categoryId) => {
@@ -61,15 +66,28 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
 
     let generalId = Math.min(...categories.map(i => i.id));
     const [showParent] = useMediaQuery(`(min-width: ${c.Categories.minWidthShowParent})`);
+    const [isScreenMobile] = useMediaQuery(`(max-width: ${c.Categories.maxWidthMobile})`);
 
     // EDIT BUTTON
     const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
     const formik = useFormik({
-        initialValues: { id: 0, name: "", color: "teal.500", active: true, parent: generalId },
+        initialValues: {
+            id: 0,
+            name: "",
+            color: "teal.500",
+            active: true,
+            samples: c.Categories.CategoriesPanel.defaultValueSamples,
+            parent: generalId
+        },
         validationSchema: Yup.object({
             name: Yup.string().required("Category name is required!").max(15, "Category name too long!"),
             color: Yup.string(),
-            active: Yup.boolean()
+            active: Yup.boolean(),
+            samples: Yup.number()
+                .required("This field is required!")
+                .max(10000, "The number of samples is limited to a maximum of 10000!")
+                .min(0, "The number of samples can not be a negative number!")
+                .integer("The number of samples must be a whole number!")
         }),
         onSubmit: (values, _) => {
 
@@ -83,6 +101,7 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                         name: values.name,
                         color: values.color,
                         active: values.active,
+                        samples: values.samples,
                         parent: values.parent
                     }
                 // if we change to inactive, set children as inactive too
@@ -98,6 +117,11 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
         }
     })
 
+    const handleChangeNumberOfSamples = (change) => {
+        let newValue = (formik.values.samples === "" ? 0 : formik.values.samples) + change;
+        formik.setFieldValue("samples", newValue);
+    }
+
     // CRITERIA BUTTON
     const { isOpen: isOpenCriteria, onOpen: onOpenCriteria, onClose: onCloseCriteria } = useDisclosure();
     const [currentCategory, setCurrentCategory] = useState(null);
@@ -111,6 +135,7 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
             name: `Category`,
             color: 'teal.400',
             active: true,
+            samples: c.Categories.CategoriesPanel.defaultValueSamples,
             diagram: {},
             parent: generalId,
             criterion_categories: [],
@@ -233,6 +258,7 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                                                     name: category.name,
                                                     color: category.color,
                                                     active: category.active,
+                                                    samples: category.samples,
                                                     parent: category.parent
                                                 });
                                                 formik.setErrors({});
@@ -335,6 +361,55 @@ const CategoriesPanel = ({ alternatives, criteria, categories, setCategories, se
                                     }
                                 </HStack>
                             </FormControl>
+
+                            {/*SAMPLES*/}
+                            <FormControl isInvalid={formik.errors.samples && formik.touched.samples}>
+                                <FormLabel fontSize={'sm'}>
+                                    <HStack>
+                                        <Text>
+                                            Number of samples
+                                        </Text>
+                                        {isScreenMobile ?
+                                            <Popover>
+                                                <PopoverTrigger>
+                                                    <InfoIcon/>
+                                                </PopoverTrigger>
+                                                <PopoverContent>
+                                                    <PopoverCloseButton/>
+                                                    <PopoverBody>{c.Categories.CategoriesPanel.descriptionSamples}</PopoverBody>
+                                                </PopoverContent>
+                                            </Popover>
+                                            :
+                                            <CustomTooltip
+                                                label={c.Categories.CategoriesPanel.descriptionSamples}
+                                                openDelay={200}>
+                                                <InfoIcon/>
+                                            </CustomTooltip>
+
+                                        }
+
+                                    </HStack>
+                                </FormLabel>
+                                <HStack>
+                                    <Button
+                                        isDisabled={formik.values.samples <= 0}
+                                        onClick={() => handleChangeNumberOfSamples(-1)}
+                                    >-</Button>
+                                    <Input
+                                        id={'input_samples'}
+                                        name={'samples'}
+                                        type={'number'}
+                                        {...formik.getFieldProps("samples")}
+                                    />
+
+                                    <Button
+                                        isDisabled={formik.values.samples >= 10000}
+                                        onClick={() => handleChangeNumberOfSamples(1)}
+                                    >+</Button>
+                                </HStack>
+                                <FormErrorMessage>{formik.errors.samples}</FormErrorMessage>
+                            </FormControl>
+
 
                             {/*COLOR PICKER*/}
                             {/*For now commented, because there is no need to use the color since we are drawing a tree,*/}
