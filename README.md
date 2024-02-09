@@ -1,7 +1,7 @@
 # uta-gms-frontend
 
 The uta-gms-frontend application’s main task is to provide access to the UTA-GMS system in a friendly and readable form to the end user. 
-It is written entirely in JavaScriptwith the use of the React framework and connects to the [uta-gms-backend](https://github.com/UTA-WESOME/uta-gms-backend) using the REST
+It is written entirely in JavaScript with the use of the React framework and connects to the [uta-gms-backend](https://github.com/UTA-WESOME/uta-gms-backend) using the REST
 protocol in order to retrieve data for display and send changes that the user wants to make. Inside
 the application users can create accounts, log in, browse their projects, edit them, and see the results of the UTA-GMS method.
 
