@@ -19,7 +19,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
-import { BiRocket, BiSave } from "react-icons/bi";
+import { BiRocket, BiSave, BiSolidHourglass } from "react-icons/bi";
 import { TbBinaryTree } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
@@ -528,15 +528,32 @@ const ProjectTabs = (props) => {
                         />
                         {isScreenMobile
                             ? <IconButton
+                                aria-label={'Jobs'}
+                                colorScheme={'green'}
+                                icon={<BiSolidHourglass/>}
+                                onClick={() => navigate(`/jobs?default_project=${props.id}`)}/>
+                            :
+                            <Button
+                                leftIcon={<BiSolidHourglass/>}
+                                colorScheme={'green'}
+                                onClick={() => navigate(`/jobs?default_project=${props.id}`)}
+                            >
+                                Jobs
+                            </Button>
+                        }
+                        {isScreenMobile
+                            ?
+                            <IconButton
                                 aria-label={'Save'}
                                 colorScheme={'orange'}
                                 icon={<BiSave/>}
-                                onClick={submitData}>
-                            </IconButton>
-                            : <Button
+                                onClick={submitData}/>
+                            :
+                            <Button
                                 leftIcon={<BiSave/>}
                                 colorScheme={'orange'}
-                                onClick={submitData}>
+                                onClick={submitData}
+                            >
                                 Save
                             </Button>
                         }
@@ -545,12 +562,13 @@ const ProjectTabs = (props) => {
                                 aria-label={'Save & run'}
                                 colorScheme={'orange'}
                                 icon={<BiRocket/>}
-                                onClick={submitDataAndRun}>
-                            </IconButton>
-                            : <Button
+                                onClick={submitDataAndRun}/>
+                            :
+                            <Button
                                 leftIcon={<BiRocket/>}
                                 colorScheme={'orange'}
-                                onClick={submitDataAndRun}>
+                                onClick={submitDataAndRun}
+                            >
                                 Save & run
                             </Button>
                         }
