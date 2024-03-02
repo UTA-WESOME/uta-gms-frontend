@@ -89,7 +89,7 @@ const Jobs = () => {
                                     <Select
                                         minW={'200px'}
                                         placeholder={'Choose project'}
-                                        defaultValue={currentProjectId}
+                                        defaultValue={isNaN(currentProjectId) ? 0 : currentProjectId}
                                         onChange={(event) =>
                                             setCurrentProjectId(parseInt(event.target.value))
                                         }

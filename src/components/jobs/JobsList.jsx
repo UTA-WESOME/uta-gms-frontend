@@ -1,10 +1,13 @@
-import { Skeleton, useToast } from "@chakra-ui/react";
+import { Box, Heading, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import JobsGroup from "./JobsGroup.jsx";
 
 const JobsList = ({ currentProjectId }) => {
 
     const [hasLoaded, setHasLoaded] = useState(false);
     const [jobs, setJobs] = useState([]);
+    const [groups, setGroups] = useState([]);
+
     const toast = useToast();
     const toastId = "toast-jobs-list";
 
@@ -28,7 +31,8 @@ const JobsList = ({ currentProjectId }) => {
                 }
                 return response.json();
             }).then(data => {
-                setJobs(data);
+                setJobs(data.jobs);
+                setGroups([...new Set(data.jobs.map(i => i.group))])
                 setHasLoaded(true);
             }).catch(err => {
                 console.log(err);
@@ -41,15 +45,30 @@ const JobsList = ({ currentProjectId }) => {
 
 
     return (
-        <>
+        <Box textAlign={'center'} mt={'10px'}>
             {jobs === undefined ?
-
-                <Skeleton height={'20px'}/>
+                <Heading size={{ base: 'md', md: 'xl' }} my={5}>
+                    Choose a project from the dropdown menu
+                </Heading>
                 :
-                JSON.stringify(jobs)
-
+                <>
+                    <Heading size={{ base: 'md', md: 'xl' }} my={5}>
+                        Jobs
+                    </Heading>
+                    {/*{JSON.stringify(groups)}*/}
+                    {/*{JSON.stringify(jobs)}*/}
+                    <>
+                        {groups.map((group, index) => (
+                            <JobsGroup
+                                key={index}
+                                groupNumber={group}
+                                jobs={jobs.filter(i => i.group === group)}
+                            />
+                        ))}
+                    </>
+                </>
             }
-        </>
+        </Box>
     )
 
 
