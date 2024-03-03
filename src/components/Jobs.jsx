@@ -75,7 +75,7 @@ const Jobs = () => {
     return (
         <>
             {hasLoaded &&
-                <PageTemplate title={'Your Jobs'}>
+                <PageTemplate title={'Jobs'}>
                     <Box
                         w={'full'}
                         h={'full'}
@@ -87,6 +87,7 @@ const Jobs = () => {
                             <Stack direction={'row'} alignItems={'end'}>
                                 <FormControl>
                                     <Select
+                                        size={'lg'}
                                         minW={'200px'}
                                         placeholder={'Choose project'}
                                         defaultValue={isNaN(currentProjectId) ? 0 : currentProjectId}

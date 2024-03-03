@@ -45,20 +45,15 @@ const JobsList = ({ currentProjectId }) => {
 
 
     return (
-        <Box textAlign={'center'} mt={'10px'}>
+        <Box mt={'10px'}>
             {jobs === undefined ?
                 <Heading size={{ base: 'md', md: 'xl' }} my={5}>
                     Choose a project from the dropdown menu
                 </Heading>
                 :
                 <>
-                    <Heading size={{ base: 'md', md: 'xl' }} my={5}>
-                        Jobs
-                    </Heading>
-                    {/*{JSON.stringify(groups)}*/}
-                    {/*{JSON.stringify(jobs)}*/}
                     <>
-                        {groups.map((group, index) => (
+                        {groups.sort((x, y) => y - x).slice(0, 4).map((group, index) => (
                             <JobsGroup
                                 key={index}
                                 groupNumber={group}
