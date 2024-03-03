@@ -44,7 +44,7 @@ const JobsGroup = ({ groupNumber, jobs }) => {
                                 <Td>{job.name}</Td>
                                 <Td>
                                     {job.ready ?
-                                        <Icon as={FaCheck} color={'teal'} ml={3} size={'sm'}/>
+                                        <Icon as={FaCheck} color={'teal'} ml={3}/>
                                         :
                                         <Spinner ml={3} color={'orange'} size={'sm'}/>
                                     }

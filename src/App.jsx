@@ -28,10 +28,7 @@ const App = () => {
                     })
             }, 600000);
             setTickInterval(i);
-            console.log("setting tick interval to", i);
         } else {
-            console.log("turning off ticking");
-            console.log("turning off tickInterval", tickInterval);
             setTickInterval(null);
             clearInterval(tickInterval);
         }
