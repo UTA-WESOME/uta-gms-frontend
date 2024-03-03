@@ -1,4 +1,4 @@
-import { Box, Button, Heading, useToast } from "@chakra-ui/react";
+import { Box, Heading, useToast } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import JobsGroup from "./JobsGroup.jsx";
 
@@ -41,10 +41,9 @@ const JobsList = ({ currentProjectId }) => {
     const toggleRefresh = (status) => {
         if (status) {
             clearInterval(tickInterval.current);
-            let i = setInterval(() => {
+            tickInterval.current = setInterval(() => {
                 getJobs();
             }, 3000);
-            tickInterval.current = i;
         } else {
             clearInterval(tickInterval.current);
         }

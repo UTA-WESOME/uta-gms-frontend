@@ -118,7 +118,6 @@ const ProjectTabs = (props) => {
     const [hasLoaded, setHasLoaded] = useState(false);
     const [isScreenMobile] = useMediaQuery(c.maxWidthMobileIcons);
     const [saveClicked, setSaveClicked] = useState(false);
-    const [progressBarValue, setProgressBarValue] = useState(5);
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -326,65 +325,20 @@ const ProjectTabs = (props) => {
             return response.json();
         }).then(data => {
 
-            // we get the categories from the PATCH request but want to get results only for those that are active
-            let categoriesUpdated = data.categories.filter(cat => cat.active);
-            let waitingArrayResults = categoriesUpdated.map(() => false);
-            categoriesUpdated.forEach((categoryUpdated, index) => {
-                fetch(`${import.meta.env.VITE_BACKEND}/api/categories/${categoryUpdated.id}/results/`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' }
-                }).then(response => {
-
-                    if (!response.ok) {
-                        switch (response.status) {
-                            case 400:
-                                toast({
-                                    title: `${categoryUpdated.name}`,
-                                    description: "No active criteria for this category!",
-                                    status: 'info',
-                                    duration: 3000,
-                                    isClosable: true
-                                });
-                                break;
-                            case 504:
-                                toast({
-                                    title: `${categoryUpdated.name}`,
-                                    description: "Connection timeout",
-                                    status: 'info',
-                                    duration: 3000,
-                                    isClosable: true
-                                });
-                                break;
-                            default:
-                                toast({
-                                    title: "Error!",
-                                    description: `Error getting results for ${categoryUpdated.name} - ${response.status}`,
-                                    status: 'error',
-                                    duration: 3000,
-                                    isClosable: true
-                                });
-                                break;
-                        }
-                    }
-
-                    waitingArrayResults[index] = true;
-                    // has to use pbv because otherwise does not work for some reason (?)
-                    setProgressBarValue(pbv => waitingArrayResults.filter(value => value === true).length * 100 / categoriesUpdated.length);
-                    if (waitingArrayResults.every(i => i === true)) {
-                        toastSuccess("Results ready!");
-                        setSaveClicked(false);
-                        setProgressBarValue(5);
-                        // get current project data
-                        getData().then(() => {
-                            setTabIndex(4);
-                        });
-                    }
-
-                }).catch(err => {
-                    console.log(err);
-                })
+            fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.id}/results/`, {
+                method: 'POST',
+                credentials: 'include'
+            }).then(response => {
+                if (!response.ok) {
+                    toastError("Error occured!");
+                    getData();
+                } else {
+                    navigate(`/jobs?default_project=${props.id}`)
+                }
+            }).catch(err => {
+                console.log(err);
             })
+
         }).catch(err => {
             console.log(err);
         })
@@ -504,14 +458,6 @@ const ProjectTabs = (props) => {
                     <Center>
                         <Heading fontSize={'lg'} mb={3}>Please wait...</Heading>
                     </Center>
-                    <Progress
-                        hasStripe
-                        isAnimated
-                        value={progressBarValue}
-                        colorScheme={'teal'}
-                        borderRadius={'lg'}
-                        mb={2}
-                    />
                 </>
                 :
                 <Box textAlign={'right'}>
