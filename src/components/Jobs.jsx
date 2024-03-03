@@ -1,4 +1,4 @@
-import { Box, Center, FormControl, Select, Stack, useToast } from "@chakra-ui/react";
+import { Box, Button, Flex, Select, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import JobsList from "./jobs/JobsList.jsx";
@@ -83,25 +83,30 @@ const Jobs = () => {
                         borderRadius={'lg'}
                         p={{ base: 2, sm: 5 }}
                     >
-                        <Center>
-                            <Stack direction={'row'} alignItems={'end'}>
-                                <FormControl>
-                                    <Select
-                                        size={'lg'}
-                                        minW={'200px'}
-                                        placeholder={'Choose project'}
-                                        defaultValue={isNaN(currentProjectId) ? 0 : currentProjectId}
-                                        onChange={(event) =>
-                                            setCurrentProjectId(parseInt(event.target.value))
-                                        }
-                                    >
-                                        {projects.map(project => (
-                                            <option value={project.id} key={project.id}>{project.name}</option>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Stack>
-                        </Center>
+                        <Flex direction={'row'} mx={10} justify={'center'} gap={3}>
+                            <Select
+                                size={'lg'}
+                                minW={'200px'}
+                                maxW={'400px'}
+                                placeholder={'Choose project'}
+                                defaultValue={isNaN(currentProjectId) ? 0 : currentProjectId}
+                                onChange={(event) =>
+                                    setCurrentProjectId(parseInt(event.target.value))
+                                }
+                            >
+                                {projects.map(project => (
+                                    <option value={project.id} key={project.id}>{project.name}</option>
+                                ))}
+                            </Select>
+                            {!isNaN(currentProjectId) &&
+                                <Button
+                                    size={'lg'}
+                                    p={2}
+                                    colorScheme={'teal'}
+                                    onClick={() => navigate(`/projects/${currentProjectId}`)}
+                                >Go to project</Button>
+                            }
+                        </Flex>
                         <JobsList currentProjectId={currentProjectId}/>
                     </Box>
                 </PageTemplate>

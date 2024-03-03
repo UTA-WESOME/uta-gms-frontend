@@ -47,7 +47,7 @@ const JobsList = ({ currentProjectId }) => {
     return (
         <Box mt={'10px'}>
             {jobs === undefined ?
-                <Heading size={{ base: 'md', md: 'xl' }} my={5}>
+                <Heading size={{ base: 'md', md: 'xl' }} my={5} textAlign={'center'}>
                     Choose a project from the dropdown menu
                 </Heading>
                 :
