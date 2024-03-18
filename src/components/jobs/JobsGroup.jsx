@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     Icon,
     Spinner,
     Table,
@@ -13,9 +14,24 @@ import {
     Tr,
     useColorModeValue
 } from "@chakra-ui/react";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaTimes } from "react-icons/fa";
 
 const JobsGroup = ({ groupNumber, jobs }) => {
+
+    const handleCancel = (jobId) => {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/jobs/${jobId}/cancel/`, {
+            method: "POST",
+            credentials: "include"
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            }).catch(err => {
+            console.log(err);
+        })
+    }
+
+
     return (
         <Box
             borderWidth={useColorModeValue('3px', '3px')}
@@ -43,21 +59,34 @@ const JobsGroup = ({ groupNumber, jobs }) => {
                             <Tr key={index}>
                                 <Td>{job.name}</Td>
                                 <Td>
-                                    {job.ready ?
-                                        <Icon as={FaCheck} color={'teal'} ml={3}/>
+                                    {job.ready === 'SUCCESS' ?
+                                        <Icon as={FaCheck} color={'teal.400'} ml={3}/>
                                         :
-                                        <Spinner ml={3} color={'orange'} size={'sm'}/>
+                                        job.ready === null ?
+                                            <Spinner ml={3} color={'orange'} size={'sm'}/>
+                                            :
+                                            <Icon as={FaTimes} color={'red.400'} ml={3}/>
                                     }
                                 </Td>
                                 <Td>{job.created_at.replace('T', ' ').split('.')[0]}</Td>
                                 <Td>
-                                    {job.ready ?
+                                    {job.ready !== null ?
                                         job.finished_at.replace('T', ' ').split('.')[0]
                                         :
                                         'Not ready yet!'
                                     }
                                 </Td>
-                                <Td>actions</Td>
+                                <Td py={0}>
+                                    {job.ready === null &&
+                                        <Button
+                                            colorScheme={'gray'}
+                                            onClick={() => handleCancel(job.id)}
+                                            size={'sm'}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    }
+                                </Td>
                             </Tr>
                         ))}
                     </Tbody>
