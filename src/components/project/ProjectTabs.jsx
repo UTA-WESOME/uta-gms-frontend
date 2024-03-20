@@ -2,12 +2,9 @@ import {
     Box,
     Button,
     ButtonGroup,
-    Center,
     Divider,
-    Heading,
     Icon,
     IconButton,
-    Progress,
     Tab,
     TabList,
     TabPanel,
@@ -17,20 +14,20 @@ import {
     useToast
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { FaArrowTrendUp } from "react-icons/fa6";
+import { BiRocket, BiSave, BiSolidHourglass } from "react-icons/bi";
 import { FaBalanceScaleLeft, FaList, FaRegCheckCircle } from "react-icons/fa";
-import { BiRocket, BiSave } from "react-icons/bi";
+import { FaArrowTrendUp } from "react-icons/fa6";
 import { TbBinaryTree } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-
-import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
+import * as c from '../../config.js';
+import ExportModal from "../export/ExportModal.jsx";
+import ImportModal from "../import/ImportModal.jsx";
 import AlternativesTab from "./alternatives-tab/AlternativesTab.jsx";
 import CategoryTab from "./categories-tab/CategoryTab.jsx";
+
+import CriteriaTab from "./criteria-tab/CriteriaTab.jsx";
 import PreferencesTabs from "./preferences-tab/PreferencesTabs.jsx";
 import ResultsTabs from "./results-tab/ResultsTabs.jsx";
-import ImportModal from "../import/ImportModal.jsx";
-import ExportModal from "../export/ExportModal.jsx";
-import * as c from '../../config.js';
 
 const ProjectTabs = (props) => {
     // criteria holds active data about criteria, criterion function, criterion categories
@@ -117,10 +114,9 @@ const ProjectTabs = (props) => {
     const [tabIndex, setTabIndex] = useState(0);
     const [hasLoaded, setHasLoaded] = useState(false);
     const [isScreenMobile] = useMediaQuery(c.maxWidthMobileIcons);
-    const [saveClicked, setSaveClicked] = useState(false);
-    const [progressBarValue, setProgressBarValue] = useState(5);
     const navigate = useNavigate();
     const toast = useToast();
+    const toastId = 'toast-project-tabs';
 
 
     const getData = async () => {
@@ -155,25 +151,30 @@ const ProjectTabs = (props) => {
         getData();
     }, [])
 
-    const toastSuccess = (description) => {
-        toast({
-            title: "Success!",
-            description: description,
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
-        })
+    const toastSuccess = (description, duration = 5000) => {
+        if (!toast.isActive(toastId)) {
+            toast({
+                id: toastId,
+                title: "Success!",
+                description: description,
+                status: 'success',
+                duration: duration,
+                isClosable: true,
+            })
+        }
     }
 
     const toastError = (description, duration = 5000) => {
-        toast({
-            title: "Error!",
-            description: description,
-            status: 'error',
-            duration: duration,
-            isClosable: true
-        });
-        setSaveClicked(false);
+        if (!toast.isActive(toastId)) {
+            toast({
+                id: toastId,
+                title: "Error!",
+                description: description,
+                status: 'error',
+                duration: duration,
+                isClosable: true
+            });
+        }
     }
 
     const validateData = () => {
@@ -274,7 +275,6 @@ const ProjectTabs = (props) => {
         if (!validateData()) {
             return;
         }
-        setSaveClicked(true);
         fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.id}/batch/`, {
             method: 'PATCH',
             credentials: 'include',
@@ -288,8 +288,13 @@ const ProjectTabs = (props) => {
             })
         }).then(response => {
             if (!response.ok) {
-                toastError('Sorry, some unexpected error occurred');
-                throw new Error('Error updating data');
+                response.json().then(data => {
+                    if (data && data.message) {
+                        toastError(data.message);
+                    } else {
+                        toastError("An error occurred.");
+                    }
+                });
             } else {
                 toastSuccess("Project settings saved.");
                 navigate('/projects');
@@ -303,8 +308,6 @@ const ProjectTabs = (props) => {
         if (!validateData()) {
             return;
         }
-
-        setSaveClicked(true);
 
         // update data
         fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.id}/batch/`, {
@@ -320,71 +323,27 @@ const ProjectTabs = (props) => {
             })
         }).then(response => {
             if (!response.ok) {
-                toastError('Sorry, some unexpected error occurred');
-                throw new Error('Error updating data');
+                response.json().then(data => {
+                    toastError(data.message);
+                });
+                throw new Error("Error updating project");
             }
             return response.json();
-        }).then(data => {
+        }).then(() => {
 
-            // we get the categories from the PATCH request but want to get results only for those that are active
-            let categoriesUpdated = data.categories.filter(cat => cat.active);
-            let waitingArrayResults = categoriesUpdated.map(() => false);
-            categoriesUpdated.forEach((categoryUpdated, index) => {
-                fetch(`${import.meta.env.VITE_BACKEND}/api/categories/${categoryUpdated.id}/results/`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' }
-                }).then(response => {
-
-                    if (!response.ok) {
-                        switch (response.status) {
-                            case 400:
-                                toast({
-                                    title: `${categoryUpdated.name}`,
-                                    description: "No active criteria for this category!",
-                                    status: 'info',
-                                    duration: 3000,
-                                    isClosable: true
-                                });
-                                break;
-                            case 504:
-                                toast({
-                                    title: `${categoryUpdated.name}`,
-                                    description: "Connection timeout",
-                                    status: 'info',
-                                    duration: 3000,
-                                    isClosable: true
-                                });
-                                break;
-                            default:
-                                toast({
-                                    title: "Error!",
-                                    description: `Error getting results for ${categoryUpdated.name} - ${response.status}`,
-                                    status: 'error',
-                                    duration: 3000,
-                                    isClosable: true
-                                });
-                                break;
-                        }
-                    }
-
-                    waitingArrayResults[index] = true;
-                    // has to use pbv because otherwise does not work for some reason (?)
-                    setProgressBarValue(pbv => waitingArrayResults.filter(value => value === true).length * 100 / categoriesUpdated.length);
-                    if (waitingArrayResults.every(i => i === true)) {
-                        toastSuccess("Results ready!");
-                        setSaveClicked(false);
-                        setProgressBarValue(5);
-                        // get current project data
-                        getData().then(() => {
-                            setTabIndex(4);
-                        });
-                    }
-
-                }).catch(err => {
-                    console.log(err);
-                })
+            fetch(`${import.meta.env.VITE_BACKEND}/api/projects/${props.id}/results/`, {
+                method: 'POST',
+                credentials: 'include'
+            }).then(response => {
+                if (!response.ok) {
+                    getData();
+                } else {
+                    navigate(`/jobs?default_project=${props.id}`)
+                }
+            }).catch(err => {
+                console.log(err);
             })
+
         }).catch(err => {
             console.log(err);
         })
@@ -499,64 +458,66 @@ const ProjectTabs = (props) => {
                 </TabPanels>
             </Tabs>
 
-            {saveClicked ?
-                <>
-                    <Center>
-                        <Heading fontSize={'lg'} mb={3}>Please wait...</Heading>
-                    </Center>
-                    <Progress
-                        hasStripe
-                        isAnimated
-                        value={progressBarValue}
-                        colorScheme={'teal'}
-                        borderRadius={'lg'}
-                        mb={2}
+            <Box textAlign={'right'}>
+                <ButtonGroup>
+                    <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
+                    <ExportModal
+                        projectId={props.id}
+                        desktop={!isScreenMobile}
+                        pairwiseMode={pairwiseMode}
+                        criteria={criteria}
+                        categories={categories}
+                        alternatives={alternatives}
+                        preferenceIntensities={preferenceIntensities}
                     />
-                </>
-                :
-                <Box textAlign={'right'}>
-                    <ButtonGroup>
-                        <ImportModal projectId={props.id} desktop={!isScreenMobile}/>
-                        <ExportModal
-                            projectId={props.id}
-                            desktop={!isScreenMobile}
-                            pairwiseMode={pairwiseMode}
-                            criteria={criteria}
-                            categories={categories}
-                            alternatives={alternatives}
-                            preferenceIntensities={preferenceIntensities}
-                        />
-                        {isScreenMobile
-                            ? <IconButton
-                                aria-label={'Save'}
-                                colorScheme={'orange'}
-                                icon={<BiSave/>}
-                                onClick={submitData}>
-                            </IconButton>
-                            : <Button
-                                leftIcon={<BiSave/>}
-                                colorScheme={'orange'}
-                                onClick={submitData}>
-                                Save
-                            </Button>
-                        }
-                        {isScreenMobile
-                            ? <IconButton
-                                aria-label={'Save & run'}
-                                colorScheme={'orange'}
-                                icon={<BiRocket/>}
-                                onClick={submitDataAndRun}>
-                            </IconButton>
-                            : <Button
-                                leftIcon={<BiRocket/>}
-                                colorScheme={'orange'}
-                                onClick={submitDataAndRun}>
-                                Save & run
-                            </Button>
-                        }
-                    </ButtonGroup>
-                </Box>
-            }
+                    {isScreenMobile
+                        ? <IconButton
+                            aria-label={'Jobs'}
+                            colorScheme={'green'}
+                            icon={<BiSolidHourglass/>}
+                            onClick={() => navigate(`/jobs?default_project=${props.id}`)}/>
+                        :
+                        <Button
+                            leftIcon={<BiSolidHourglass/>}
+                            colorScheme={'green'}
+                            onClick={() => navigate(`/jobs?default_project=${props.id}`)}
+                        >
+                            Jobs
+                        </Button>
+                    }
+                    {isScreenMobile
+                        ?
+                        <IconButton
+                            aria-label={'Save'}
+                            colorScheme={'orange'}
+                            icon={<BiSave/>}
+                            onClick={submitData}/>
+                        :
+                        <Button
+                            leftIcon={<BiSave/>}
+                            colorScheme={'orange'}
+                            onClick={submitData}
+                        >
+                            Save
+                        </Button>
+                    }
+                    {isScreenMobile
+                        ? <IconButton
+                            aria-label={'Save & run'}
+                            colorScheme={'orange'}
+                            icon={<BiRocket/>}
+                            onClick={submitDataAndRun}/>
+                        :
+                        <Button
+                            leftIcon={<BiRocket/>}
+                            colorScheme={'orange'}
+                            onClick={submitDataAndRun}
+                        >
+                            Save & run
+                        </Button>
+                    }
+                </ButtonGroup>
+            </Box>
         </Box>
     )
 }

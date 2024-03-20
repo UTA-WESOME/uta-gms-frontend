@@ -1,9 +1,9 @@
-import PageTemplate from "./PageTemplate.jsx";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useLocalStorage } from "./utils/useLocalStorage.jsx";
 import { useToast } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import ProjectTabs from "./project/ProjectTabs.jsx";
+import PageTemplate from "./utils/PageTemplate.jsx";
+import { useLocalStorage } from "./utils/useLocalStorage.jsx";
 
 const Project = () => {
 

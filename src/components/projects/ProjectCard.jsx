@@ -1,5 +1,3 @@
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -11,7 +9,8 @@ import {
     Flex,
     Heading,
     Icon,
-    IconButton, Link,
+    IconButton,
+    Link,
     LinkBox,
     LinkOverlay,
     Modal,
@@ -28,7 +27,9 @@ import {
     useDisclosure,
     useToast,
 } from '@chakra-ui/react';
-import { BiEditAlt, BiInfoCircle, BiShareAlt, BiTrash, } from "react-icons/bi";
+import { useRef } from "react";
+import { BiEditAlt, BiInfoCircle, BiSolidHourglass, BiTrash, } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 import CustomTooltip from "../utils/CustomTooltip.jsx";
 
 
@@ -103,7 +104,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                         <LinkOverlay
                             as={Link}
                             href={`/projects/${id}`}
-                            style={{textDecoration: 'none'}}
+                            style={{ textDecoration: 'none' }}
                         >
                             <Text as={'span'} color={useColorModeValue('teal.500', 'teal.200')}>
                                 {name}
@@ -127,7 +128,7 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                         color={useColorModeValue('gray.400', 'gray.400')}
                         paddingBottom={'2'}
                         mx={'auto'}>
-                        {(hoveredOnCard && ! hoveredOnButtons) ? "Click to open project" : <span>&nbsp;&nbsp;</span>}
+                        {(hoveredOnCard && !hoveredOnButtons) ? "Click to open project" : <span>&nbsp;&nbsp;</span>}
                     </Text>
 
                     <Flex
@@ -154,16 +155,16 @@ const ProjectCard = ({ id, name, createdAt, description }) => {
                                 onClick={onOpenInfo}
                             />
                         </CustomTooltip>
-                        <CustomTooltip label='Share'>
+                        <CustomTooltip label='Jobs'>
                             <IconButton
                                 aria-label='Share'
                                 padding={'2'}
                                 background={'transparent'}
                                 borderRadius={'full'}
                                 _hover={{ bg: useColorModeValue('gray.300', 'gray.600') }}
-                                icon={<Icon as={BiShareAlt} minH={'7'} minW={'7'}
+                                icon={<Icon as={BiSolidHourglass} minH={'7'} minW={'7'}
                                             color={useColorModeValue('green.500', 'green.200')}/>}
-                                onClick={shareProject}
+                                onClick={() => navigate(`/jobs?default_project=${id}`)}
                             />
                         </CustomTooltip>
                         <CustomTooltip label='Edit'>

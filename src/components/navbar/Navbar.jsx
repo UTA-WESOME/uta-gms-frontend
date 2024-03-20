@@ -309,6 +309,10 @@ const NAV_ITEMS = [
         href: '/projects',
     },
     {
+        label: 'My Jobs',
+        href: '/jobs'
+    },
+    {
         label: 'About',
         children: [
             {

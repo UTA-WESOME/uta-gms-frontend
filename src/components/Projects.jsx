@@ -1,9 +1,9 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import { useToast, } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-
-import PageTemplate from "./PageTemplate";
+import { useNavigate } from "react-router-dom";
 import ProjectsContainer from "./projects/ProjectsContainer";
+
+import PageTemplate from "./utils/PageTemplate.jsx";
 import { useLocalStorage } from "./utils/useLocalStorage.jsx";
 
 const Projects = () => {
@@ -53,9 +53,9 @@ const Projects = () => {
     return (
         <>
             {hasLoaded &&
-             <PageTemplate title='Your Projects'>
-                <ProjectsContainer projects={projects} setProjects={setProjects}/>
-            </PageTemplate>
+                <PageTemplate title={'Projects'}>
+                    <ProjectsContainer projects={projects} setProjects={setProjects}/>
+                </PageTemplate>
             }
         </>
     );
