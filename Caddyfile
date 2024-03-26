@@ -28,5 +28,5 @@ utagms.pl {
 }
 
 api.utagms.pl {
-    reverse_proxy http://uta-gms-django:8000
+    reverse_proxy http://uta-gms-django
 }
