@@ -1,0 +1,13 @@
+name: uta-gms-frontend
+services:
+  uta-gms-frontend:
+    container_name: uta-gms-frontend
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./src:/app/src
+      - ./theme:/app/theme
+      - ./public:/app/public
