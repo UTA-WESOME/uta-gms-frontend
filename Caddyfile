@@ -19,7 +19,10 @@
 
 utagms.pl {
 	root * /var/www/dist
+
 	encode gzip
+	import static
+
 	file_server
 	try_files {path} /index.html
 }
