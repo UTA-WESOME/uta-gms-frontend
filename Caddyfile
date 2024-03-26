@@ -26,3 +26,7 @@ utagms.pl {
 	file_server
 	try_files {path} /index.html
 }
+
+api.utagms.pl {
+    reverse_proxy http://uta-gms-django
+}
