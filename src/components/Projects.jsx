@@ -18,7 +18,7 @@ const Projects = () => {
 
     useEffect(() => {
         if (getAuth() !== true) {
-            navigate("/");
+            navigate("/signin");
             if (!toast.isActive(toastId)) {
                 toast({
                     id: toastId,

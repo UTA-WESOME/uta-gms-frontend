@@ -20,6 +20,16 @@ const Jobs = () => {
     useEffect(() => {
         if (!getAuth()) {
             navigate("/signin");
+            if (!toast.isActive(toastId)) {
+                toast({
+                    id: toastId,
+                    title: 'Sign up or log in first!',
+                    description: "Sign up or log in to browse your jobs.",
+                    status: 'warning',
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
         } else {
             fetch(`${import.meta.env.VITE_BACKEND}/api/projects/`, {
                 method: "GET",
