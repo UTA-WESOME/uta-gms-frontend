@@ -7,16 +7,20 @@ the application users can create accounts, log in, browse their projects, edit t
 
 ## How to run? 🚀
 
-1. Prepare a `.env` file inside the main directory. Example:
+1. Prepare a `.env.local` file inside the main directory. Example:
 ```
 VITE_BACKEND=http://localhost:8080
 ```
 - `VITE_BACKEND` - url to the `uta-gms-backend` application
 
-2. Execute commands:
+2. Execute commands (you can run it locally or inside Docker):
 ```commandline
+# LOCALLY:
 npm i
 npm run dev
+
+# INSIDE DOCKER:
+docker compose up
 ```
 
 ## Technologies used 🔨
